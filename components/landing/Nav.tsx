@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
+import Logo from './Logo';
 
 export default function Nav() {
   const { tr, lang, setLang, langList } = useLang();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNarrow, setIsNarrow] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const langMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12);
@@ -19,6 +22,17 @@ export default function Nav() {
       window.removeEventListener('resize', onResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (!langOpen) return;
+    const onOutside = (e: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) setLangOpen(false);
+    };
+    document.addEventListener('mousedown', onOutside);
+    return () => document.removeEventListener('mousedown', onOutside);
+  }, [langOpen]);
+
+  const currentLangLabel = langList.find((lg) => lg.code === lang)?.label ?? lang;
 
   const navBg = isScrolled ? 'rgba(10,6,19,.72)' : 'transparent';
   const navBlur = isScrolled ? 'blur(20px) saturate(160%)' : 'none';
@@ -50,9 +64,7 @@ export default function Nav() {
           gap: 16,
         }}
       >
-        <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em' }}>
-          FAN<span style={{ color: '#FF7DDD' }}>UZ</span>U
-        </div>
+        <Logo />
         <div
           style={{
             display: isNarrow ? 'none' : 'flex',
@@ -70,36 +82,72 @@ export default function Nav() {
           <a href="#prereg" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.prereg}</a>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div
-            style={{
-              display: 'flex',
-              gap: 4,
-              background: 'rgba(255,255,255,.06)',
-              border: '1px solid rgba(255,255,255,.1)',
-              borderRadius: 999,
-              padding: 4,
-            }}
-          >
-            {langList.map((lg) => (
-              <button
-                key={lg.code}
-                onClick={() => setLang(lg.code)}
+          <div ref={langMenuRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setLangOpen((o) => !o)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                border: '1px solid rgba(255,255,255,.1)',
+                background: 'rgba(255,255,255,.06)',
+                color: '#FFFAFC',
+                fontSize: 12,
+                fontWeight: 600,
+                padding: '8px 12px',
+                borderRadius: 999,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {currentLangLabel}
+              <span style={{ fontSize: 9, color: '#B8AFC4', transform: langOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s ease' }}>▾</span>
+            </button>
+            {langOpen && (
+              <div
                 style={{
-                  border: 'none',
-                  background: lg.code === lang ? 'linear-gradient(135deg,#FF7DDD,#9B7CFF)' : 'transparent',
-                  color: lg.code === lang ? '#05030B' : '#B8AFC4',
-                  fontSize: 11,
-                  fontWeight: 600,
-                  padding: '6px 9px',
-                  borderRadius: 999,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  whiteSpace: 'nowrap',
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  background: 'rgba(10,6,19,.95)',
+                  backdropFilter: 'blur(20px) saturate(160%)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+                  border: '1px solid rgba(255,255,255,.12)',
+                  borderRadius: 14,
+                  padding: 6,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  minWidth: 120,
+                  boxShadow: '0 20px 40px rgba(0,0,0,.4)',
                 }}
               >
-                {lg.label}
-              </button>
-            ))}
+                {langList.map((lg) => (
+                  <button
+                    key={lg.code}
+                    onClick={() => {
+                      setLang(lg.code);
+                      setLangOpen(false);
+                    }}
+                    style={{
+                      border: 'none',
+                      background: lg.code === lang ? 'linear-gradient(135deg,#FF7DDD,#9B7CFF)' : 'transparent',
+                      color: lg.code === lang ? '#05030B' : '#B8AFC4',
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      padding: '8px 12px',
+                      borderRadius: 9,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {lg.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <a
             href="#prereg"

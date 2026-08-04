@@ -1,6 +1,7 @@
 'use client';
 
 import { useLang } from '@/components/providers/LangProvider';
+import Logo from './Logo';
 
 export default function Footer() {
   const { tr } = useLang();
@@ -9,8 +10,8 @@ export default function Footer() {
     <footer style={{ position: 'relative', zIndex: 1, borderTop: '1px solid rgba(255,255,255,.08)', padding: '44px 24px 60px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'space-between' }}>
         <div style={{ maxWidth: 520 }}>
-          <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 14 }}>
-            FAN<span style={{ color: '#FF7DDD' }}>UZ</span>U
+          <div style={{ marginBottom: 14 }}>
+            <Logo size={24} fontSize={18} gap={6} />
           </div>
           <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#6B6478', margin: '0 0 4px' }}>{tr.footer.company}</p>
           <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#6B6478', margin: '0 0 4px' }}>{tr.footer.address}</p>
