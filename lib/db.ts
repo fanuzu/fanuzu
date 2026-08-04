@@ -8,17 +8,26 @@ declare global {
 }
 
 function createPool(): Pool {
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
+  const raw = process.env.DATABASE_URL;
+  if (!raw) {
     throw new Error(
       'DATABASE_URL is not set. Point it at your Postgres/Supabase connection string (see .env.example).'
     );
   }
-  // Supabase (and most managed Postgres) terminate with a cert that isn't
-  // in Node's default trust store unless the sslmode is already in the
-  // connection string — rejectUnauthorized:false only weakens verification
-  // of the intermediate chain, not the encrypted-transport guarantee.
-  const useSsl = /sslmode=require/.test(connectionString) || process.env.PGSSL === 'true';
+
+  // A `sslmode` query param leads pg-connection-string to derive its own TLS
+  // options from the URL (recent pg versions treat sslmode=require as an
+  // alias for verify-full — see the SECURITY WARNING it logs). That derived
+  // config fights the explicit `ssl` option below and rejects Supabase's
+  // pooler cert with SELF_SIGNED_CERT_IN_CHAIN. Stripping it here makes the
+  // `ssl` option below the single source of truth.
+  const url = new URL(raw);
+  url.searchParams.delete('sslmode');
+  const connectionString = url.toString();
+
+  const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+  const useSsl = !isLocal || process.env.PGSSL === 'true';
+
   return new Pool({
     connectionString,
     ssl: useSsl ? { rejectUnauthorized: false } : undefined,
