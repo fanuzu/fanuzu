@@ -20,10 +20,8 @@ export default function Logo({ size = 30, fontSize = 22, gap = 8 }: LogoProps) {
           fill="#05030B"
         />
       </svg>
-      <span style={{ fontSize, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1 }}>
-        <span style={{ WebkitTextStroke: '1.3px #FFFAFC', color: 'transparent' }}>FAN</span>
-        <span style={{ color: '#FF7DDD' }}>UZ</span>
-        <span style={{ WebkitTextStroke: '1.3px #FFFAFC', color: 'transparent' }}>U</span>
+      <span style={{ fontSize, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1, color: '#FFFAFC' }}>
+        FAN<span style={{ color: '#FF7DDD' }}>UZ</span>U
       </span>
     </div>
   );

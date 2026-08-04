@@ -31,6 +31,7 @@ export default function Passport() {
               position: 'relative',
               overflow: 'hidden',
               boxShadow: '0 20px 60px rgba(155,124,255,.18)',
+              animation: 'passportGlow 1s ease-in-out infinite',
             }}
           >
             <div

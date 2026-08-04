@@ -3,6 +3,7 @@
 import { LangProvider } from '@/components/providers/LangProvider';
 import { ContributionProvider } from '@/components/providers/ContributionProvider';
 import StarField from './StarField';
+import MeteorShower from './MeteorShower';
 import ParticleLayer from './ParticleLayer';
 import Nav from './Nav';
 import Hero from './Hero';
@@ -23,6 +24,7 @@ export default function LandingPage() {
       <ContributionProvider>
         <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
           <StarField />
+          <MeteorShower />
           <ParticleLayer />
           <Nav />
           <Hero />

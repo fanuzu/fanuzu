@@ -7,20 +7,13 @@ import Logo from './Logo';
 export default function Nav() {
   const { tr, lang, setLang, langList } = useLang();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isNarrow, setIsNarrow] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12);
-    const onResize = () => setIsNarrow(window.innerWidth < 1180);
-    onResize();
     window.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -65,22 +58,6 @@ export default function Nav() {
         }}
       >
         <Logo />
-        <div
-          style={{
-            display: isNarrow ? 'none' : 'flex',
-            alignItems: 'center',
-            gap: 20,
-            fontSize: 13.5,
-            color: '#B8AFC4',
-          }}
-        >
-          <a href="#why" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.why}</a>
-          <a href="#experience" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.exp}</a>
-          <a href="#system" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.system}</a>
-          <a href="#passport" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.passport}</a>
-          <a href="#origin" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.origin}</a>
-          <a href="#prereg" style={{ color: '#B8AFC4', textDecoration: 'none', whiteSpace: 'nowrap' }}>{tr.nav.prereg}</a>
-        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button
