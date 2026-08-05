@@ -47,7 +47,7 @@ export default function Experience() {
                   }}
                 >
                   <span>{btn.label}</span>
-                  <span style={{ color: '#7CE8FF', fontWeight: 700, fontSize: 14 }}>+{btn.value} POP</span>
+                  <span style={{ color: '#7CE8FF', fontWeight: 700, fontSize: 14 }}>+POP</span>
                 </button>
               ))}
             </div>

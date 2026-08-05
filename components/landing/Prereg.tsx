@@ -295,6 +295,7 @@ export default function Prereg() {
               >
                 {rewardHintText}
               </div>
+              <p style={{ fontSize: 11.5, lineHeight: 1.5, color: '#6B6478', margin: 0 }}>{tr.prereg.rewardNote}</p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
