@@ -37,6 +37,9 @@ export default function GrowthSystem() {
           </div>
         ))}
       </div>
+      <p style={{ textAlign: 'center', fontSize: 'clamp(16px,2vw,19px)', fontWeight: 600, lineHeight: 1.5, color: '#FFFAFC', maxWidth: 600, margin: '36px auto 0' }}>
+        {tr.growth.bridge}
+      </p>
     </section>
   );
 }
