@@ -6,7 +6,7 @@ export default function Compare() {
   const { tr } = useLang();
 
   return (
-    <section style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '100px 24px' }}>
+    <section id="compare" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '100px 24px' }}>
       <div style={{ maxWidth: 560, margin: '0 auto 44px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: 0, color: '#FFFAFC' }}>
           {tr.compare.t1}

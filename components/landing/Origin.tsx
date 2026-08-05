@@ -9,13 +9,28 @@ export default function Origin() {
     <section id="origin" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '100px 24px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 640, margin: '0 auto 20px', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 14px', color: '#FFFAFC' }}>
             {tr.origin.t1}
             <br />
             {tr.origin.t2}
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.origin.d1}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.origin.d2}</p>
+          <span
+            style={{
+              display: 'inline-block',
+              background: 'rgba(255,125,221,.1)',
+              border: '1px solid rgba(255,125,221,.3)',
+              borderRadius: 999,
+              padding: '6px 16px',
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '.06em',
+              color: '#FF7DDD',
+              marginBottom: 18,
+            }}
+          >
+            {tr.origin.badge}
+          </span>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.origin.d1}</p>
         </div>
         <p
           style={{

@@ -16,8 +16,20 @@ export default function Passport() {
             {tr.passport.t2}
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.passport.d1}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.passport.d2}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.passport.d3}</p>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 20px' }}>{tr.passport.d2}</p>
+          <p
+            style={{
+              fontSize: 15.5,
+              fontWeight: 600,
+              lineHeight: 1.6,
+              color: '#FFFAFC',
+              borderLeft: '2px solid #FF7DDD',
+              paddingLeft: 14,
+              margin: 0,
+            }}
+          >
+            {tr.passport.keyPhrase}
+          </p>
         </div>
         <div style={{ flex: '1 1 380px', minWidth: 300, display: 'flex', justifyContent: 'center' }}>
           <div

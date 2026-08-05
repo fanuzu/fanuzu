@@ -50,28 +50,28 @@ export default function Hero() {
           />
           {tr.hero.badge}
         </div>
-        <h1
+        <p
           style={{
-            fontSize: 'clamp(40px,6.4vw,72px)',
-            lineHeight: 1.08,
-            fontWeight: 700,
-            letterSpacing: '-0.02em',
-            margin: '0 0 26px',
+            fontSize: 'clamp(15px,1.8vw,18px)',
+            lineHeight: 1.5,
+            fontWeight: 500,
+            letterSpacing: '-0.01em',
+            color: '#9089A0',
+            margin: '0 0 14px',
           }}
         >
-          <span style={{ color: '#FFFAFC' }}>{tr.hero.t1}</span>
-          <br />
-          <span
-            style={{
-              background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 55%,var(--planet-a2))',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
-            }}
-          >
-            {tr.hero.t2}
-          </span>
+          {tr.hero.t1} {tr.hero.t2} {tr.hero.t3}
+        </p>
+        <h1
+          style={{
+            fontSize: 'clamp(36px,6vw,64px)',
+            lineHeight: 1.12,
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            margin: '0 0 22px',
+          }}
+        >
+          <span style={{ color: '#FFFAFC' }}>{tr.hero.mainT1}</span>
           <br />
           <span
             style={{
@@ -82,70 +82,49 @@ export default function Hero() {
               transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
-            {tr.hero.t3}
+            {tr.hero.mainT2}
           </span>
         </h1>
-        <p style={{ fontSize: 18, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 520, margin: '0 0 14px' }}>{tr.hero.d1}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: '#9089A0', maxWidth: 520, margin: '0 0 14px' }}>{tr.hero.d2}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: '#9089A0', maxWidth: 520, margin: '0 0 34px' }}>{tr.hero.d3}</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 30 }}>
-          <a
-            href="#experience"
-            style={{
-              background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
-              color: '#05030B',
-              fontWeight: 700,
-              fontSize: 16,
-              padding: '15px 28px',
-              borderRadius: 999,
-              textDecoration: 'none',
-              display: 'inline-block',
-              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
-            }}
-          >
-            {tr.hero.ctaPrimary}
-          </a>
-          <a
-            href="#prereg"
-            style={{
-              background: 'rgba(255,255,255,.06)',
-              border: '1px solid rgba(255,255,255,.16)',
-              color: '#FFFAFC',
-              fontWeight: 600,
-              fontSize: 16,
-              padding: '15px 28px',
-              borderRadius: 999,
-              textDecoration: 'none',
-              display: 'inline-block',
-            }}
-          >
-            {tr.hero.ctaPrereg}
-          </a>
-          <a
-            href="#why"
-            style={{
-              background: 'rgba(255,255,255,.06)',
-              border: '1px solid rgba(255,255,255,.16)',
-              color: '#FFFAFC',
-              fontWeight: 600,
-              fontSize: 16,
-              padding: '15px 28px',
-              borderRadius: 999,
-              textDecoration: 'none',
-              display: 'inline-block',
-            }}
-          >
-            {tr.hero.ctaSecondary}
-          </a>
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px' }}>
-          {tr.hero.sub.map((s, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, color: '#B8AFC4' }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF' }} />
-              {s}
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 480, margin: '0 0 30px' }}>
+          {tr.hero.serviceLine1} {tr.hero.serviceLine2}
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 10px', marginBottom: 30 }}>
+          {tr.hero.flow.map((step, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px 10px' }}>
+              <div
+                style={{
+                  background: 'rgba(255,255,255,.06)',
+                  border: '1px solid rgba(255,255,255,.14)',
+                  borderRadius: 999,
+                  padding: '7px 14px',
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  color: '#FFFAFC',
+                }}
+              >
+                {step}
+              </div>
+              {i < tr.hero.flow.length - 1 && <span style={{ color: '#6B6478', fontSize: 13 }}>→</span>}
             </div>
           ))}
         </div>
+        <a
+          href="#experience"
+          style={{
+            background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
+            color: '#05030B',
+            fontWeight: 700,
+            fontSize: 16,
+            padding: '15px 28px',
+            borderRadius: 999,
+            textDecoration: 'none',
+            display: 'inline-block',
+            transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
+          }}
+        >
+          {tr.hero.ctaPrimary}
+        </a>
+        <p style={{ fontSize: 12.5, letterSpacing: '.04em', color: '#6B6478', margin: '18px 0 0' }}>{tr.hero.brandLine}</p>
       </div>
 
       <div style={{ flex: '1 1 380px', minWidth: 280, display: 'flex', justifyContent: 'center', position: 'relative' }}>
