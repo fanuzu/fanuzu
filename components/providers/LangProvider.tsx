@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LANGS, LANG_LABELS, T, detectLang, type Lang, type TranslationSet } from '@/lib/i18n';
+import { HTML_LANG } from '@/lib/locale';
 
 interface LangContextValue {
   lang: Lang;
@@ -18,6 +19,12 @@ export function LangProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setLangState(detectLang());
   }, []);
+
+  // Doc section 3: <html lang> must track the active locale (screen readers
+  // and translation tools key off this, not just the visible text).
+  useEffect(() => {
+    document.documentElement.lang = HTML_LANG[lang];
+  }, [lang]);
 
   const setLang = (code: Lang) => {
     setLangState(code);

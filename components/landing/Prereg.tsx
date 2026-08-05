@@ -25,6 +25,14 @@ const inputStyle: React.CSSProperties = {
   outline: 'none',
 };
 
+const CURRENT_YEAR = new Date().getFullYear();
+const FAN_SINCE_YEARS = Array.from({ length: 40 }, (_, i) => CURRENT_YEAR - i);
+
+// Bumped whenever the corresponding legal document's content changes;
+// stored alongside each consent so we know which version a user agreed to.
+const TERMS_VERSION = '1.0';
+const PRIVACY_VERSION = '1.0';
+
 export default function Prereg() {
   const { tr, lang } = useLang();
 
@@ -32,10 +40,10 @@ export default function Prereg() {
   const [fandomName, setFandomName] = useState('');
   const [email, setEmail] = useState('');
   const [fanSince, setFanSince] = useState('');
-  const [referralOpen, setReferralOpen] = useState(false);
   const [referralCode, setReferralCode] = useState('');
-  const [consent, setConsent] = useState(false);
-  const [age, setAge] = useState(false);
+  const [termsConsent, setTermsConsent] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [errorText, setErrorText] = useState('');
@@ -44,7 +52,6 @@ export default function Prereg() {
 
   const steps = tr.prereg.steps.map((s, i) => ({ n: i + 1, t: s.t, d: s.d }));
 
-  const referralOpenOrFilled = referralOpen || !!referralCode;
   const rewardHintText = referralCode.trim() ? tr.prereg.rewardRef : tr.prereg.rewardNoRef;
   const rewardTextColor = referralCode.trim() ? '#FF7DDD' : '#B8AFC4';
 
@@ -53,15 +60,35 @@ export default function Prereg() {
   const showForm = formStatus !== 'success';
   const showSuccess = formStatus === 'success';
 
+  function errorMessageFor(code: unknown): string {
+    switch (code) {
+      case 'invalid_email':
+        return tr.errors.invalidEmail;
+      case 'email_already_registered':
+        return tr.errors.emailAlreadyRegistered;
+      case 'invalid_referral':
+        return tr.errors.invalidReferral;
+      case 'self_referral_not_allowed':
+        return tr.errors.selfReferralNotAllowed;
+      case 'required_consent':
+        return tr.errors.requiredConsent;
+      case 'rate_limit':
+        return tr.errors.rateLimit;
+      default:
+        return tr.errors.serverError;
+    }
+  }
+
   async function submitPrereg(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!artistName || !email || email.indexOf('@') === -1 || !consent || !age) {
+    if (!artistName || !email || email.indexOf('@') === -1 || !termsConsent || !privacyConsent) {
       setFormStatus('error');
-      setErrorText(tr.prereg.error);
+      setErrorText(tr.errors.requiredConsent);
       return;
     }
     setFormStatus('submitting');
     setErrorText('');
+    const now = new Date().toISOString();
     try {
       const res = await fetch('/api/prereg', {
         method: 'POST',
@@ -73,14 +100,20 @@ export default function Prereg() {
           fanSince,
           language: lang,
           referralCode,
-          consent,
-          ageConfirmed: age,
+          termsConsent,
+          privacyConsent,
+          marketingConsent,
+          termsVersion: TERMS_VERSION,
+          privacyVersion: PRIVACY_VERSION,
+          termsAcceptedAt: now,
+          privacyAcceptedAt: now,
+          marketingConsentAt: marketingConsent ? now : null,
         }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
         setFormStatus('error');
-        setErrorText(typeof data.message === 'string' ? data.message : tr.prereg.error);
+        setErrorText(errorMessageFor(data.error));
         return;
       }
       setResult({
@@ -93,7 +126,7 @@ export default function Prereg() {
       setFormStatus('success');
     } catch {
       setFormStatus('error');
-      setErrorText(tr.prereg.error);
+      setErrorText(tr.errors.networkError);
     }
   }
 
@@ -184,8 +217,9 @@ export default function Prereg() {
               }}
             >
               <div>
-                <div style={{ fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.artistLabel}</div>
+                <label htmlFor="prereg-artist" style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.artistLabel}</label>
                 <input
+                  id="prereg-artist"
                   type="text"
                   required
                   placeholder={tr.prereg.artistPlaceholder}
@@ -195,8 +229,9 @@ export default function Prereg() {
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fandomLabel}</div>
+                <label htmlFor="prereg-fandom" style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fandomLabel}</label>
                 <input
+                  id="prereg-fandom"
                   type="text"
                   placeholder={tr.prereg.fandomPlaceholder}
                   value={fandomName}
@@ -205,8 +240,9 @@ export default function Prereg() {
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.emailLabel}</div>
+                <label htmlFor="prereg-email" style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.emailLabel}</label>
                 <input
+                  id="prereg-email"
                   type="email"
                   required
                   placeholder={tr.prereg.emailPlaceholder}
@@ -216,36 +252,35 @@ export default function Prereg() {
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fanSinceLabel}</div>
-                <input
-                  type="text"
-                  placeholder={tr.prereg.fanSincePlaceholder}
+                <label htmlFor="prereg-fan-since" style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fanSinceLabel}</label>
+                <select
+                  id="prereg-fan-since"
                   value={fanSince}
                   onChange={(e) => setFanSince(e.target.value)}
-                  style={inputStyle}
-                />
+                  style={{ ...inputStyle, appearance: 'auto', cursor: 'pointer' }}
+                >
+                  <option value="" style={{ color: '#6B6478', background: '#1A1030' }}>
+                    {tr.prereg.fanSincePlaceholder}
+                  </option>
+                  {FAN_SINCE_YEARS.map((y) => (
+                    <option key={y} value={y} style={{ color: '#FFFAFC', background: '#1A1030' }}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              {referralOpenOrFilled ? (
-                <div>
-                  <div style={{ fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.referralHint}</div>
-                  <input
-                    type="text"
-                    placeholder={tr.prereg.referralPlaceholder}
-                    value={referralCode}
-                    onChange={(e) => setReferralCode(e.target.value)}
-                    style={{ ...inputStyle, border: '1px solid rgba(255,125,221,.35)' }}
-                  />
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setReferralOpen(true)}
-                  style={{ alignSelf: 'flex-start', background: 'none', border: 'none', color: '#7CE8FF', fontSize: 13.5, fontFamily: 'inherit', cursor: 'pointer', padding: 0 }}
-                >
-                  {tr.prereg.referralToggle}
-                </button>
-              )}
+              <div>
+                <label htmlFor="prereg-referral" style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.referralHint}</label>
+                <input
+                  id="prereg-referral"
+                  type="text"
+                  placeholder={tr.prereg.referralPlaceholder}
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value)}
+                  style={{ ...inputStyle, border: '1px solid rgba(255,125,221,.35)' }}
+                />
+              </div>
 
               <div
                 style={{
@@ -261,15 +296,31 @@ export default function Prereg() {
                 {rewardHintText}
               </div>
 
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer' }}>
-                <input type="checkbox" checked={age} onChange={(e) => setAge(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD' }} />
-                {tr.prereg.age}
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer' }}>
-                <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD' }} />
-                {tr.prereg.consent}
-              </label>
-              {isError && <div style={{ fontSize: 13, color: '#FF7DDD' }}>{errorText}</div>}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <label htmlFor="prereg-terms" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer', flex: 1 }}>
+                    <input id="prereg-terms" type="checkbox" required checked={termsConsent} onChange={(e) => setTermsConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
+                    <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.termsConsent}</span>
+                  </label>
+                  <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#7CE8FF', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                    {tr.prereg.viewDoc}
+                  </a>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <label htmlFor="prereg-privacy" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer', flex: 1 }}>
+                    <input id="prereg-privacy" type="checkbox" required checked={privacyConsent} onChange={(e) => setPrivacyConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
+                    <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.privacyConsentLabel}</span>
+                  </label>
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#7CE8FF', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                    {tr.prereg.viewDoc}
+                  </a>
+                </div>
+                <label htmlFor="prereg-marketing" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer' }}>
+                  <input id="prereg-marketing" type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
+                  <span><span style={{ color: '#6B6478' }}>{tr.prereg.optionalBadge}</span> {tr.prereg.marketingConsent}</span>
+                </label>
+              </div>
+              {isError && <div style={{ fontSize: 13, color: '#FF7DDD' }} role="alert">{errorText}</div>}
               <button
                 type="submit"
                 disabled={isSubmitting}

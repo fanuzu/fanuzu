@@ -62,6 +62,9 @@ export default function Nav() {
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setLangOpen((o) => !o)}
+              aria-label="Choose language"
+              aria-haspopup="listbox"
+              aria-expanded={langOpen}
               style={{
                 display: 'flex',
                 alignItems: 'center',

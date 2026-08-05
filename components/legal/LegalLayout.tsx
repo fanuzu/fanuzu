@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import Logo from '@/components/landing/Logo';
+import type { LegalBlock, LegalDoc } from '@/lib/legal-content';
 
 export default function LegalLayout({
   eyebrow,
@@ -71,6 +73,81 @@ export function DefTerm({ term, children }: { term: string; children: ReactNode 
       <div style={{ flex: '0 0 150px', fontWeight: 600, color: '#FFFAFC' }}>{term}</div>
       <div style={{ color: '#B8AFC4' }}>{children}</div>
     </div>
+  );
+}
+
+const EMAIL_RE = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+
+function linkifyEmail(text: string): ReactNode {
+  const parts = text.split(EMAIL_RE);
+  if (parts.length <= 1) return text;
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <a key={i} href={`mailto:${part}`} style={{ color: '#B8AFC4' }}>
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  );
+}
+
+function ArticleBlocks({ blocks }: { blocks: LegalBlock[] }) {
+  return (
+    <>
+      {blocks.map((b, i) => {
+        if (b.kind === 'p') return <p key={i}>{linkifyEmail(b.text)}</p>;
+        if (b.kind === 'ul')
+          return (
+            <ul key={i}>
+              {b.items.map((item, j) => (
+                <li key={j}>{linkifyEmail(item)}</li>
+              ))}
+            </ul>
+          );
+        if (b.kind === 'defs')
+          return (
+            <div key={i}>
+              {b.items.map((d, j) => (
+                <DefTerm key={j} term={d.term}>
+                  {linkifyEmail(d.text)}
+                </DefTerm>
+              ))}
+            </div>
+          );
+        if (b.kind === 'table') return <LegalTable key={i} head={b.head} rows={b.rows} />;
+        return null;
+      })}
+    </>
+  );
+}
+
+export function LegalDocument({ doc }: { doc: LegalDoc }) {
+  return (
+    <LegalLayout eyebrow={doc.eyebrow} title={doc.title} effective={doc.effective}>
+      <InfoBox label={doc.infoBoxLabel}>{linkifyEmail(doc.infoBoxText)}</InfoBox>
+
+      <nav style={{ margin: '32px 0 48px' }}>
+        <div style={{ fontSize: 12.5, color: '#6B6478', marginBottom: 10, letterSpacing: '.05em' }}>{doc.tocLabel}</div>
+        <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', color: '#B8AFC4', fontSize: 14, lineHeight: 1.9 }}>
+          {doc.toc.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      </nav>
+
+      {doc.articles.map((a) => (
+        <Article key={`${a.n}-${a.title}`} n={a.n} title={a.title}>
+          <ArticleBlocks blocks={a.blocks} />
+        </Article>
+      ))}
+
+      <p style={{ marginTop: 40, fontSize: 13.5, color: '#6B6478' }}>{linkifyEmail(doc.contactLine)}</p>
+
+      <Link href="/" style={{ display: 'inline-block', marginTop: 40, color: '#FF7DDD', fontSize: 14, textDecoration: 'none' }}>
+        {doc.backLink}
+      </Link>
+    </LegalLayout>
   );
 }
 

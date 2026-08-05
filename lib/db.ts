@@ -59,6 +59,23 @@ const SCHEMA_SQL = `
   CREATE UNIQUE INDEX IF NOT EXISTS idx_prereg_email ON preregistrations (lower(email));
   CREATE INDEX IF NOT EXISTS idx_prereg_artist ON preregistrations (artist_name_normalized);
 
+  -- Consent audit trail (doc section 4/5/6): which document version was
+  -- agreed to and when, plus marketing opt-in tracked separately from the
+  -- two required consents so it can never block registration.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS email_normalized TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS terms_version TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS privacy_version TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS privacy_accepted_at TIMESTAMPTZ;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS marketing_consent BOOLEAN NOT NULL DEFAULT false;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS marketing_consent_at TIMESTAMPTZ;
+  -- Both flip to false once the full app pays out POP on first login —
+  -- no such flow exists yet, so every row is created pending.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS reward_pending BOOLEAN NOT NULL DEFAULT true;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS referrer_reward_pending BOOLEAN NOT NULL DEFAULT false;
+
+  UPDATE preregistrations SET email_normalized = lower(email) WHERE email_normalized IS NULL;
+
   CREATE TABLE IF NOT EXISTS pop_reward_ledger (
     id SERIAL PRIMARY KEY,
     preregistration_id INTEGER NOT NULL REFERENCES preregistrations(id),
@@ -67,6 +84,16 @@ const SCHEMA_SQL = `
     related_preregistration_id INTEGER REFERENCES preregistrations(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );
+
+  -- Minimal per-IP rate limiting (doc section 17). One row per attempt
+  -- (success or failure); submitPreregistration counts recent rows for the
+  -- caller's IP before doing any real work.
+  CREATE TABLE IF NOT EXISTS rate_limit_log (
+    id SERIAL PRIMARY KEY,
+    ip TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS idx_rate_limit_ip_time ON rate_limit_log (ip, created_at);
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

@@ -1,65 +1,14 @@
-export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant';
+export const LANGS = ['ko','en','ja','es','zhHans','zhHant'];
+export const LANG_LABELS = { ko:'KO', en:'EN', ja:'日本語', es:'ES', zhHans:'简', zhHant:'繁' };
 
-export interface TranslationSet {
-  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string };
-  hero: {
-    badge: string; t1: string; t2: string; t3: string; d1: string; d2: string; d3: string;
-    ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; sub: string[];
-    statLabel: string; statNumber: string; statSub: string;
-  };
-  philosophy: { t1: string; t2: string; d1: string; d2: string; big: string; bigSub: string; card1T: string; card1D: string; card2T: string; card2D: string };
-  pop: { t1: string; t2: string; d1: string; d2: string; highlight: string; flow: string[]; steps: { t: string; d: string }[] };
-  exp: {
-    t1: string; t2: string; d1: string; d2: string; buttons: { label: string; value: number }[];
-    stage0: string; stage1: string; stage2: string; stage3: string; scoreLabel: string;
-  };
-  growth: { t1: string; t2: string; c1t: string; c1d: string; c2t: string; c2d: string; c3t: string; c3d: string; c4t: string; c4d: string };
-  campaign: {
-    t1: string; t2: string; d1: string; d2: string; d3: string;
-    s1l: string; s1t: string; s1d: string; s2l: string; s2t: string; s2d: string; s3l: string; s3t: string; s3d: string;
-    flow: string[]; highlight: string;
-  };
-  passport: {
-    t1: string; t2: string; d1: string; d2: string; d3: string; cardLabel: string; nickname: string; planet: string;
-    originTag: string; fields: { k: string; v: string }[]; footer: string;
-  };
-  origin: {
-    t1: string; t2: string; d1: string; d2: string; quote: string; founderLabel: string; founderDesc: string;
-    originLabel: string; originDesc: string; benefits: { title: string; items: string[] }[]; note: string; ctaLabel: string; ctaSub: string;
-  };
-  compare: { t1: string; t2: string; oldT: string; oldItems: string[]; newT: string; newItems: string[] };
-  prereg: {
-    t1: string; t2: string; d1: string; d2: string; steps: { t: string; d: string }[];
-    artistLabel: string; artistPlaceholder: string; fandomLabel: string; fandomPlaceholder: string;
-    emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
-    referralToggle: string; referralHint: string; referralPlaceholder: string;
-    rewardNoRef: string; rewardRef: string;
-    requiredBadge: string; optionalBadge: string;
-    termsConsent: string; privacyConsentLabel: string; marketingConsent: string; viewDoc: string;
-    submit: string; submitting: string; error: string;
-    resultTitleRef: string; resultBodyRef: string; resultTitleNoRef: string; resultBodyNoRef: string;
-    rArtist: string; rStatus: string; rStatusVal: string; rOrder: string; rJoinOrder: string; rReward: string;
-    rReferralCode: string; rOriginBadge: string; rRewardStatus: string;
-    btnCopy: string; btnPassport: string; copiedLabel: string;
-  };
-  footer: { privacy: string; terms: string; company: string; address: string; contact: string; copyright: string };
-  errors: {
-    invalidEmail: string; emailAlreadyRegistered: string; invalidReferral: string; selfReferralNotAllowed: string;
-    requiredConsent: string; rateLimit: string; serverError: string; networkError: string;
-  };
-}
-
-export const LANGS: Lang[] = ['ko','en','ja','es','zhHans','zhHant'];
-export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本語', es:'ES', zhHans:'简', zhHant:'繁' };
-
-export const T: Record<Lang, TranslationSet> = {
+export const T = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'사전등록',cta:'내 별 밝히기'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'우리의 별을',t2:'이 우주에서',t3:'가장 밝게.',
-    d1:'우리가 걷고, 듣고, 보고, 기록하고, 함께 행동한 시간이 나의 아티스트에 빛이 됩니다.',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'나의 별을',t2:'이 우주에서',t3:'가장 밝게.',
+    d1:'당신이 걷고, 듣고, 보고, 기록하고, 함께 행동한 시간이 좋아하는 아티스트의 빛이 됩니다.',
     d2:'FANUZU는 팬의 마음을 사라지지 않는 기여로 바꿉니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
-    ctaPrimary:'내 기여로 별 밝혀보기',ctaPrereg:'K-POP 아티스트 팬덤 행성 사전등록',ctaSecondary:'FANUZU가 다른 이유',
+    ctaPrimary:'내 기여로 별 밝혀보기',ctaPrereg:'아티스트 행성 사전등록',ctaSecondary:'FANUZU가 다른 이유',
     sub:['돈보다 행동이 빛나는 구조','팬덤 공동 성장 중심','기여의 기록이 남는 경험','성장한 팬덤이 캠페인을 만드는 구조'],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트입니다.'},
   philosophy:{t1:'좋아하는 마음은,',t2:'행동이 될 때 힘을 가집니다.',
@@ -72,7 +21,7 @@ ko: {
   pop:{t1:'팬의 시간은 POP이 되고,',t2:'POP은 행성을 움직입니다.',
     d1:'FANUZU에서 POP은 단순한 보상 포인트가 아닙니다.',
     d2:'음악을 듣고, 콘텐츠를 보고, 팬들과 소통하고, 캠페인에 참여한 모든 시간이 POP으로 기록됩니다.',
-    highlight:'나의 한 순간도 이 행성을 밝힌 하나의 기여가 됩니다.',
+    highlight:'내가 보탠 1 POP도 이 행성을 밝힌 하나의 기여입니다.',
     flow:['팬의 행동','POP으로 기록','팬덤 행성 성장','캠페인 개최 및 지원'],
     steps:[
       {t:'팬의 행동',d:'걷기, 음악 감상, 콘텐츠 참여, 공유, 기록, 커뮤니티 활동'},
@@ -88,7 +37,7 @@ ko: {
     stage2:'당신의 기여가 행성을 밝히고 있어요.\n꾸준한 행동이 팬덤의 활력이 됩니다.',
     stage3:'이 행성은 이제 우주에서 눈에 띕니다.\n함께 쌓은 기여가 가장 강한 빛이 됩니다.',
     scoreLabel:'오늘의 POP'},
-  growth:{t1:'우리 팬덤 행성은 단순히 커지는것만이 아닙니다.',t2:'우리 기여의 모든 순간을 보여주고 기록합니다.',
+  growth:{t1:'행성은 단순히 커지지 않습니다.',t2:'팬덤의 상태를 살아 있게 보여줍니다.',
     c1t:'누적 기여',c1d:'오랫동안 쌓인 팬덤의 전체 기여가 행성의 크기와 성장 단계가 됩니다.',
     c2t:'최근 활력',c2d:'지금 얼마나 많은 팬이 함께 움직이는지가 행성의 밝기와 광량으로 드러납니다.',
     c3t:'연결의 힘',c3d:'공유, 커뮤니티, 협업과 캠페인이 팬덤을 둘러싼 궤도를 만듭니다.',
@@ -142,7 +91,7 @@ ko: {
     referralPlaceholder:'추천인 코드 입력',
     rewardNoRef:'추천인 코드 없이 등록하면 나에게 50 POP',
     rewardRef:'코드를 입력하면 나와 추천인 모두 100 POP',
-    requiredBadge:'[필수]',optionalBadge:'[선택]',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
+    consent:'개인정보 수집 및 이용에 동의합니다',age:'만 14세 이상입니다',
     submit:'첫 기여를 시작하고 사전등록하기',submitting:'등록 중···',
     error:'신청을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.',
     resultTitleRef:'두 팬의 기여가 하나의 별로 연결되었습니다.',
@@ -154,16 +103,15 @@ ko: {
   footer:{privacy:'개인정보처리방침',terms:'이용약관',
     company:'Fancake Inc. · 대표자 Syvia Hong · 사업자등록번호 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'고객문의 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'추천인 코드를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 추천 코드는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
+    contact:'고객문의 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'}
 },
 en: {
   nav:{why:'Why FANUZU',exp:'Contribution',system:'Growth System',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Pre-register',cta:'Light my star'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Make our star',t2:'the brightest',t3:'in this universe.',
-    d1:'The time we spend walking, listening, watching, recording, and acting together becomes light for my artist.',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Make my star',t2:'the brightest',t3:'in this universe.',
+    d1:'The time you spend walking, listening, watching, recording, and acting together becomes light for the artist you love.',
     d2:'FANUZU turns a fan\'s heart into a contribution that never disappears.',
     d3:'When contribution gathers, the fandom planet grows — and the grown planet makes bigger campaigns and action possible for the artist.',
-    ctaPrimary:'Light a star with my contribution',ctaPrereg:'Pre-register my K-POP artist\'s fandom planet',ctaSecondary:'Why FANUZU is different',
+    ctaPrimary:'Light a star with my contribution',ctaPrereg:'Pre-register my artist\'s planet',ctaSecondary:'Why FANUZU is different',
     sub:['Action shines brighter than money','Built for fandom to grow together','A record of contribution that stays','A grown fandom builds campaigns'],
     statLabel:'Fan contributions today',statNumber:'12,480 POP',statSub:'POP is FANUZU\'s contribution point that records a fan\'s time and action.'},
   philosophy:{t1:'A heart that loves',t2:'gains power when it becomes action.',
@@ -176,7 +124,7 @@ en: {
   pop:{t1:'A fan\'s time becomes POP,',t2:'and POP moves the planet.',
     d1:'At FANUZU, POP is not a simple reward point.',
     d2:'Every moment you spend listening to music, watching content, connecting with fans, and joining campaigns is recorded as POP.',
-    highlight:'Even my one moment becomes a contribution that lit this planet.',
+    highlight:'Even the one POP I added is a contribution that lit this planet.',
     flow:['Fan action','Recorded as POP','Fandom planet grows','Campaigns launched & supported'],
     steps:[
       {t:'Fan action',d:'Walking, listening, content, sharing, records, community activity'},
@@ -192,7 +140,7 @@ en: {
     stage2:'Your contribution is lighting up the planet.\nSteady action becomes fandom vitality.',
     stage3:'This planet now stands out in the universe.\nOur combined contribution is its strongest light.',
     scoreLabel:'Today\'s POP'},
-  growth:{t1:'Our fandom planet isn\'t just about growing bigger.',t2:'It shows and records every moment of our contribution.',
+  growth:{t1:'The planet doesn\'t just grow bigger.',t2:'It shows the fandom alive.',
     c1t:'Total contribution',c1d:'Everything the fandom has built over time becomes the planet\'s size and growth stage.',
     c2t:'Recent momentum',c2d:'How many fans are moving together right now shows up as brightness and glow.',
     c3t:'Power of connection',c3d:'Sharing, community, collaboration and campaigns form the orbit around the fandom.',
@@ -246,7 +194,7 @@ en: {
     referralPlaceholder:'Enter referral code',
     rewardNoRef:'Register without a code and get 50 POP',
     rewardRef:'Enter a code and both you and your referrer get 100 POP',
-    requiredBadge:'[Required]',optionalBadge:'[Optional]',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
+    consent:'I agree to the collection and use of my personal information',age:'I am 14 years or older',
     submit:'Start my contribution and pre-register',submitting:'Registering···',
     error:'We couldn\'t save your request. Please try again shortly.',
     resultTitleRef:'Two fans\' contributions are now connected to one star.',
@@ -258,16 +206,15 @@ en: {
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',
     company:'Fancake Inc. · CEO Syvia Hong · Business Reg. No. 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'Contact help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'Please enter a valid email address.',emailAlreadyRegistered:'This email has already pre-registered.',invalidReferral:"We couldn't find that referral code.",selfReferralNotAllowed:'You cannot use your own referral code.',requiredConsent:'Please agree to the required items.',rateLimit:'Too many attempts — please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Please check your network connection.'}
+    contact:'Contact help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'}
 },
 ja: {
   nav:{why:'FANUZUとは',exp:'貢献体験',system:'成長システム',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'事前登録',cta:'私の星を灯す'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'私たちの星を',t2:'この宇宙で',t3:'一番明るく。',
-    d1:'私たちが歩き、聴き、見て、記録し、共に行動した時間が、私のアーティストの光になります。',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'私の星を',t2:'この宇宙で',t3:'一番明るく。',
+    d1:'あなたが歩き、聴き、見て、記録し、共に行動した時間が、好きなアーティストの光になります。',
     d2:'FANUZUはファンの想いを消えない貢献に変えます。',
     d3:'貢献が集まるとファンダム惑星が成長し、成長した惑星はアーティストのためのより大きなキャンペーンと行動を可能にします。',
-    ctaPrimary:'貢献で星を灯す',ctaPrereg:'K-POPアーティストのファンダム惑星を事前登録',ctaSecondary:'FANUZUが違う理由',
+    ctaPrimary:'貢献で星を灯す',ctaPrereg:'アーティスト惑星を事前登録',ctaSecondary:'FANUZUが違う理由',
     sub:['お金より行動が輝く仕組み','ファンダム共同成長中心','貢献の記録が残る体験','成長したファンダムがキャンペーンを作る仕組み'],
     statLabel:'本日集まったファンの貢献',statNumber:'12,480 POP',statSub:'POPはファンの時間と行動を記録するFANUZUの貢献ポイントです。'},
   philosophy:{t1:'好きという気持ちは、',t2:'行動になるとき力を持ちます。',
@@ -280,7 +227,7 @@ ja: {
   pop:{t1:'ファンの時間はPOPになり、',t2:'POPは惑星を動かします。',
     d1:'FANUZUにおいてPOPは単なる報酬ポイントではありません。',
     d2:'音楽を聴き、コンテンツを見て、ファンと交流し、キャンペーンに参加したすべての時間がPOPとして記録されます。',
-    highlight:'私の一瞬も、この惑星を照らした一つの貢献になります。',
+    highlight:'私が加えた1POPも、この惑星を照らした一つの貢献です。',
     flow:['ファンの行動','POPとして記録','ファンダム惑星の成長','キャンペーン開催・支援'],
     steps:[
       {t:'ファンの行動',d:'ウォーキング、音楽鑑賞、コンテンツ参加、シェア、記録、コミュニティ活動'},
@@ -296,7 +243,7 @@ ja: {
     stage2:'あなたの貢献が惑星を照らしています。\n継続的な行動がファンダムの活力になります。',
     stage3:'この惑星は今や宇宙で目立っています。\n共に積み上げた貢献が最も強い光です。',
     scoreLabel:'本日のPOP'},
-  growth:{t1:'私たちのファンダム惑星は、ただ大きくなるだけではありません。',t2:'私たちの貢献のすべての瞬間を見せて記録します。',
+  growth:{t1:'惑星はただ大きくなるのではありません。',t2:'ファンダムの状態を生き生きと見せます。',
     c1t:'累積貢献',c1d:'長い間積み上げたファンダム全体の貢献が惑星の大きさと成長段階になります。',
     c2t:'最近の活力',c2d:'今どれだけ多くのファンが共に動いているかが惑星の明るさと光量に現れます。',
     c3t:'つながりの力',c3d:'シェア、コミュニティ、協力とキャンペーンがファンダムを取り巻く軌道を作ります。',
@@ -350,7 +297,7 @@ ja: {
     referralPlaceholder:'紹介コードを入力',
     rewardNoRef:'紹介コードなしで登録すると自分に50 POP',
     rewardRef:'コードを入力すると自分と紹介者の両方に100 POP',
-    requiredBadge:'[必須]',optionalBadge:'[任意]',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
+    consent:'個人情報の収集及び利用に同意します',age:'満14歳以上です',
     submit:'最初の貢献を始めて事前登録する',submitting:'登録中···',
     error:'申請を保存できませんでした。しばらくしてから再度お試しください。',
     resultTitleRef:'二人のファンの貢献が一つの星につながりました。',
@@ -362,16 +309,15 @@ ja: {
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',
     company:'Fancake Inc. · 代表 Syvia Hong · 事業者登録番号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'お問い合わせ help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスは既に事前登録されています。',invalidReferral:'紹介コードが見つかりませんでした。',selfReferralNotAllowed:'自分の紹介コードは使用できません。',requiredConsent:'必須同意項目をご確認ください。',rateLimit:'しばらくしてから再度お試しください。',serverError:'一時的なエラーが発生しました。しばらくしてから再度お試しください。',networkError:'ネットワーク接続をご確認ください。'}
+    contact:'お問い合わせ help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'}
 },
 es: {
   nav:{why:'Por qué FANUZU',exp:'Contribución',system:'Sistema de crecimiento',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Preinscripción',cta:'Iluminar mi estrella'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Que nuestra estrella',t2:'sea la más brillante',t3:'de este universo.',
-    d1:'El tiempo que pasamos caminando, escuchando, viendo, registrando y actuando juntos se convierte en luz para mi artista.',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Que mi estrella',t2:'sea la más brillante',t3:'de este universo.',
+    d1:'El tiempo que pasas caminando, escuchando, viendo, registrando y actuando juntos se convierte en luz para el artista que amas.',
     d2:'FANUZU convierte el corazón de un fan en una contribución que nunca desaparece.',
     d3:'Cuando la contribución se acumula, el planeta del fandom crece, y un planeta crecido hace posibles campañas y acciones más grandes para el artista.',
-    ctaPrimary:'Iluminar una estrella con mi contribución',ctaPrereg:'Preinscribir el planeta del fandom de mi artista K-POP',ctaSecondary:'Por qué FANUZU es diferente',
+    ctaPrimary:'Iluminar una estrella con mi contribución',ctaPrereg:'Preinscribir el planeta de mi artista',ctaSecondary:'Por qué FANUZU es diferente',
     sub:['La acción brilla más que el dinero','Creado para que el fandom crezca junto','Un registro de contribución que permanece','Un fandom crecido crea campañas'],
     statLabel:'Contribuciones de fans hoy',statNumber:'12,480 POP',statSub:'POP es el punto de contribución de FANUZU que registra el tiempo y la acción de un fan.'},
   philosophy:{t1:'Un corazón que ama',t2:'gana poder cuando se convierte en acción.',
@@ -384,7 +330,7 @@ es: {
   pop:{t1:'El tiempo del fan se vuelve POP,',t2:'y el POP mueve al planeta.',
     d1:'En FANUZU, POP no es un simple punto de recompensa.',
     d2:'Cada momento que pasas escuchando música, viendo contenido, conectando con fans y participando en campañas se registra como POP.',
-    highlight:'Incluso mi único momento se convierte en una contribución que iluminó este planeta.',
+    highlight:'Incluso el POP que sumé es una contribución que iluminó este planeta.',
     flow:['Acción del fan','Registrado como POP','El planeta del fandom crece','Campañas lanzadas y apoyadas'],
     steps:[
       {t:'Acción del fan',d:'Caminar, escuchar, contenido, compartir, registros, actividad comunitaria'},
@@ -400,7 +346,7 @@ es: {
     stage2:'Tu contribución está iluminando el planeta.\nLa acción constante se convierte en vitalidad del fandom.',
     stage3:'Este planeta ahora destaca en el universo.\nNuestra contribución combinada es su luz más fuerte.',
     scoreLabel:'POP de hoy'},
-  growth:{t1:'Nuestro planeta del fandom no solo se hace más grande.',t2:'Muestra y registra cada momento de nuestra contribución.',
+  growth:{t1:'El planeta no solo se hace más grande.',t2:'Muestra al fandom vivo.',
     c1t:'Contribución total',c1d:'Todo lo que el fandom ha construido con el tiempo se convierte en el tamaño y la etapa de crecimiento del planeta.',
     c2t:'Impulso reciente',c2d:'Cuántos fans se mueven juntos ahora mismo se refleja en el brillo y el resplandor.',
     c3t:'Poder de conexión',c3d:'Compartir, comunidad, colaboración y campañas forman la órbita alrededor del fandom.',
@@ -454,7 +400,7 @@ es: {
     referralPlaceholder:'Ingresa el código de referido',
     rewardNoRef:'Regístrate sin código y obtén 50 POP',
     rewardRef:'Ingresa un código y tú y tu referente obtienen 100 POP cada uno',
-    requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
+    consent:'Acepto la recopilación y el uso de mi información personal',age:'Tengo 14 años o más',
     submit:'Iniciar mi contribución y preinscribirme',submitting:'Registrando···',
     error:'No pudimos guardar tu solicitud. Inténtalo de nuevo en breve.',
     resultTitleRef:'Las contribuciones de dos fans ahora están conectadas a una estrella.',
@@ -466,16 +412,15 @@ es: {
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',
     company:'Fancake Inc. · CEO Syvia Hong · N.º de registro 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'Contacto help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. Todos los derechos reservados.'},
-  errors:{invalidEmail:'Ingresa una dirección de correo válida.',emailAlreadyRegistered:'Este correo ya se ha preinscrito.',invalidReferral:'No pudimos encontrar ese código de referido.',selfReferralNotAllowed:'No puedes usar tu propio código de referido.',requiredConsent:'Por favor acepta los elementos obligatorios.',rateLimit:'Demasiados intentos. Inténtalo de nuevo en breve.',serverError:'Algo salió mal. Inténtalo de nuevo en breve.',networkError:'Verifica tu conexión de red.'}
+    contact:'Contacto help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. Todos los derechos reservados.'}
 },
 zhHans: {
   nav:{why:'为什么是FANUZU',exp:'贡献体验',system:'成长系统',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'预注册',cta:'点亮我的星球'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'让我们的星球',t2:'在这个宇宙中',t3:'最闪耀。',
-    d1:'我们一起行走、聆听、观看、记录并共同行动的时间，都会成为我的艺人的光芒。',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'让我的星球',t2:'在这个宇宙中',t3:'最闪耀。',
+    d1:'你行走、聆听、观看、记录并共同行动的时间，都会成为你喜爱艺人的光芒。',
     d2:'FANUZU 将粉丝的心意转化为不会消失的贡献。',
     d3:'贡献汇聚，粉丝星球随之成长；成长的星球能为艺人带来更大的活动与行动。',
-    ctaPrimary:'用我的贡献点亮星球',ctaPrereg:'预注册我的K-POP艺人粉丝星球',ctaSecondary:'FANUZU 有何不同',
+    ctaPrimary:'用我的贡献点亮星球',ctaPrereg:'预注册艺人星球',ctaSecondary:'FANUZU 有何不同',
     sub:['行动比金钱更闪耀','以粉丝共同成长为中心','贡献的记录得以留存','成长的粉丝群体缔造活动'],
     statLabel:'今日汇聚的粉丝贡献',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用来记录粉丝时间与行动的贡献点数。'},
   philosophy:{t1:'喜欢的心意，',t2:'化为行动时才有力量。',
@@ -488,7 +433,7 @@ zhHans: {
   pop:{t1:'粉丝的时间化为POP，',t2:'POP 驱动星球运转。',
     d1:'在 FANUZU，POP 不是简单的奖励积分。',
     d2:'听音乐、看内容、与粉丝交流、参与活动的每一刻，都会被记录为 POP。',
-    highlight:'哪怕是我的一瞬，也会成为点亮这颗星球的一份贡献。',
+    highlight:'我贡献的哪怕1 POP，也是点亮这颗星球的一份力量。',
     flow:['粉丝的行动','记录为POP','粉丝星球成长','发起与支持活动'],
     steps:[
       {t:'粉丝的行动',d:'行走、听歌、内容参与、分享、记录、社区活动'},
@@ -504,7 +449,7 @@ zhHans: {
     stage2:'你的贡献正在点亮星球。\n持续的行动化为粉丝的活力。',
     stage3:'这颗星球如今在宇宙中十分耀眼。\n共同积累的贡献是最强的光芒。',
     scoreLabel:'今日POP'},
-  growth:{t1:'我们的粉丝星球不只是变大。',t2:'它展现并记录我们贡献的每一个瞬间。',
+  growth:{t1:'星球不只是变大。',t2:'它展现出粉丝群体鲜活的状态。',
     c1t:'累计贡献',c1d:'长期积累的粉丝群体全部贡献，构成星球的大小与成长阶段。',
     c2t:'近期活力',c2d:'当下有多少粉丝共同行动，体现为星球的亮度与光量。',
     c3t:'联结的力量',c3d:'分享、社区、协作与活动，构成环绕粉丝群体的轨道。',
@@ -558,7 +503,7 @@ zhHans: {
     referralPlaceholder:'输入推荐码',
     rewardNoRef:'不填推荐码注册可获得 50 POP',
     rewardRef:'填写推荐码后，你和推荐人都将获得 100 POP',
-    requiredBadge:'【必填】',optionalBadge:'【选填】',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
+    consent:'我同意个人信息的收集与使用',age:'我年满14周岁',
     submit:'开始我的贡献并预注册',submitting:'注册中···',
     error:'申请未能保存，请稍后重试。',
     resultTitleRef:'两位粉丝的贡献已连接到同一颗星。',
@@ -570,16 +515,15 @@ zhHans: {
   footer:{privacy:'隐私政策',terms:'服务条款',
     company:'Fancake Inc. · 代表人 Syvia Hong · 工商注册号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'客服邮箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有权利。'},
-  errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该推荐码。',selfReferralNotAllowed:'不能使用自己的推荐码。',requiredConsent:'请确认必填同意项。',rateLimit:'尝试次数过多，请稍后再试。',serverError:'出现临时错误，请稍后再试。',networkError:'请检查网络连接。'}
+    contact:'客服邮箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有权利。'}
 },
 zhHant: {
   nav:{why:'為什麼是FANUZU',exp:'貢獻體驗',system:'成長系統',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'預先註冊',cta:'點亮我的星球'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'讓我們的星球',t2:'在這個宇宙中',t3:'最閃耀。',
-    d1:'我們一起行走、聆聽、觀看、記錄並共同行動的時間，都會成為我的藝人的光芒。',
+  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'讓我的星球',t2:'在這個宇宙中',t3:'最閃耀。',
+    d1:'你行走、聆聽、觀看、記錄並共同行動的時間，都會成為你喜愛藝人的光芒。',
     d2:'FANUZU 將粉絲的心意轉化為不會消失的貢獻。',
     d3:'貢獻匯聚，粉絲星球隨之成長；成長的星球能為藝人帶來更大的活動與行動。',
-    ctaPrimary:'用我的貢獻點亮星球',ctaPrereg:'預先註冊我的K-POP藝人粉絲星球',ctaSecondary:'FANUZU 有何不同',
+    ctaPrimary:'用我的貢獻點亮星球',ctaPrereg:'預先註冊藝人星球',ctaSecondary:'FANUZU 有何不同',
     sub:['行動比金錢更閃耀','以粉絲共同成長為中心','貢獻的記錄得以留存','成長的粉絲群體締造活動'],
     statLabel:'今日匯聚的粉絲貢獻',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用來記錄粉絲時間與行動的貢獻點數。'},
   philosophy:{t1:'喜歡的心意，',t2:'化為行動時才有力量。',
@@ -592,7 +536,7 @@ zhHant: {
   pop:{t1:'粉絲的時間化為POP，',t2:'POP 驅動星球運轉。',
     d1:'在 FANUZU，POP 不是簡單的獎勵積分。',
     d2:'聽音樂、看內容、與粉絲交流、參與活動的每一刻，都會被記錄為 POP。',
-    highlight:'哪怕是我的一瞬，也會成為點亮這顆星球的一份貢獻。',
+    highlight:'我貢獻的哪怕1 POP，也是點亮這顆星球的一份力量。',
     flow:['粉絲的行動','記錄為POP','粉絲星球成長','發起與支持活動'],
     steps:[
       {t:'粉絲的行動',d:'行走、聽歌、內容參與、分享、記錄、社群活動'},
@@ -608,7 +552,7 @@ zhHant: {
     stage2:'你的貢獻正在點亮星球。\n持續的行動化為粉絲的活力。',
     stage3:'這顆星球如今在宇宙中十分耀眼。\n共同積累的貢獻是最強的光芒。',
     scoreLabel:'今日POP'},
-  growth:{t1:'我們的粉絲星球不只是變大。',t2:'它展現並記錄我們貢獻的每一個瞬間。',
+  growth:{t1:'星球不只是變大。',t2:'它展現出粉絲群體鮮活的狀態。',
     c1t:'累積貢獻',c1d:'長期積累的粉絲群體全部貢獻，構成星球的大小與成長階段。',
     c2t:'近期活力',c2d:'當下有多少粉絲共同行動，體現為星球的亮度與光量。',
     c3t:'連結的力量',c3d:'分享、社群、協作與活動，構成環繞粉絲群體的軌道。',
@@ -662,7 +606,7 @@ zhHant: {
     referralPlaceholder:'輸入推薦碼',
     rewardNoRef:'不填推薦碼註冊可獲得 50 POP',
     rewardRef:'填寫推薦碼後，你和推薦人都將獲得 100 POP',
-    requiredBadge:'【必填】',optionalBadge:'【選填】',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
+    consent:'我同意個人資訊的收集與使用',age:'我年滿14週歲',
     submit:'開始我的貢獻並預先註冊',submitting:'註冊中···',
     error:'申請未能儲存，請稍後重試。',
     resultTitleRef:'兩位粉絲的貢獻已連結到同一顆星。',
@@ -674,16 +618,15 @@ zhHant: {
   footer:{privacy:'隱私政策',terms:'服務條款',
     company:'Fancake Inc. · 代表人 Syvia Hong · 工商註冊號 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
-    contact:'客服郵箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有權利。'},
-  errors:{invalidEmail:'請輸入有效的電子郵箱地址。',emailAlreadyRegistered:'該郵箱已完成預先註冊。',invalidReferral:'未找到該推薦碼。',selfReferralNotAllowed:'不能使用自己的推薦碼。',requiredConsent:'請確認必填同意項。',rateLimit:'嘗試次數過多，請稍後再試。',serverError:'出現臨時錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
+    contact:'客服郵箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有權利。'}
 }
 };
 
-export function detectLang(): Lang {
+export function detectLang() {
   try {
     const saved = localStorage.getItem('fanuzu_lang');
-    if (saved && saved in T) return saved as Lang;
-  } catch (e) {}
+    if (saved && T[saved]) return saved;
+  } catch(e){}
   const nav = (navigator.language || 'en').toLowerCase();
   if (nav.startsWith('ko')) return 'ko';
   if (nav.startsWith('ja')) return 'ja';
