@@ -11,7 +11,7 @@ export default function Footer() {
       <div style={{ maxWidth: 1180, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'space-between' }}>
         <div style={{ maxWidth: 520 }}>
           <div style={{ marginBottom: 14 }}>
-            <Logo size={24} fontSize={18} gap={6} />
+            <Logo size={24} />
           </div>
           <p style={{ fontSize: 13, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 12px', fontWeight: 600 }}>{tr.footer.tagline}</p>
           <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#6B6478', margin: '0 0 4px' }}>{tr.footer.company}</p>

@@ -1,12 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useLang } from '@/components/providers/LangProvider';
-import { useContribution } from '@/components/providers/ContributionProvider';
+import PlanetSwiper from './PlanetSwiper';
 
 export default function Hero() {
   const { tr } = useLang();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness } = useContribution();
 
   return (
     <section
@@ -65,10 +63,11 @@ export default function Hero() {
           <br />
           <span
             style={{
-              background: 'linear-gradient(90deg,#FFFAFC,#FF7DDD 55%,#9B7CFF)',
+              background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 55%,var(--planet-a2))',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               color: 'transparent',
+              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
             {tr.hero.t2}
@@ -76,10 +75,11 @@ export default function Hero() {
           <br />
           <span
             style={{
-              background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+              background: 'linear-gradient(90deg,var(--planet-a1),var(--planet-a2))',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               color: 'transparent',
+              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
             {tr.hero.t3}
@@ -92,7 +92,7 @@ export default function Hero() {
           <a
             href="#experience"
             style={{
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+              background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
               color: '#05030B',
               fontWeight: 700,
               fontSize: 16,
@@ -100,6 +100,7 @@ export default function Hero() {
               borderRadius: 999,
               textDecoration: 'none',
               display: 'inline-block',
+              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
             {tr.hero.ctaPrimary}
@@ -148,50 +149,7 @@ export default function Hero() {
       </div>
 
       <div style={{ flex: '1 1 380px', minWidth: 280, display: 'flex', justifyContent: 'center', position: 'relative' }}>
-        <div style={{ position: 'relative', width: 'min(78vw,420px)', aspectRatio: '1/1' }}>
-          <div
-            style={{
-              position: 'absolute',
-              inset: '-16%',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle,rgba(255,125,221,.35),rgba(155,124,255,.18) 45%,transparent 70%)',
-              filter: 'blur(6px)',
-              animation: 'floatY 7s ease-in-out infinite',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: '6%',
-              border: '1px solid rgba(255,255,255,.14)',
-              borderRadius: '50%',
-              transform: 'rotate(-18deg) scaleY(0.42)',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: '-2%',
-              border: '1px solid rgba(124,232,255,.18)',
-              borderRadius: '50%',
-              transform: 'rotate(12deg) scaleY(0.5)',
-            }}
-          />
-          <div
-            ref={planetRef}
-            style={{
-              position: 'absolute',
-              inset: '8%',
-              borderRadius: '50%',
-              overflow: 'hidden',
-              boxShadow: `0 0 ${glowBlur}px ${glowSpread}px rgba(255,125,221,${glowOpacity}),0 0 90px 10px rgba(155,124,255,.25)`,
-              animation: 'floatY 7s ease-in-out infinite',
-              filter: `brightness(${planetBrightness})`,
-              transformOrigin: 'center',
-            }}
-          >
-            <Image src="/images/fanuzu-planet.png" alt="FANUZU planet" fill sizes="420px" style={{ objectFit: 'cover' }} priority />
-          </div>
+        <PlanetSwiper>
           <div
             style={{
               position: 'absolute',
@@ -210,7 +168,7 @@ export default function Hero() {
             <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{tr.hero.statLabel}</div>
             <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{tr.hero.statSub}</div>
           </div>
-        </div>
+        </PlanetSwiper>
       </div>
     </section>
   );

@@ -8,8 +8,8 @@ import {
   useRef,
   useState,
   type MouseEvent,
+  type MutableRefObject,
   type ReactNode,
-  type RefObject,
 } from 'react';
 
 export const STAGE0 = 0;
@@ -32,7 +32,7 @@ interface ContributionContextValue {
   glowOpacity: string;
   planetBrightness: string;
   particles: Particle[];
-  planetRef: RefObject<HTMLDivElement>;
+  planetRef: MutableRefObject<HTMLDivElement | null>;
   addAction: (value: number) => (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -41,7 +41,7 @@ const ContributionContext = createContext<ContributionContextValue | null>(null)
 export function ContributionProvider({ children }: { children: ReactNode }) {
   const [score, setScore] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
-  const planetRef = useRef<HTMLDivElement>(null);
+  const planetRef = useRef<HTMLDivElement | null>(null);
 
   const addAction = useCallback(
     (value: number) => (e: MouseEvent<HTMLButtonElement>) => {

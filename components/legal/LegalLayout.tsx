@@ -18,7 +18,7 @@ export default function LegalLayout({
     <div style={{ minHeight: '100vh', background: '#05030B', color: '#FFFAFC', fontFamily: 'Pretendard,Inter,system-ui,-apple-system,sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '56px 24px 100px' }}>
         <div style={{ marginBottom: 40 }}>
-          <Logo size={26} fontSize={19} gap={7} />
+          <Logo size={26} />
         </div>
         <div style={{ fontSize: 12, letterSpacing: '.12em', color: '#FF7DDD', fontWeight: 700, marginBottom: 12 }}>{eyebrow}</div>
         <h1 style={{ fontSize: 'clamp(26px,4vw,34px)', fontWeight: 700, lineHeight: 1.3, margin: '0 0 10px', color: '#FFFAFC' }}>{title}</h1>

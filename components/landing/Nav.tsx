@@ -57,7 +57,7 @@ export default function Nav() {
           gap: 16,
         }}
       >
-        <Logo />
+        <Logo spin />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button
