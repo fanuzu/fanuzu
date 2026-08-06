@@ -41,6 +41,7 @@ export default function Prereg() {
   const [email, setEmail] = useState('');
   const [fanSince, setFanSince] = useState('');
   const [referralCode, setReferralCode] = useState('');
+  const [age14Consent, setAge14Consent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -81,7 +82,7 @@ export default function Prereg() {
 
   async function submitPrereg(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!artistName || !email || email.indexOf('@') === -1 || !termsConsent || !privacyConsent) {
+    if (!artistName || !email || email.indexOf('@') === -1 || !age14Consent || !termsConsent || !privacyConsent) {
       setFormStatus('error');
       setErrorText(tr.errors.requiredConsent);
       return;
@@ -100,6 +101,7 @@ export default function Prereg() {
           fanSince,
           language: lang,
           referralCode,
+          age14Consent,
           termsConsent,
           privacyConsent,
           marketingConsent,
@@ -298,6 +300,10 @@ export default function Prereg() {
               <p style={{ fontSize: 11.5, lineHeight: 1.5, color: '#6B6478', margin: 0 }}>{tr.prereg.rewardNote}</p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <label htmlFor="prereg-age14" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer' }}>
+                  <input id="prereg-age14" type="checkbox" required checked={age14Consent} onChange={(e) => setAge14Consent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
+                  <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.age14Consent}</span>
+                </label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <label htmlFor="prereg-terms" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer', flex: 1 }}>
                     <input id="prereg-terms" type="checkbox" required checked={termsConsent} onChange={(e) => setTermsConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />

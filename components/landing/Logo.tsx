@@ -19,7 +19,7 @@ export default function Logo({ size = 30, spin = false }: LogoProps) {
         style={{
           width: size,
           height: size,
-          animation: spin ? 'spinCCWOnce .9s cubic-bezier(.3,0,.2,1)' : undefined,
+          animation: spin ? 'spinCCWRepeat 2s linear infinite' : undefined,
         }}
       >
         <Image src="/images/fanuzu-icon.png" alt="" width={size} height={size} priority />

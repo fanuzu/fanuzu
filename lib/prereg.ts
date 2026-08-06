@@ -15,6 +15,7 @@ export interface PreregRequestBody {
   fanSince?: unknown;
   language?: unknown;
   referralCode?: unknown;
+  age14Consent?: unknown;
   termsConsent?: unknown;
   privacyConsent?: unknown;
   marketingConsent?: unknown;
@@ -114,6 +115,7 @@ export async function submitPreregistration(
   const fanSince = typeof body.fanSince === 'string' ? body.fanSince.trim() : '';
   const language = typeof body.language === 'string' ? body.language.trim() : '';
   const referralCodeInput = typeof body.referralCode === 'string' ? body.referralCode.trim() : '';
+  const age14Consent = body.age14Consent === true;
   const termsConsent = body.termsConsent === true;
   const privacyConsent = body.privacyConsent === true;
   const marketingConsent = body.marketingConsent === true;
@@ -123,8 +125,8 @@ export async function submitPreregistration(
   const privacyAcceptedAt = parseDate(body.privacyAcceptedAt);
   const marketingConsentAt = parseDate(body.marketingConsentAt);
 
-  if (!artistName || !email || !termsConsent || !privacyConsent) {
-    return fail('required_consent', 'Artist name, email, and the two required consents are needed.');
+  if (!artistName || !email || !age14Consent || !termsConsent || !privacyConsent) {
+    return fail('required_consent', 'Artist name, email, and all required consents are needed.');
   }
   if (!EMAIL_RE.test(email)) {
     return fail('invalid_email', 'Enter a valid email address.');
@@ -189,7 +191,7 @@ export async function submitPreregistration(
         referralCodeInput || null,
         referrer ? referrer.id : null,
         rewardAmount,
-        termsConsent, // age_confirmed: eligibility is asserted via the Terms of Service checkbox (see doc section 5/10 — no separate age gate at pre-reg)
+        age14Consent,
         privacyConsent,
         termsVersion,
         privacyVersion,

@@ -37,7 +37,7 @@ export interface TranslationSet {
     referralToggle: string; referralHint: string; referralPlaceholder: string;
     rewardNoRef: string; rewardRef: string; rewardNote: string;
     requiredBadge: string; optionalBadge: string;
-    termsConsent: string; privacyConsentLabel: string; marketingConsent: string; viewDoc: string;
+    age14Consent: string; termsConsent: string; privacyConsentLabel: string; marketingConsent: string; viewDoc: string;
     submit: string; submitting: string; error: string;
     resultTitleRef: string; resultBodyRef: string; resultTitleNoRef: string; resultBodyNoRef: string;
     rArtist: string; rStatus: string; rStatusVal: string; rOrder: string; rJoinOrder: string; rReward: string;
@@ -57,7 +57,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'사전등록',cta:'내 별 밝히기'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'우리의 별을',t2:'이 우주에서',t3:'가장 밝게.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'우리의 행동이,',t2:'K-POP 아티스트의',t3:'힘이 된다.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
@@ -68,7 +68,7 @@ ko: {
     d1:'팬의 마음은 숫자 하나로만 설명할 수 없습니다.',
     d2:'FANUZU는 팬의 시간, 꾸준함, 연결, 행동과 기록을 하나의 행성이 성장하는 힘으로 보여줍니다.',
     big:'나는 이 별이 밝아지는 순간에 함께 있었던 팬입니다.',
-    bigSub:'내가 보탠 POP, 참여한 캠페인, 남긴 기록과 함께한 성장 단계가 모두 팬덤의 역사로 남습니다.',
+    bigSub:'내가 기여한 POP, 참여한 캠페인, 남긴 기록과 함께한 성장 단계가 모두 팬덤의 역사로 남습니다.',
     card1T:'작은 행동도 사라지지 않게',card1D:'오늘의 출석, 걷기, 음악 감상, 공유와 기록이 매일의 기여로 이어집니다.',
     card2T:'팬덤의 크기보다, 꾸준한 기여가 빛나도록',card2D:'팬 수만으로 힘을 판단하지 않습니다. 꾸준함, 참여, 연결, 기록을 함께 봅니다. 팬들의 꾸준한 참여와 공동 행동은 팬덤의 활력을 보여주는 기록이 됩니다.'},
   pop:{t1:'팬의 시간은 POP이 되고,',t2:'POP은 행성을 움직입니다.',
@@ -158,7 +158,7 @@ ko: {
     rewardNoRef:'추천인 코드 없이 등록하면 나에게 50 POP',
     rewardRef:'코드를 입력하면 나와 추천인 모두 100 POP',
     rewardNote:'사전등록 POP은 FANUZU 정식 오픈 후 지급됩니다.',
-    requiredBadge:'[필수]',optionalBadge:'[선택]',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
+    requiredBadge:'[필수]',optionalBadge:'[선택]',age14Consent:'만 14세 이상입니다',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
     submit:'내 아티스트 행성 사전등록하기',submitting:'등록 중···',
     error:'신청을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.',
     resultTitleRef:'두 팬의 기여가 하나의 별로 연결되었습니다.',
@@ -175,7 +175,7 @@ ko: {
 },
 en: {
   nav:{why:'Why FANUZU',exp:'Contribution',system:'Growth System',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Pre-register',cta:'Light my star'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Make our star',t2:'the brightest',t3:'in this universe.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in this universe.',
     d1:'The time fans spend walking, listening, watching, and acting together becomes a contribution for the artist. Fan action becomes POP, and POP grows our fandom planet.',
     d2:'FANUZU is a K-POP fandom platform that records fan time and connects it through the power of the fandom.',
     d3:'When contribution gathers, the fandom planet grows — and the grown planet makes bigger campaigns and action possible for the artist.',
@@ -276,7 +276,7 @@ en: {
     rewardNoRef:'Register without a code and get 50 POP',
     rewardRef:'Enter a code and both you and your referrer get 100 POP',
     rewardNote:'Pre-registration POP is paid out after FANUZU\'s official launch.',
-    requiredBadge:'[Required]',optionalBadge:'[Optional]',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
+    requiredBadge:'[Required]',optionalBadge:'[Optional]',age14Consent:'I am 14 years of age or older',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
     submit:'Pre-register my artist\'s planet',submitting:'Registering···',
     error:'We couldn\'t save your request. Please try again shortly.',
     resultTitleRef:'Two fans\' contributions are now connected to one star.',
@@ -293,7 +293,7 @@ en: {
 },
 ja: {
   nav:{why:'FANUZUとは',exp:'貢献体験',system:'成長システム',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'事前登録',cta:'私の星を灯す'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'私たちの星を',t2:'この宇宙で',t3:'一番明るく。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'この宇宙で',t3:'一番明るく。',
     d1:'歩き、聴き、見て、共にしたファンの時間がアーティストのための貢献になります。ファンの行動がPOPになり、POPが集まって私たちのファンダム惑星を育てます。',
     d2:'FANUZUはファンの時間を記録し、ファンダムの力でつなぐK-POPファンダムプラットフォームです。',
     d3:'貢献が集まるとファンダム惑星が成長し、成長した惑星はアーティストのためのより大きなキャンペーンと行動を可能にします。',
@@ -394,7 +394,7 @@ ja: {
     rewardNoRef:'紹介コードなしで登録すると自分に50 POP',
     rewardRef:'コードを入力すると自分と紹介者の両方に100 POP',
     rewardNote:'事前登録POPはFANUZU正式オープン後に支給されます。',
-    requiredBadge:'[必須]',optionalBadge:'[任意]',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
+    requiredBadge:'[必須]',optionalBadge:'[任意]',age14Consent:'満14歳以上です',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
     submit:'私のアーティスト惑星を事前登録する',submitting:'登録中···',
     error:'申請を保存できませんでした。しばらくしてから再度お試しください。',
     resultTitleRef:'二人のファンの貢献が一つの星につながりました。',
@@ -411,7 +411,7 @@ ja: {
 },
 es: {
   nav:{why:'Por qué FANUZU',exp:'Contribución',system:'Sistema de crecimiento',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Preinscripción',cta:'Iluminar mi estrella'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'Que nuestra estrella',t2:'sea la más brillante',t3:'de este universo.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Que nuestra estrella',t2:'sea la más brillante',t3:'de este universo.',
     d1:'El tiempo que los fans pasan caminando, escuchando, viendo y actuando juntos se convierte en una contribución para el artista. La acción del fan se convierte en POP, y el POP hace crecer nuestro planeta del fandom.',
     d2:'FANUZU es una plataforma de fandom K-POP que registra el tiempo de los fans y los conecta con el poder del fandom.',
     d3:'Cuando la contribución se acumula, el planeta del fandom crece, y un planeta crecido hace posibles campañas y acciones más grandes para el artista.',
@@ -512,7 +512,7 @@ es: {
     rewardNoRef:'Regístrate sin código y obtén 50 POP',
     rewardRef:'Ingresa un código y tú y tu referente obtienen 100 POP cada uno',
     rewardNote:'El POP de preinscripción se paga después del lanzamiento oficial de FANUZU.',
-    requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
+    requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',age14Consent:'Tengo 14 años de edad o más',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
     submit:'Preinscribir el planeta de mi artista',submitting:'Registrando···',
     error:'No pudimos guardar tu solicitud. Inténtalo de nuevo en breve.',
     resultTitleRef:'Las contribuciones de dos fans ahora están conectadas a una estrella.',
@@ -529,7 +529,7 @@ es: {
 },
 zhHans: {
   nav:{why:'为什么是FANUZU',exp:'贡献体验',system:'成长系统',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'预注册',cta:'点亮我的星球'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'让我们的星球',t2:'在这个宇宙中',t3:'最闪耀。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这个宇宙中',t3:'最闪耀。',
     d1:'粉丝一起行走、聆听、观看并共同行动的时间，都会成为献给艺人的贡献。粉丝的行动化为POP，POP汇聚壮大我们的粉丝星球。',
     d2:'FANUZU 是记录粉丝时间、并以粉丝群体的力量连结彼此的K-POP粉丝平台。',
     d3:'贡献汇聚，粉丝星球随之成长；成长的星球能为艺人带来更大的活动与行动。',
@@ -630,7 +630,7 @@ zhHans: {
     rewardNoRef:'不填推荐码注册可获得 50 POP',
     rewardRef:'填写推荐码后，你和推荐人都将获得 100 POP',
     rewardNote:'预注册POP将在FANUZU正式上线后发放。',
-    requiredBadge:'【必填】',optionalBadge:'【选填】',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
+    requiredBadge:'【必填】',optionalBadge:'【选填】',age14Consent:'我年满14周岁',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
     submit:'预注册我艺人的星球',submitting:'注册中···',
     error:'申请未能保存，请稍后重试。',
     resultTitleRef:'两位粉丝的贡献已连接到同一颗星。',
@@ -647,7 +647,7 @@ zhHans: {
 },
 zhHant: {
   nav:{why:'為什麼是FANUZU',exp:'貢獻體驗',system:'成長系統',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'預先註冊',cta:'點亮我的星球'},
-  hero:{badge:'FAN ACTION BECOMES LIGHT',t1:'讓我們的星球',t2:'在這個宇宙中',t3:'最閃耀。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這個宇宙中',t3:'最閃耀。',
     d1:'粉絲一起行走、聆聽、觀看並共同行動的時間，都會成為獻給藝人的貢獻。粉絲的行動化為POP，POP匯聚壯大我們的粉絲星球。',
     d2:'FANUZU 是記錄粉絲時間、並以粉絲群體的力量連結彼此的K-POP粉絲平台。',
     d3:'貢獻匯聚，粉絲星球隨之成長；成長的星球能為藝人帶來更大的活動與行動。',
@@ -748,7 +748,7 @@ zhHant: {
     rewardNoRef:'不填推薦碼註冊可獲得 50 POP',
     rewardRef:'填寫推薦碼後，你和推薦人都將獲得 100 POP',
     rewardNote:'預先註冊POP將在FANUZU正式上線後發放。',
-    requiredBadge:'【必填】',optionalBadge:'【選填】',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
+    requiredBadge:'【必填】',optionalBadge:'【選填】',age14Consent:'我年滿14週歲',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
     submit:'預先註冊我藝人的星球',submitting:'註冊中···',
     error:'申請未能儲存，請稍後重試。',
     resultTitleRef:'兩位粉絲的貢獻已連結到同一顆星。',
