@@ -14,12 +14,11 @@ export default function GrowthSystem() {
   return (
     <section id="system" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '100px 24px' }}>
       <div style={{ maxWidth: 640, margin: '0 auto 56px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 16px', color: '#FFFAFC' }}>
+        <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: 0, color: '#FFFAFC' }}>
           {tr.growth.t1}
           <br />
           {tr.growth.t2}
         </h2>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.growth.body}</p>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 20 }}>
         {cards.map((c, i) => (
@@ -39,11 +38,7 @@ export default function GrowthSystem() {
         ))}
       </div>
       <p style={{ textAlign: 'center', fontSize: 'clamp(16px,2vw,19px)', fontWeight: 600, lineHeight: 1.5, color: '#FFFAFC', maxWidth: 600, margin: '36px auto 0' }}>
-        {tr.growth.closing}
-      </p>
-
-      <p style={{ textAlign: 'center', fontSize: 12, lineHeight: 1.6, color: '#6B6478', maxWidth: 520, margin: '40px auto 0' }}>
-        <span style={{ fontWeight: 700 }}>FPI</span> · {tr.growth.fpiT} — {tr.growth.fpiD}
+        {tr.growth.bridge}
       </p>
     </section>
   );

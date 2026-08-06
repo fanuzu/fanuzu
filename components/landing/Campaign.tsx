@@ -21,48 +21,10 @@ export default function Campaign() {
             <br />
             {tr.campaign.t2}
           </h2>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.bridge}</p>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.d1}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.campaign.d2}</p>
-        </div>
-
-        <div
-          style={{
-            maxWidth: 520,
-            margin: '0 auto',
-            background: 'rgba(255,255,255,.04)',
-            border: '1px solid rgba(255,255,255,.08)',
-            borderRadius: 18,
-            padding: '22px 26px',
-            textAlign: 'center',
-          }}
-        >
-          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '.08em', color: '#7CE8FF', marginBottom: 8 }}>CAMPAIGN</div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: '#FFFAFC', marginBottom: 16 }}>{tr.campaign.exampleTitle}</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 14 }}>
-            {tr.campaign.exampleIcons.map((icon, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    background: 'rgba(255,255,255,.05)',
-                    border: '1px solid rgba(255,255,255,.1)',
-                    borderRadius: 999,
-                    padding: '6px 12px',
-                    fontSize: 12.5,
-                    color: '#FFFAFC',
-                  }}
-                >
-                  <span>{icon.emoji}</span>
-                  {icon.label}
-                </div>
-                {i < tr.campaign.exampleIcons.length - 1 && <span style={{ color: '#6B6478' }}>+</span>}
-              </div>
-            ))}
-          </div>
-          <div style={{ color: '#6B6478', fontSize: 16, marginBottom: 10 }}>↓</div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: '#FF7DDD' }}>{tr.campaign.exampleResult}</div>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.d2}</p>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.campaign.d3}</p>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: 16, justifyContent: 'center', margin: '56px 0 36px' }}>
@@ -108,6 +70,9 @@ export default function Campaign() {
           ))}
         </div>
 
+        <p style={{ textAlign: 'center', fontSize: 'clamp(17px,2.2vw,21px)', fontWeight: 600, lineHeight: 1.5, color: '#FFFAFC', maxWidth: 640, margin: '0 auto 14px' }}>
+          {tr.campaign.highlight}
+        </p>
         <p style={{ textAlign: 'center', fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 560, margin: '0 auto' }}>
           {tr.campaign.result}
         </p>

@@ -30,15 +30,15 @@ export default function Quest() {
                   border: '1px solid rgba(255,255,255,.08)',
                   borderRadius: 14,
                   padding: '16px 18px',
+                  fontSize: 14,
+                  color: '#FFFAFC',
                 }}
               >
-                <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '.08em', color: '#FF7DDD', marginBottom: 6 }}>QUEST</div>
-                <div style={{ fontSize: 14, color: '#FFFAFC' }}>{ex}</div>
+                {ex}
               </div>
             ))}
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12.5, lineHeight: 1.6, color: '#6B6478', margin: '0 0 26px' }}>{tr.quest.popNote}</p>
-          <p style={{ textAlign: 'center', fontSize: 'clamp(16px,2vw,19px)', fontWeight: 600, color: '#FFFAFC', margin: 0 }}>{tr.quest.closing}</p>
+          <p style={{ textAlign: 'center', fontSize: 12.5, lineHeight: 1.6, color: '#6B6478', margin: 0 }}>{tr.quest.popNote}</p>
         </div>
       </div>
     </section>
