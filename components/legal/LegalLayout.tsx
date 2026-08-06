@@ -1,0 +1,200 @@
+import type { ReactNode } from 'react';
+import Link from 'next/link';
+import Logo from '@/components/landing/Logo';
+import type { LegalBlock, LegalDoc } from '@/lib/legal-content';
+
+export default function LegalLayout({
+  eyebrow,
+  title,
+  effective,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  effective: string;
+  children: ReactNode;
+}) {
+  return (
+    <div style={{ minHeight: '100vh', background: '#05030B', color: '#FFFAFC', fontFamily: 'Pretendard,Inter,system-ui,-apple-system,sans-serif' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '56px 24px 100px' }}>
+        <div style={{ marginBottom: 40 }}>
+          <Logo size={26} />
+        </div>
+        <div style={{ fontSize: 12, letterSpacing: '.12em', color: '#FF7DDD', fontWeight: 700, marginBottom: 12 }}>{eyebrow}</div>
+        <h1 style={{ fontSize: 'clamp(26px,4vw,34px)', fontWeight: 700, lineHeight: 1.3, margin: '0 0 10px', color: '#FFFAFC' }}>{title}</h1>
+        <div style={{ fontSize: 13, color: '#6B6478', marginBottom: 40 }}>{effective}</div>
+        <div style={{ fontSize: 15, lineHeight: 1.75, color: '#D8D2E0' }}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+export function InfoBox({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div
+      style={{
+        background: 'linear-gradient(135deg,rgba(255,125,221,.14),rgba(155,124,255,.1))',
+        border: '1px solid rgba(255,125,221,.22)',
+        borderRadius: 16,
+        padding: '18px 22px',
+        fontSize: 14,
+        lineHeight: 1.7,
+        color: '#FFFAFC',
+      }}
+    >
+      <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.08em', color: '#FF7DDD', marginBottom: 8 }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+export function Article({ n, title, children }: { n: string; title: string; children: ReactNode }) {
+  return (
+    <section style={{ marginBottom: 36 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: '#FFFAFC', margin: '0 0 14px', display: 'flex', gap: 8, alignItems: 'baseline' }}>
+        <span style={{ color: '#7CE8FF', fontSize: 13, fontWeight: 700 }}>{n}</span>
+        {title}
+      </h2>
+      <div className="legal-article">{children}</div>
+      <style>{`
+        .legal-article p { margin: 0 0 12px; }
+        .legal-article p:last-child { margin-bottom: 0; }
+        .legal-article ul { margin: 0; padding-left: 20px; }
+        .legal-article li { margin-bottom: 8px; }
+        .legal-article li:last-child { margin-bottom: 0; }
+      `}</style>
+    </section>
+  );
+}
+
+export function DefTerm({ term, children }: { term: string; children: ReactNode }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 14 }}>
+      <div style={{ flex: '0 0 150px', fontWeight: 600, color: '#FFFAFC' }}>{term}</div>
+      <div style={{ color: '#B8AFC4' }}>{children}</div>
+    </div>
+  );
+}
+
+const EMAIL_RE = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+
+function linkifyEmail(text: string): ReactNode {
+  const parts = text.split(EMAIL_RE);
+  if (parts.length <= 1) return text;
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <a key={i} href={`mailto:${part}`} style={{ color: '#B8AFC4' }}>
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  );
+}
+
+function ArticleBlocks({ blocks }: { blocks: LegalBlock[] }) {
+  return (
+    <>
+      {blocks.map((b, i) => {
+        if (b.kind === 'p') return <p key={i}>{linkifyEmail(b.text)}</p>;
+        if (b.kind === 'ul')
+          return (
+            <ul key={i}>
+              {b.items.map((item, j) => (
+                <li key={j}>{linkifyEmail(item)}</li>
+              ))}
+            </ul>
+          );
+        if (b.kind === 'defs')
+          return (
+            <div key={i}>
+              {b.items.map((d, j) => (
+                <DefTerm key={j} term={d.term}>
+                  {linkifyEmail(d.text)}
+                </DefTerm>
+              ))}
+            </div>
+          );
+        if (b.kind === 'table') return <LegalTable key={i} head={b.head} rows={b.rows} />;
+        return null;
+      })}
+    </>
+  );
+}
+
+export function LegalDocument({ doc }: { doc: LegalDoc }) {
+  return (
+    <LegalLayout eyebrow={doc.eyebrow} title={doc.title} effective={doc.effective}>
+      <InfoBox label={doc.infoBoxLabel}>{linkifyEmail(doc.infoBoxText)}</InfoBox>
+
+      <nav style={{ margin: '32px 0 48px' }}>
+        <div style={{ fontSize: 12.5, color: '#6B6478', marginBottom: 10, letterSpacing: '.05em' }}>{doc.tocLabel}</div>
+        <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', color: '#B8AFC4', fontSize: 14, lineHeight: 1.9 }}>
+          {doc.toc.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      </nav>
+
+      {doc.articles.map((a) => (
+        <Article key={`${a.n}-${a.title}`} n={a.n} title={a.title}>
+          <ArticleBlocks blocks={a.blocks} />
+        </Article>
+      ))}
+
+      <p style={{ marginTop: 40, fontSize: 13.5, color: '#6B6478' }}>{linkifyEmail(doc.contactLine)}</p>
+
+      <Link href="/" style={{ display: 'inline-block', marginTop: 40, color: '#FF7DDD', fontSize: 14, textDecoration: 'none' }}>
+        {doc.backLink}
+      </Link>
+    </LegalLayout>
+  );
+}
+
+export function LegalTable({ head, rows }: { head: string[]; rows: string[][] }) {
+  return (
+    <div style={{ overflowX: 'auto', margin: '14px 0', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13.5 }}>
+        <thead>
+          <tr>
+            {head.map((h) => (
+              <th
+                key={h}
+                style={{
+                  textAlign: 'left',
+                  padding: '12px 14px',
+                  background: 'rgba(255,255,255,.04)',
+                  color: '#FFFAFC',
+                  fontWeight: 600,
+                  borderBottom: '1px solid rgba(255,255,255,.1)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              {row.map((cell, j) => (
+                <td
+                  key={j}
+                  style={{
+                    padding: '12px 14px',
+                    color: '#B8AFC4',
+                    borderBottom: i < rows.length - 1 ? '1px solid rgba(255,255,255,.06)' : 'none',
+                    verticalAlign: 'top',
+                  }}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
