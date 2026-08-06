@@ -2,9 +2,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(-360deg); }
 }
-@keyframes spinCCWRepeat {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
+@keyframes spinCCWPulse {
+  0% { transform: rotate(0deg); }
+  40% { transform: rotate(-360deg); }
+  100% { transform: rotate(-360deg); }
 }
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
