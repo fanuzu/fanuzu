@@ -50,15 +50,15 @@ export default function Nav() {
         style={{
           maxWidth: 1180,
           margin: '0 auto',
-          padding: '16px 24px',
+          padding: '16px clamp(14px,4vw,24px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 16,
+          gap: 'clamp(8px,3vw,16px)',
         }}
       >
         <Logo spin />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px,2vw,10px)' }}>
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setLangOpen((o) => !o)}
@@ -72,9 +72,9 @@ export default function Nav() {
                 border: '1px solid rgba(255,255,255,.1)',
                 background: 'rgba(255,255,255,.06)',
                 color: '#FFFAFC',
-                fontSize: 12,
+                fontSize: 'clamp(10.5px,3vw,12px)',
                 fontWeight: 600,
-                padding: '8px 12px',
+                padding: 'clamp(6px,1.8vw,8px) clamp(8px,2.6vw,12px)',
                 borderRadius: 999,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
@@ -135,8 +135,8 @@ export default function Nav() {
               background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
               color: '#05030B',
               fontWeight: 700,
-              fontSize: 14,
-              padding: '10px 18px',
+              fontSize: 'clamp(11px,3.1vw,14px)',
+              padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
               borderRadius: 999,
               textDecoration: 'none',
               whiteSpace: 'nowrap',

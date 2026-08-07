@@ -1,6 +1,12 @@
 import { ensureSchema, getPool } from './db';
+import { LANGS, type Lang } from './i18n';
+import { sendPreregConfirmationEmail } from './email';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function resolveLang(value: string): Lang {
+  return (LANGS as readonly string[]).includes(value) ? (value as Lang) : 'en';
+}
 
 // Doc section 17: minimal per-IP rate limiting. Generous enough that a
 // legitimate user retrying a typo'd form never hits it, tight enough to
@@ -231,6 +237,19 @@ export async function submitPreregistration(
     throw err;
   } finally {
     client.release();
+  }
+
+  try {
+    await sendPreregConfirmationEmail({
+      to: email,
+      lang: resolveLang(language),
+      artistName,
+      rewardAmount,
+      referralCode,
+      hasRef: !!referrer,
+    });
+  } catch (err) {
+    console.error('sendPreregConfirmationEmail failed:', err);
   }
 
   return {

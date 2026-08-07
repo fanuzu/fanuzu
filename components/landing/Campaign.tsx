@@ -73,8 +73,11 @@ export default function Campaign() {
         <p style={{ textAlign: 'center', fontSize: 'clamp(17px,2.2vw,21px)', fontWeight: 600, lineHeight: 1.5, color: '#FFFAFC', maxWidth: 640, margin: '0 auto 14px' }}>
           {tr.campaign.highlight}
         </p>
-        <p style={{ textAlign: 'center', fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 560, margin: '0 auto' }}>
+        <p style={{ textAlign: 'center', fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 560, margin: '0 auto 22px' }}>
           {tr.campaign.result}
+        </p>
+        <p style={{ textAlign: 'center', fontSize: 14, fontWeight: 600, letterSpacing: '.01em', color: '#7CE8FF', maxWidth: 560, margin: '0 auto' }}>
+          {tr.hero.coreMessage}
         </p>
       </div>
     </section>
