@@ -1,9 +1,11 @@
 'use client';
 
 import { useLang } from '@/components/providers/LangProvider';
+import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
 export default function Origin() {
   const { tr } = useLang();
+  const { openModal } = usePreregModal();
 
   return (
     <section id="origin" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '100px 24px' }}>
@@ -79,8 +81,8 @@ export default function Origin() {
         </p>
 
         <div style={{ textAlign: 'center' }}>
-          <a
-            href="#prereg"
+          <button
+            onClick={openModal}
             style={{
               background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
               color: '#05030B',
@@ -88,12 +90,14 @@ export default function Origin() {
               fontSize: 15.5,
               padding: '15px 30px',
               borderRadius: 999,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
               display: 'inline-block',
             }}
           >
             {tr.origin.ctaLabel}
-          </a>
+          </button>
           <p style={{ fontSize: 12.5, color: '#6B6478', margin: '14px 0 0' }}>{tr.origin.ctaSub}</p>
         </div>
       </div>

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
+import { usePreregModal } from '@/components/providers/PreregModalProvider';
 import Logo from './Logo';
 
 export default function Nav() {
   const { tr, lang, setLang, langList } = useLang();
+  const { openModal } = usePreregModal();
   const [isScrolled, setIsScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
@@ -129,8 +131,8 @@ export default function Nav() {
               </div>
             )}
           </div>
-          <a
-            href="#prereg"
+          <button
+            onClick={openModal}
             style={{
               background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
               color: '#05030B',
@@ -138,12 +140,14 @@ export default function Nav() {
               fontSize: 'clamp(11px,3.1vw,14px)',
               padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
               borderRadius: 999,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
               whiteSpace: 'nowrap',
             }}
           >
             {tr.nav.cta}
-          </a>
+          </button>
         </div>
       </div>
     </nav>

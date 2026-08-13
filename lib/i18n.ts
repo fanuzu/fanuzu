@@ -1,7 +1,7 @@
 export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant';
 
 export interface TranslationSet {
-  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string };
+  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string };
   hero: {
     badge: string; t1: string; t2: string; t3: string; coreMessage: string; d1: string; d2: string; d3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; sub: string[];
@@ -56,7 +56,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 
 export const T: Record<Lang, TranslationSet> = {
 ko: {
-  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'사전등록',cta:'내 별 밝히기'},
+  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'우리의 별을',t2:'이 우주에서',t3:'가장 밝게.',
     coreMessage:'우리의 행동이, K-POP 아티스트의 힘이 된다.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
@@ -175,7 +175,7 @@ ko: {
   errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'추천인 코드를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 추천 코드는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
 },
 en: {
-  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Pre-register',cta:'Light my star'},
+  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Pre-register',cta:'Light my star',close:'Close'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the universe.',
     coreMessage:'Our actions give power to K-POP artists.',
     d1:'Walk, stream, view, take part. Every fan action becomes POP, which helps our fandom planet grow.',
@@ -294,7 +294,7 @@ en: {
   errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that referral code.',selfReferralNotAllowed:'You can’t use your own referral code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
 },
 ja: {
-  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'事前登録',cta:'推しの星を照らす'},
+  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'この宇宙で',t3:'いちばん輝く星に。',
     coreMessage:'私たちのアクションが、K-POPアーティストの力になる。',
     d1:'ストリーミング、投票、応援、参加。ファンのアクションはPOPとして記録され、私たちのファンダム惑星を育てます。',
@@ -413,7 +413,7 @@ ja: {
   errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'紹介コードが見つかりません。',selfReferralNotAllowed:'自分の紹介コードは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
 },
 es: {
-  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Preinscripción',cta:'Iluminar mi estrella'},
+  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo.',
     coreMessage:'Nuestras acciones dan fuerza a los artistas de K-POP.',
     d1:'Streaming, votaciones, apoyo y participación. Cada acción se convierte en POP y hace crecer el planeta de nuestro fandom.',
@@ -533,7 +533,7 @@ es: {
   errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese código de referido.',selfReferralNotAllowed:'No puedes usar tu propio código.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
 },
 zhHans: {
-  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'预注册',cta:'点亮我的星'},
+  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'预注册',cta:'点亮我的星',close:'关闭'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片宇宙中',t3:'闪耀得最亮。',
     coreMessage:'我们的行动，汇聚成 K-POP 艺人的力量。',
     d1:'打榜、投票、应援、参与。每一次粉丝行动都会记录为 POP，并推动我们的粉丝星球成长。',
@@ -652,7 +652,7 @@ zhHans: {
   errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该邀请码。',selfReferralNotAllowed:'不能使用自己的邀请码。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
 },
 zhHant: {
-  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'預先登記',cta:'點亮我的星'},
+  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'預先登記',cta:'點亮我的星',close:'關閉'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片宇宙中',t3:'閃耀得最亮。',
     coreMessage:'我們的行動，匯聚成 K-POP 藝人的力量。',
     d1:'串流、投票、應援、參與。每一次粉絲行動都會記錄為 POP，讓我們的粉絲星球持續成長。',

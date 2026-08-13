@@ -1,10 +1,12 @@
 'use client';
 
 import { useLang } from '@/components/providers/LangProvider';
+import { usePreregModal } from '@/components/providers/PreregModalProvider';
 import PlanetSwiper from './PlanetSwiper';
 
 export default function Hero() {
   const { tr } = useLang();
+  const { openModal } = usePreregModal();
 
   return (
     <section
@@ -122,8 +124,8 @@ export default function Hero() {
           >
             {tr.hero.ctaPrimary}
           </a>
-          <a
-            href="#prereg"
+          <button
+            onClick={openModal}
             style={{
               background: 'rgba(255,255,255,.06)',
               border: '1px solid rgba(255,255,255,.16)',
@@ -132,12 +134,13 @@ export default function Hero() {
               fontSize: 16,
               padding: '15px 28px',
               borderRadius: 999,
-              textDecoration: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
               display: 'inline-block',
             }}
           >
             {tr.hero.ctaPrereg}
-          </a>
+          </button>
           <a
             href="#why"
             style={{

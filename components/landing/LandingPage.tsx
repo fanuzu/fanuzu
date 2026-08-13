@@ -3,6 +3,7 @@
 import { LangProvider } from '@/components/providers/LangProvider';
 import { ContributionProvider } from '@/components/providers/ContributionProvider';
 import { PlanetThemeProvider } from '@/components/providers/PlanetThemeProvider';
+import { PreregModalProvider } from '@/components/providers/PreregModalProvider';
 import PlanetAtmosphere from './PlanetAtmosphere';
 import StarField from './StarField';
 import MeteorShower from './MeteorShower';
@@ -21,32 +22,36 @@ import Origin from './Origin';
 import Compare from './Compare';
 import Prereg from './Prereg';
 import Footer from './Footer';
+import PreregModal from './PreregModal';
 
 export default function LandingPage() {
   return (
     <LangProvider>
       <ContributionProvider>
         <PlanetThemeProvider>
-          <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
-            <PlanetAtmosphere />
-            <StarField />
-            <MeteorShower />
-            <ParticleLayer />
-            <Nav />
-            <Hero />
-            <Why />
-            <PopIntro />
-            <Experience />
-            <GrowthSystem />
-            <FandomAction />
-            <Quest />
-            <Campaign />
-            <Passport />
-            <Origin />
-            <Compare />
-            <Prereg />
-            <Footer />
-          </div>
+          <PreregModalProvider>
+            <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
+              <PlanetAtmosphere />
+              <StarField />
+              <MeteorShower />
+              <ParticleLayer />
+              <Nav />
+              <Hero />
+              <Why />
+              <PopIntro />
+              <Experience />
+              <GrowthSystem />
+              <FandomAction />
+              <Quest />
+              <Campaign />
+              <Passport />
+              <Origin />
+              <Compare />
+              <Prereg />
+              <Footer />
+              <PreregModal />
+            </div>
+          </PreregModalProvider>
         </PlanetThemeProvider>
       </ContributionProvider>
     </LangProvider>
