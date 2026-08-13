@@ -53,13 +53,18 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [errorText, setErrorText] = useState('');
   const [result, setResult] = useState<PreregResult | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
   const [attribution, setAttribution] = useState<Attribution | null>(null);
+  // Starts false on both server and client so hydration always matches;
+  // navigator.share only exists in the browser, so it's set for real after mount.
+  const [canShareNatively, setCanShareNatively] = useState(false);
 
   // Prefill from whatever AttributionTracker captured on landing (invite
   // link's ref code, and/or the artist it named) — a fan who clicked a
   // shared link shouldn't have to re-enter what the link already told us.
   useEffect(() => {
+    setCanShareNatively(typeof navigator !== 'undefined' && !!navigator.share);
     const attr = readAttribution();
     if (!attr) return;
     setAttribution(attr);
@@ -158,18 +163,56 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
     }
   }
 
-  function copyReferral() {
-    const code = result ? result.code : '';
+  // Referral program spec section 3: code copy, link copy, and share are
+  // distinct affordances, not one combined "copy" button — a fan reposting
+  // to a Discord server wants just the code; one DMing a friend wants the
+  // full link; one on mobile wants the OS share sheet.
+  function buildShareUrl(code: string): URL {
     const shareUrl = new URL(window.location.origin);
     shareUrl.searchParams.set('ref', code);
     if (artistName) shareUrl.searchParams.set('artist', artistName);
     shareUrl.searchParams.set('utm_source', 'referral');
     shareUrl.searchParams.set('utm_medium', 'share');
     shareUrl.searchParams.set('utm_campaign', 'invite_code');
-    const shareText = tr.prereg.shareMessage.replace('{code}', code).replace('{url}', shareUrl.toString());
-    if (navigator.clipboard && code) navigator.clipboard.writeText(shareText).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
+    return shareUrl;
+  }
+
+  function copyCode() {
+    const code = result ? result.code : '';
+    if (navigator.clipboard && code) navigator.clipboard.writeText(code).catch(() => {});
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 1600);
+  }
+
+  function copyLink() {
+    const code = result ? result.code : '';
+    if (!code) return;
+    const shareText = tr.prereg.shareMessage.replace('{code}', code).replace('{url}', buildShareUrl(code).toString());
+    if (navigator.clipboard) navigator.clipboard.writeText(shareText).catch(() => {});
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 1600);
+  }
+
+  function shareNative() {
+    const code = result ? result.code : '';
+    if (!code) return;
+    const url = buildShareUrl(code).toString();
+    const text = tr.prereg.shareMessage.replace('{code}', code).replace('{url}', url);
+    if (navigator.share) {
+      navigator.share({ text, url }).catch(() => {});
+    } else {
+      copyLink();
+    }
+  }
+
+  function shareX() {
+    const code = result ? result.code : '';
+    if (!code) return;
+    const text = tr.prereg.shareMessage.replace('{code}', code).replace('{url}', '').trim();
+    const intentUrl = new URL('https://twitter.com/intent/tweet');
+    intentUrl.searchParams.set('text', text);
+    intentUrl.searchParams.set('url', buildShareUrl(code).toString());
+    window.open(intentUrl.toString(), '_blank', 'noopener,noreferrer');
   }
 
   const resultTitle = result ? (result.hasRef ? tr.prereg.resultTitleRef : tr.prereg.resultTitleNoRef) : '';
@@ -478,27 +521,81 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                 </div>
               ))}
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              {hasReferralCode && (
+            {hasReferralCode && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
                 <button
-                  onClick={copyReferral}
+                  onClick={copyCode}
                   style={{
-                    flex: 1,
-                    minWidth: 180,
+                    flex: '1 1 130px',
                     background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
                     color: '#05030B',
                     fontWeight: 700,
-                    fontSize: 13.5,
-                    padding: 13,
+                    fontSize: 13,
+                    padding: 12,
                     border: 'none',
                     borderRadius: 999,
                     cursor: 'pointer',
                     fontFamily: 'inherit',
                   }}
                 >
-                  {copied ? tr.prereg.copiedLabel : tr.prereg.btnCopy}
+                  {copiedCode ? tr.prereg.copiedLabel : tr.prereg.btnCopyCode}
                 </button>
-              )}
+                <button
+                  onClick={copyLink}
+                  style={{
+                    flex: '1 1 130px',
+                    background: 'rgba(255,255,255,.06)',
+                    border: '1px solid rgba(255,125,221,.35)',
+                    color: '#FFFAFC',
+                    fontWeight: 600,
+                    fontSize: 13,
+                    padding: 12,
+                    borderRadius: 999,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {copiedLink ? tr.prereg.copiedLabel : tr.prereg.btnCopyLink}
+                </button>
+                <button
+                  onClick={shareX}
+                  style={{
+                    flex: '1 1 130px',
+                    background: 'rgba(255,255,255,.06)',
+                    border: '1px solid rgba(255,255,255,.16)',
+                    color: '#FFFAFC',
+                    fontWeight: 600,
+                    fontSize: 13,
+                    padding: 12,
+                    borderRadius: 999,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {tr.prereg.btnShareX}
+                </button>
+                {canShareNatively && (
+                  <button
+                    onClick={shareNative}
+                    style={{
+                      flex: '1 1 130px',
+                      background: 'rgba(255,255,255,.06)',
+                      border: '1px solid rgba(255,255,255,.16)',
+                      color: '#FFFAFC',
+                      fontWeight: 600,
+                      fontSize: 13,
+                      padding: 12,
+                      borderRadius: 999,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {tr.prereg.btnShare}
+                  </button>
+                )}
+              </div>
+            )}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               <a
                 href="#passport"
                 onClick={onRequestClose}

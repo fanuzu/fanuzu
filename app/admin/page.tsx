@@ -37,6 +37,32 @@ interface ReferralRow {
   conversions: number;
 }
 
+interface ReferralProgramSummary {
+  total: number;
+  referred: number;
+  direct: number;
+}
+
+interface ReferrerRow {
+  referrerId: number;
+  referralCode: string;
+  email: string;
+  referredCount: number;
+  pendingPop: number;
+  paidPop: number;
+}
+
+interface ReferralSearchRow {
+  id: number;
+  email: string;
+  referralCode: string;
+  referredByCode: string | null;
+  isReferred: boolean;
+  rewardAmount: number;
+  rewardStatus: string;
+  createdAt: string;
+}
+
 const STORAGE_KEY = 'fanuzu_admin_password';
 
 // GET with a custom auth header can't be a plain <a href> download, so fetch
@@ -220,6 +246,16 @@ export default function AdminPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [referralSummary, setReferralSummary] = useState<ReferralProgramSummary | null>(null);
+  const [referrerLeaderboard, setReferrerLeaderboard] = useState<ReferrerRow[] | null>(null);
+  const [referralRows, setReferralRows] = useState<ReferralSearchRow[] | null>(null);
+  const [referralProgramError, setReferralProgramError] = useState('');
+  const [referralProgramLoading, setReferralProgramLoading] = useState(false);
+  const [searchQ, setSearchQ] = useState('');
+  const [hasReferralFilter, setHasReferralFilter] = useState<'all' | 'yes' | 'no'>('all');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
   useEffect(() => {
     document.title = 'Admin — FANUZU';
     const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -266,11 +302,51 @@ export default function AdminPage() {
       setReferrals(analyticsData.referrals);
       sessionStorage.setItem(STORAGE_KEY, pw);
       setPassword(pw);
+      loadReferralProgram(pw, {});
     } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
+  }
+
+  async function loadReferralProgram(
+    pw: string,
+    filters: { q?: string; hasReferral?: 'all' | 'yes' | 'no'; from?: string; to?: string }
+  ) {
+    setReferralProgramLoading(true);
+    setReferralProgramError('');
+    try {
+      const params = new URLSearchParams();
+      if (filters.q) params.set('q', filters.q);
+      if (filters.hasReferral && filters.hasReferral !== 'all') params.set('hasReferral', filters.hasReferral);
+      if (filters.from) params.set('from', filters.from);
+      if (filters.to) params.set('to', filters.to);
+      const res = await fetch(`/api/admin/referral-program?${params.toString()}`, {
+        headers: { 'x-admin-password': pw },
+      });
+      if (res.status === 401 || res.status === 503) {
+        setReferralProgramError('Could not load referral program data.');
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        setReferralProgramError('Something went wrong loading referral program data.');
+        return;
+      }
+      setReferralSummary(data.summary);
+      setReferrerLeaderboard(data.leaderboard);
+      setReferralRows(data.rows);
+    } catch {
+      setReferralProgramError('Network error. Please try again.');
+    } finally {
+      setReferralProgramLoading(false);
+    }
+  }
+
+  function handleReferralSearch(e: React.FormEvent) {
+    e.preventDefault();
+    loadReferralProgram(password, { q: searchQ, hasReferral: hasReferralFilter, from: fromDate, to: toDate });
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -436,7 +512,10 @@ export default function AdminPage() {
                 {utm!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No tracked traffic yet.</p>}
               </div>
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Referral leaderboard</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Invite link click-throughs</h3>
+              <p style={{ fontSize: 11.5, color: '#6B6478', margin: '0 0 10px' }}>
+                Raw link clicks vs. conversions per code — see "Referral program" below for actual referral relationships and reward status.
+              </p>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
@@ -457,6 +536,129 @@ export default function AdminPage() {
                   </tbody>
                 </table>
                 {referrals!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No referral activity yet.</p>}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Referral program</h2>
+              <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
+                Actual referrer → referred relationships and their reward status. POP is reserved at pre-registration and
+                stays <code>pending</code> until app launch matches this row to a real account.
+              </p>
+
+              {referralProgramError && <p style={{ color: '#FF7DDD', fontSize: 13, marginBottom: 12 }}>{referralProgramError}</p>}
+
+              {referralSummary && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 10, marginBottom: 24 }}>
+                  <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Total pre-registrations</div>
+                    <div style={{ fontSize: 20, fontWeight: 700 }}>{referralSummary.total.toLocaleString()}</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Via referral</div>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: '#FF7DDD' }}>{referralSummary.referred.toLocaleString()}</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Direct sign-ups</div>
+                    <div style={{ fontSize: 20, fontWeight: 700 }}>{referralSummary.direct.toLocaleString()}</div>
+                  </div>
+                </div>
+              )}
+
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Top referrers</h3>
+              <div style={{ overflowX: 'auto', marginBottom: 28 }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referral code</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referrer email</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Referred</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Pending POP</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Paid POP</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referrerLeaderboard?.map((r) => (
+                      <tr key={r.referrerId} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 700, fontFamily: 'monospace' }}>{r.referralCode}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{r.email}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>{r.referredCount.toLocaleString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>{r.pendingPop.toLocaleString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: 700 }}>{r.paidPop.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {referrerLeaderboard?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No successful referrals yet.</p>}
+                {referrerLeaderboard === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+              </div>
+
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Search pre-registrations</h3>
+              <form onSubmit={handleReferralSearch} style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+                <input
+                  style={{ ...fieldStyle, width: 200 }}
+                  placeholder="Email or referral code"
+                  value={searchQ}
+                  onChange={(e) => setSearchQ(e.target.value)}
+                />
+                <select
+                  style={{ ...fieldStyle, width: 140, cursor: 'pointer' }}
+                  value={hasReferralFilter}
+                  onChange={(e) => setHasReferralFilter(e.target.value as 'all' | 'yes' | 'no')}
+                >
+                  <option value="all">All sign-ups</option>
+                  <option value="yes">Via referral</option>
+                  <option value="no">Direct</option>
+                </select>
+                <input type="date" style={{ ...fieldStyle, width: 150 }} value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+                <input type="date" style={{ ...fieldStyle, width: 150 }} value={toDate} onChange={(e) => setToDate(e.target.value)} />
+                <button
+                  type="submit"
+                  disabled={referralProgramLoading}
+                  style={{
+                    background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                    color: '#05030B',
+                    fontWeight: 700,
+                    fontSize: 12.5,
+                    padding: '0 18px',
+                    border: 'none',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {referralProgramLoading ? '···' : 'Search'}
+                </button>
+              </form>
+
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Email</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Own code</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referred by</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Reward</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Status</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600 }}>Registered</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referralRows?.map((r) => (
+                      <tr key={r.id} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0' }}>{r.email}</td>
+                        <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace' }}>{r.referralCode}</td>
+                        <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace', color: r.isReferred ? '#FF7DDD' : '#6B6478' }}>
+                          {r.referredByCode ?? '—'}
+                        </td>
+                        <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap' }}>{r.rewardAmount} POP</td>
+                        <td style={{ padding: '8px 12px 8px 0', textTransform: 'capitalize' }}>{r.rewardStatus}</td>
+                        <td style={{ padding: '8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {referralRows?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No matching pre-registrations.</p>}
+                {referralRows === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
               </div>
             </div>
           </>

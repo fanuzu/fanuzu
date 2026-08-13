@@ -97,21 +97,30 @@ export async function getArtistCounts(): Promise<{ artist: string; count: number
   return rows.map((r) => ({ artist: r.artist, count: Number(r.count) }));
 }
 
-function slugFromArtist(name: string): string {
-  const slug = name.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
-  return slug || 'FANZ';
+// Referral program spec section 4: 6-8 chars, uppercase letters + digits only,
+// no personal info, and excludes characters that are easy to misread when a
+// fan is typing someone else's code off a screenshot or a screen share —
+// O/0, I/1, and L are all dropped from the pool.
+const REFERRAL_CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const REFERRAL_CODE_LENGTH = 8;
+
+function randomReferralCode(): string {
+  let code = '';
+  for (let i = 0; i < REFERRAL_CODE_LENGTH; i++) {
+    code += REFERRAL_CODE_CHARS[Math.floor(Math.random() * REFERRAL_CODE_CHARS.length)];
+  }
+  return code;
 }
 
-async function generateReferralCode(artistName: string): Promise<string> {
+async function generateReferralCode(): Promise<string> {
   const pool = getPool();
-  const slug = slugFromArtist(artistName);
   for (let attempt = 0; attempt < 25; attempt++) {
-    const code = `FANUZU-${slug}${Math.floor(1000 + Math.random() * 9000)}`;
+    const code = randomReferralCode();
     const { rows } = await pool.query('SELECT 1 FROM preregistrations WHERE referral_code = $1', [code]);
     if (rows.length === 0) return code;
   }
-  // Astronomically unlikely fallback: widen the suffix so collisions can't persist.
-  return `FANUZU-${slug}${Date.now().toString(36).toUpperCase()}`;
+  // Astronomically unlikely fallback: widen with a base36 time suffix so collisions can't persist.
+  return `${randomReferralCode().slice(0, 4)}${Date.now().toString(36).toUpperCase()}`.slice(0, REFERRAL_CODE_LENGTH + 4);
 }
 
 function fail(error: PreregErrorCode, message: string): PreregFailure {
@@ -210,7 +219,7 @@ export async function submitPreregistration(
   const origin100Number = origin100Eligible ? artistJoinOrder : null;
 
   const rewardAmount = referrer ? 100 : 50;
-  const referralCode = await generateReferralCode(artistName);
+  const referralCode = await generateReferralCode();
 
   // Only ever links to an existing registry row (see lib/artists.ts) — a
   // custom "Other" name a fan typed in never auto-creates one. An admin has
@@ -281,6 +290,14 @@ export async function submitPreregistration(
       await client.query(
         'UPDATE preregistrations SET referrer_reward_pending = true WHERE id = $1',
         [referrer.id]
+      );
+      // Normalized relationship row (spec section 7) — this is what admin's
+      // per-referrer aggregation and any future ranking/campaign feature
+      // reads from, kept independent of each side's own reward_status.
+      await client.query(
+        `INSERT INTO referrals (referrer_preregistration_id, referred_preregistration_id, referral_code, reward_amount_referrer, reward_amount_referred)
+         VALUES ($1,$2,$3,100,100)`,
+        [referrer.id, preregistrationId, referralCodeInput.toUpperCase()]
       );
     }
 

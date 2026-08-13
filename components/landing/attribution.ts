@@ -5,6 +5,10 @@
 // client component calls it inside an effect.
 export const ATTRIBUTION_KEY = 'fanuzu_attribution';
 const VISIT_TRACKED_KEY = 'fanuzu_visit_tracked';
+// Referral program spec section 13: an invite link's ref/artist/UTM params
+// stay usable for 30 days after landing, not forever — someone who clicked a
+// link once in January shouldn't still be crediting that referrer in June.
+const ATTRIBUTION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 export interface Attribution {
   referralCode?: string;
@@ -35,7 +39,14 @@ export function captureFromUrl(): { attribution: Omit<Attribution, 'capturedAt'>
 export function readAttribution(): Attribution | null {
   try {
     const raw = localStorage.getItem(ATTRIBUTION_KEY);
-    return raw ? (JSON.parse(raw) as Attribution) : null;
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Attribution;
+    const capturedAt = new Date(parsed.capturedAt).getTime();
+    if (Number.isNaN(capturedAt) || Date.now() - capturedAt > ATTRIBUTION_TTL_MS) {
+      localStorage.removeItem(ATTRIBUTION_KEY);
+      return null;
+    }
+    return parsed;
   } catch {
     return null;
   }

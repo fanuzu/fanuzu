@@ -182,6 +182,43 @@ const SCHEMA_SQL = `
   CREATE INDEX IF NOT EXISTS idx_link_visits_code ON link_visits (referral_code);
   CREATE INDEX IF NOT EXISTS idx_link_visits_time ON link_visits (created_at);
   CREATE INDEX IF NOT EXISTS idx_link_visits_utm_source ON link_visits (utm_source);
+
+  -- Referral program spec section 6/9: structure for matching a pre-registration
+  -- to the real FANUZU account created after app launch, and for tracking that
+  -- registrant's own signup reward through to actual payout. Nothing here pays
+  -- out POP by itself — every row is created 'pending' and stays that way until
+  -- a post-launch matching flow (which doesn't exist yet) flips it.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS app_user_id TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS matched_at TIMESTAMPTZ;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS reward_status TEXT NOT NULL DEFAULT 'pending';
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS reward_paid_at TIMESTAMPTZ;
+  DO $$ BEGIN
+    ALTER TABLE preregistrations ADD CONSTRAINT preregistrations_reward_status_check
+      CHECK (reward_status IN ('pending', 'eligible', 'paid', 'rejected'));
+  EXCEPTION WHEN duplicate_object THEN NULL;
+  END $$;
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_prereg_app_user_id ON preregistrations (app_user_id) WHERE app_user_id IS NOT NULL;
+
+  -- Referral program spec section 7: a normalized relationship row per
+  -- successful referral, kept alongside (not instead of) preregistrations
+  -- .referred_by_id — this is what makes per-referrer aggregation (count,
+  -- ranking, reward status) a straight query instead of a self-join, and
+  -- gives referral rewards their own payout lifecycle independent of the
+  -- referred user's own signup reward. The UNIQUE on referred_preregistration_id
+  -- enforces "one referrer per user" at the DB level, not just in application code.
+  CREATE TABLE IF NOT EXISTS referrals (
+    id SERIAL PRIMARY KEY,
+    referrer_preregistration_id INTEGER NOT NULL REFERENCES preregistrations(id),
+    referred_preregistration_id INTEGER NOT NULL UNIQUE REFERENCES preregistrations(id),
+    referral_code TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'eligible', 'paid', 'rejected')),
+    reward_amount_referrer INTEGER NOT NULL DEFAULT 100,
+    reward_amount_referred INTEGER NOT NULL DEFAULT 100,
+    reward_paid_at TIMESTAMPTZ
+  );
+  CREATE INDEX IF NOT EXISTS idx_referrals_referrer ON referrals (referrer_preregistration_id);
+  CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals (referral_code);
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't
