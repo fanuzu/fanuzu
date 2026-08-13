@@ -160,13 +160,52 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   return (
     <div style={{ maxWidth: 1180, margin: '0 auto', width: '100%' }}>
       <div style={{ maxWidth: 640, margin: '0 auto 20px', textAlign: 'center' }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            background: 'rgba(255,125,221,.1)',
+            border: '1px solid rgba(255,125,221,.3)',
+            padding: '7px 14px',
+            borderRadius: 999,
+            fontSize: 11.5,
+            letterSpacing: '.08em',
+            color: '#FF7DDD',
+            fontWeight: 700,
+            marginBottom: 18,
+          }}
+        >
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
+          {tr.prereg.statusBadge}
+        </div>
         <h2 id={headingId} style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
           {tr.prereg.t1}
           <br />
           {tr.prereg.t2}
         </h2>
         <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.prereg.d1}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.prereg.d2}</p>
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 14px' }}>{tr.prereg.d2}</p>
+        <p style={{ fontSize: 12.5, lineHeight: 1.6, color: '#6B6478', margin: 0 }}>{tr.prereg.statusNote}</p>
+      </div>
+
+      <div
+        style={{
+          maxWidth: 560,
+          margin: '32px auto 0',
+          background: 'rgba(255,255,255,.04)',
+          border: '1px solid rgba(255,255,255,.08)',
+          borderRadius: 18,
+          padding: '22px 26px',
+        }}
+      >
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>{tr.prereg.benefitsLabel}</div>
+        {tr.prereg.benefits.map((b, i) => (
+          <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: i < tr.prereg.benefits.length - 1 ? 10 : 0 }}>
+            <span style={{ color: '#FF7DDD', fontSize: 13, lineHeight: 1.6, flex: '0 0 auto' }}>✦</span>
+            <span style={{ fontSize: 13.5, lineHeight: 1.55, color: '#FFFAFC' }}>{b}</span>
+          </div>
+        ))}
       </div>
 
       <div
@@ -175,7 +214,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
           gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
           gap: 16,
           maxWidth: 900,
-          margin: '44px auto 48px',
+          margin: '32px auto 48px',
         }}
       >
         {steps.map((pst) => (

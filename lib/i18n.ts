@@ -31,7 +31,9 @@ export interface TranslationSet {
   };
   compare: { t1: string; t2: string; oldT: string; oldItems: string[]; newT: string; newItems: string[] };
   prereg: {
-    t1: string; t2: string; d1: string; d2: string; steps: { t: string; d: string }[];
+    t1: string; t2: string; d1: string; d2: string;
+    statusBadge: string; statusNote: string; benefitsLabel: string; benefits: string[];
+    steps: { t: string; d: string }[];
     artistLabel: string; artistPlaceholder: string; fandomLabel: string; fandomPlaceholder: string;
     emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
     referralToggle: string; referralHint: string; referralPlaceholder: string;
@@ -144,6 +146,9 @@ ko: {
   prereg:{t1:'아직 아무도 밝히지 않은',t2:'당신의 별이 기다리고 있습니다.',
     d1:'내가 좋아하는 아티스트의 행성에 가장 먼저 도착해보세요.',
     d2:'행성별 최초 100명의 팬은 ORIGIN 100으로 기록됩니다.',
+    statusBadge:'사전신청',statusNote:'아직 정식 오픈 일정은 정해지지 않았습니다. 지금 사전신청하면 자리를 미리 확보할 수 있어요.',
+    benefitsLabel:'사전신청 혜택',
+    benefits:['지금 바로 50 POP, 추천 코드 사용 시 100 POP','오늘 날짜로 행성 참여 순번 확보','최초 100명이면 ORIGIN 100 도전 기회'],
     steps:[
       {t:'내 아티스트 등록',d:'아직 행성이 없다면 생성 신청을, 이미 신청된 행성이라면 초기 팬으로 참여합니다.'},
       {t:'추천 코드로 팬 연결',d:'나만의 추천 코드를 공유하고 같은 별을 밝힐 팬들을 초대합니다.'},
@@ -263,6 +268,9 @@ en: {
   prereg:{t1:'Your star',t2:'is waiting for you.',
     d1:'Be among the first to join the fandom planet of the artist you love.',
     d2:'The first 100 eligible fans for each planet can be recorded as ORIGIN 100.',
+    statusBadge:'PRE-REGISTRATION',statusNote:'FANUZU’s official launch date hasn’t been set yet. Pre-register now to reserve your spot ahead of it.',
+    benefitsLabel:'What pre-registering gets you',
+    benefits:['50 POP instantly — 100 POP with a referral code','Your join order in the fandom planet, secured from today','A shot at ORIGIN 100 if you’re among the first 100 fans'],
     steps:[
       {t:'Join my artist',d:'If the planet doesn’t exist yet, request it. If it does, join as an early fan.'},
       {t:'Invite fans',d:'Share your referral code and invite fans to light the same star.'},
@@ -382,6 +390,9 @@ ja: {
   prereg:{t1:'あなたの星が',t2:'待っています。',
     d1:'推しのファンダム惑星に、いち早く参加しよう。',
     d2:'各惑星で条件を満たした最初の100人は、ORIGIN 100の対象になります。',
+    statusBadge:'事前登録',statusNote:'まだ正式な開始日は決まっていません。今のうちに事前登録して、あなたの順番を確保しましょう。',
+    benefitsLabel:'事前登録の特典',
+    benefits:['今すぐ50 POP、紹介コードを使えば100 POP','今日の日付でファンダム惑星への参加順番を確保','最初の100人ならORIGIN 100に挑戦できるチャンス'],
     steps:[
       {t:'推しを登録',d:'まだ惑星がなければ作成をリクエスト。すでにあれば初期ファンとして参加できます。'},
       {t:'ファンを招待',d:'紹介コードをシェアして、同じ星を一緒に照らす仲間を招待。'},
@@ -502,6 +513,9 @@ es: {
   prereg:{t1:'Tu estrella',t2:'te está esperando.',
     d1:'Sé de los primeros en unirte al planeta fandom del artista que amas.',
     d2:'Los primeros 100 fans elegibles de cada planeta podrán quedar registrados como ORIGIN 100.',
+    statusBadge:'PREINSCRIPCIÓN',statusNote:'Todavía no hay fecha oficial de lanzamiento de FANUZU. Preinscríbete ahora para reservar tu lugar.',
+    benefitsLabel:'Beneficios de preinscribirte',
+    benefits:['50 POP al instante — 100 POP con un código de referido','Tu turno de ingreso al planeta, asegurado desde hoy','Una oportunidad de ser ORIGIN 100 si estás entre los primeros 100 fans'],
     steps:[
       {t:'Elige a tu artista',d:'Si el planeta aún no existe, solicita su creación. Si ya existe, únete como fan inicial.'},
       {t:'Invita a otros fans',d:'Comparte tu código e invita a más fans a iluminar la misma estrella.'},
@@ -621,6 +635,9 @@ zhHans: {
   prereg:{t1:'你的星球',t2:'正在等你。',
     d1:'尽早加入你喜欢的艺人粉丝星球。',
     d2:'每个星球最早符合条件的 100 位粉丝可成为 ORIGIN 100。',
+    statusBadge:'预注册',statusNote:'FANUZU 正式上线日期尚未确定。现在预注册即可提前锁定你的名额。',
+    benefitsLabel:'预注册福利',
+    benefits:['立即获得 50 POP，使用邀请码可获得 100 POP','从今天起锁定你的星球加入顺位','若是最早的 100 位粉丝，将有机会获得 ORIGIN 100'],
     steps:[
       {t:'选择艺人',d:'如果星球还不存在，可以申请创建；如果已经存在，就作为早期粉丝加入。'},
       {t:'邀请粉丝',d:'分享你的邀请码，邀请更多粉丝一起点亮同一颗星。'},
@@ -740,6 +757,9 @@ zhHant: {
   prereg:{t1:'你的星球',t2:'正在等你。',
     d1:'搶先加入你喜歡的藝人粉絲星球。',
     d2:'每個星球最早符合條件的 100 位粉絲可成為 ORIGIN 100。',
+    statusBadge:'預先登記',statusNote:'FANUZU 正式上線日期尚未確定。現在預先登記即可提前鎖定你的名額。',
+    benefitsLabel:'預先登記福利',
+    benefits:['立即獲得 50 POP，使用邀請碼可獲得 100 POP','從今天起鎖定你的星球加入順位','若是最早的 100 位粉絲，將有機會獲得 ORIGIN 100'],
     steps:[
       {t:'選擇藝人',d:'如果星球還不存在，可以申請建立；如果已經存在，就以早期粉絲身分加入。'},
       {t:'邀請粉絲',d:'分享你的邀請碼，邀請更多粉絲一起點亮同一顆星。'},
