@@ -32,6 +32,12 @@ export interface PreregRequestBody {
   termsAcceptedAt?: unknown;
   privacyAcceptedAt?: unknown;
   marketingConsentAt?: unknown;
+  utmSource?: unknown;
+  utmMedium?: unknown;
+  utmCampaign?: unknown;
+  utmTerm?: unknown;
+  utmContent?: unknown;
+  landingPath?: unknown;
 }
 
 // Matches the 6-language error taxonomy in lib/i18n.ts's `errors` resource
@@ -158,6 +164,12 @@ export async function submitPreregistration(
   const termsAcceptedAt = parseDate(body.termsAcceptedAt);
   const privacyAcceptedAt = parseDate(body.privacyAcceptedAt);
   const marketingConsentAt = parseDate(body.marketingConsentAt);
+  const utmSource = typeof body.utmSource === 'string' ? body.utmSource.trim().slice(0, 200) : '';
+  const utmMedium = typeof body.utmMedium === 'string' ? body.utmMedium.trim().slice(0, 200) : '';
+  const utmCampaign = typeof body.utmCampaign === 'string' ? body.utmCampaign.trim().slice(0, 200) : '';
+  const utmTerm = typeof body.utmTerm === 'string' ? body.utmTerm.trim().slice(0, 200) : '';
+  const utmContent = typeof body.utmContent === 'string' ? body.utmContent.trim().slice(0, 200) : '';
+  const landingPath = typeof body.landingPath === 'string' ? body.landingPath.trim().slice(0, 200) : '';
 
   if (!artistName || !email || !age14Consent || !termsConsent || !privacyConsent) {
     return fail('required_consent', 'Artist name, email, and all required consents are needed.');
@@ -216,8 +228,9 @@ export async function submitPreregistration(
          referral_code_input, referred_by_id, reward_amount, age_confirmed, privacy_consent,
          terms_version, privacy_version, terms_accepted_at, privacy_accepted_at,
          marketing_consent, marketing_consent_at,
-         artist_join_order, origin_100_eligible, origin_100_number, referral_code
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
+         artist_join_order, origin_100_eligible, origin_100_number, referral_code,
+         utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29)
        RETURNING id`,
       [
         email,
@@ -243,6 +256,12 @@ export async function submitPreregistration(
         origin100Eligible,
         origin100Number,
         referralCode,
+        utmSource || null,
+        utmMedium || null,
+        utmCampaign || null,
+        utmTerm || null,
+        utmContent || null,
+        landingPath || null,
       ]
     );
     preregistrationId = insertResult.rows[0].id;

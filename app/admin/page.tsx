@@ -23,7 +23,38 @@ interface Artist {
   preregCount: number;
 }
 
+interface UtmRow {
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  visits: number;
+  conversions: number;
+}
+
+interface ReferralRow {
+  referralCode: string;
+  visits: number;
+  conversions: number;
+}
+
 const STORAGE_KEY = 'fanuzu_admin_password';
+
+// GET with a custom auth header can't be a plain <a href> download, so fetch
+// + Blob it instead — keeps the same header-based auth as every other admin
+// call rather than leaking the password into a URL/browser history.
+async function downloadCsv(url: string, password: string, filename: string) {
+  const res = await fetch(url, { headers: { 'x-admin-password': password } });
+  if (!res.ok) return;
+  const blob = await res.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = objectUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(objectUrl);
+}
 
 const fieldStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,.06)',
@@ -157,6 +188,21 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
         >
           {saving ? 'Saving···' : 'Save'}
         </button>
+        <button
+          onClick={() => downloadCsv(`/api/admin/export?artistId=${artist.id}`, password, `fanuzu-${artist.slug}.csv`)}
+          style={{
+            background: 'transparent',
+            color: '#9089A0',
+            fontWeight: 600,
+            fontSize: 12.5,
+            padding: '8px 16px',
+            border: '1px solid rgba(255,255,255,.14)',
+            borderRadius: 8,
+            cursor: 'pointer',
+          }}
+        >
+          Export CSV
+        </button>
         {saveError && <span style={{ fontSize: 12, color: '#FF7DDD' }}>{saveError}</span>}
       </div>
     </div>
@@ -169,6 +215,8 @@ export default function AdminPage() {
   const [counts, setCounts] = useState<ArtistCount[] | null>(null);
   const [total, setTotal] = useState(0);
   const [artists, setArtists] = useState<Artist[] | null>(null);
+  const [utm, setUtm] = useState<UtmRow[] | null>(null);
+  const [referrals, setReferrals] = useState<ReferralRow[] | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -186,30 +234,36 @@ export default function AdminPage() {
     setLoading(true);
     setError('');
     try {
-      const [statsRes, artistsRes] = await Promise.all([
+      const [statsRes, artistsRes, analyticsRes] = await Promise.all([
         fetch('/api/admin/stats', { headers: { 'x-admin-password': pw } }),
         fetch('/api/admin/artists', { headers: { 'x-admin-password': pw } }),
+        fetch('/api/admin/analytics', { headers: { 'x-admin-password': pw } }),
       ]);
-      if (statsRes.status === 401 || artistsRes.status === 401) {
+      if (statsRes.status === 401 || artistsRes.status === 401 || analyticsRes.status === 401) {
         setError('Incorrect password.');
         sessionStorage.removeItem(STORAGE_KEY);
         setCounts(null);
         setArtists(null);
+        setUtm(null);
+        setReferrals(null);
         return;
       }
-      if (statsRes.status === 503 || artistsRes.status === 503) {
+      if (statsRes.status === 503 || artistsRes.status === 503 || analyticsRes.status === 503) {
         setError('ADMIN_PASSWORD is not configured on the server.');
         return;
       }
       const statsData = await statsRes.json();
       const artistsData = await artistsRes.json();
-      if (!statsRes.ok || !artistsRes.ok) {
+      const analyticsData = await analyticsRes.json();
+      if (!statsRes.ok || !artistsRes.ok || !analyticsRes.ok) {
         setError('Something went wrong loading admin data.');
         return;
       }
       setCounts(statsData.counts);
       setTotal(statsData.total);
       setArtists(artistsData.artists);
+      setUtm(analyticsData.utm);
+      setReferrals(analyticsData.referrals);
       sessionStorage.setItem(STORAGE_KEY, pw);
       setPassword(pw);
     } catch {
@@ -229,7 +283,7 @@ export default function AdminPage() {
   }
 
   const maxCount = counts && counts.length > 0 ? counts[0].count : 1;
-  const authed = !!password && !!counts && !!artists;
+  const authed = !!password && !!counts && !!artists && !!utm && !!referrals;
 
   return (
     <div
@@ -242,8 +296,30 @@ export default function AdminPage() {
       }}
     >
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 8px' }}>FANUZU Admin</h1>
-        <p style={{ fontSize: 14, color: '#9089A0', margin: '0 0 32px' }}>Artist registry & pre-registration stats</p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 32 }}>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 8px' }}>FANUZU Admin</h1>
+            <p style={{ fontSize: 14, color: '#9089A0', margin: 0 }}>Artist registry & pre-registration stats</p>
+          </div>
+          {authed && (
+            <button
+              onClick={() => downloadCsv('/api/admin/export', password, 'fanuzu-all.csv')}
+              style={{
+                background: 'transparent',
+                color: '#9089A0',
+                fontWeight: 600,
+                fontSize: 12.5,
+                padding: '8px 16px',
+                border: '1px solid rgba(255,255,255,.14)',
+                borderRadius: 8,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Export all CSV
+            </button>
+          )}
+        </div>
 
         {!authed && (
           <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 10, maxWidth: 360 }}>
@@ -324,6 +400,63 @@ export default function AdminPage() {
                   </div>
                 ))}
                 {counts!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13 }}>No pre-registrations yet.</p>}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Traffic & referrals</h2>
+              <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
+                Visits are recorded on landing; conversions are pre-registrations that carried the same source.
+              </p>
+
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>UTM breakdown</h3>
+              <div style={{ overflowX: 'auto', marginBottom: 28 }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Source</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Medium</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Campaign</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Visits</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Conversions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {utm!.map((row, i) => (
+                      <tr key={i} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 600 }}>{row.utmSource || '(none)'}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{row.utmMedium || '—'}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{row.utmCampaign || '—'}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>{row.visits.toLocaleString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: 700 }}>{row.conversions.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {utm!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No tracked traffic yet.</p>}
+              </div>
+
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Referral leaderboard</h3>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Invite code</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Visits</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Conversions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referrals!.map((row) => (
+                      <tr key={row.referralCode} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 700, fontFamily: 'monospace' }}>{row.referralCode}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>{row.visits.toLocaleString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: 700 }}>{row.conversions.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {referrals!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No referral activity yet.</p>}
               </div>
             </div>
           </>

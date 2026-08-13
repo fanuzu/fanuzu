@@ -1,8 +1,9 @@
 'use client';
 
-import { useId, useState, type FormEvent } from 'react';
+import { useEffect, useId, useState, type FormEvent } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import ArtistSelect from './ArtistSelect';
+import { readAttribution, type Attribution } from './attribution';
 
 interface PreregResult {
   hasRef: boolean;
@@ -53,6 +54,22 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   const [errorText, setErrorText] = useState('');
   const [result, setResult] = useState<PreregResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const [attribution, setAttribution] = useState<Attribution | null>(null);
+
+  // Prefill from whatever AttributionTracker captured on landing (invite
+  // link's ref code, and/or the artist it named) — a fan who clicked a
+  // shared link shouldn't have to re-enter what the link already told us.
+  useEffect(() => {
+    const attr = readAttribution();
+    if (!attr) return;
+    setAttribution(attr);
+    if (attr.referralCode) setReferralCode(attr.referralCode);
+    if (attr.artist) {
+      setArtistName(attr.artist);
+      setStep('form');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const steps = tr.prereg.steps.map((s, i) => ({ n: i + 1, t: s.t, d: s.d }));
 
@@ -113,6 +130,12 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
           termsAcceptedAt: now,
           privacyAcceptedAt: now,
           marketingConsentAt: marketingConsent ? now : null,
+          utmSource: attribution?.utmSource,
+          utmMedium: attribution?.utmMedium,
+          utmCampaign: attribution?.utmCampaign,
+          utmTerm: attribution?.utmTerm,
+          utmContent: attribution?.utmContent,
+          landingPath: typeof window !== 'undefined' ? window.location.pathname + window.location.search : undefined,
         }),
       });
       const data = await res.json();
@@ -137,7 +160,13 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   function copyReferral() {
     const code = result ? result.code : '';
-    const shareText = tr.prereg.shareMessage.replace('{code}', code);
+    const shareUrl = new URL(window.location.origin);
+    shareUrl.searchParams.set('ref', code);
+    if (artistName) shareUrl.searchParams.set('artist', artistName);
+    shareUrl.searchParams.set('utm_source', 'referral');
+    shareUrl.searchParams.set('utm_medium', 'share');
+    shareUrl.searchParams.set('utm_campaign', 'invite_code');
+    const shareText = tr.prereg.shareMessage.replace('{code}', code).replace('{url}', shareUrl.toString());
     if (navigator.clipboard && code) navigator.clipboard.writeText(shareText).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);

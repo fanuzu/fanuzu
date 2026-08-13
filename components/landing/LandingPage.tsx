@@ -23,6 +23,7 @@ import Compare from './Compare';
 import Prereg from './Prereg';
 import Footer from './Footer';
 import PreregModal from './PreregModal';
+import AttributionTracker from './AttributionTracker';
 
 export default function LandingPage() {
   return (
@@ -31,6 +32,7 @@ export default function LandingPage() {
         <PlanetThemeProvider>
           <PreregModalProvider>
             <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
+              <AttributionTracker />
               <PlanetAtmosphere />
               <StarField />
               <MeteorShower />

@@ -140,6 +140,48 @@ const SCHEMA_SQL = `
     ('twice', 'TWICE', 'ONCE', 'JYP Entertainment'),
     ('babymonster', 'BABYMONSTER', 'MONSTIEZ', 'YG Entertainment')
   ON CONFLICT (slug) DO NOTHING;
+
+  -- Fandom-level querying (admin CSV export, per-artist breakdown) leans on
+  -- this join constantly — preregistrations was only indexed on the raw
+  -- normalized name before artist_id existed.
+  CREATE INDEX IF NOT EXISTS idx_prereg_artist_id ON preregistrations (artist_id);
+
+  -- Attribution: which UTM parameters and/or invite link brought this
+  -- registration in. Captured client-side on landing (see
+  -- components/landing/AttributionTracker.tsx) and submitted along with the
+  -- form — first-touch, not last-touch, so a fan who browses around before
+  -- registering is still credited to whatever link/campaign first brought
+  -- them in.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS utm_source TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS utm_medium TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS utm_campaign TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS utm_term TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS utm_content TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS landing_path TEXT;
+  CREATE INDEX IF NOT EXISTS idx_prereg_utm_source ON preregistrations (utm_source);
+
+  -- Every landing hit that carries a referral code and/or UTM params, logged
+  -- before we know whether it converts — this is what makes click-through
+  -- and conversion-rate-per-referrer measurable, not just raw signup counts.
+  -- One row per browser session (deduped client-side), not per pageview.
+  CREATE TABLE IF NOT EXISTS link_visits (
+    id SERIAL PRIMARY KEY,
+    referral_code TEXT,
+    artist_param TEXT,
+    utm_source TEXT,
+    utm_medium TEXT,
+    utm_campaign TEXT,
+    utm_term TEXT,
+    utm_content TEXT,
+    landing_path TEXT,
+    referrer TEXT,
+    ip TEXT,
+    user_agent TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS idx_link_visits_code ON link_visits (referral_code);
+  CREATE INDEX IF NOT EXISTS idx_link_visits_time ON link_visits (created_at);
+  CREATE INDEX IF NOT EXISTS idx_link_visits_utm_source ON link_visits (utm_source);
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't
