@@ -1,6 +1,8 @@
 import { ensureSchema, getPool } from './db';
 import { LANGS, type Lang } from './i18n';
 import { sendPreregConfirmationEmail } from './email';
+import { normalizeArtistSlug } from './artists';
+import { getArtistBySlug } from './artist-registry';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -59,16 +61,14 @@ export interface PreregFailure {
   message: string;
 }
 
-export function normalizeArtistName(name: string): string {
-  return name.trim().toLowerCase().replace(/\s+/g, ' ');
-}
-
 // Powers the live "N founders so far" count shown when a fan picks an
 // artist in the pre-registration flow, before they've submitted anything.
+// Counts by name, not by artist_id, so it works for custom "Other" names
+// that aren't in the artists registry yet.
 export async function getArtistFounderCount(artistName: string): Promise<number> {
   await ensureSchema();
   const pool = getPool();
-  const normalized = normalizeArtistName(artistName);
+  const normalized = normalizeArtistSlug(artistName);
   const { rows } = await pool.query<{ count: string }>(
     'SELECT COUNT(*) AS count FROM preregistrations WHERE artist_name_normalized = $1',
     [normalized]
@@ -188,7 +188,7 @@ export async function submitPreregistration(
     referrer = row;
   }
 
-  const artistNameNormalized = normalizeArtistName(artistName);
+  const artistNameNormalized = normalizeArtistSlug(artistName);
   const { rows: countRows } = await pool.query<{ count: string }>(
     'SELECT COUNT(*) AS count FROM preregistrations WHERE artist_name_normalized = $1',
     [artistNameNormalized]
@@ -200,6 +200,11 @@ export async function submitPreregistration(
   const rewardAmount = referrer ? 100 : 50;
   const referralCode = await generateReferralCode(artistName);
 
+  // Only ever links to an existing registry row (see lib/artists.ts) — a
+  // custom "Other" name a fan typed in never auto-creates one. An admin has
+  // to formally add it before it can carry an OFFICIAL badge or licensed art.
+  const registryArtist = await getArtistBySlug(artistName);
+
   const client = await pool.connect();
   let preregistrationId: number;
   try {
@@ -207,18 +212,19 @@ export async function submitPreregistration(
 
     const insertResult = await client.query<{ id: number }>(
       `INSERT INTO preregistrations (
-         email, email_normalized, artist_name_input, artist_name_normalized, fandom_name, fan_since_year, language,
+         email, email_normalized, artist_name_input, artist_name_normalized, artist_id, fandom_name, fan_since_year, language,
          referral_code_input, referred_by_id, reward_amount, age_confirmed, privacy_consent,
          terms_version, privacy_version, terms_accepted_at, privacy_accepted_at,
          marketing_consent, marketing_consent_at,
          artist_join_order, origin_100_eligible, origin_100_number, referral_code
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
        RETURNING id`,
       [
         email,
         emailNormalized,
         artistName,
         artistNameNormalized,
+        registryArtist ? registryArtist.id : null,
         fandomName || null,
         fanSince || null,
         language || null,

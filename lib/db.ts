@@ -94,6 +94,52 @@ const SCHEMA_SQL = `
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );
   CREATE INDEX IF NOT EXISTS idx_rate_limit_ip_time ON rate_limit_log (ip, created_at);
+
+  -- Artist registry, kept deliberately separate from preregistrations: this
+  -- is the gate that decides whether an artist gets the OFFICIAL badge and
+  -- licensed logo/photo assets on the site. Every artist starts unofficial
+  -- with no license — nothing unlocks until an admin flips these fields
+  -- after a real agency agreement is in place. logo_license and
+  -- image_license are independent of official_status on purpose: a
+  -- partnership can be confirmed before asset licensing paperwork clears,
+  -- and we never want to render an asset we don't have documented rights to
+  -- just because official_status looks good.
+  CREATE TABLE IF NOT EXISTS artists (
+    id SERIAL PRIMARY KEY,
+    slug TEXT NOT NULL UNIQUE,
+    artist_name TEXT NOT NULL,
+    fandom_name TEXT,
+    agency TEXT,
+    official_status TEXT NOT NULL DEFAULT 'unofficial'
+      CHECK (official_status IN ('unofficial', 'pending', 'official')),
+    logo_license BOOLEAN NOT NULL DEFAULT false,
+    logo_url TEXT,
+    image_license BOOLEAN NOT NULL DEFAULT false,
+    hero_image_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+
+  -- Nullable, and only ever set by looking up an existing artists row (never
+  -- auto-created) — see lib/prereg.ts. Custom "Other" entries a fan types in
+  -- stay unlinked until an admin formally adds that artist to the registry.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS artist_id INTEGER REFERENCES artists(id);
+
+  -- Seed the preset grid (lib/artists.ts POPULAR_ARTISTS) so the registry
+  -- has a row to look up from day one. ON CONFLICT DO NOTHING so re-running
+  -- this on every deploy never clobbers an admin's later edits.
+  INSERT INTO artists (slug, artist_name, fandom_name, agency) VALUES
+    ('bts', 'BTS', 'ARMY', 'HYBE'),
+    ('blackpink', 'BLACKPINK', 'BLINK', 'YG Entertainment'),
+    ('seventeen', 'SEVENTEEN', 'CARAT', 'PLEDIS Entertainment'),
+    ('stray kids', 'Stray Kids', 'STAY', 'JYP Entertainment'),
+    ('aespa', 'aespa', 'MY', 'SM Entertainment'),
+    ('ive', 'IVE', 'DIVE', 'Starship Entertainment'),
+    ('nct', 'NCT', 'NCTzen', 'SM Entertainment'),
+    ('enhypen', 'ENHYPEN', 'ENGENE', 'BELIFT LAB'),
+    ('twice', 'TWICE', 'ONCE', 'JYP Entertainment'),
+    ('babymonster', 'BABYMONSTER', 'MONSTIEZ', 'YG Entertainment')
+  ON CONFLICT (slug) DO NOTHING;
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

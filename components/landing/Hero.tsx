@@ -2,11 +2,13 @@
 
 import { useLang } from '@/components/providers/LangProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
+import { useLiveActivity } from './useLiveActivity';
 import PlanetSwiper from './PlanetSwiper';
 
 export default function Hero() {
   const { tr } = useLang();
   const { openModal } = usePreregModal();
+  const { popCount, viewerCount } = useLiveActivity();
 
   return (
     <section
@@ -184,7 +186,22 @@ export default function Hero() {
               minWidth: 150,
             }}
           >
-            <div style={{ fontSize: 24, fontWeight: 700, color: '#FFFAFC' }}>{tr.hero.statNumber}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  background: '#7CE8FF',
+                  animation: 'pulseDot 2s ease-in-out infinite',
+                  flex: '0 0 auto',
+                }}
+              />
+              <span style={{ fontSize: 10.5, color: '#7CE8FF', fontWeight: 600 }}>
+                {tr.hero.liveViewersLabel.replace('{n}', viewerCount.toLocaleString())}
+              </span>
+            </div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: '#FFFAFC' }}>{popCount.toLocaleString()} POP</div>
             <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{tr.hero.statLabel}</div>
             <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{tr.hero.statSub}</div>
           </div>

@@ -23,6 +23,7 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
   const { tr } = useLang();
   const [pendingArtist, setPendingArtist] = useState<string | null>(null);
   const [count, setCount] = useState<number | null>(null);
+  const [official, setOfficial] = useState(false);
   const [loadingCount, setLoadingCount] = useState(false);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customText, setCustomText] = useState('');
@@ -30,11 +31,13 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
   async function reveal(artist: string) {
     setPendingArtist(artist);
     setCount(null);
+    setOfficial(false);
     setLoadingCount(true);
     try {
       const res = await fetch(`/api/prereg/artist-count?artist=${encodeURIComponent(artist)}`);
       const data = await res.json();
       setCount(typeof data.count === 'number' ? data.count : 0);
+      setOfficial(data.official === true);
     } catch {
       setCount(0);
     } finally {
@@ -45,6 +48,7 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
   function backToGrid() {
     setPendingArtist(null);
     setCount(null);
+    setOfficial(false);
   }
 
   if (pendingArtist) {
@@ -75,7 +79,7 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
             fontSize: 'clamp(30px,5vw,44px)',
             lineHeight: 1.2,
             fontWeight: 800,
-            margin: '0 0 18px',
+            margin: '0 0 10px',
             background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1))',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
@@ -84,7 +88,26 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
         >
           {pendingArtist.toUpperCase()} PLANET
         </h2>
-        <p style={{ fontSize: 15, color: '#B8AFC4', margin: '0 0 32px' }}>
+        {official && (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+              color: '#05030B',
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: '.06em',
+              padding: '4px 10px',
+              borderRadius: 999,
+              marginBottom: 22,
+            }}
+          >
+            ✓ OFFICIAL
+          </div>
+        )}
+        <p style={{ fontSize: 15, color: '#B8AFC4', margin: official ? '0 0 32px' : '18px 0 32px' }}>
           {loadingCount ? '···' : tr.prereg.founderCountLabel.replace('{n}', String(count ?? 0))}
         </p>
         <button

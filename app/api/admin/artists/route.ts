@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getArtistCounts } from '@/lib/prereg';
+import { listArtistsWithCounts } from '@/lib/artist-registry';
 import { checkAdminAuth } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
@@ -14,11 +14,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const counts = await getArtistCounts();
-    const total = counts.reduce((sum, c) => sum + c.count, 0);
-    return NextResponse.json({ counts, total });
+    const artists = await listArtistsWithCounts();
+    return NextResponse.json({ artists });
   } catch (err) {
-    console.error('admin stats query failed:', err);
+    console.error('admin artists query failed:', err);
     return NextResponse.json({ error: 'server_error' }, { status: 500 });
   }
 }
