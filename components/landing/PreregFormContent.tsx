@@ -2,6 +2,7 @@
 
 import { useId, useState, type FormEvent } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
+import ArtistSelect from './ArtistSelect';
 
 interface PreregResult {
   hasRef: boolean;
@@ -37,6 +38,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   const { tr, lang } = useLang();
   const uid = useId();
 
+  const [step, setStep] = useState<'select' | 'form'>('select');
   const [artistName, setArtistName] = useState('');
   const [fandomName, setFandomName] = useState('');
   const [email, setEmail] = useState('');
@@ -135,7 +137,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   function copyReferral() {
     const code = result ? result.code : '';
-    if (navigator.clipboard && code) navigator.clipboard.writeText(code).catch(() => {});
+    const shareText = tr.prereg.shareMessage.replace('{code}', code);
+    if (navigator.clipboard && code) navigator.clipboard.writeText(shareText).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   }
@@ -156,6 +159,20 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
       ]
     : [];
   const hasReferralCode = !!(result && !result.hasRef);
+
+  if (step === 'select') {
+    return (
+      <div style={{ maxWidth: 1180, margin: '0 auto', width: '100%' }}>
+        <ArtistSelect
+          headingId={headingId}
+          onConfirm={(artist) => {
+            setArtistName(artist);
+            setStep('form');
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: 1180, margin: '0 auto', width: '100%' }}>
@@ -258,16 +275,37 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
             }}
           >
             <div>
-              <label htmlFor={`${uid}-artist`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.artistLabel}</label>
-              <input
-                id={`${uid}-artist`}
-                type="text"
-                required
-                placeholder={tr.prereg.artistPlaceholder}
-                value={artistName}
-                onChange={(e) => setArtistName(e.target.value)}
-                style={inputStyle}
-              />
+              <label style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.artistLabel}</label>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 10,
+                  background: 'rgba(255,125,221,.08)',
+                  border: '1px solid rgba(255,125,221,.28)',
+                  borderRadius: 12,
+                  padding: '13px 16px',
+                }}
+              >
+                <span style={{ fontSize: 15, fontWeight: 700, color: '#FFFAFC' }}>{artistName}</span>
+                <button
+                  type="button"
+                  onClick={() => setStep('select')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#7CE8FF',
+                    fontSize: 12.5,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    textDecoration: 'underline',
+                    flex: '0 0 auto',
+                  }}
+                >
+                  {tr.prereg.selectChange}
+                </button>
+              </div>
             </div>
             <div>
               <label htmlFor={`${uid}-fandom`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fandomLabel}</label>

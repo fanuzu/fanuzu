@@ -33,6 +33,8 @@ export interface TranslationSet {
   prereg: {
     t1: string; t2: string; d1: string; d2: string;
     statusBadge: string; statusNote: string; benefitsLabel: string; benefits: string[];
+    selectTitle: string; selectSub: string; selectOther: string; selectConfirm: string;
+    founderCountLabel: string; foundingCta: string; selectBack: string; selectChange: string;
     steps: { t: string; d: string }[];
     artistLabel: string; artistPlaceholder: string; fandomLabel: string; fandomPlaceholder: string;
     emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
@@ -44,7 +46,7 @@ export interface TranslationSet {
     resultTitleRef: string; resultBodyRef: string; resultTitleNoRef: string; resultBodyNoRef: string;
     rArtist: string; rStatus: string; rStatusVal: string; rOrder: string; rJoinOrder: string; rReward: string;
     rReferralCode: string; rOriginBadge: string; rRewardStatus: string;
-    btnCopy: string; btnPassport: string; copiedLabel: string;
+    btnCopy: string; btnPassport: string; copiedLabel: string; shareMessage: string;
   };
   footer: { privacy: string; terms: string; tagline: string; company: string; address: string; contact: string; copyright: string };
   errors: {
@@ -148,7 +150,9 @@ ko: {
     d2:'행성별 최초 100명의 팬은 ORIGIN 100으로 기록됩니다.',
     statusBadge:'사전신청',statusNote:'아직 정식 오픈 일정은 정해지지 않았습니다. 지금 사전신청하면 자리를 미리 확보할 수 있어요.',
     benefitsLabel:'사전신청 혜택',
-    benefits:['지금 바로 50 POP, 추천 코드 사용 시 100 POP','오늘 날짜로 행성 참여 순번 확보','최초 100명이면 ORIGIN 100 도전 기회'],
+    benefits:['지금 바로 50 POP, INVITE CODE 사용 시 100 POP','오늘 날짜로 행성 참여 순번 확보','최초 100명이면 ORIGIN 100 도전 기회'],
+    selectTitle:'어느 우주에서 오셨나요?',selectSub:'함께 만들어갈 아티스트 행성을 선택해주세요.',selectOther:'기타',selectConfirm:'확인',
+    founderCountLabel:'현재 개척자 {n}명',foundingCta:'FOUNDING FAN 참여',selectBack:'다른 아티스트 선택',selectChange:'변경',
     steps:[
       {t:'내 아티스트 등록',d:'아직 행성이 없다면 생성 신청을, 이미 신청된 행성이라면 초기 팬으로 참여합니다.'},
       {t:'추천 코드로 팬 연결',d:'나만의 추천 코드를 공유하고 같은 별을 밝힐 팬들을 초대합니다.'},
@@ -158,11 +162,11 @@ ko: {
     fandomLabel:'팬덤명 (선택)',fandomPlaceholder:'팬덤명 입력',
     emailLabel:'이메일',emailPlaceholder:'이메일 주소',
     fanSinceLabel:'입덕 연도 (선택)',fanSincePlaceholder:'예: 2022',
-    referralToggle:'+ 추천인 코드 입력',
-    referralHint:'추천인 코드가 있나요? 선택사항이며, 없어도 바로 사전등록할 수 있어요.',
-    referralPlaceholder:'추천인 코드 입력',
-    rewardNoRef:'추천인 코드 없이 등록하면 나에게 50 POP',
-    rewardRef:'코드를 입력하면 나와 추천인 모두 100 POP',
+    referralToggle:'+ INVITE CODE 입력',
+    referralHint:'INVITE CODE가 있나요? 선택사항이며, 없어도 바로 사전등록할 수 있어요.',
+    referralPlaceholder:'INVITE CODE 입력',
+    rewardNoRef:'INVITE CODE 없이 등록하면 나에게 50 POP',
+    rewardRef:'INVITE CODE를 입력하면 나와 초대한 친구 모두 100 POP',
     rewardNote:'사전등록 POP은 FANUZU 정식 오픈 후 지급됩니다.',
     requiredBadge:'[필수]',optionalBadge:'[선택]',age14Consent:'만 14세 이상입니다',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
     submit:'내 아티스트 행성 사전등록하기',submitting:'등록 중···',
@@ -171,13 +175,14 @@ ko: {
     resultBodyRef:'나와 추천인 모두에게 팬덤 행성을 밝힐 100 POP이 예약되었습니다.',
     resultTitleNoRef:'사전등록이 완료되었습니다.',
     resultBodyNoRef:'FANUZU 출시 후 사용할 수 있는 첫 기여 50 POP이 예약되었습니다.',
-    rArtist:'관심 아티스트',rStatus:'행성 참여 상태',rStatusVal:'생성 대기',rOrder:'사전등록 순번',rJoinOrder:'행성 참여 순번',rReward:'나의 첫 기여',rReferralCode:'나의 추천 코드',rOriginBadge:'ORIGIN 100 대상',rRewardStatus:'출시 후 최초 로그인 시 지급',
-    btnCopy:'내 추천 코드 복사',btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨'},
+    rArtist:'관심 아티스트',rStatus:'행성 참여 상태',rStatusVal:'생성 대기',rOrder:'사전등록 순번',rJoinOrder:'행성 참여 순번',rReward:'나의 첫 기여',rReferralCode:'나의 INVITE CODE',rOriginBadge:'ORIGIN 100 대상',rRewardStatus:'출시 후 최초 로그인 시 지급',
+    btnCopy:'내 INVITE CODE 복사',btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
+    shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → fanuzu.co.kr'},
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
     company:'Fancake Inc. · 대표자 Syvia Hong · 사업자등록번호 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'고객문의 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'추천인 코드를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 추천 코드는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
+  errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'INVITE CODE를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 INVITE CODE는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
 },
 en: {
   nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Pre-register',cta:'Light my star',close:'Close'},
@@ -270,7 +275,9 @@ en: {
     d2:'The first 100 eligible fans for each planet can be recorded as ORIGIN 100.',
     statusBadge:'PRE-REGISTRATION',statusNote:'FANUZU’s official launch date hasn’t been set yet. Pre-register now to reserve your spot ahead of it.',
     benefitsLabel:'What pre-registering gets you',
-    benefits:['50 POP instantly — 100 POP with a referral code','Your join order in the fandom planet, secured from today','A shot at ORIGIN 100 if you’re among the first 100 fans'],
+    benefits:['50 POP instantly — 100 POP with an invite code','Your join order in the fandom planet, secured from today','A shot at ORIGIN 100 if you’re among the first 100 fans'],
+    selectTitle:'Which universe are you from?',selectSub:'Pick the artist planet you want to help build.',selectOther:'Other',selectConfirm:'Confirm',
+    founderCountLabel:'{n} founding fans so far',foundingCta:'Join as a FOUNDING FAN',selectBack:'Choose a different artist',selectChange:'Change',
     steps:[
       {t:'Join my artist',d:'If the planet doesn’t exist yet, request it. If it does, join as an early fan.'},
       {t:'Invite fans',d:'Share your referral code and invite fans to light the same star.'},
@@ -280,11 +287,11 @@ en: {
     fandomLabel:'Fandom name (optional)',fandomPlaceholder:'Enter fandom name',
     emailLabel:'Email',emailPlaceholder:'Email address',
     fanSinceLabel:'Fan since (optional)',fanSincePlaceholder:'e.g. 2022',
-    referralToggle:'+ Add referral code',
-    referralHint:'Have a referral code? It’s optional — you can pre-register without one.',
-    referralPlaceholder:'Enter referral code',
-    rewardNoRef:'No referral code → 50 POP for you',
-    rewardRef:'Valid referral code → 100 POP each for you and your referrer',
+    referralToggle:'+ Add an INVITE CODE',
+    referralHint:'Have an INVITE CODE? It’s optional — you can pre-register without one.',
+    referralPlaceholder:'Enter invite code',
+    rewardNoRef:'No invite code → 50 POP for you',
+    rewardRef:'Valid INVITE CODE → 100 POP each for you and whoever invited you',
     rewardNote:'Pre-registration POP will be granted after FANUZU officially launches.',
     requiredBadge:'[Required]',optionalBadge:'[Optional]',age14Consent:'I am 14 years of age or older',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
     submit:'Pre-register my artist’s planet',submitting:'Registering···',
@@ -293,13 +300,14 @@ en: {
     resultBodyRef:'100 POP has been reserved for both you and your referrer.',
     resultTitleNoRef:'You’re pre-registered!',
     resultBodyNoRef:'Your first 50 POP has been reserved for the FANUZU launch.',
-    rArtist:'Artist of interest',rStatus:'Planet status',rStatusVal:'Awaiting creation',rOrder:'Pre-registration order',rJoinOrder:'Planet join order',rReward:'My first contribution',rReferralCode:'My referral code',rOriginBadge:'ORIGIN 100 eligible',rRewardStatus:'Granted on first login after launch',
-    btnCopy:'Copy my referral code',btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied'},
+    rArtist:'Artist of interest',rStatus:'Planet status',rStatusVal:'Awaiting creation',rOrder:'Pre-registration order',rJoinOrder:'Planet join order',rReward:'My first contribution',rReferralCode:'My INVITE CODE',rOriginBadge:'ORIGIN 100 eligible',rRewardStatus:'Granted on first login after launch',
+    btnCopy:'Copy my INVITE CODE',btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
+    shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → fanuzu.co.kr'},
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
     company:'Fancake Inc. · CEO Syvia Hong · Business Reg. No. 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'Contact help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that referral code.',selfReferralNotAllowed:'You can’t use your own referral code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
+  errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that invite code.',selfReferralNotAllowed:'You can’t use your own invite code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
 },
 ja: {
   nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる'},
@@ -392,7 +400,9 @@ ja: {
     d2:'各惑星で条件を満たした最初の100人は、ORIGIN 100の対象になります。',
     statusBadge:'事前登録',statusNote:'まだ正式な開始日は決まっていません。今のうちに事前登録して、あなたの順番を確保しましょう。',
     benefitsLabel:'事前登録の特典',
-    benefits:['今すぐ50 POP、紹介コードを使えば100 POP','今日の日付でファンダム惑星への参加順番を確保','最初の100人ならORIGIN 100に挑戦できるチャンス'],
+    benefits:['今すぐ50 POP、INVITE CODEを使えば100 POP','今日の日付でファンダム惑星への参加順番を確保','最初の100人ならORIGIN 100に挑戦できるチャンス'],
+    selectTitle:'どの宇宙から来ましたか？',selectSub:'一緒に育てたいアーティストの惑星を選んでください。',selectOther:'その他',selectConfirm:'確認',
+    founderCountLabel:'現在の開拓者 {n}人',foundingCta:'FOUNDING FANとして参加',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
     steps:[
       {t:'推しを登録',d:'まだ惑星がなければ作成をリクエスト。すでにあれば初期ファンとして参加できます。'},
       {t:'ファンを招待',d:'紹介コードをシェアして、同じ星を一緒に照らす仲間を招待。'},
@@ -402,11 +412,11 @@ ja: {
     fandomLabel:'ファンダム名（任意）',fandomPlaceholder:'ファンダム名を入力',
     emailLabel:'メールアドレス',emailPlaceholder:'メールアドレス',
     fanSinceLabel:'ファンになった年（任意）',fanSincePlaceholder:'例: 2022',
-    referralToggle:'+ 紹介コードを入力',
-    referralHint:'紹介コードがある場合のみ入力してください。なくても事前登録できます。',
-    referralPlaceholder:'紹介コードを入力',
-    rewardNoRef:'紹介コードなし → あなたに50 POP',
-    rewardRef:'有効な紹介コードあり → あなたと紹介者に100 POPずつ',
+    referralToggle:'+ INVITE CODEを入力',
+    referralHint:'INVITE CODEがある場合のみ入力してください。なくても事前登録できます。',
+    referralPlaceholder:'INVITE CODEを入力',
+    rewardNoRef:'INVITE CODEなし → あなたに50 POP',
+    rewardRef:'有効なINVITE CODEあり → あなたと招待した人に100 POPずつ',
     rewardNote:'事前登録POPはFANUZU正式リリース後に付与されます。',
     requiredBadge:'[必須]',optionalBadge:'[任意]',age14Consent:'満14歳以上です',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
     submit:'推しの惑星を事前登録',submitting:'登録中···',
@@ -415,13 +425,14 @@ ja: {
     resultBodyRef:'あなたと紹介者それぞれに100 POPが予約されました。',
     resultTitleNoRef:'事前登録が完了しました！',
     resultBodyNoRef:'FANUZUリリース後に受け取れる50 POPが予約されました。',
-    rArtist:'関心アーティスト',rStatus:'惑星参加状態',rStatusVal:'生成待ち',rOrder:'事前登録順番',rJoinOrder:'惑星参加順番',rReward:'私の最初の貢献',rReferralCode:'私の紹介コード',rOriginBadge:'ORIGIN 100対象',rRewardStatus:'リリース後、初回ログイン時に付与',
-    btnCopy:'紹介コードをコピー',btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました'},
+    rArtist:'関心アーティスト',rStatus:'惑星参加状態',rStatusVal:'生成待ち',rOrder:'事前登録順番',rJoinOrder:'惑星参加順番',rReward:'私の最初の貢献',rReferralCode:'私のINVITE CODE',rOriginBadge:'ORIGIN 100対象',rRewardStatus:'リリース後、初回ログイン時に付与',
+    btnCopy:'INVITE CODEをコピー',btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました',
+    shareMessage:'Bring your fandom to FANUZU. 私のINVITE CODE {code}で一緒に → fanuzu.co.kr'},
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
     company:'Fancake Inc. · 代表 Syvia Hong · 事業者登録番号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'お問い合わせ help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
-  errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'紹介コードが見つかりません。',selfReferralNotAllowed:'自分の紹介コードは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
+  errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'INVITE CODEが見つかりません。',selfReferralNotAllowed:'自分のINVITE CODEは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
 },
 es: {
   nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar'},
@@ -515,7 +526,9 @@ es: {
     d2:'Los primeros 100 fans elegibles de cada planeta podrán quedar registrados como ORIGIN 100.',
     statusBadge:'PREINSCRIPCIÓN',statusNote:'Todavía no hay fecha oficial de lanzamiento de FANUZU. Preinscríbete ahora para reservar tu lugar.',
     benefitsLabel:'Beneficios de preinscribirte',
-    benefits:['50 POP al instante — 100 POP con un código de referido','Tu turno de ingreso al planeta, asegurado desde hoy','Una oportunidad de ser ORIGIN 100 si estás entre los primeros 100 fans'],
+    benefits:['50 POP al instante — 100 POP con un código de invitación','Tu turno de ingreso al planeta, asegurado desde hoy','Una oportunidad de ser ORIGIN 100 si estás entre los primeros 100 fans'],
+    selectTitle:'¿De qué universo vienes?',selectSub:'Elige el planeta del artista que quieres ayudar a construir.',selectOther:'Otro',selectConfirm:'Confirmar',
+    founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme como FOUNDING FAN',selectBack:'Elegir otro artista',selectChange:'Cambiar',
     steps:[
       {t:'Elige a tu artista',d:'Si el planeta aún no existe, solicita su creación. Si ya existe, únete como fan inicial.'},
       {t:'Invita a otros fans',d:'Comparte tu código e invita a más fans a iluminar la misma estrella.'},
@@ -525,11 +538,11 @@ es: {
     fandomLabel:'Nombre del fandom (opcional)',fandomPlaceholder:'Ingresa el nombre del fandom',
     emailLabel:'Correo electrónico',emailPlaceholder:'Correo electrónico',
     fanSinceLabel:'Fan desde (opcional)',fanSincePlaceholder:'ej. 2022',
-    referralToggle:'+ Añadir código de referido',
-    referralHint:'¿Tienes un código? Es opcional; puedes preinscribirte sin uno.',
-    referralPlaceholder:'Ingresa el código de referido',
-    rewardNoRef:'Sin código → 50 POP para ti',
-    rewardRef:'Con un código válido → 100 POP para ti y 100 POP para quien te invitó',
+    referralToggle:'+ Añadir un INVITE CODE',
+    referralHint:'¿Tienes un INVITE CODE? Es opcional; puedes preinscribirte sin uno.',
+    referralPlaceholder:'Ingresa el invite code',
+    rewardNoRef:'Sin invite code → 50 POP para ti',
+    rewardRef:'Con un INVITE CODE válido → 100 POP para ti y 100 POP para quien te invitó',
     rewardNote:'El POP de preinscripción se otorgará después del lanzamiento oficial de FANUZU.',
     requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',age14Consent:'Tengo 14 años de edad o más',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
     submit:'Preinscribir el planeta de mi artista',submitting:'Registrando···',
@@ -538,13 +551,14 @@ es: {
     resultBodyRef:'Se han reservado 100 POP tanto para ti como para quien te invitó.',
     resultTitleNoRef:'¡Preinscripción completada!',
     resultBodyNoRef:'Tus primeros 50 POP están reservados para el lanzamiento de FANUZU.',
-    rArtist:'Artista de interés',rStatus:'Estado del planeta',rStatusVal:'Esperando creación',rOrder:'Orden de preinscripción',rJoinOrder:'Orden de ingreso al planeta',rReward:'Mi primera contribución',rReferralCode:'Mi código de referido',rOriginBadge:'Elegible para ORIGIN 100',rRewardStatus:'Se otorga en el primer inicio de sesión tras el lanzamiento',
-    btnCopy:'Copiar mi código de referido',btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado'},
+    rArtist:'Artista de interés',rStatus:'Estado del planeta',rStatusVal:'Esperando creación',rOrder:'Orden de preinscripción',rJoinOrder:'Orden de ingreso al planeta',rReward:'Mi primera contribución',rReferralCode:'Mi INVITE CODE',rOriginBadge:'Elegible para ORIGIN 100',rRewardStatus:'Se otorga en el primer inicio de sesión tras el lanzamiento',
+    btnCopy:'Copiar mi INVITE CODE',btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
+    shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → fanuzu.co.kr'},
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
     company:'Fancake Inc. · CEO Syvia Hong · N.º de registro 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'Contacto help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. Todos los derechos reservados.'},
-  errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese código de referido.',selfReferralNotAllowed:'No puedes usar tu propio código.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
+  errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese invite code.',selfReferralNotAllowed:'No puedes usar tu propio invite code.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
 },
 zhHans: {
   nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'预注册',cta:'点亮我的星',close:'关闭'},
@@ -637,7 +651,9 @@ zhHans: {
     d2:'每个星球最早符合条件的 100 位粉丝可成为 ORIGIN 100。',
     statusBadge:'预注册',statusNote:'FANUZU 正式上线日期尚未确定。现在预注册即可提前锁定你的名额。',
     benefitsLabel:'预注册福利',
-    benefits:['立即获得 50 POP，使用邀请码可获得 100 POP','从今天起锁定你的星球加入顺位','若是最早的 100 位粉丝，将有机会获得 ORIGIN 100'],
+    benefits:['立即获得 50 POP，使用 INVITE CODE 可获得 100 POP','从今天起锁定你的星球加入顺位','若是最早的 100 位粉丝，将有机会获得 ORIGIN 100'],
+    selectTitle:'你来自哪个宇宙？',selectSub:'选择你想一起打造的艺人星球。',selectOther:'其他',selectConfirm:'确认',
+    founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入成为 FOUNDING FAN',selectBack:'选择其他艺人',selectChange:'更改',
     steps:[
       {t:'选择艺人',d:'如果星球还不存在，可以申请创建；如果已经存在，就作为早期粉丝加入。'},
       {t:'邀请粉丝',d:'分享你的邀请码，邀请更多粉丝一起点亮同一颗星。'},
@@ -647,11 +663,11 @@ zhHans: {
     fandomLabel:'粉丝名（选填）',fandomPlaceholder:'输入粉丝团名称',
     emailLabel:'电子邮箱',emailPlaceholder:'电子邮箱地址',
     fanSinceLabel:'入坑年份（选填）',fanSincePlaceholder:'例如 2022',
-    referralToggle:'+ 输入邀请码',
-    referralHint:'有邀请码吗？这是选填项，没有也可以直接预注册。',
-    referralPlaceholder:'输入推荐码',
-    rewardNoRef:'无邀请码 → 你获得 50 POP',
-    rewardRef:'使用有效邀请码 → 你和邀请人各获得 100 POP',
+    referralToggle:'+ 输入 INVITE CODE',
+    referralHint:'有 INVITE CODE 吗？这是选填项，没有也可以直接预注册。',
+    referralPlaceholder:'输入 INVITE CODE',
+    rewardNoRef:'无 INVITE CODE → 你获得 50 POP',
+    rewardRef:'使用有效 INVITE CODE → 你和邀请人各获得 100 POP',
     rewardNote:'预注册 POP 将在 FANUZU 正式上线后发放。',
     requiredBadge:'【必填】',optionalBadge:'【选填】',age14Consent:'我年满14周岁',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
     submit:'预注册我的艺人星球',submitting:'注册中···',
@@ -660,13 +676,14 @@ zhHans: {
     resultBodyRef:'你和邀请人各自的 100 POP 已预留。',
     resultTitleNoRef:'预注册完成！',
     resultBodyNoRef:'FANUZU 上线后可领取的首笔 50 POP 已预留。',
-    rArtist:'关注的艺人',rStatus:'星球参与状态',rStatusVal:'等待生成',rOrder:'预注册顺序',rJoinOrder:'星球参与顺序',rReward:'我的首个贡献',rReferralCode:'我的推荐码',rOriginBadge:'ORIGIN 100 资格',rRewardStatus:'上线后首次登录时发放',
-    btnCopy:'复制我的推荐码',btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制'},
+    rArtist:'关注的艺人',rStatus:'星球参与状态',rStatusVal:'等待生成',rOrder:'预注册顺序',rJoinOrder:'星球参与顺序',rReward:'我的首个贡献',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 资格',rRewardStatus:'上线后首次登录时发放',
+    btnCopy:'复制我的 INVITE CODE',btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
+    shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → fanuzu.co.kr'},
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
     company:'Fancake Inc. · 代表人 Syvia Hong · 工商注册号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'客服邮箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有权利。'},
-  errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该邀请码。',selfReferralNotAllowed:'不能使用自己的邀请码。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
+  errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
 },
 zhHant: {
   nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'ORIGIN 100',prereg:'預先登記',cta:'點亮我的星',close:'關閉'},
@@ -759,7 +776,9 @@ zhHant: {
     d2:'每個星球最早符合條件的 100 位粉絲可成為 ORIGIN 100。',
     statusBadge:'預先登記',statusNote:'FANUZU 正式上線日期尚未確定。現在預先登記即可提前鎖定你的名額。',
     benefitsLabel:'預先登記福利',
-    benefits:['立即獲得 50 POP，使用邀請碼可獲得 100 POP','從今天起鎖定你的星球加入順位','若是最早的 100 位粉絲，將有機會獲得 ORIGIN 100'],
+    benefits:['立即獲得 50 POP，使用 INVITE CODE 可獲得 100 POP','從今天起鎖定你的星球加入順位','若是最早的 100 位粉絲，將有機會獲得 ORIGIN 100'],
+    selectTitle:'你來自哪個宇宙？',selectSub:'選擇你想一起打造的藝人星球。',selectOther:'其他',selectConfirm:'確認',
+    founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入成為 FOUNDING FAN',selectBack:'選擇其他藝人',selectChange:'更改',
     steps:[
       {t:'選擇藝人',d:'如果星球還不存在，可以申請建立；如果已經存在，就以早期粉絲身分加入。'},
       {t:'邀請粉絲',d:'分享你的邀請碼，邀請更多粉絲一起點亮同一顆星。'},
@@ -769,11 +788,11 @@ zhHant: {
     fandomLabel:'粉絲團名稱（選填）',fandomPlaceholder:'輸入粉絲團名稱',
     emailLabel:'電子郵箱',emailPlaceholder:'電子郵箱地址',
     fanSinceLabel:'入坑年份（選填）',fanSincePlaceholder:'例如 2022',
-    referralToggle:'+ 輸入邀請碼',
-    referralHint:'有邀請碼嗎？這是選填項，沒有也可以直接預先登記。',
-    referralPlaceholder:'輸入推薦碼',
-    rewardNoRef:'無邀請碼 → 你獲得 50 POP',
-    rewardRef:'使用有效邀請碼 → 你和邀請人各獲得 100 POP',
+    referralToggle:'+ 輸入 INVITE CODE',
+    referralHint:'有 INVITE CODE 嗎？這是選填項，沒有也可以直接預先登記。',
+    referralPlaceholder:'輸入 INVITE CODE',
+    rewardNoRef:'無 INVITE CODE → 你獲得 50 POP',
+    rewardRef:'使用有效 INVITE CODE → 你和邀請人各獲得 100 POP',
     rewardNote:'預先登記 POP 將於 FANUZU 正式上線後發放。',
     requiredBadge:'【必填】',optionalBadge:'【選填】',age14Consent:'我年滿14週歲',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
     submit:'預先登記我的藝人星球',submitting:'註冊中···',
@@ -782,13 +801,14 @@ zhHant: {
     resultBodyRef:'你和邀請人各自的 100 POP 已預留。',
     resultTitleNoRef:'預先登記完成！',
     resultBodyNoRef:'FANUZU 上線後可領取的首筆 50 POP 已預留。',
-    rArtist:'關注的藝人',rStatus:'星球參與狀態',rStatusVal:'等待生成',rOrder:'預先登記順序',rJoinOrder:'星球參與順序',rReward:'我的首個貢獻',rReferralCode:'我的推薦碼',rOriginBadge:'ORIGIN 100 資格',rRewardStatus:'上線後首次登入時發放',
-    btnCopy:'複製我的推薦碼',btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製'},
+    rArtist:'關注的藝人',rStatus:'星球參與狀態',rStatusVal:'等待生成',rOrder:'預先登記順序',rJoinOrder:'星球參與順序',rReward:'我的首個貢獻',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 資格',rRewardStatus:'上線後首次登入時發放',
+    btnCopy:'複製我的 INVITE CODE',btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製',
+    shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → fanuzu.co.kr'},
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
     company:'Fancake Inc. · 代表人 Syvia Hong · 工商註冊號 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'客服郵箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有權利。'},
-  errors:{invalidEmail:'請輸入有效的電子郵件地址。',emailAlreadyRegistered:'此電子郵件已完成預先登記。',invalidReferral:'找不到這組邀請碼。',selfReferralNotAllowed:'不能使用自己的邀請碼。',requiredConsent:'請勾選必選同意項目。',rateLimit:'操作過於頻繁，請稍後再試。',serverError:'發生錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
+  errors:{invalidEmail:'請輸入有效的電子郵件地址。',emailAlreadyRegistered:'此電子郵件已完成預先登記。',invalidReferral:'找不到這組 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'請勾選必選同意項目。',rateLimit:'操作過於頻繁，請稍後再試。',serverError:'發生錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
 }
 };
 

@@ -59,8 +59,36 @@ export interface PreregFailure {
   message: string;
 }
 
-function normalizeArtistName(name: string): string {
+export function normalizeArtistName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+// Powers the live "N founders so far" count shown when a fan picks an
+// artist in the pre-registration flow, before they've submitted anything.
+export async function getArtistFounderCount(artistName: string): Promise<number> {
+  await ensureSchema();
+  const pool = getPool();
+  const normalized = normalizeArtistName(artistName);
+  const { rows } = await pool.query<{ count: string }>(
+    'SELECT COUNT(*) AS count FROM preregistrations WHERE artist_name_normalized = $1',
+    [normalized]
+  );
+  return Number(rows[0].count);
+}
+
+// Backs the admin stats page: how many pre-registrations each artist has,
+// most-registered first. artist_name_input keeps the first-seen casing for
+// display (e.g. "BTS" not "bts") while grouping is done on the normalized name.
+export async function getArtistCounts(): Promise<{ artist: string; count: number }[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{ artist: string; count: string }>(
+    `SELECT (array_agg(artist_name_input ORDER BY id))[1] AS artist, COUNT(*) AS count
+     FROM preregistrations
+     GROUP BY artist_name_normalized
+     ORDER BY COUNT(*) DESC`
+  );
+  return rows.map((r) => ({ artist: r.artist, count: Number(r.count) }));
 }
 
 function slugFromArtist(name: string): string {
