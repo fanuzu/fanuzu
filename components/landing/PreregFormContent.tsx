@@ -496,7 +496,14 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
             >
               {isSubmitting ? tr.prereg.submitting : tr.prereg.submit}
             </button>
+            <p style={{ fontSize: 11.5, lineHeight: 1.5, color: '#6B6478', textAlign: 'center', margin: 0 }}>{tr.prereg.trustNote}</p>
           </form>
+        )}
+
+        {showForm && (
+          <div style={{ textAlign: 'center', marginTop: 14 }}>
+            <p style={{ fontSize: 10.5, lineHeight: 1.6, color: '#524B5E', margin: 0 }}>{tr.footer.company}</p>
+          </div>
         )}
 
         {showSuccess && (

@@ -42,6 +42,7 @@ export interface TranslationSet {
     rewardNoRef: string; rewardRef: string; rewardNote: string;
     requiredBadge: string; optionalBadge: string;
     age14Consent: string; termsConsent: string; privacyConsentLabel: string; marketingConsent: string; viewDoc: string;
+    trustNote: string;
     submit: string; submitting: string; error: string;
     resultTitleRef: string; resultBodyRef: string; resultTitleNoRef: string; resultBodyNoRef: string;
     rArtist: string; rStatus: string; rStatusVal: string; rOrder: string; rJoinOrder: string; rReward: string;
@@ -170,6 +171,7 @@ ko: {
     rewardRef:'INVITE CODE를 입력하면 나와 초대한 친구 모두 100 POP',
     rewardNote:'사전등록 POP은 FANUZU 정식 오픈 후 지급됩니다.',
     requiredBadge:'[필수]',optionalBadge:'[선택]',age14Consent:'만 14세 이상입니다',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
+    trustNote:'🔒 입력하신 정보는 안전하게 보호되며, 사전등록 확인 용도로만 사용됩니다. 스팸 메일은 보내지 않아요.',
     submit:'내 아티스트 행성 사전등록하기',submitting:'등록 중···',
     error:'신청을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.',
     resultTitleRef:'두 팬의 기여가 하나의 별로 연결되었습니다.',
@@ -296,6 +298,7 @@ en: {
     rewardRef:'Valid INVITE CODE → 100 POP each for you and whoever invited you',
     rewardNote:'Pre-registration POP will be granted after FANUZU officially launches.',
     requiredBadge:'[Required]',optionalBadge:'[Optional]',age14Consent:'I am 14 years of age or older',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
+    trustNote:'🔒 Your information is stored securely and used only to confirm your pre-registration. No spam, ever.',
     submit:'Pre-register my artist’s planet',submitting:'Registering···',
     error:'We couldn\'t save your request. Please try again shortly.',
     resultTitleRef:'Two fans, one star.',
@@ -422,6 +425,7 @@ ja: {
     rewardRef:'有効なINVITE CODEあり → あなたと招待した人に100 POPずつ',
     rewardNote:'事前登録POPはFANUZU正式リリース後に付与されます。',
     requiredBadge:'[必須]',optionalBadge:'[任意]',age14Consent:'満14歳以上です',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
+    trustNote:'🔒 ご入力いただいた情報は安全に保護され、事前登録の確認のみに使用されます。迷惑メールは送信しません。',
     submit:'推しの惑星を事前登録',submitting:'登録中···',
     error:'申請を保存できませんでした。しばらくしてから再度お試しください。',
     resultTitleRef:'ふたりのファンが、ひとつの星につながりました。',
@@ -549,6 +553,7 @@ es: {
     rewardRef:'Con un INVITE CODE válido → 100 POP para ti y 100 POP para quien te invitó',
     rewardNote:'El POP de preinscripción se otorgará después del lanzamiento oficial de FANUZU.',
     requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',age14Consent:'Tengo 14 años de edad o más',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
+    trustNote:'🔒 Tu información se almacena de forma segura y solo se usa para confirmar tu preinscripción. Nunca enviamos spam.',
     submit:'Preinscribir el planeta de mi artista',submitting:'Registrando···',
     error:'No pudimos guardar tu solicitud. Inténtalo de nuevo en breve.',
     resultTitleRef:'Dos fans, una misma estrella.',
@@ -675,6 +680,7 @@ zhHans: {
     rewardRef:'使用有效 INVITE CODE → 你和邀请人各获得 100 POP',
     rewardNote:'预注册 POP 将在 FANUZU 正式上线后发放。',
     requiredBadge:'【必填】',optionalBadge:'【选填】',age14Consent:'我年满14周岁',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
+    trustNote:'🔒 你填写的信息将被安全保护，仅用于确认预注册，绝不发送垃圾邮件。',
     submit:'预注册我的艺人星球',submitting:'注册中···',
     error:'申请未能保存，请稍后重试。',
     resultTitleRef:'两位粉丝，因为同一颗星连接在一起。',
@@ -801,6 +807,7 @@ zhHant: {
     rewardRef:'使用有效 INVITE CODE → 你和邀請人各獲得 100 POP',
     rewardNote:'預先登記 POP 將於 FANUZU 正式上線後發放。',
     requiredBadge:'【必填】',optionalBadge:'【選填】',age14Consent:'我年滿14週歲',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
+    trustNote:'🔒 你填寫的資訊將被安全保護，僅用於確認預先登記，絕不發送垃圾郵件。',
     submit:'預先登記我的藝人星球',submitting:'註冊中···',
     error:'申請未能儲存，請稍後重試。',
     resultTitleRef:'兩位粉絲，因為同一顆星連結在一起。',
