@@ -255,6 +255,7 @@ export default function AdminPage() {
   const [hasReferralFilter, setHasReferralFilter] = useState<'all' | 'yes' | 'no'>('all');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     document.title = 'Admin — FANUZU';
@@ -347,6 +348,28 @@ export default function AdminPage() {
   function handleReferralSearch(e: React.FormEvent) {
     e.preventDefault();
     loadReferralProgram(password, { q: searchQ, hasReferral: hasReferralFilter, from: fromDate, to: toDate });
+  }
+
+  async function handleDeleteRegistration(id: number, email: string) {
+    if (!window.confirm(`Permanently delete ${email}'s pre-registration? This cannot be undone.`)) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/admin/preregistrations/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-password': password },
+      });
+      if (!res.ok && res.status !== 404) {
+        window.alert('Delete failed. Please try again.');
+        return;
+      }
+      // Re-run with current filters so the summary tiles and leaderboard
+      // stay consistent instead of hand-patching several pieces of state.
+      loadReferralProgram(password, { q: searchQ, hasReferral: hasReferralFilter, from: fromDate, to: toDate });
+    } catch {
+      window.alert('Network error. Please try again.');
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -639,7 +662,8 @@ export default function AdminPage() {
                       <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referred by</th>
                       <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Reward</th>
                       <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Status</th>
-                      <th style={{ padding: '0 0 8px 0', fontWeight: 600 }}>Registered</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Registered</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
                     </tr>
                   </thead>
                   <tbody>
@@ -652,7 +676,27 @@ export default function AdminPage() {
                         </td>
                         <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap' }}>{r.rewardAmount} POP</td>
                         <td style={{ padding: '8px 12px 8px 0', textTransform: 'capitalize' }}>{r.rewardStatus}</td>
-                        <td style={{ padding: '8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>
+                          <button
+                            onClick={() => handleDeleteRegistration(r.id, r.email)}
+                            disabled={deletingId === r.id}
+                            style={{
+                              background: 'transparent',
+                              border: '1px solid rgba(255,125,221,.3)',
+                              color: '#FF7DDD',
+                              fontSize: 11.5,
+                              fontWeight: 600,
+                              padding: '5px 10px',
+                              borderRadius: 6,
+                              cursor: deletingId === r.id ? 'default' : 'pointer',
+                              opacity: deletingId === r.id ? 0.6 : 1,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {deletingId === r.id ? '···' : 'Delete'}
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

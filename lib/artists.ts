@@ -9,14 +9,20 @@
 export const POPULAR_ARTISTS: string[] = [
   'BTS',
   'BLACKPINK',
-  'SEVENTEEN',
   'Stray Kids',
+  'SEVENTEEN',
   'aespa',
   'IVE',
-  'NCT',
   'ENHYPEN',
-  'TWICE',
+  'ATEEZ',
+  'LE SSERAFIM',
   'BABYMONSTER',
+  'RIIZE',
+  'BOYNEXTDOOR',
+  'ILLIT',
+  'TWS',
+  'CORTIS',
+  'Hearts2Hearts',
 ];
 
 // Same normalization preregistrations.artist_name_normalized has always

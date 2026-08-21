@@ -19,11 +19,18 @@ const pillStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
 
-export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (artist: string) => void; headingId?: string }) {
+export default function ArtistSelect({
+  onConfirm,
+  headingId,
+}: {
+  onConfirm: (artist: string, fandomName: string | null) => void;
+  headingId?: string;
+}) {
   const { tr } = useLang();
   const [pendingArtist, setPendingArtist] = useState<string | null>(null);
   const [count, setCount] = useState<number | null>(null);
   const [official, setOfficial] = useState(false);
+  const [fandomName, setFandomName] = useState<string | null>(null);
   const [loadingCount, setLoadingCount] = useState(false);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customText, setCustomText] = useState('');
@@ -32,12 +39,14 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
     setPendingArtist(artist);
     setCount(null);
     setOfficial(false);
+    setFandomName(null);
     setLoadingCount(true);
     try {
       const res = await fetch(`/api/prereg/artist-count?artist=${encodeURIComponent(artist)}`);
       const data = await res.json();
       setCount(typeof data.count === 'number' ? data.count : 0);
       setOfficial(data.official === true);
+      setFandomName(typeof data.fandomName === 'string' ? data.fandomName : null);
     } catch {
       setCount(0);
     } finally {
@@ -49,6 +58,7 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
     setPendingArtist(null);
     setCount(null);
     setOfficial(false);
+    setFandomName(null);
   }
 
   if (pendingArtist) {
@@ -111,7 +121,7 @@ export default function ArtistSelect({ onConfirm, headingId }: { onConfirm: (art
           {loadingCount ? '···' : tr.prereg.founderCountLabel.replace('{n}', String(count ?? 0))}
         </p>
         <button
-          onClick={() => onConfirm(pendingArtist)}
+          onClick={() => onConfirm(pendingArtist, fandomName)}
           style={{
             background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
             color: '#05030B',

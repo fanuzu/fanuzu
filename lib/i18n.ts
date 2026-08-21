@@ -45,7 +45,7 @@ export interface TranslationSet {
     trustNote: string;
     submit: string; submitting: string; error: string;
     resultTitleRef: string; resultBodyRef: string; resultTitleNoRef: string; resultBodyNoRef: string;
-    rArtist: string; rStatus: string; rStatusVal: string; rOrder: string; rJoinOrder: string; rReward: string;
+    rArtist: string; rStatus: string; rStatusVal: string; rJoinTier: string; rReward: string;
     rReferralCode: string; rOriginBadge: string; rRewardStatus: string;
     btnCopyCode: string; btnCopyLink: string; btnShare: string; btnShareX: string;
     btnPassport: string; copiedLabel: string; shareMessage: string;
@@ -178,7 +178,7 @@ ko: {
     resultBodyRef:'나와 추천인 모두에게 팬덤 행성을 밝힐 100 POP이 예약되었습니다.',
     resultTitleNoRef:'사전등록이 완료되었습니다.',
     resultBodyNoRef:'FANUZU 출시 후 사용할 수 있는 첫 기여 50 POP이 예약되었습니다.',
-    rArtist:'관심 아티스트',rStatus:'행성 참여 상태',rStatusVal:'생성 대기',rOrder:'사전등록 순번',rJoinOrder:'행성 참여 순번',rReward:'나의 첫 기여',rReferralCode:'나의 INVITE CODE',rOriginBadge:'ORIGIN 100 대상',rRewardStatus:'출시 후 최초 로그인 시 지급',
+    rArtist:'관심 아티스트',rStatus:'행성 참여 상태',rStatusVal:'생성 대기',rJoinTier:'행성 참여 등급',rReward:'나의 첫 기여',rReferralCode:'나의 INVITE CODE',rOriginBadge:'ORIGIN 100 대상',rRewardStatus:'출시 후 최초 로그인 시 지급',
     btnCopyCode:'INVITE CODE 복사',btnCopyLink:'초대 링크 복사',btnShare:'공유하기',btnShareX:'X에 공유',
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
@@ -305,7 +305,7 @@ en: {
     resultBodyRef:'100 POP has been reserved for both you and your referrer.',
     resultTitleNoRef:'You’re pre-registered!',
     resultBodyNoRef:'Your first 50 POP has been reserved for the FANUZU launch.',
-    rArtist:'Artist of interest',rStatus:'Planet status',rStatusVal:'Awaiting creation',rOrder:'Pre-registration order',rJoinOrder:'Planet join order',rReward:'My first contribution',rReferralCode:'My INVITE CODE',rOriginBadge:'ORIGIN 100 eligible',rRewardStatus:'Granted on first login after launch',
+    rArtist:'Artist of interest',rStatus:'Planet status',rStatusVal:'Awaiting creation',rJoinTier:'Planet join tier',rReward:'My first contribution',rReferralCode:'My INVITE CODE',rOriginBadge:'ORIGIN 100 eligible',rRewardStatus:'Granted on first login after launch',
     btnCopyCode:'Copy INVITE CODE',btnCopyLink:'Copy invite link',btnShare:'Share',btnShareX:'Share on X',
     btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
     shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → {url}'},
@@ -432,7 +432,7 @@ ja: {
     resultBodyRef:'あなたと紹介者それぞれに100 POPが予約されました。',
     resultTitleNoRef:'事前登録が完了しました！',
     resultBodyNoRef:'FANUZUリリース後に受け取れる50 POPが予約されました。',
-    rArtist:'関心アーティスト',rStatus:'惑星参加状態',rStatusVal:'生成待ち',rOrder:'事前登録順番',rJoinOrder:'惑星参加順番',rReward:'私の最初の貢献',rReferralCode:'私のINVITE CODE',rOriginBadge:'ORIGIN 100対象',rRewardStatus:'リリース後、初回ログイン時に付与',
+    rArtist:'関心アーティスト',rStatus:'惑星参加状態',rStatusVal:'生成待ち',rJoinTier:'惑星参加ランク',rReward:'私の最初の貢献',rReferralCode:'私のINVITE CODE',rOriginBadge:'ORIGIN 100対象',rRewardStatus:'リリース後、初回ログイン時に付与',
     btnCopyCode:'INVITE CODEをコピー',btnCopyLink:'招待リンクをコピー',btnShare:'共有する',btnShareX:'Xでシェア',
     btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました',
     shareMessage:'Bring your fandom to FANUZU. 私のINVITE CODE {code}で一緒に → {url}'},
@@ -560,7 +560,7 @@ es: {
     resultBodyRef:'Se han reservado 100 POP tanto para ti como para quien te invitó.',
     resultTitleNoRef:'¡Preinscripción completada!',
     resultBodyNoRef:'Tus primeros 50 POP están reservados para el lanzamiento de FANUZU.',
-    rArtist:'Artista de interés',rStatus:'Estado del planeta',rStatusVal:'Esperando creación',rOrder:'Orden de preinscripción',rJoinOrder:'Orden de ingreso al planeta',rReward:'Mi primera contribución',rReferralCode:'Mi INVITE CODE',rOriginBadge:'Elegible para ORIGIN 100',rRewardStatus:'Se otorga en el primer inicio de sesión tras el lanzamiento',
+    rArtist:'Artista de interés',rStatus:'Estado del planeta',rStatusVal:'Esperando creación',rJoinTier:'Nivel de ingreso al planeta',rReward:'Mi primera contribución',rReferralCode:'Mi INVITE CODE',rOriginBadge:'Elegible para ORIGIN 100',rRewardStatus:'Se otorga en el primer inicio de sesión tras el lanzamiento',
     btnCopyCode:'Copiar mi INVITE CODE',btnCopyLink:'Copiar enlace de invitación',btnShare:'Compartir',btnShareX:'Compartir en X',
     btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
     shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → {url}'},
@@ -687,7 +687,7 @@ zhHans: {
     resultBodyRef:'你和邀请人各自的 100 POP 已预留。',
     resultTitleNoRef:'预注册完成！',
     resultBodyNoRef:'FANUZU 上线后可领取的首笔 50 POP 已预留。',
-    rArtist:'关注的艺人',rStatus:'星球参与状态',rStatusVal:'等待生成',rOrder:'预注册顺序',rJoinOrder:'星球参与顺序',rReward:'我的首个贡献',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 资格',rRewardStatus:'上线后首次登录时发放',
+    rArtist:'关注的艺人',rStatus:'星球参与状态',rStatusVal:'等待生成',rJoinTier:'星球参与等级',rReward:'我的首个贡献',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 资格',rRewardStatus:'上线后首次登录时发放',
     btnCopyCode:'复制我的 INVITE CODE',btnCopyLink:'复制邀请链接',btnShare:'分享',btnShareX:'分享到 X',
     btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
@@ -814,7 +814,7 @@ zhHant: {
     resultBodyRef:'你和邀請人各自的 100 POP 已預留。',
     resultTitleNoRef:'預先登記完成！',
     resultBodyNoRef:'FANUZU 上線後可領取的首筆 50 POP 已預留。',
-    rArtist:'關注的藝人',rStatus:'星球參與狀態',rStatusVal:'等待生成',rOrder:'預先登記順序',rJoinOrder:'星球參與順序',rReward:'我的首個貢獻',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 資格',rRewardStatus:'上線後首次登入時發放',
+    rArtist:'關注的藝人',rStatus:'星球參與狀態',rStatusVal:'等待生成',rJoinTier:'星球參與等級',rReward:'我的首個貢獻',rReferralCode:'我的 INVITE CODE',rOriginBadge:'ORIGIN 100 資格',rRewardStatus:'上線後首次登入時發放',
     btnCopyCode:'複製我的 INVITE CODE',btnCopyLink:'複製邀請連結',btnShare:'分享',btnShareX:'分享到 X',
     btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},

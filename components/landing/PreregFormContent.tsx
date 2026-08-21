@@ -7,7 +7,6 @@ import { readAttribution, type Attribution } from './attribution';
 
 interface PreregResult {
   hasRef: boolean;
-  preregOrder: number;
   joinOrder: number;
   reward: number;
   code: string;
@@ -151,7 +150,6 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
       }
       setResult({
         hasRef: !!data.referralApplied,
-        preregOrder: data.preregistrationOrder,
         joinOrder: data.artistJoinOrder,
         reward: data.rewardAmount,
         code: data.referralCode,
@@ -217,12 +215,22 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   const resultTitle = result ? (result.hasRef ? tr.prereg.resultTitleRef : tr.prereg.resultTitleNoRef) : '';
   const resultBody = result ? (result.hasRef ? tr.prereg.resultBodyRef : tr.prereg.resultBodyNoRef) : '';
+  // Deliberately no exact sequence numbers here — a raw "#000042 of ###"
+  // lets anyone back out real signup volume just by registering. Early
+  // joiners still get a tier badge (bucketed, not a count) for the same
+  // founder feeling without exposing one.
+  const joinTier = result
+    ? result.joinOrder === 1
+      ? tr.origin.founderLabel
+      : result.joinOrder <= 100
+        ? tr.origin.originLabel
+        : null
+    : null;
   const resultRows = result
     ? [
         { k: tr.prereg.rArtist, v: artistName },
         { k: tr.prereg.rStatus, v: tr.prereg.rStatusVal },
-        { k: tr.prereg.rOrder, v: '#' + String(result.preregOrder).padStart(6, '0') },
-        { k: tr.prereg.rJoinOrder, v: '#' + String(result.joinOrder).padStart(3, '0') },
+        ...(joinTier ? [{ k: tr.prereg.rJoinTier, v: joinTier }] : []),
         { k: tr.prereg.rReward, v: result.reward + ' POP' },
         {
           k: result.hasRef ? tr.prereg.rOriginBadge : tr.prereg.rReferralCode,
@@ -237,8 +245,12 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
       <div style={{ maxWidth: 1180, margin: '0 auto', width: '100%' }}>
         <ArtistSelect
           headingId={headingId}
-          onConfirm={(artist) => {
+          onConfirm={(artist, fandom) => {
             setArtistName(artist);
+            // Prefill from the registry (still editable) so most fans never
+            // have to type their fandom's name at all — no registry match
+            // (e.g. a custom "Other" entry) just leaves the field as-is.
+            if (fandom) setFandomName(fandom);
             setStep('form');
           }}
         />

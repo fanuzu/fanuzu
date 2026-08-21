@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 export async function GET(request: Request) {
   const artist = new URL(request.url).searchParams.get('artist')?.trim();
   if (!artist) {
-    return NextResponse.json({ count: 0, official: false, logoUrl: null, heroImageUrl: null }, { status: 400 });
+    return NextResponse.json({ count: 0, official: false, logoUrl: null, heroImageUrl: null, fandomName: null }, { status: 400 });
   }
 
   try {
@@ -18,9 +18,10 @@ export async function GET(request: Request) {
       official: badge.isOfficial,
       logoUrl: badge.logoUrl,
       heroImageUrl: badge.heroImageUrl,
+      fandomName: registryArtist?.fandomName ?? null,
     });
   } catch (err) {
     console.error('artist-count lookup failed:', err);
-    return NextResponse.json({ count: 0, official: false, logoUrl: null, heroImageUrl: null }, { status: 500 });
+    return NextResponse.json({ count: 0, official: false, logoUrl: null, heroImageUrl: null, fandomName: null }, { status: 500 });
   }
 }

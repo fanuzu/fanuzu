@@ -333,3 +333,39 @@ export async function submitPreregistration(
     referralCode,
   };
 }
+
+/**
+ * Admin-only, privacy/spam removal (doc-less feature: no spec, built on
+ * request). Deletes one pre-registration and everything that would
+ * otherwise leave a dangling foreign key pointing at it:
+ *  - other rows' referred_by_id (they keep their own registration, they
+ *    just lose credit for having been referred by this person)
+ *  - `referrals` rows where this id is either side of the relationship
+ *  - `pop_reward_ledger` rows for this id or crediting a referral to it
+ * Returns false if no row with that id existed.
+ */
+export async function deleteRegistration(id: number): Promise<boolean> {
+  await ensureSchema();
+  const pool = getPool();
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('UPDATE preregistrations SET referred_by_id = NULL WHERE referred_by_id = $1', [id]);
+    await client.query(
+      'DELETE FROM referrals WHERE referrer_preregistration_id = $1 OR referred_preregistration_id = $1',
+      [id]
+    );
+    await client.query(
+      'DELETE FROM pop_reward_ledger WHERE preregistration_id = $1 OR related_preregistration_id = $1',
+      [id]
+    );
+    const result = await client.query('DELETE FROM preregistrations WHERE id = $1', [id]);
+    await client.query('COMMIT');
+    return (result.rowCount ?? 0) > 0;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}

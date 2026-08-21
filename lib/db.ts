@@ -141,6 +141,22 @@ const SCHEMA_SQL = `
     ('babymonster', 'BABYMONSTER', 'MONSTIEZ', 'YG Entertainment')
   ON CONFLICT (slug) DO NOTHING;
 
+  -- Picker refresh: NCT and TWICE dropped off POPULAR_ARTISTS (their rows
+  -- above are left as-is — harmless, and any existing pre-registrations
+  -- still point at them), these 8 replace/join them. fandom_name/agency
+  -- left NULL where not confidently known rather than guessed; an admin
+  -- can fill them in later from the Artist registry screen.
+  INSERT INTO artists (slug, artist_name, fandom_name, agency) VALUES
+    ('ateez', 'ATEEZ', 'ATINY', 'KQ Entertainment'),
+    ('le sserafim', 'LE SSERAFIM', 'FEARNOT', 'SOURCE MUSIC'),
+    ('riize', 'RIIZE', 'BRIIZE', 'SM Entertainment'),
+    ('boynextdoor', 'BOYNEXTDOOR', 'DOR', 'KOZ Entertainment'),
+    ('illit', 'ILLIT', NULL, 'BELIFT LAB'),
+    ('tws', 'TWS', NULL, 'PLEDIS Entertainment'),
+    ('cortis', 'CORTIS', NULL, NULL),
+    ('hearts2hearts', 'Hearts2Hearts', NULL, 'SM Entertainment')
+  ON CONFLICT (slug) DO NOTHING;
+
   -- Fandom-level querying (admin CSV export, per-artist breakdown) leans on
   -- this join constantly — preregistrations was only indexed on the raw
   -- normalized name before artist_id existed.
