@@ -153,7 +153,7 @@ ko: {
     statusBadge:'사전신청',statusNote:'아직 정식 오픈 일정은 정해지지 않았습니다. 지금 사전신청하면 자리를 미리 확보할 수 있어요.',
     benefitsLabel:'사전신청 혜택',
     benefits:['지금 바로 50 POP, INVITE CODE 사용 시 100 POP','오늘 날짜로 행성 참여 순번 확보','최초 100명이면 ORIGIN 100 도전 기회'],
-    selectTitle:'어느 우주에서 오셨나요?',selectSub:'함께 만들어갈 아티스트 행성을 선택해주세요.',selectOther:'기타',selectConfirm:'확인',
+    selectTitle:'어느 우주에서 오셨나요?',selectSub:'함께 만들어갈 아티스트 행성을 선택해주세요.',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
     founderCountLabel:'현재 개척자 {n}명',foundingCta:'FOUNDING FAN 참여',selectBack:'다른 아티스트 선택',selectChange:'변경',
     steps:[
       {t:'내 아티스트 등록',d:'아직 행성이 없다면 생성 신청을, 이미 신청된 행성이라면 초기 팬으로 참여합니다.'},
@@ -280,7 +280,7 @@ en: {
     statusBadge:'PRE-REGISTRATION',statusNote:'FANUZU’s official launch date hasn’t been set yet. Pre-register now to reserve your spot ahead of it.',
     benefitsLabel:'What pre-registering gets you',
     benefits:['50 POP instantly — 100 POP with an invite code','Your join order in the fandom planet, secured from today','A shot at ORIGIN 100 if you’re among the first 100 fans'],
-    selectTitle:'Which universe are you from?',selectSub:'Pick the artist planet you want to help build.',selectOther:'Other',selectConfirm:'Confirm',
+    selectTitle:'Which universe are you from?',selectSub:'Pick the artist planet you want to help build.',selectOther:'From another universe?',selectConfirm:'Confirm',
     founderCountLabel:'{n} founding fans so far',foundingCta:'Join as a FOUNDING FAN',selectBack:'Choose a different artist',selectChange:'Change',
     steps:[
       {t:'Join my artist',d:'If the planet doesn’t exist yet, request it. If it does, join as an early fan.'},
@@ -407,7 +407,7 @@ ja: {
     statusBadge:'事前登録',statusNote:'まだ正式な開始日は決まっていません。今のうちに事前登録して、あなたの順番を確保しましょう。',
     benefitsLabel:'事前登録の特典',
     benefits:['今すぐ50 POP、INVITE CODEを使えば100 POP','今日の日付でファンダム惑星への参加順番を確保','最初の100人ならORIGIN 100に挑戦できるチャンス'],
-    selectTitle:'どの宇宙から来ましたか？',selectSub:'一緒に育てたいアーティストの惑星を選んでください。',selectOther:'その他',selectConfirm:'確認',
+    selectTitle:'どの宇宙から来ましたか？',selectSub:'一緒に育てたいアーティストの惑星を選んでください。',selectOther:'別の宇宙から来ましたか？',selectConfirm:'確認',
     founderCountLabel:'現在の開拓者 {n}人',foundingCta:'FOUNDING FANとして参加',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
     steps:[
       {t:'推しを登録',d:'まだ惑星がなければ作成をリクエスト。すでにあれば初期ファンとして参加できます。'},
@@ -535,7 +535,7 @@ es: {
     statusBadge:'PREINSCRIPCIÓN',statusNote:'Todavía no hay fecha oficial de lanzamiento de FANUZU. Preinscríbete ahora para reservar tu lugar.',
     benefitsLabel:'Beneficios de preinscribirte',
     benefits:['50 POP al instante — 100 POP con un código de invitación','Tu turno de ingreso al planeta, asegurado desde hoy','Una oportunidad de ser ORIGIN 100 si estás entre los primeros 100 fans'],
-    selectTitle:'¿De qué universo vienes?',selectSub:'Elige el planeta del artista que quieres ayudar a construir.',selectOther:'Otro',selectConfirm:'Confirmar',
+    selectTitle:'¿De qué universo vienes?',selectSub:'Elige el planeta del artista que quieres ayudar a construir.',selectOther:'¿Vienes de otro universo?',selectConfirm:'Confirmar',
     founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme como FOUNDING FAN',selectBack:'Elegir otro artista',selectChange:'Cambiar',
     steps:[
       {t:'Elige a tu artista',d:'Si el planeta aún no existe, solicita su creación. Si ya existe, únete como fan inicial.'},
@@ -662,7 +662,7 @@ zhHans: {
     statusBadge:'预注册',statusNote:'FANUZU 正式上线日期尚未确定。现在预注册即可提前锁定你的名额。',
     benefitsLabel:'预注册福利',
     benefits:['立即获得 50 POP，使用 INVITE CODE 可获得 100 POP','从今天起锁定你的星球加入顺位','若是最早的 100 位粉丝，将有机会获得 ORIGIN 100'],
-    selectTitle:'你来自哪个宇宙？',selectSub:'选择你想一起打造的艺人星球。',selectOther:'其他',selectConfirm:'确认',
+    selectTitle:'你来自哪个宇宙？',selectSub:'选择你想一起打造的艺人星球。',selectOther:'来自其他宇宙？',selectConfirm:'确认',
     founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入成为 FOUNDING FAN',selectBack:'选择其他艺人',selectChange:'更改',
     steps:[
       {t:'选择艺人',d:'如果星球还不存在，可以申请创建；如果已经存在，就作为早期粉丝加入。'},
@@ -789,7 +789,7 @@ zhHant: {
     statusBadge:'預先登記',statusNote:'FANUZU 正式上線日期尚未確定。現在預先登記即可提前鎖定你的名額。',
     benefitsLabel:'預先登記福利',
     benefits:['立即獲得 50 POP，使用 INVITE CODE 可獲得 100 POP','從今天起鎖定你的星球加入順位','若是最早的 100 位粉絲，將有機會獲得 ORIGIN 100'],
-    selectTitle:'你來自哪個宇宙？',selectSub:'選擇你想一起打造的藝人星球。',selectOther:'其他',selectConfirm:'確認',
+    selectTitle:'你來自哪個宇宙？',selectSub:'選擇你想一起打造的藝人星球。',selectOther:'來自其他宇宙？',selectConfirm:'確認',
     founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入成為 FOUNDING FAN',selectBack:'選擇其他藝人',selectChange:'更改',
     steps:[
       {t:'選擇藝人',d:'如果星球還不存在，可以申請建立；如果已經存在，就以早期粉絲身分加入。'},
