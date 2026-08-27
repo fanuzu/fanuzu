@@ -28,35 +28,32 @@ export default function ArtistSelect({
 }) {
   const { tr } = useLang();
   const [pendingArtist, setPendingArtist] = useState<string | null>(null);
-  const [count, setCount] = useState<number | null>(null);
   const [official, setOfficial] = useState(false);
   const [fandomName, setFandomName] = useState<string | null>(null);
-  const [loadingCount, setLoadingCount] = useState(false);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customText, setCustomText] = useState('');
 
+  // Founder count is fetched and known here, but deliberately never
+  // rendered — showing an exact live number (especially "0") lets anyone
+  // gauge real signup volume just by opening the picker. official/fandomName
+  // still come from the same lookup for the OFFICIAL badge and the
+  // fandom-name autofill.
   async function reveal(artist: string) {
     setPendingArtist(artist);
-    setCount(null);
     setOfficial(false);
     setFandomName(null);
-    setLoadingCount(true);
     try {
       const res = await fetch(`/api/prereg/artist-count?artist=${encodeURIComponent(artist)}`);
       const data = await res.json();
-      setCount(typeof data.count === 'number' ? data.count : 0);
       setOfficial(data.official === true);
       setFandomName(typeof data.fandomName === 'string' ? data.fandomName : null);
     } catch {
-      setCount(0);
-    } finally {
-      setLoadingCount(false);
+      // Badge/fandom prefill simply stay at their defaults on failure.
     }
   }
 
   function backToGrid() {
     setPendingArtist(null);
-    setCount(null);
     setOfficial(false);
     setFandomName(null);
   }
@@ -117,9 +114,6 @@ export default function ArtistSelect({
             ✓ OFFICIAL
           </div>
         )}
-        <p style={{ fontSize: 15, color: '#B8AFC4', margin: official ? '0 0 32px' : '18px 0 32px' }}>
-          {loadingCount ? '···' : tr.prereg.founderCountLabel.replace('{n}', String(count ?? 0))}
-        </p>
         <button
           onClick={() => onConfirm(pendingArtist, fandomName)}
           style={{
@@ -132,6 +126,7 @@ export default function ArtistSelect({
             borderRadius: 999,
             cursor: 'pointer',
             fontFamily: 'inherit',
+            marginTop: official ? 10 : 28,
             marginBottom: 16,
           }}
         >

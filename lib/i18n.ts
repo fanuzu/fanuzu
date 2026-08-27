@@ -154,7 +154,7 @@ ko: {
     benefitsLabel:'사전신청 혜택',
     benefits:['지금 바로 50 POP, INVITE CODE 사용 시 100 POP','오늘 날짜로 행성 참여 순번 확보','최초 100명이면 ORIGIN 100 도전 기회'],
     selectTitle:'어느 우주에서 오셨나요?',selectSub:'함께 만들어갈 아티스트 행성을 선택해주세요.',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
-    founderCountLabel:'현재 개척자 {n}명',foundingCta:'FOUNDING FAN 참여',selectBack:'다른 아티스트 선택',selectChange:'변경',
+    founderCountLabel:'현재 개척자 {n}명',foundingCta:'나의 별에 참여하기',selectBack:'다른 아티스트 선택',selectChange:'변경',
     steps:[
       {t:'내 아티스트 등록',d:'아직 행성이 없다면 생성 신청을, 이미 신청된 행성이라면 초기 팬으로 참여합니다.'},
       {t:'추천 코드로 팬 연결',d:'나만의 추천 코드를 공유하고 같은 별을 밝힐 팬들을 초대합니다.'},
@@ -281,7 +281,7 @@ en: {
     benefitsLabel:'What pre-registering gets you',
     benefits:['50 POP instantly — 100 POP with an invite code','Your join order in the fandom planet, secured from today','A shot at ORIGIN 100 if you’re among the first 100 fans'],
     selectTitle:'Which universe are you from?',selectSub:'Pick the artist planet you want to help build.',selectOther:'From another universe?',selectConfirm:'Confirm',
-    founderCountLabel:'{n} founding fans so far',foundingCta:'Join as a FOUNDING FAN',selectBack:'Choose a different artist',selectChange:'Change',
+    founderCountLabel:'{n} founding fans so far',foundingCta:'Join my star',selectBack:'Choose a different artist',selectChange:'Change',
     steps:[
       {t:'Join my artist',d:'If the planet doesn’t exist yet, request it. If it does, join as an early fan.'},
       {t:'Invite fans',d:'Share your referral code and invite fans to light the same star.'},
@@ -408,7 +408,7 @@ ja: {
     benefitsLabel:'事前登録の特典',
     benefits:['今すぐ50 POP、INVITE CODEを使えば100 POP','今日の日付でファンダム惑星への参加順番を確保','最初の100人ならORIGIN 100に挑戦できるチャンス'],
     selectTitle:'どの宇宙から来ましたか？',selectSub:'一緒に育てたいアーティストの惑星を選んでください。',selectOther:'別の宇宙から来ましたか？',selectConfirm:'確認',
-    founderCountLabel:'現在の開拓者 {n}人',foundingCta:'FOUNDING FANとして参加',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
+    founderCountLabel:'現在の開拓者 {n}人',foundingCta:'私の星に参加する',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
     steps:[
       {t:'推しを登録',d:'まだ惑星がなければ作成をリクエスト。すでにあれば初期ファンとして参加できます。'},
       {t:'ファンを招待',d:'紹介コードをシェアして、同じ星を一緒に照らす仲間を招待。'},
@@ -536,7 +536,7 @@ es: {
     benefitsLabel:'Beneficios de preinscribirte',
     benefits:['50 POP al instante — 100 POP con un código de invitación','Tu turno de ingreso al planeta, asegurado desde hoy','Una oportunidad de ser ORIGIN 100 si estás entre los primeros 100 fans'],
     selectTitle:'¿De qué universo vienes?',selectSub:'Elige el planeta del artista que quieres ayudar a construir.',selectOther:'¿Vienes de otro universo?',selectConfirm:'Confirmar',
-    founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme como FOUNDING FAN',selectBack:'Elegir otro artista',selectChange:'Cambiar',
+    founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme a mi estrella',selectBack:'Elegir otro artista',selectChange:'Cambiar',
     steps:[
       {t:'Elige a tu artista',d:'Si el planeta aún no existe, solicita su creación. Si ya existe, únete como fan inicial.'},
       {t:'Invita a otros fans',d:'Comparte tu código e invita a más fans a iluminar la misma estrella.'},
@@ -663,7 +663,7 @@ zhHans: {
     benefitsLabel:'预注册福利',
     benefits:['立即获得 50 POP，使用 INVITE CODE 可获得 100 POP','从今天起锁定你的星球加入顺位','若是最早的 100 位粉丝，将有机会获得 ORIGIN 100'],
     selectTitle:'你来自哪个宇宙？',selectSub:'选择你想一起打造的艺人星球。',selectOther:'来自其他宇宙？',selectConfirm:'确认',
-    founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入成为 FOUNDING FAN',selectBack:'选择其他艺人',selectChange:'更改',
+    founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入我的星',selectBack:'选择其他艺人',selectChange:'更改',
     steps:[
       {t:'选择艺人',d:'如果星球还不存在，可以申请创建；如果已经存在，就作为早期粉丝加入。'},
       {t:'邀请粉丝',d:'分享你的邀请码，邀请更多粉丝一起点亮同一颗星。'},
@@ -790,7 +790,7 @@ zhHant: {
     benefitsLabel:'預先登記福利',
     benefits:['立即獲得 50 POP，使用 INVITE CODE 可獲得 100 POP','從今天起鎖定你的星球加入順位','若是最早的 100 位粉絲，將有機會獲得 ORIGIN 100'],
     selectTitle:'你來自哪個宇宙？',selectSub:'選擇你想一起打造的藝人星球。',selectOther:'來自其他宇宙？',selectConfirm:'確認',
-    founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入成為 FOUNDING FAN',selectBack:'選擇其他藝人',selectChange:'更改',
+    founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入我的星',selectBack:'選擇其他藝人',selectChange:'更改',
     steps:[
       {t:'選擇藝人',d:'如果星球還不存在，可以申請建立；如果已經存在，就以早期粉絲身分加入。'},
       {t:'邀請粉絲',d:'分享你的邀請碼，邀請更多粉絲一起點亮同一顆星。'},
