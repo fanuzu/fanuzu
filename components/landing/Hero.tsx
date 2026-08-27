@@ -17,7 +17,7 @@ export default function Hero() {
         zIndex: 1,
         maxWidth: 1180,
         margin: '0 auto',
-        padding: '150px 24px 100px',
+        padding: 'clamp(104px,26vw,150px) 24px clamp(56px,10vw,100px)',
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -106,59 +106,25 @@ export default function Hero() {
         >
           {tr.hero.coreMessage}
         </p>
-        <p style={{ fontSize: 18, lineHeight: 1.6, color: '#B8AFC4', maxWidth: 520, margin: '0 0 14px' }}>{tr.hero.d1}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: '#9089A0', maxWidth: 520, margin: '0 0 14px' }}>{tr.hero.d2}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: '#9089A0', maxWidth: 520, margin: '0 0 34px' }}>{tr.hero.d3}</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 30 }}>
-          <a
-            href="#experience"
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 24 }}>
+          <button
+            onClick={openModal}
             style={{
               background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
               color: '#05030B',
               fontWeight: 700,
-              fontSize: 16,
-              padding: '15px 28px',
+              fontSize: 17,
+              padding: '16px 32px',
               borderRadius: 999,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
               display: 'inline-block',
               transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
-            {tr.hero.ctaPrimary}
-          </a>
-          <button
-            onClick={openModal}
-            style={{
-              background: 'rgba(255,255,255,.06)',
-              border: '1px solid rgba(255,255,255,.16)',
-              color: '#FFFAFC',
-              fontWeight: 600,
-              fontSize: 16,
-              padding: '15px 28px',
-              borderRadius: 999,
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              display: 'inline-block',
-            }}
-          >
             {tr.hero.ctaPrereg}
           </button>
-          <a
-            href="#why"
-            style={{
-              background: 'rgba(255,255,255,.06)',
-              border: '1px solid rgba(255,255,255,.16)',
-              color: '#FFFAFC',
-              fontWeight: 600,
-              fontSize: 16,
-              padding: '15px 28px',
-              borderRadius: 999,
-              textDecoration: 'none',
-              display: 'inline-block',
-            }}
-          >
-            {tr.hero.ctaSecondary}
-          </a>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px' }}>
           {tr.hero.sub.map((s, i) => (
