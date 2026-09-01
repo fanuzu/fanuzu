@@ -56,8 +56,8 @@ export interface PreregSuccess {
   artistJoinOrder: number;
   rewardAmount: number;
   referralApplied: boolean;
-  origin100Eligible: boolean;
-  origin100Number: number | null;
+  preregBadgeEligible: boolean;
+  preregBadgeNumber: number | null;
   referralCode: string;
 }
 
@@ -138,9 +138,11 @@ function parseDate(value: unknown): Date | null {
  * called out in the product brief: rate limiting, email format + dedup,
  * referral code validity + self-referral, required terms/privacy consent
  * (marketing consent is optional and never blocks registration), artist join
- * order and ORIGIN 100 eligibility (first 100 valid registrations per
- * artist), and reward reservation (50 POP base / 100 POP with a valid
- * referral, plus a 100 POP ledger entry for the referrer).
+ * order, and reward reservation (50 POP base / 100 POP with a valid
+ * referral, plus a 100 POP ledger entry for the referrer). Every valid
+ * registration earns the PRE-REG BADGE — the earlier ORIGIN 100 policy
+ * (first 100 registrations only) was retired in favor of a badge for
+ * everyone who pre-registers.
  */
 export async function submitPreregistration(
   body: PreregRequestBody,
@@ -215,8 +217,11 @@ export async function submitPreregistration(
     [artistNameNormalized]
   );
   const artistJoinOrder = Number(countRows[0].count) + 1;
-  const origin100Eligible = artistJoinOrder <= 100;
-  const origin100Number = origin100Eligible ? artistJoinOrder : null;
+  // Every valid pre-registration earns the PRE-REG BADGE now (no more
+  // first-100-only ORIGIN 100 gate) — eligible is always true, and the
+  // badge number is just this fan's own join order.
+  const preregBadgeEligible = true;
+  const preregBadgeNumber = artistJoinOrder;
 
   const rewardAmount = referrer ? 100 : 50;
   const referralCode = await generateReferralCode();
@@ -262,8 +267,8 @@ export async function submitPreregistration(
         marketingConsent,
         marketingConsentAt,
         artistJoinOrder,
-        origin100Eligible,
-        origin100Number,
+        preregBadgeEligible,
+        preregBadgeNumber,
         referralCode,
         utmSource || null,
         utmMedium || null,
@@ -328,8 +333,8 @@ export async function submitPreregistration(
     artistJoinOrder,
     rewardAmount,
     referralApplied: !!referrer,
-    origin100Eligible,
-    origin100Number,
+    preregBadgeEligible,
+    preregBadgeNumber,
     referralCode,
   };
 }

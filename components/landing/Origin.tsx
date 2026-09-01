@@ -33,32 +33,20 @@ export default function Origin() {
           {tr.origin.quote}
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginBottom: 36 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 36 }}>
           <div
             style={{
-              flex: '1 1 260px',
-              maxWidth: 320,
-              background: 'rgba(255,255,255,.04)',
-              border: '1px solid rgba(124,232,255,.3)',
-              borderRadius: 16,
-              padding: 22,
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 8 }}>{tr.origin.founderLabel}</div>
-            <div style={{ fontSize: 13.5, lineHeight: 1.55, color: '#B8AFC4' }}>{tr.origin.founderDesc}</div>
-          </div>
-          <div
-            style={{
-              flex: '1 1 260px',
-              maxWidth: 320,
+              flex: '1 1 320px',
+              maxWidth: 480,
               background: 'rgba(255,125,221,.08)',
               border: '1px solid rgba(255,125,221,.4)',
               borderRadius: 16,
-              padding: 22,
+              padding: 26,
+              textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#FF7DDD', marginBottom: 8 }}>{tr.origin.originLabel}</div>
-            <div style={{ fontSize: 13.5, lineHeight: 1.55, color: '#FFFAFC' }}>{tr.origin.originDesc}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '.06em', color: '#FF7DDD', marginBottom: 10 }}>{tr.origin.badgeLabel}</div>
+            <div style={{ fontSize: 13.5, lineHeight: 1.55, color: '#FFFAFC' }}>{tr.origin.badgeDesc}</div>
           </div>
         </div>
 

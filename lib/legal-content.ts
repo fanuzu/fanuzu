@@ -30,12 +30,12 @@ export interface LegalContent {
   privacy: LegalDoc;
 }
 
-const EFFECTIVE_KO = '시행일: 2026년 8월 4일 · 버전 1.0';
-const EFFECTIVE_EN = 'Effective: August 4, 2026 · Version 1.0';
-const EFFECTIVE_JA = '施行日: 2026年8月4日 · バージョン1.0';
-const EFFECTIVE_ES = 'Vigencia: 4 de agosto de 2026 · Versión 1.0';
-const EFFECTIVE_ZH_HANS = '生效日期：2026年8月4日 · 版本1.0';
-const EFFECTIVE_ZH_HANT = '生效日期：2026年8月4日 · 版本1.0';
+const EFFECTIVE_KO = '시행일: 2026년 9월 1일 · 버전 1.1';
+const EFFECTIVE_EN = 'Effective: September 1, 2026 · Version 1.1';
+const EFFECTIVE_JA = '施行日: 2026年9月1日 · バージョン1.1';
+const EFFECTIVE_ES = 'Vigencia: 1 de septiembre de 2026 · Versión 1.1';
+const EFFECTIVE_ZH_HANS = '生效日期：2026年9月1日 · 版本1.1';
+const EFFECTIVE_ZH_HANT = '生效日期：2026年9月1日 · 版本1.1';
 
 export const LEGAL: Record<Lang, LegalContent> = {
   ko: {
@@ -45,7 +45,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       effective: EFFECTIVE_KO,
       infoBoxLabel: '중요',
       infoBoxText:
-        '이 약관은 FANUZU 정식 앱 출시 전의 홈페이지 체험, 팬덤 행성 생성 신청, 사전등록, 추천 코드, POP 보상 예약, FANUZU PASSPORT 및 ORIGIN 100 후보 운영에 적용됩니다.',
+        '이 약관은 FANUZU 정식 앱 출시 전의 홈페이지 체험, 팬덤 행성 생성 신청, 사전등록, 추천 코드, POP 보상 예약, FANUZU PASSPORT 및 PRE-REG BADGE 운영에 적용됩니다.',
       tocLabel: '목차',
       toc: [
         '1. 목적과 용어', '2. 사전등록 및 이용 자격', '3. 팬덤 행성 신청', '4. 추천 코드와 POP',
@@ -62,7 +62,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: '팬덤 행성', text: '특정 아티스트를 응원하는 팬들의 기여와 활동을 시각화한 FANUZU 내 공동 공간입니다.' },
               { term: 'FANUZU PASSPORT', text: '이용자의 참여, 기여, 캠페인, 성장 단계, 칭호 등을 표시하는 디지털 팬 ID 및 활동 기록입니다.' },
               { term: 'PLANET FOUNDER', text: '팬덤 행성 생성을 최초로 유효하게 제안한 이용자에게 부여할 수 있는 한정 역할입니다.' },
-              { term: 'ORIGIN 100', text: '각 팬덤 행성에 유효하게 참여한 최초 100명에게 검증 후 부여할 수 있는 창립 칭호입니다.' },
+              { term: 'PRE-REG BADGE', text: '유효하게 사전등록을 완료한 모든 이용자에게 검증 후 부여할 수 있는 사전등록 증표입니다.' },
               { term: '추천 코드', text: '사전등록 이용자를 연결하고 보상 조건을 확인하기 위한 고유 코드입니다.' },
             ] },
           ],
@@ -96,7 +96,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'POP은 이메일 인증 및 정식 출시 후 최초 로그인 또는 계정 연동이 완료된 뒤 지급할 수 있습니다.',
               '한 신청에는 하나의 추천 코드만 적용되며, 등록 완료 후에는 원칙적으로 변경할 수 없습니다.',
               '자기 추천, 동일인 다중 계정, 허위 이메일, 자동화 가입, 코드 거래, 보상만을 목적으로 한 비정상 가입은 무효 처리됩니다.',
-              '추천 수는 ORIGIN 100 순번을 앞당기지 않습니다.',
               'POP은 현금, 전자화폐, 예금, 유가증권이 아니며 현금으로 환전하거나 이용자 간 판매·양도할 수 없습니다.',
               '사전등록 POP의 사용처, 유효기간, 소진 방식은 정식 출시 정책에서 구체화되며, 이용자에게 불리한 중대한 변경은 사전 안내합니다.',
             ] },
@@ -104,13 +103,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: '제5조', title: 'FANUZU PASSPORT, PLANET FOUNDER 및 ORIGIN 100',
+          n: '제5조', title: 'FANUZU PASSPORT, PLANET FOUNDER 및 PRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             '홈페이지에 표시되는 PASSPORT는 정식 서비스의 예정 기능을 설명하기 위한 미리보기일 수 있습니다.',
             '패스포트의 누적 기여, 캠페인, 성장 단계, 배지는 회사가 검증한 활동 기록에 따라 표시됩니다.',
-            'ORIGIN 100은 결제 금액이나 추천 수가 아니라 각 팬덤 행성에 유효하게 사전등록하고 필요한 인증을 완료한 순서를 기준으로 합니다.',
-            '표시 순번은 서버 기록, 중복 통합, 부정 이용 검증, 아티스트명 통합에 따라 임시 순번과 달라질 수 있습니다.',
-            '부정 가입, 서비스 정책 위반, 권리 침해 또는 행성 통합·폐쇄 사유가 있는 경우 후보 자격 또는 칭호가 취소·조정될 수 있습니다.',
+            'PRE-REG BADGE는 결제 금액이나 추천 수와 무관하게, 각 팬덤 행성에 유효하게 사전등록을 완료한 모든 이용자에게 부여됩니다.',
+            'PRE-REG BADGE는 이메일 인증, 중복 통합, 부정 이용 검증 등 필요한 절차가 완료된 뒤 최종 확정됩니다.',
+            '부정 가입, 서비스 정책 위반, 권리 침해 또는 행성 통합·폐쇄 사유가 있는 경우 배지 또는 칭호가 취소·조정될 수 있습니다.',
             '칭호와 배지는 명예 기록이며 재산권, 경영권, 투표 지분 또는 아티스트에 대한 권리를 의미하지 않습니다.',
           ] }],
         },
@@ -174,7 +173,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['필수', '이메일, 관심 아티스트명, 이용 언어, 필수 동의(이용약관/개인정보) 여부 및 동의 일시', '사전등록 접수, 출시 알림, 신청자 식별, 중복 신청 방지, 문의 대응'],
               ['선택', '팬덤명, 입덕 연도, 추천인 코드, 마케팅 수신 동의 여부', '팬덤 행성 생성 수요 집계, 추천 관계 확인, 사전등록 POP 보상 예약, 소식·프로모션 발송'],
               ['자동 생성', '접속 일시, IP 주소, 브라우저·기기 정보, 언어 설정, 서비스 이용기록, 오류 로그', '보안, 부정·중복 신청 탐지, 장애 대응, 서비스 품질 개선'],
-              ['사전등록 결과', '사전등록 순번, 아티스트별 참여 순번, 생성된 추천 코드, POP 보상 예약 상태, ORIGIN 100 후보 여부', '사전등록 결과 제공, 정식 출시 후 계정 연동 및 혜택 검증'],
+              ['사전등록 결과', '사전등록 순번, 아티스트별 참여 순번, 생성된 추천 코드, POP 보상 예약 상태, PRE-REG BADGE 지급 여부', '사전등록 결과 제공, 정식 출시 후 계정 연동 및 혜택 검증'],
             ] },
             { kind: 'p', text: '추천인 코드와 마케팅 수신 동의는 선택사항이며, 동의하지 않아도 사전등록할 수 있습니다. 회사는 주민등록번호, 결제정보, 정밀 위치정보를 사전등록 단계에서 수집하지 않습니다.' },
           ],
@@ -208,7 +207,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: '이용자의 권리와 행사 방법',
           blocks: [
             { kind: 'p', text: '이용자는 자신의 개인정보에 대해 열람, 정정, 삭제, 처리정지, 동의 철회(마케팅 수신 철회 포함)를 요청할 수 있습니다. 요청은 help@fanuzu.co.kr로 보내면 본인 확인 후 처리합니다.' },
-            { kind: 'p', text: '추천인 코드 적용, POP 보상 예약, ORIGIN 100 후보 순번은 개인정보 정정과 별개로 운영정책 및 부정 이용 검증 결과에 따라 조정될 수 있습니다.' },
+            { kind: 'p', text: '추천인 코드 적용, POP 보상 예약, PRE-REG BADGE 지급 여부는 개인정보 정정과 별개로 운영정책 및 부정 이용 검증 결과에 따라 조정될 수 있습니다.' },
           ],
         },
         {
@@ -254,7 +253,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       title: "FANUZU Pre-Registration Terms of Service",
       effective: EFFECTIVE_EN,
       infoBoxLabel: 'Important',
-      infoBoxText: "These Terms apply to the FANUZU website experience, fandom planet creation requests, pre-registration, referral codes, reserved POP rewards, and the FANUZU PASSPORT and ORIGIN 100 candidacy shown before the full app launches.",
+      infoBoxText: "These Terms apply to the FANUZU website experience, fandom planet creation requests, pre-registration, referral codes, reserved POP rewards, and the FANUZU PASSPORT and PRE-REG BADGE shown before the full app launches.",
       tocLabel: 'Contents',
       toc: [
         '1. Purpose and Definitions', '2. Pre-Registration and Eligibility', '3. Fandom Planet Requests', '4. Referral Codes and POP',
@@ -271,7 +270,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: 'Fandom Planet', text: 'A shared space within FANUZU that visualizes the contributions and activity of fans supporting a specific artist.' },
               { term: 'FANUZU PASSPORT', text: "A digital fan ID and activity record showing a user's participation, contribution, campaigns, growth stages, and titles." },
               { term: 'PLANET FOUNDER', text: 'A limited role that may be granted to the user who first validly proposed a fandom planet.' },
-              { term: 'ORIGIN 100', text: 'A founding title that may be granted, after verification, to the first 100 people who validly took part in a given fandom planet.' },
+              { term: 'PRE-REG BADGE', text: 'A pre-registration record that may be granted, after verification, to every user who validly completes pre-registration.' },
               { term: 'Referral Code', text: 'A unique code used to connect pre-registered users and determine reward eligibility.' },
             ] },
           ],
@@ -305,7 +304,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'POP may be paid out only after email verification and first login or account linking once the full service launches.',
               'Only one referral code may be applied per application, and it generally cannot be changed after registration is complete.',
               'Self-referral, multiple accounts by the same person, false email addresses, automated sign-ups, code trading, and sign-ups made solely to farm rewards are treated as invalid.',
-              'Referral counts do not move up a user\'s ORIGIN 100 order.',
               'POP is not cash, e-money, a deposit, or a security, and cannot be exchanged for cash or sold/transferred between users.',
               "Where POP can be used, its validity period, and how it is spent will be detailed in the full-service policy; material changes unfavorable to users will be announced in advance.",
             ] },
@@ -313,13 +311,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: 'Article 5', title: 'FANUZU PASSPORT, PLANET FOUNDER, and ORIGIN 100',
+          n: 'Article 5', title: 'FANUZU PASSPORT, PLANET FOUNDER, and PRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             'The PASSPORT shown on the website may be a preview illustrating a planned feature of the full service.',
             "A passport's accumulated contribution, campaigns, growth stage, and badges are shown based on activity records verified by the Company.",
-            'ORIGIN 100 is based on the order in which a user validly pre-registered and completed the required verification for a given fandom planet — not payment amount or referral count.',
-            'Displayed order numbers may differ from provisional numbers due to server records, duplicate merges, fraud verification, or artist-name consolidation.',
-            'Candidacy or a title may be revoked or adjusted in cases of fraudulent sign-up, policy violation, rights infringement, or planet merger/closure.',
+            'The PRE-REG BADGE is granted to every user who validly completes pre-registration for a given fandom planet, regardless of payment amount or referral count.',
+            'The PRE-REG BADGE is finalized once required steps — email verification, duplicate merges, and fraud verification — are complete.',
+            'A badge or title may be revoked or adjusted in cases of fraudulent sign-up, policy violation, rights infringement, or planet merger/closure.',
             'Titles and badges are honorary records and do not represent property rights, management rights, voting shares, or any right in relation to the artist.',
           ] }],
         },
@@ -383,7 +381,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['Required', 'Email, artist of interest, service language, whether required consents (Terms/Privacy) were given and when', 'Accepting pre-registration, launch notifications, identifying applicants, preventing duplicate applications, handling inquiries'],
               ['Optional', 'Fandom name, fan-since year, referral code, marketing consent status', 'Gauging demand for fandom planet creation, confirming referral relationships, reserving pre-registration POP rewards, sending news and promotions'],
               ['Automatically generated', 'Access timestamps, IP address, browser/device information, language setting, usage records, error logs', 'Security, detecting fraud and duplicate applications, incident response, service quality improvement'],
-              ['Pre-registration results', 'Pre-registration order number, per-artist join order, generated referral code, POP reward reservation status, ORIGIN 100 candidacy', 'Providing pre-registration results, account linking and benefit verification after full launch'],
+              ['Pre-registration results', 'Pre-registration order number, per-artist join order, generated referral code, POP reward reservation status, PRE-REG BADGE grant status', 'Providing pre-registration results, account linking and benefit verification after full launch'],
             ] },
             { kind: 'p', text: 'A referral code and marketing consent are both optional — you may pre-register without either. The Company does not collect national ID numbers, payment information, or precise location data at the pre-registration stage.' },
           ],
@@ -417,7 +415,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: 'User Rights and How to Exercise Them',
           blocks: [
             { kind: 'p', text: 'You may request access, correction, deletion, restriction of processing, or withdrawal of consent (including withdrawing marketing consent) regarding your personal data. Send requests to help@fanuzu.co.kr; they will be processed after identity verification.' },
-            { kind: 'p', text: "Referral code application, POP reward reservations, and ORIGIN 100 candidate order are separate from personal-data correction and may be adjusted according to operating policy and fraud-review outcomes." },
+            { kind: 'p', text: "Referral code application, POP reward reservations, and PRE-REG BADGE grant status are separate from personal-data correction and may be adjusted according to operating policy and fraud-review outcomes." },
           ],
         },
         {
@@ -463,7 +461,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       title: 'FANUZU事前登録サービス利用規約',
       effective: EFFECTIVE_JA,
       infoBoxLabel: '重要',
-      infoBoxText: 'この規約は、FANUZU正式アプリのリリース前におけるウェブサイト体験、ファンダム惑星の生成申請、事前登録、紹介コード、POP報酬の予約、FANUZU PASSPORTおよびORIGIN 100候補の運用に適用されます。',
+      infoBoxText: 'この規約は、FANUZU正式アプリのリリース前におけるウェブサイト体験、ファンダム惑星の生成申請、事前登録、紹介コード、POP報酬の予約、FANUZU PASSPORTおよびPRE-REG BADGEの運用に適用されます。',
       tocLabel: '目次',
       toc: [
         '1. 目的と用語', '2. 事前登録及び利用資格', '3. ファンダム惑星の申請', '4. 紹介コードとPOP',
@@ -480,7 +478,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: 'ファンダム惑星', text: '特定のアーティストを応援するファンの貢献と活動を可視化したFANUZU内の共同空間です。' },
               { term: 'FANUZU PASSPORT', text: '利用者の参加、貢献、キャンペーン、成長段階、称号などを表示するデジタルファンID及び活動記録です。' },
               { term: 'PLANET FOUNDER', text: 'ファンダム惑星の生成を最初に有効に提案した利用者に付与できる限定的な役割です。' },
-              { term: 'ORIGIN 100', text: '各ファンダム惑星に有効に参加した最初の100名に、検証後付与できる創立称号です。' },
+              { term: 'PRE-REG BADGE', text: '有効に事前登録を完了したすべての利用者に、検証後付与できる事前登録の証です。' },
               { term: '紹介コード', text: '事前登録利用者をつなぎ、報酬条件を確認するための固有のコードです。' },
             ] },
           ],
@@ -514,7 +512,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'POPは、メール認証及び正式リリース後の初回ログインまたはアカウント連携が完了した後に支給できます。',
               '一つの申請には一つの紹介コードのみ適用され、登録完了後は原則として変更できません。',
               '自己紹介、同一人物による複数アカウント、虚偽のメールアドレス、自動化登録、コードの取引、報酬のみを目的とした不正登録は無効として処理されます。',
-              '紹介数はORIGIN 100の順番を早めるものではありません。',
               'POPは現金、電子マネー、預金、有価証券ではなく、現金への換金や利用者間の販売・譲渡はできません。',
               '事前登録POPの使用先、有効期間、消化方法は正式リリースの方針で具体化され、利用者に不利益となる重大な変更は事前に案内します。',
             ] },
@@ -522,13 +519,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: '第5条', title: 'FANUZU PASSPORT、PLANET FOUNDER及びORIGIN 100',
+          n: '第5条', title: 'FANUZU PASSPORT、PLANET FOUNDER及びPRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             'ウェブサイトに表示されるPASSPORTは、正式サービスの予定機能を説明するためのプレビューである場合があります。',
             'パスポートの累積貢献、キャンペーン、成長段階、バッジは、当社が検証した活動記録に基づいて表示されます。',
-            'ORIGIN 100は、決済金額や紹介数ではなく、各ファンダム惑星に有効に事前登録し必要な認証を完了した順序を基準とします。',
-            '表示される順番は、サーバー記録、重複統合、不正利用の検証、アーティスト名の統合により、仮の順番と異なる場合があります。',
-            '不正登録、サービス方針違反、権利侵害、または惑星の統合・閉鎖の事由がある場合、候補資格または称号が取消・調整されることがあります。',
+            'PRE-REG BADGEは、決済金額や紹介数に関わらず、各ファンダム惑星に有効に事前登録を完了したすべての利用者に付与されます。',
+            'PRE-REG BADGEは、メール認証、重複統合、不正利用の検証などの必要な手続きが完了した後に確定します。',
+            '不正登録、サービス方針違反、権利侵害、または惑星の統合・閉鎖の事由がある場合、バッジまたは称号が取消・調整されることがあります。',
             '称号及びバッジは名誉的な記録であり、財産権、経営権、投票権、またはアーティストに対する権利を意味しません。',
           ] }],
         },
@@ -592,7 +589,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['必須', 'メールアドレス、関心アーティスト名、利用言語、必須同意（利用規約・個人情報）の有無及び同意日時', '事前登録の受付、リリース案内、申請者の識別、重複申請の防止、問い合わせ対応'],
               ['任意', 'ファンダム名、ファン歴、紹介コード、マーケティング受信同意の有無', 'ファンダム惑星生成需要の集計、紹介関係の確認、事前登録POP報酬の予約、お知らせ・プロモーションの配信'],
               ['自動生成', 'アクセス日時、IPアドレス、ブラウザ・機器情報、言語設定、サービス利用記録、エラーログ', 'セキュリティ、不正・重複申請の検知、障害対応、サービス品質の向上'],
-              ['事前登録結果', '事前登録順番、アーティスト別参加順番、生成された紹介コード、POP報酬予約状況、ORIGIN 100候補の有無', '事前登録結果の提供、正式リリース後のアカウント連携及び特典の検証'],
+              ['事前登録結果', '事前登録順番、アーティスト別参加順番、生成された紹介コード、POP報酬予約状況、PRE-REG BADGE付与状況', '事前登録結果の提供、正式リリース後のアカウント連携及び特典の検証'],
             ] },
             { kind: 'p', text: '紹介コード及びマーケティング受信同意は任意であり、同意しなくても事前登録できます。当社は、住民登録番号、決済情報、精密な位置情報を事前登録の段階で収集しません。' },
           ],
@@ -626,7 +623,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: '利用者の権利及び行使方法',
           blocks: [
             { kind: 'p', text: '利用者は自身の個人情報について、閲覧、訂正、削除、処理停止、同意の撤回（マーケティング受信の撤回を含む）を要請できます。要請は help@fanuzu.co.kr へ送付いただければ、本人確認後に処理します。' },
-            { kind: 'p', text: '紹介コードの適用、POP報酬の予約、ORIGIN 100候補順番は、個人情報の訂正とは別に、運営方針及び不正利用の検証結果により調整されることがあります。' },
+            { kind: 'p', text: '紹介コードの適用、POP報酬の予約、PRE-REG BADGEの付与状況は、個人情報の訂正とは別に、運営方針及び不正利用の検証結果により調整されることがあります。' },
           ],
         },
         {
@@ -672,7 +669,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       title: 'Términos de Servicio de Preinscripción de FANUZU',
       effective: EFFECTIVE_ES,
       infoBoxLabel: 'Importante',
-      infoBoxText: 'Estos Términos se aplican a la experiencia del sitio web de FANUZU, las solicitudes de creación de planetas del fandom, la preinscripción, los códigos de referido, las recompensas de POP reservadas, y la candidatura de FANUZU PASSPORT y ORIGIN 100 que se muestran antes del lanzamiento de la app completa.',
+      infoBoxText: 'Estos Términos se aplican a la experiencia del sitio web de FANUZU, las solicitudes de creación de planetas del fandom, la preinscripción, los códigos de referido, las recompensas de POP reservadas, y el FANUZU PASSPORT y la PRE-REG BADGE que se muestran antes del lanzamiento de la app completa.',
       tocLabel: 'Índice',
       toc: [
         '1. Objeto y definiciones', '2. Preinscripción y elegibilidad', '3. Solicitudes de planeta del fandom', '4. Códigos de referido y POP',
@@ -689,7 +686,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: 'Planeta del fandom', text: 'Un espacio compartido dentro de FANUZU que visualiza la contribución y actividad de los fans que apoyan a un artista específico.' },
               { term: 'FANUZU PASSPORT', text: 'Una identificación digital de fan y registro de actividad que muestra la participación, contribución, campañas, etapas de crecimiento y títulos de un usuario.' },
               { term: 'PLANET FOUNDER', text: 'Un rol limitado que puede otorgarse al usuario que propuso primero y de forma válida la creación de un planeta del fandom.' },
-              { term: 'ORIGIN 100', text: 'Un título fundador que puede otorgarse, tras verificación, a los primeros 100 usuarios que participaron válidamente en un planeta del fandom determinado.' },
+              { term: 'PRE-REG BADGE', text: 'Un registro de preinscripción que puede otorgarse, tras verificación, a todo usuario que complete válidamente la preinscripción en un planeta del fandom determinado.' },
               { term: 'Código de referido', text: 'Un código único usado para conectar usuarios preinscritos y determinar la elegibilidad de recompensas.' },
             ] },
           ],
@@ -723,7 +720,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'El POP solo puede pagarse tras la verificación del correo y el primer inicio de sesión o vinculación de cuenta una vez lanzado el servicio completo.',
               'Solo se puede aplicar un código de referido por solicitud, y generalmente no puede cambiarse después de completar el registro.',
               'La autorreferencia, múltiples cuentas de la misma persona, correos falsos, registros automatizados, el comercio de códigos y los registros hechos únicamente para obtener recompensas se consideran inválidos.',
-              'El número de referidos no adelanta el orden de ORIGIN 100 de un usuario.',
               'El POP no es efectivo, dinero electrónico, un depósito ni un valor, y no puede cambiarse por efectivo ni venderse/transferirse entre usuarios.',
               'Dónde puede usarse el POP, su período de validez y su forma de consumo se detallarán en la política del servicio completo; los cambios materiales desfavorables para los usuarios se anunciarán con antelación.',
             ] },
@@ -731,13 +727,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: 'Artículo 5', title: 'FANUZU PASSPORT, PLANET FOUNDER y ORIGIN 100',
+          n: 'Artículo 5', title: 'FANUZU PASSPORT, PLANET FOUNDER y PRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             'El PASSPORT mostrado en el sitio web puede ser una vista previa que ilustra una función planificada del servicio completo.',
             'La contribución acumulada, las campañas, la etapa de crecimiento y las insignias de un pasaporte se muestran según los registros de actividad verificados por la Compañía.',
-            'ORIGIN 100 se basa en el orden en que un usuario se preinscribió válidamente y completó la verificación requerida para un planeta del fandom determinado, no en el monto pagado ni el número de referidos.',
-            'Los números de orden mostrados pueden diferir de los números provisionales debido a registros del servidor, fusiones de duplicados, verificación de fraude o consolidación de nombres de artistas.',
-            'La candidatura o un título pueden revocarse o ajustarse en casos de registro fraudulento, incumplimiento de la política, infracción de derechos, o fusión/cierre del planeta.',
+            'La PRE-REG BADGE se otorga a todo usuario que complete válidamente la preinscripción para un planeta del fandom determinado, sin importar el monto pagado ni el número de referidos.',
+            'La PRE-REG BADGE se confirma una vez completados los pasos necesarios: verificación de correo electrónico, fusión de duplicados y verificación de fraude.',
+            'Una insignia o un título pueden revocarse o ajustarse en casos de registro fraudulento, incumplimiento de la política, infracción de derechos, o fusión/cierre del planeta.',
             'Los títulos e insignias son registros honoríficos y no representan derechos de propiedad, derechos de gestión, participación en votaciones ni ningún derecho relacionado con el artista.',
           ] }],
         },
@@ -801,7 +797,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['Obligatorio', 'Correo electrónico, artista de interés, idioma del servicio, si se otorgaron los consentimientos obligatorios (Términos/Privacidad) y cuándo', 'Aceptar la preinscripción, notificaciones de lanzamiento, identificar solicitantes, evitar solicitudes duplicadas, atender consultas'],
               ['Opcional', 'Nombre del fandom, año desde que eres fan, código de referido, estado del consentimiento de marketing', 'Medir la demanda de creación del planeta del fandom, confirmar relaciones de referido, reservar recompensas de POP de preinscripción, enviar noticias y promociones'],
               ['Generado automáticamente', 'Marcas de tiempo de acceso, dirección IP, información del navegador/dispositivo, configuración de idioma, registros de uso, registros de errores', 'Seguridad, detección de fraude y solicitudes duplicadas, respuesta a incidentes, mejora de la calidad del servicio'],
-              ['Resultados de preinscripción', 'Número de orden de preinscripción, orden de ingreso por artista, código de referido generado, estado de reserva de recompensa POP, candidatura a ORIGIN 100', 'Proporcionar los resultados de la preinscripción, vinculación de cuenta y verificación de beneficios tras el lanzamiento completo'],
+              ['Resultados de preinscripción', 'Número de orden de preinscripción, orden de ingreso por artista, código de referido generado, estado de reserva de recompensa POP, estado de otorgamiento de la PRE-REG BADGE', 'Proporcionar los resultados de la preinscripción, vinculación de cuenta y verificación de beneficios tras el lanzamiento completo'],
             ] },
             { kind: 'p', text: 'El código de referido y el consentimiento de marketing son opcionales: puedes preinscribirte sin ninguno de los dos. La Compañía no recopila números de identificación nacional, información de pago ni datos de ubicación precisa en la etapa de preinscripción.' },
           ],
@@ -835,7 +831,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: 'Derechos del Usuario y Cómo Ejercerlos',
           blocks: [
             { kind: 'p', text: 'Puedes solicitar acceso, corrección, eliminación, restricción del procesamiento o retirada del consentimiento (incluida la retirada del consentimiento de marketing) sobre tus datos personales. Envía las solicitudes a help@fanuzu.co.kr; se procesarán tras la verificación de identidad.' },
-            { kind: 'p', text: 'La aplicación de códigos de referido, las reservas de recompensas de POP y el orden de candidatura a ORIGIN 100 son independientes de la corrección de datos personales y pueden ajustarse según la política operativa y los resultados de la verificación de fraude.' },
+            { kind: 'p', text: 'La aplicación de códigos de referido, las reservas de recompensas de POP y el estado de otorgamiento de la PRE-REG BADGE son independientes de la corrección de datos personales y pueden ajustarse según la política operativa y los resultados de la verificación de fraude.' },
           ],
         },
         {
@@ -881,7 +877,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       title: 'FANUZU 预注册服务使用条款',
       effective: EFFECTIVE_ZH_HANS,
       infoBoxLabel: '重要提示',
-      infoBoxText: '本条款适用于 FANUZU 正式应用上线前的网站体验、粉丝星球创建申请、预注册、推荐码、POP 奖励预留，以及 FANUZU PASSPORT 与 ORIGIN 100 候选资格的运营。',
+      infoBoxText: '本条款适用于 FANUZU 正式应用上线前的网站体验、粉丝星球创建申请、预注册、推荐码、POP 奖励预留，以及 FANUZU PASSPORT 与 PRE-REG BADGE 的运营。',
       tocLabel: '目录',
       toc: [
         '1. 目的与定义', '2. 预注册与使用资格', '3. 粉丝星球申请', '4. 推荐码与POP',
@@ -898,7 +894,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: '粉丝星球', text: 'FANUZU 内将支持特定艺人的粉丝的贡献与活动可视化的共同空间。' },
               { term: 'FANUZU PASSPORT', text: '显示用户参与、贡献、活动、成长阶段、称号等信息的数字粉丝身份证明及活动记录。' },
               { term: 'PLANET FOUNDER', text: '可授予最先有效提议创建某粉丝星球的用户的限定角色。' },
-              { term: 'ORIGIN 100', text: '经核实后，可授予有效参与某粉丝星球最初100名用户的创立称号。' },
+              { term: 'PRE-REG BADGE', text: '经核实后，可颁发给有效完成某粉丝星球预注册的每一位用户的预注册印记。' },
               { term: '推荐码', text: '用于连接预注册用户并确认奖励资格的唯一代码。' },
             ] },
           ],
@@ -932,7 +928,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'POP 须在完成邮箱验证及正式上线后首次登录或账号绑定后方可发放。',
               '每次申请仅可使用一个推荐码，注册完成后原则上不可更改。',
               '自我推荐、同一人使用多个账号、虚假邮箱、自动化注册、买卖推荐码，以及以获取奖励为唯一目的的异常注册，均视为无效。',
-              '推荐数量不会提前用户的 ORIGIN 100 顺序。',
               'POP 并非现金、电子货币、存款或有价证券，不可兑换为现金，也不可在用户之间买卖或转让。',
               '预注册 POP 的使用范围、有效期及消耗方式将在正式上线政策中具体明确；对用户不利的重大变更将提前告知。',
             ] },
@@ -940,13 +935,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: '第5条', title: 'FANUZU PASSPORT、PLANET FOUNDER 及 ORIGIN 100',
+          n: '第5条', title: 'FANUZU PASSPORT、PLANET FOUNDER 及 PRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             '网站展示的 PASSPORT 可能是用于说明正式服务规划功能的预览。',
             '护照中显示的累计贡献、活动、成长阶段及徽章，均依据公司核实后的活动记录展示。',
-            'ORIGIN 100 的评定并非依据付款金额或推荐数量，而是依据在各粉丝星球中有效预注册并完成所需验证的先后顺序。',
-            '由于服务器记录、重复合并、不正当使用核查及艺人名称整合等原因，显示顺序可能与临时顺序不同。',
-            '如存在不正当注册、违反服务政策、侵犯权利或星球合并·关闭等情形，候选资格或称号可能被取消或调整。',
+            'PRE-REG BADGE 不依据付款金额或推荐数量评定，而是颁发给在各粉丝星球中有效完成预注册的每一位用户。',
+            'PRE-REG BADGE 将在邮箱验证、重复合并、不正当使用核查等必要程序完成后最终确认。',
+            '如存在不正当注册、违反服务政策、侵犯权利或星球合并·关闭等情形，徽章或称号可能被取消或调整。',
             '称号及徽章为荣誉性记录，不代表财产权、经营权、投票权或对艺人本人的任何权利。',
           ] }],
         },
@@ -1010,7 +1005,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['必填', '电子邮箱、关注艺人姓名、使用语言、必填同意（使用条款/隐私政策）情况及同意时间', '受理预注册、发送上线通知、识别申请人、防止重复申请、处理咨询'],
               ['选填', '粉丝团名称、入坑年份、推荐码、营销信息接收同意情况', '统计粉丝星球创建需求、确认推荐关系、预留预注册POP奖励、发送消息与推广信息'],
               ['自动生成', '访问时间、IP地址、浏览器·设备信息、语言设置、服务使用记录、错误日志', '安全保障、检测不正当及重复申请、故障应对、提升服务质量'],
-              ['预注册结果', '预注册顺序、各艺人参与顺序、生成的推荐码、POP奖励预留状态、ORIGIN 100候选资格', '提供预注册结果、正式上线后账号绑定及权益核实'],
+              ['预注册结果', '预注册顺序、各艺人参与顺序、生成的推荐码、POP奖励预留状态、PRE-REG BADGE 颁发状态', '提供预注册结果、正式上线后账号绑定及权益核实'],
             ] },
             { kind: 'p', text: '推荐码及营销信息接收同意均为选填项，不填写或不同意也可完成预注册。公司在预注册阶段不会收集身份证号、支付信息或精确位置信息。' },
           ],
@@ -1044,7 +1039,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: '用户权利及行使方法',
           blocks: [
             { kind: 'p', text: '用户可就本人个人信息要求查阅、更正、删除、停止处理及撤回同意（含撤回营销信息接收同意）。请求可发送至 help@fanuzu.co.kr，经身份确认后处理。' },
-            { kind: 'p', text: '推荐码的适用、POP奖励的预留及ORIGIN 100候选顺序，与个人信息更正无关，可依运营政策及不正当使用核查结果进行调整。' },
+            { kind: 'p', text: '推荐码的适用、POP奖励的预留及 PRE-REG BADGE 的颁发状态，与个人信息更正无关，可依运营政策及不正当使用核查结果进行调整。' },
           ],
         },
         {
@@ -1090,7 +1085,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
       title: 'FANUZU 預先註冊服務使用條款',
       effective: EFFECTIVE_ZH_HANT,
       infoBoxLabel: '重要提示',
-      infoBoxText: '本條款適用於 FANUZU 正式應用程式上線前的網站體驗、粉絲星球創建申請、預先註冊、推薦碼、POP 獎勵預留，以及 FANUZU PASSPORT 與 ORIGIN 100 候選資格的運營。',
+      infoBoxText: '本條款適用於 FANUZU 正式應用程式上線前的網站體驗、粉絲星球創建申請、預先註冊、推薦碼、POP 獎勵預留，以及 FANUZU PASSPORT 與 PRE-REG BADGE 的運營。',
       tocLabel: '目錄',
       toc: [
         '1. 目的與定義', '2. 預先註冊與使用資格', '3. 粉絲星球申請', '4. 推薦碼與POP',
@@ -1107,7 +1102,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               { term: '粉絲星球', text: 'FANUZU 內將支持特定藝人的粉絲的貢獻與活動可視化的共同空間。' },
               { term: 'FANUZU PASSPORT', text: '顯示使用者參與、貢獻、活動、成長階段、稱號等資訊的數位粉絲身分證明及活動記錄。' },
               { term: 'PLANET FOUNDER', text: '可授予最先有效提議創建某粉絲星球的使用者的限定角色。' },
-              { term: 'ORIGIN 100', text: '經核實後，可授予有效參與某粉絲星球最初100名使用者的創立稱號。' },
+              { term: 'PRE-REG BADGE', text: '經核實後，可頒發給有效完成某粉絲星球預先註冊的每一位使用者的預先註冊印記。' },
               { term: '推薦碼', text: '用於連接預先註冊使用者並確認獎勵資格的唯一代碼。' },
             ] },
           ],
@@ -1141,7 +1136,6 @@ export const LEGAL: Record<Lang, LegalContent> = {
               'POP 須在完成郵箱驗證及正式上線後首次登入或帳號綁定後方可發放。',
               '每次申請僅可使用一個推薦碼，註冊完成後原則上不可更改。',
               '自我推薦、同一人使用多個帳號、虛假郵箱、自動化註冊、買賣推薦碼，以及以獲取獎勵為唯一目的的異常註冊，均視為無效。',
-              '推薦數量不會提前使用者的 ORIGIN 100 順序。',
               'POP 並非現金、電子貨幣、存款或有價證券，不可兌換為現金，也不可在使用者之間買賣或轉讓。',
               '預先註冊 POP 的使用範圍、有效期及消耗方式將在正式上線政策中具體明確；對使用者不利的重大變更將提前告知。',
             ] },
@@ -1149,13 +1143,13 @@ export const LEGAL: Record<Lang, LegalContent> = {
           ],
         },
         {
-          n: '第5條', title: 'FANUZU PASSPORT、PLANET FOUNDER 及 ORIGIN 100',
+          n: '第5條', title: 'FANUZU PASSPORT、PLANET FOUNDER 及 PRE-REG BADGE',
           blocks: [{ kind: 'ul', items: [
             '網站展示的 PASSPORT 可能是用於說明正式服務規劃功能的預覽。',
             '護照中顯示的累積貢獻、活動、成長階段及徽章，均依據公司核實後的活動記錄展示。',
-            'ORIGIN 100 的評定並非依據付款金額或推薦數量，而是依據在各粉絲星球中有效預先註冊並完成所需驗證的先後順序。',
-            '由於伺服器記錄、重複合併、不正當使用核查及藝人名稱整合等原因，顯示順序可能與臨時順序不同。',
-            '如存在不正當註冊、違反服務政策、侵犯權利或星球合併·關閉等情形，候選資格或稱號可能被取消或調整。',
+            'PRE-REG BADGE 不依據付款金額或推薦數量評定，而是頒發給在各粉絲星球中有效完成預先註冊的每一位使用者。',
+            'PRE-REG BADGE 將於電子郵件驗證、重複合併、不正當使用核查等必要程序完成後最終確認。',
+            '如存在不正當註冊、違反服務政策、侵犯權利或星球合併·關閉等情形，徽章或稱號可能被取消或調整。',
             '稱號及徽章為榮譽性記錄，不代表財產權、經營權、投票權或對藝人本人的任何權利。',
           ] }],
         },
@@ -1219,7 +1213,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
               ['必填', '電子郵箱、關注藝人姓名、使用語言、必填同意（使用條款/隱私政策）情況及同意時間', '受理預先註冊、發送上線通知、識別申請人、防止重複申請、處理諮詢'],
               ['選填', '粉絲團名稱、入坑年份、推薦碼、行銷資訊接收同意情況', '統計粉絲星球創建需求、確認推薦關係、預留預先註冊POP獎勵、發送消息與推廣資訊'],
               ['自動生成', '存取時間、IP位址、瀏覽器·裝置資訊、語言設定、服務使用記錄、錯誤日誌', '安全保障、偵測不正當及重複申請、故障應對、提升服務品質'],
-              ['預先註冊結果', '預先註冊順序、各藝人參與順序、生成的推薦碼、POP獎勵預留狀態、ORIGIN 100候選資格', '提供預先註冊結果、正式上線後帳號綁定及權益核實'],
+              ['預先註冊結果', '預先註冊順序、各藝人參與順序、生成的推薦碼、POP獎勵預留狀態、PRE-REG BADGE 頒發狀態', '提供預先註冊結果、正式上線後帳號綁定及權益核實'],
             ] },
             { kind: 'p', text: '推薦碼及行銷資訊接收同意均為選填項，不填寫或不同意也可完成預先註冊。公司在預先註冊階段不會收集身分證號、支付資訊或精確位置資訊。' },
           ],
@@ -1253,7 +1247,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
           n: '4', title: '使用者權利及行使方法',
           blocks: [
             { kind: 'p', text: '使用者可就本人個人資訊要求查閱、更正、刪除、停止處理及撤回同意（含撤回行銷資訊接收同意）。請求可傳送至 help@fanuzu.co.kr，經身分確認後處理。' },
-            { kind: 'p', text: '推薦碼的適用、POP獎勵的預留及ORIGIN 100候選順序，與個人資訊更正無關，可依運營政策及不正當使用核查結果進行調整。' },
+            { kind: 'p', text: '推薦碼的適用、POP獎勵的預留及 PRE-REG BADGE 的頒發狀態，與個人資訊更正無關，可依運營政策及不正當使用核查結果進行調整。' },
           ],
         },
         {

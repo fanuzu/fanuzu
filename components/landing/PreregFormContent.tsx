@@ -31,8 +31,8 @@ const FAN_SINCE_YEARS = Array.from({ length: 40 }, (_, i) => CURRENT_YEAR - i);
 
 // Bumped whenever the corresponding legal document's content changes;
 // stored alongside each consent so we know which version a user agreed to.
-const TERMS_VERSION = '1.0';
-const PRIVACY_VERSION = '1.0';
+const TERMS_VERSION = '1.1';
+const PRIVACY_VERSION = '1.1';
 
 export default function PreregFormContent({ headingId, onRequestClose }: { headingId?: string; onRequestClose?: () => void }) {
   const { tr, lang } = useLang();
@@ -215,30 +215,21 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   const resultTitle = result ? (result.hasRef ? tr.prereg.resultTitleRef : tr.prereg.resultTitleNoRef) : '';
   const resultBody = result ? (result.hasRef ? tr.prereg.resultBodyRef : tr.prereg.resultBodyNoRef) : '';
-  // Deliberately no exact sequence numbers here — a raw "#000042 of ###"
-  // lets anyone back out real signup volume just by registering. Early
-  // joiners still get a tier badge (bucketed, not a count) for the same
-  // founder feeling without exposing one.
-  const joinTier = result
-    ? result.joinOrder === 1
-      ? tr.origin.founderLabel
-      : result.joinOrder <= 100
-        ? tr.origin.originLabel
-        : null
-    : null;
+  // Policy: every valid pre-registration earns the PRE-REG BADGE (no more
+  // ORIGIN 100 scarcity/order-based title) — so the badge row is universal,
+  // and the referral code is always shown too (previously it was only shown
+  // to non-referred users, with referred users seeing a badge in its place
+  // instead of their own shareable code).
   const resultRows = result
     ? [
         { k: tr.prereg.rArtist, v: artistName },
         { k: tr.prereg.rStatus, v: tr.prereg.rStatusVal },
-        ...(joinTier ? [{ k: tr.prereg.rJoinTier, v: joinTier }] : []),
+        { k: tr.prereg.rBadgeLabel, v: tr.origin.badgeLabel },
         { k: tr.prereg.rReward, v: result.reward + ' POP' },
-        {
-          k: result.hasRef ? tr.prereg.rOriginBadge : tr.prereg.rReferralCode,
-          v: result.hasRef ? tr.origin.originLabel : result.code,
-        },
+        { k: tr.prereg.rReferralCode, v: result.code },
       ]
     : [];
-  const hasReferralCode = !!(result && !result.hasRef);
+  const hasReferralCode = !!result;
 
   if (step === 'select') {
     return (
