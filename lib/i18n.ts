@@ -63,7 +63,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'우리의 별을',t2:'이 우주에서',t3:'가장 밝게.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 별을',t2:'이 우주에서',t3:'가장 밝게.',
     coreMessage:'우리의 행동이, K-POP 아티스트의 힘이 된다.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
