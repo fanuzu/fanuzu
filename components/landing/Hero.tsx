@@ -89,23 +89,6 @@ export default function Hero() {
             {tr.hero.t3}
           </span>
         </h1>
-        <p
-          style={{
-            fontSize: 'clamp(20px,2.6vw,24px)',
-            lineHeight: 1.4,
-            fontWeight: 800,
-            letterSpacing: '-0.01em',
-            background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1))',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            color: 'transparent',
-            transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
-            maxWidth: 520,
-            margin: '0 0 22px',
-          }}
-        >
-          {tr.hero.coreMessage}
-        </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 24 }}>
           <button
             onClick={openModal}
