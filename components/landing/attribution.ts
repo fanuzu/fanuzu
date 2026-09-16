@@ -5,6 +5,7 @@
 // client component calls it inside an effect.
 export const ATTRIBUTION_KEY = 'fanuzu_attribution';
 const VISIT_TRACKED_KEY = 'fanuzu_visit_tracked';
+const AUTO_OPENED_KEY = 'fanuzu_prereg_auto_opened';
 // Referral program spec section 13: an invite link's ref/artist/UTM params
 // stay usable for 30 days after landing, not forever — someone who clicked a
 // link once in January shouldn't still be crediting that referrer in June.
@@ -76,5 +77,21 @@ export function hasTrackedVisitThisSession(): boolean {
 export function markVisitTrackedThisSession(): void {
   try {
     sessionStorage.setItem(VISIT_TRACKED_KEY, '1');
+  } catch {}
+}
+
+// The prereg modal auto-opens on landing, but only once per tab session —
+// otherwise every refresh after someone closes it would pop it right back up.
+export function hasAutoOpenedThisSession(): boolean {
+  try {
+    return sessionStorage.getItem(AUTO_OPENED_KEY) === '1';
+  } catch {
+    return true; // fail closed: if sessionStorage is unavailable, don't force it open repeatedly
+  }
+}
+
+export function markAutoOpenedThisSession(): void {
+  try {
+    sessionStorage.setItem(AUTO_OPENED_KEY, '1');
   } catch {}
 }

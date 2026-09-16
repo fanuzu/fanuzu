@@ -48,6 +48,7 @@ export default function PreregModal() {
         justifyContent: 'center',
         padding: 'clamp(16px,4vw,48px) 16px',
         overflowY: 'auto',
+        animation: 'modalBackdropIn .3s ease',
       }}
     >
       <div
@@ -60,12 +61,13 @@ export default function PreregModal() {
           position: 'relative',
           width: '100%',
           maxWidth: 680,
-          background: '#0A0613',
-          border: '1px solid rgba(255,255,255,.1)',
+          background: 'linear-gradient(180deg, rgba(155,124,255,.08), rgba(10,6,19,0) 40%), #0A0613',
+          border: '1px solid rgba(255,125,221,.35)',
           borderRadius: 24,
           padding: 'clamp(28px,5vw,48px) clamp(18px,4vw,32px)',
-          boxShadow: '0 30px 80px rgba(0,0,0,.55)',
+          boxShadow: '0 30px 80px rgba(0,0,0,.55), 0 0 60px rgba(155,124,255,.14)',
           outline: 'none',
+          animation: 'modalPanelIn .38s cubic-bezier(.22,.61,.36,1)',
         }}
       >
         <button
