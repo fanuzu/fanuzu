@@ -7,12 +7,16 @@ import {
   writeAttributionIfAbsent,
   hasTrackedVisitThisSession,
   markVisitTrackedThisSession,
+  hasAutoOpenedThisSession,
+  markAutoOpenedThisSession,
 } from './attribution';
 
 // Renders nothing — mounted once in LandingPage to capture ?ref=/?artist=/
-// utm_* query params, record a visit, and (only when someone arrived via a
-// deliberate invite link) open the registration modal straight away instead
-// of making them find the CTA themselves.
+// utm_* query params, record a visit, and open the registration modal
+// straight away instead of making people find the CTA themselves. A
+// referral/artist link always opens it (pre-filled); an organic visit opens
+// it once per tab session so closing it doesn't just bring it right back
+// on the next refresh.
 export default function AttributionTracker() {
   const { openModal } = usePreregModal();
 
@@ -37,6 +41,9 @@ export default function AttributionTracker() {
     }
 
     if (attribution.referralCode || attribution.artist) {
+      openModal();
+    } else if (!hasAutoOpenedThisSession()) {
+      markAutoOpenedThisSession();
       openModal();
     }
     // Runs once on mount only — this is a one-time landing capture, not

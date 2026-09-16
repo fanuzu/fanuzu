@@ -47,6 +47,14 @@
   55% { opacity: .9; }
   100% { transform: translateX(420px) scaleX(1); opacity: 0; }
 }
+@keyframes modalBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalPanelIn {
+  from { opacity: 0; transform: translateY(18px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 html, body {
   margin: 0;

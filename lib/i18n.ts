@@ -63,12 +63,12 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 별을',t2:'이 우주에서',t3:'가장 밝게.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 를',t2:'우주에서',t3:'가장 밝게 빛나게.',
     coreMessage:'우리의 행동이, K-POP 아티스트의 힘이 된다.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
-    ctaPrimary:'내 bias 행성에 참여하기',ctaPrereg:'K-POP 아티스트 팬덤 행성 사전등록',ctaSecondary:'FANUZU가 다른 이유',
+    ctaPrimary:'내 bias 행성에 참여하기',ctaPrereg:'나의 bias 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     sub:['팬의 시간이 빛나는 구조','팬덤 공동 성장 중심','기여의 기록이 남는 경험','성장한 팬덤이 캠페인을 만드는 구조'],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 FANUZU의 기여 포인트입니다.',liveViewersLabel:'지금 {n}명이 보고 있어요'},
   philosophy:{t1:'좋아하는 마음,',t2:'행동이 되면 힘이 된다.',
