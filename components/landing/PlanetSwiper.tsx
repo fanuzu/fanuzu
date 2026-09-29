@@ -3,13 +3,14 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
-import { useContribution } from '@/components/providers/ContributionProvider';
+import { useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
 
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
   const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness } = useContribution();
+  const pulsing = usePlanetReactionPulse();
 
   const orbRef = useRef<HTMLDivElement | null>(null);
   const imgPrevRef = useRef<HTMLImageElement>(null);
@@ -144,7 +145,14 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-      <div style={{ position: 'relative', width: 'min(78vw,420px)', aspectRatio: '1/1' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: 'min(78vw,420px)',
+          aspectRatio: '1/1',
+          animation: pulsing ? 'planetZapPulse .55s ease-out' : 'none',
+        }}
+      >
         <div
           style={{
             position: 'absolute',

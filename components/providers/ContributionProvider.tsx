@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -39,6 +40,10 @@ interface ContributionContextValue {
   // button alike) so a toast component can react without this provider
   // needing to know anything about translated copy.
   toastNonce: number;
+  // Bumped when a particle actually reaches the planet (not when it's
+  // fired) — the planet's "impact" animation, so it's timed to when the
+  // particle visually lands rather than the moment you tapped.
+  reactionNonce: number;
 }
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
@@ -47,6 +52,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [score, setScore] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [toastNonce, setToastNonce] = useState(0);
+  const [reactionNonce, setReactionNonce] = useState(0);
   const planetRef = useRef<HTMLDivElement | null>(null);
 
   // Shared by the in-section action buttons (origin = the button that was
@@ -68,6 +74,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     setToastNonce((n) => n + 1);
     setTimeout(() => {
       setParticles((ps) => ps.filter((p) => p.id !== id));
+      setReactionNonce((n) => n + 1);
     }, 900);
   }, []);
 
@@ -106,8 +113,21 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       addAction,
       zapFromPoint,
       toastNonce,
+      reactionNonce,
     }),
-    [score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, particles, addAction, zapFromPoint, toastNonce]
+    [
+      score,
+      progressPct,
+      glowBlur,
+      glowSpread,
+      glowOpacity,
+      planetBrightness,
+      particles,
+      addAction,
+      zapFromPoint,
+      toastNonce,
+      reactionNonce,
+    ]
   );
 
   return <ContributionContext.Provider value={value}>{children}</ContributionContext.Provider>;
@@ -117,4 +137,28 @@ export function useContribution(): ContributionContextValue {
   const ctx = useContext(ContributionContext);
   if (!ctx) throw new Error('useContribution must be used within a ContributionProvider');
   return ctx;
+}
+
+const PULSE_DURATION_MS = 550;
+
+// True for a brief moment whenever a particle lands on the planet — drives
+// the one-shot "impact" animation (see planetZapPulse in globals.css) on
+// whichever planet wrapper reads it. Shared so Hero's and Experience's
+// planet don't each reimplement the same nonce-watching timeout.
+export function usePlanetReactionPulse(): boolean {
+  const { reactionNonce } = useContribution();
+  const [pulsing, setPulsing] = useState(false);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setPulsing(true);
+    const t = setTimeout(() => setPulsing(false), PULSE_DURATION_MS);
+    return () => clearTimeout(t);
+  }, [reactionNonce]);
+
+  return pulsing;
 }

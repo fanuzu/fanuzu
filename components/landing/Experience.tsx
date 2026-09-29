@@ -2,11 +2,12 @@
 
 import Image from 'next/image';
 import { useLang } from '@/components/providers/LangProvider';
-import { STAGE1, STAGE2, useContribution } from '@/components/providers/ContributionProvider';
+import { STAGE1, STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 
 export default function Experience() {
   const { tr } = useLang();
   const { score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, addAction } = useContribution();
+  const pulsing = usePlanetReactionPulse();
 
   const stageMessage =
     score === 0 ? tr.exp.stage0 : score < STAGE1 ? tr.exp.stage1 : score < STAGE2 ? tr.exp.stage2 : tr.exp.stage3;
@@ -71,7 +72,14 @@ export default function Experience() {
           </div>
 
           <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
-            <div style={{ position: 'relative', width: 'min(60vw,300px)', aspectRatio: '1/1' }}>
+            <div
+              style={{
+                position: 'relative',
+                width: 'min(60vw,300px)',
+                aspectRatio: '1/1',
+                animation: pulsing ? 'planetZapPulse .55s ease-out' : 'none',
+              }}
+            >
               <div
                 style={{
                   position: 'absolute',
