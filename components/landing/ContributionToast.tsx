@@ -9,12 +9,16 @@ const VISIBLE_MS = 2600;
 // Fires a small "thanks, the planet grew" toast every time a contribution
 // lands — from the in-section action buttons or the floating ZAP button
 // alike — so every tap gets a response, not just a number ticking up.
+// Cycles through a few variations in turn (rather than repeating the same
+// line, or picking randomly and risking back-to-back repeats).
 export default function ContributionToast() {
   const { toastNonce } = useContribution();
   const { tr } = useLang();
   const [visible, setVisible] = useState(false);
   const hideTimer = useRef<ReturnType<typeof setTimeout>>();
   const isFirstRender = useRef(true);
+  const messages = tr.exp.contributionToasts;
+  const message = messages[(toastNonce - 1 + messages.length) % messages.length] ?? messages[0];
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -58,7 +62,7 @@ export default function ContributionToast() {
         animation: 'toastIn .3s cubic-bezier(.22,.61,.36,1)',
       }}
     >
-      {tr.exp.contributionToast}
+      {message}
     </div>
   );
 }

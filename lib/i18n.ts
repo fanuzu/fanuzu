@@ -12,7 +12,7 @@ export interface TranslationSet {
   exp: {
     t1: string; t2: string; d1: string; d2: string; buttons: { label: string; value: number }[];
     stage0: string; stage1: string; stage2: string; stage3: string; scoreLabel: string;
-    contributionToast: string;
+    contributionToasts: string[];
   };
   growth: { t1: string; t2: string; c1t: string; c1d: string; c2t: string; c2d: string; c3t: string; c3d: string; c4t: string; c4d: string; bridge: string };
   fandomAction: { t1: string; t2: string; lead: string; body: string; flow: string[]; examplesLabel: string; examples: string[] };
@@ -98,7 +98,11 @@ ko: {
     stage2:'행성이 밝아져요.\n꾸준함이 만든 변화.',
     stage3:'행성이 우주에서 눈에 띄어요.\n우리가 만든 가장 강한 빛.',
     scoreLabel:'오늘의 POP',
-    contributionToast:'당신의 기여로 우리의 팬덤 행성이 오늘도 성장했어요.'},
+    contributionToasts:[
+      '당신의 기여로 우리의 팬덤 행성이 오늘도 성장했어요.',
+      '당신의 기여로 우리 팬덤 행성에 더 많은 추억을 저장할 수 있게 됐어요.',
+      '당신의 기여로 잠들었던 팬심이 되살아나고 있어요.'
+    ]},
   growth:{t1:'모인 기여가 하나의 행성이 돼요.',t2:'크기만 커지지 않아요. 역사도 함께 쌓여요.',
     c1t:'누적 기여',c1d:'쌓인 기여가 행성의 크기가 돼요.',
     c2t:'최근 활력',c2d:'지금 얼마나 움직이는지가 밝기가 돼요.',
@@ -225,7 +229,11 @@ en: {
     stage2:'The planet is lighting up.\nConsistency in action.',
     stage3:'Our planet shines across the universe.\nOur brightest light yet.',
     scoreLabel:'Today’s POP',
-    contributionToast:'Your contribution helped our fandom planet grow today.'},
+    contributionToasts:[
+      'Your contribution helped our fandom planet grow today.',
+      'Your contribution means our fandom planet can hold even more memories.',
+      'Your contribution is waking up fan hearts that had gone quiet.'
+    ]},
   growth:{t1:'Our contributions become one planet.',t2:'It’s not just size. It carries our energy and history.',
     c1t:'Total contribution',c1d:'Builds the planet’s size.',
     c2t:'Current energy',c2d:'Shows how active we are now.',
@@ -352,7 +360,11 @@ ja: {
     stage2:'惑星が輝き出す。\n続けた分だけ変わる。',
     stage3:'惑星が宇宙で輝いている。\n私たちの最強の光。',
     scoreLabel:'今日のPOP',
-    contributionToast:'あなたの貢献で、今日もファンダム惑星が成長しました。'},
+    contributionToasts:[
+      'あなたの貢献で、今日もファンダム惑星が成長しました。',
+      'あなたの貢献で、ファンダム惑星にもっと多くの思い出を残せるようになりました。',
+      'あなたの貢献で、眠っていたファンの想いが目を覚ましています。'
+    ]},
   growth:{t1:'集まった貢献が、ひとつの惑星になる。',t2:'大きさだけじゃない。今と歴史が刻まれる。',
     c1t:'累積貢献',c1d:'積み重ねが惑星の大きさになる。',
     c2t:'今の熱量',c2d:'今の動きが明るさになる。',
@@ -479,7 +491,11 @@ es: {
     stage2:'El planeta se ilumina.\nLa constancia se nota.',
     stage3:'Nuestro planeta brilla en el universo.\nNuestra luz más fuerte.',
     scoreLabel:'POP de hoy',
-    contributionToast:'Gracias a tu contribución, nuestro planeta fandom creció hoy también.'},
+    contributionToasts:[
+      'Gracias a tu contribución, nuestro planeta fandom creció hoy también.',
+      'Tu contribución permite que nuestro planeta fandom guarde más recuerdos.',
+      'Tu contribución está despertando el cariño de fan que estaba dormido.'
+    ]},
   growth:{t1:'Nuestras contribuciones forman un planeta.',
     t2:'No es solo tamaño. Lleva nuestra energía e historia.',
     c1t:'Contribución total',c1d:'Define el tamaño del planeta.',
@@ -607,7 +623,11 @@ zhHans: {
     stage2:'星球正在变亮。\n坚持带来变化。',
     stage3:'星球已在宇宙中闪耀。\n我们最亮的光。',
     scoreLabel:'今日POP',
-    contributionToast:'因为你的贡献，我们的粉丝星球今天又成长了。'},
+    contributionToasts:[
+      '因为你的贡献，我们的粉丝星球今天又成长了。',
+      '因为你的贡献，我们的粉丝星球能保存更多回忆了。',
+      '因为你的贡献，沉睡的粉丝心正在苏醒。'
+    ]},
   growth:{t1:'汇聚的贡献，成为一颗星球。',t2:'不只是变大，还记录活力与历史。',
     c1t:'累积贡献',c1d:'累积决定星球大小。',
     c2t:'当前活力',c2d:'现在的行动决定亮度。',
@@ -734,7 +754,11 @@ zhHant: {
     stage2:'星球正在變亮。\n堅持帶來變化。',
     stage3:'星球已在宇宙中閃耀。\n我們最亮的光。',
     scoreLabel:'今日POP',
-    contributionToast:'因為你的貢獻，我們的粉絲星球今天又成長了。'},
+    contributionToasts:[
+      '因為你的貢獻，我們的粉絲星球今天又成長了。',
+      '因為你的貢獻，我們的粉絲星球能保存更多回憶了。',
+      '因為你的貢獻，沉睡的粉絲心正在甦醒。'
+    ]},
   growth:{t1:'匯聚的貢獻，成為一顆星球。',t2:'不只是變大，還記錄活力與歷史。',
     c1t:'累積貢獻',c1d:'累積決定星球大小。',
     c2t:'當下活力',c2d:'現在的行動決定亮度。',
