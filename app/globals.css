@@ -55,6 +55,10 @@
   from { opacity: 0; transform: translateY(18px) scale(.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+@keyframes zapPulse {
+  0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 0 6px rgba(255,125,221,.12); }
+  50% { box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 0 12px rgba(255,125,221,.22); }
+}
 
 html, body {
   margin: 0;

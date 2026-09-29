@@ -34,6 +34,7 @@ interface ContributionContextValue {
   particles: Particle[];
   planetRef: MutableRefObject<HTMLDivElement | null>;
   addAction: (value: number) => (e: MouseEvent<HTMLButtonElement>) => void;
+  zapFromPoint: (value: number, origin: { x: number; y: number }) => void;
 }
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
@@ -43,28 +44,40 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const planetRef = useRef<HTMLDivElement | null>(null);
 
+  // Shared by the in-section action buttons (origin = the button that was
+  // clicked) and the site-wide floating ZAP button (origin = its fixed
+  // on-screen position, since it doesn't sit next to the planet).
+  const spawnParticle = useCallback((fromX: number, fromY: number, value: number) => {
+    const planetEl = planetRef.current;
+    let toX = window.innerWidth / 2;
+    let toY = window.innerHeight / 2;
+    if (planetEl) {
+      const pr = planetEl.getBoundingClientRect();
+      toX = pr.left + pr.width / 2;
+      toY = pr.top + pr.height / 2;
+    }
+    const id = Date.now() + Math.random();
+    const particle: Particle = { id, fromX, fromY, dx: toX - fromX, dy: toY - fromY };
+    setScore((s) => s + value);
+    setParticles((ps) => [...ps, particle]);
+    setTimeout(() => {
+      setParticles((ps) => ps.filter((p) => p.id !== id));
+    }, 900);
+  }, []);
+
   const addAction = useCallback(
     (value: number) => (e: MouseEvent<HTMLButtonElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
-      const planetEl = planetRef.current;
-      const fromX = rect.left + rect.width / 2;
-      const fromY = rect.top + rect.height / 2;
-      let toX = window.innerWidth / 2;
-      let toY = window.innerHeight / 2;
-      if (planetEl) {
-        const pr = planetEl.getBoundingClientRect();
-        toX = pr.left + pr.width / 2;
-        toY = pr.top + pr.height / 2;
-      }
-      const id = Date.now() + Math.random();
-      const particle: Particle = { id, fromX, fromY, dx: toX - fromX, dy: toY - fromY };
-      setScore((s) => s + value);
-      setParticles((ps) => [...ps, particle]);
-      setTimeout(() => {
-        setParticles((ps) => ps.filter((p) => p.id !== id));
-      }, 900);
+      spawnParticle(rect.left + rect.width / 2, rect.top + rect.height / 2, value);
     },
-    []
+    [spawnParticle]
+  );
+
+  const zapFromPoint = useCallback(
+    (value: number, origin: { x: number; y: number }) => {
+      spawnParticle(origin.x, origin.y, value);
+    },
+    [spawnParticle]
   );
 
   const glowIntensity = Math.min(1, score / 90);
@@ -85,8 +98,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       particles,
       planetRef,
       addAction,
+      zapFromPoint,
     }),
-    [score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, particles, addAction]
+    [score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, particles, addAction, zapFromPoint]
   );
 
   return <ContributionContext.Provider value={value}>{children}</ContributionContext.Provider>;
