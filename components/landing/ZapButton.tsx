@@ -40,9 +40,9 @@ export default function ZapButton() {
       aria-label="ZAP"
       style={{
         position: 'fixed',
-        right: 'max(18px, env(safe-area-inset-right))',
-        top: '50%',
-        transform: 'translateY(-50%)',
+        left: '50%',
+        top: '58%',
+        transform: 'translate(-50%, -50%)',
         zIndex: 150,
         width: 68,
         height: 68,
