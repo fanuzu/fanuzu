@@ -25,6 +25,7 @@ import Footer from './Footer';
 import PreregModal from './PreregModal';
 import AttributionTracker from './AttributionTracker';
 import ZapButton from './ZapButton';
+import ContributionToast from './ContributionToast';
 
 export default function LandingPage() {
   return (
@@ -53,6 +54,7 @@ export default function LandingPage() {
               <Prereg />
               <Footer />
               <ZapButton />
+              <ContributionToast />
               <PreregModal />
             </div>
           </PreregModalProvider>

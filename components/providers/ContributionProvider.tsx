@@ -35,6 +35,10 @@ interface ContributionContextValue {
   planetRef: MutableRefObject<HTMLDivElement | null>;
   addAction: (value: number) => (e: MouseEvent<HTMLButtonElement>) => void;
   zapFromPoint: (value: number, origin: { x: number; y: number }) => void;
+  // Bumped on every contribution (in-section buttons and the floating ZAP
+  // button alike) so a toast component can react without this provider
+  // needing to know anything about translated copy.
+  toastNonce: number;
 }
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
@@ -42,6 +46,7 @@ const ContributionContext = createContext<ContributionContextValue | null>(null)
 export function ContributionProvider({ children }: { children: ReactNode }) {
   const [score, setScore] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [toastNonce, setToastNonce] = useState(0);
   const planetRef = useRef<HTMLDivElement | null>(null);
 
   // Shared by the in-section action buttons (origin = the button that was
@@ -60,6 +65,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     const particle: Particle = { id, fromX, fromY, dx: toX - fromX, dy: toY - fromY };
     setScore((s) => s + value);
     setParticles((ps) => [...ps, particle]);
+    setToastNonce((n) => n + 1);
     setTimeout(() => {
       setParticles((ps) => ps.filter((p) => p.id !== id));
     }, 900);
@@ -99,8 +105,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       planetRef,
       addAction,
       zapFromPoint,
+      toastNonce,
     }),
-    [score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, particles, addAction, zapFromPoint]
+    [score, progressPct, glowBlur, glowSpread, glowOpacity, planetBrightness, particles, addAction, zapFromPoint, toastNonce]
   );
 
   return <ContributionContext.Provider value={value}>{children}</ContributionContext.Provider>;

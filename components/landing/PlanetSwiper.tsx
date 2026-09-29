@@ -221,7 +221,6 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
           ›
         </button>
         <div
-          id="hero-planet-visual"
           ref={(el) => {
             orbRef.current = el;
             planetRef.current = el;
