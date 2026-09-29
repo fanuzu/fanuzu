@@ -154,10 +154,50 @@ export default function ArtistSelect({
 
   return (
     <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
+      <div
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          background: 'rgba(255,125,221,.1)',
+          border: '1px solid rgba(255,125,221,.3)',
+          padding: '7px 14px',
+          borderRadius: 999,
+          fontSize: 11.5,
+          letterSpacing: '.08em',
+          color: '#FF7DDD',
+          fontWeight: 700,
+          marginBottom: 18,
+        }}
+      >
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
+        {tr.prereg.statusBadge}
+      </div>
       <h2 id={headingId} style={{ fontSize: 'clamp(26px,4vw,34px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 12px', color: '#FFFAFC' }}>
         {tr.prereg.selectTitle}
       </h2>
-      <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 32px' }}>{tr.prereg.selectSub}</p>
+      <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 22px' }}>{tr.prereg.selectSub}</p>
+
+      <div
+        style={{
+          display: 'inline-flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '8px 18px',
+          background: 'rgba(255,255,255,.04)',
+          border: '1px solid rgba(255,255,255,.08)',
+          borderRadius: 14,
+          padding: '14px 20px',
+          margin: '0 0 28px',
+        }}
+      >
+        {tr.prereg.benefits.map((b, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: '#FFFAFC' }}>
+            <span style={{ color: '#FF7DDD', flex: '0 0 auto' }}>✦</span>
+            {b}
+          </div>
+        ))}
+      </div>
 
       <div
         style={{
