@@ -5,13 +5,15 @@ import { useContribution } from '@/components/providers/ContributionProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
 // The app's home screen has a floating ZAP button that sends POP straight
-// into the planet. This is the web equivalent: since the planet only lives
-// inside the Experience section (not next to this button), tapping it
-// scrolls there first, then fires the same fly-to-planet particle the
-// section's own action buttons use — landing right as the planet comes
-// into view. Kept at one fixed screen position regardless of scroll
-// position, rather than tracking the planet — simpler and more
-// predictable than a button that repositions itself as you scroll.
+// into the planet. This is the web equivalent: the particle always flies
+// toward the Hero planet specifically (that's the one wired to
+// ContributionProvider's planetRef, via PlanetSwiper), so tapping ZAP
+// scrolls to the very top of the page first — where that planet actually
+// is — then fires the same fly-to-planet particle the Experience section's
+// own action buttons use, landing right as the planet comes into view.
+// Kept at one fixed screen position regardless of scroll position, rather
+// than tracking the planet — simpler and more predictable than a button
+// that repositions itself as you scroll.
 const ZAP_VALUE = 20;
 const SCROLL_SETTLE_MS = 700;
 
@@ -21,8 +23,7 @@ export default function ZapButton() {
   const { isOpen: preregModalOpen } = usePreregModal();
 
   function handleZap() {
-    const experienceEl = document.getElementById('experience');
-    experienceEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const rect = btnRef.current?.getBoundingClientRect();
     const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
