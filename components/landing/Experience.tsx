@@ -82,6 +82,7 @@ export default function Experience() {
                 }}
               />
               <div
+                id="experience-planet-visual"
                 style={{
                   position: 'absolute',
                   inset: '6%',

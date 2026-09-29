@@ -2,6 +2,7 @@
 
 import { useLang } from '@/components/providers/LangProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
+import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLiveActivity } from './useLiveActivity';
 import PlanetSwiper from './PlanetSwiper';
 
@@ -9,6 +10,12 @@ export default function Hero() {
   const { tr } = useLang();
   const { openModal } = usePreregModal();
   const { popCount } = useLiveActivity();
+  // The ambient counter climbs on its own (other fans' activity); the
+  // visitor's own POP from zapping/contributing stacks on top of it, so
+  // tapping ZAP visibly moves this number instead of only affecting the
+  // planet's glow.
+  const { score } = useContribution();
+  const displayedPop = popCount + score;
 
   return (
     <section
@@ -135,7 +142,7 @@ export default function Hero() {
               minWidth: 150,
             }}
           >
-            <div style={{ fontSize: 24, fontWeight: 700, color: '#FFFAFC' }}>{popCount.toLocaleString()} POP</div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: '#FFFAFC' }}>{displayedPop.toLocaleString()} POP</div>
             <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{tr.hero.statLabel}</div>
             <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{tr.hero.statSub}</div>
           </div>
