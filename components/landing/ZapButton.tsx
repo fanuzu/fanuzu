@@ -41,7 +41,8 @@ export default function ZapButton() {
       style={{
         position: 'fixed',
         right: 'max(18px, env(safe-area-inset-right))',
-        bottom: 'max(22px, env(safe-area-inset-bottom))',
+        top: '50%',
+        transform: 'translateY(-50%)',
         zIndex: 150,
         width: 68,
         height: 68,
