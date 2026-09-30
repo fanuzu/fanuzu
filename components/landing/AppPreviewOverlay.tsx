@@ -1,26 +1,21 @@
 'use client';
 
 import Image from 'next/image';
+import { useContribution } from '@/components/providers/ContributionProvider';
 
 const PREVIEW_IMAGES = [
   { src: '/images/app-preview-campaign.png', rotate: -7, delay: 0 },
   { src: '/images/app-preview-inside.png', rotate: 6, delay: 0.08 },
 ];
 
-export default function AppPreviewOverlay({
-  visible,
-  fading,
-  onDismiss,
-}: {
-  visible: boolean;
-  fading: boolean;
-  onDismiss: () => void;
-}) {
-  if (!visible) return null;
+export default function AppPreviewOverlay() {
+  const { previewVisible, previewFading, dismissPreview } = useContribution();
+  const fading = previewFading;
+  if (!previewVisible) return null;
 
   return (
     <div
-      onClick={onDismiss}
+      onClick={dismissPreview}
       style={{
         position: 'fixed',
         inset: 0,

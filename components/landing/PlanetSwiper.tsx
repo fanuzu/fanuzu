@@ -9,7 +9,7 @@ const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.le
 
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness } = useContribution();
+  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview } = useContribution();
   const pulsing = usePlanetReactionPulse();
 
   const orbRef = useRef<HTMLDivElement | null>(null);
@@ -118,11 +118,15 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
       orb.style.cursor = 'grab';
       const w = orbWidthRef.current || 1;
       const threshold = w * 0.22;
-      if (Math.abs(dragDxRef.current) > threshold) {
+      const movedDx = Math.abs(dragDxRef.current);
+      if (movedDx > threshold) {
         commit(dragDxRef.current < 0 ? 1 : -1);
       } else {
         setTransforms(0, true);
         setPreviewTheme(null);
+        // Barely moved (or didn't move at all) — a tap on the planet
+        // itself, not a swipe attempt. Flash the app preview.
+        if (movedDx < 6) triggerPreview();
       }
     };
 

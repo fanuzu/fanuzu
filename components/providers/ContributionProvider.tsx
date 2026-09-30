@@ -44,16 +44,54 @@ interface ContributionContextValue {
   // fired) — the planet's "impact" animation, so it's timed to when the
   // particle visually lands rather than the moment you tapped.
   reactionNonce: number;
+  // A quick "here's the app" screenshot flash, triggered by tapping the
+  // planet itself (see PlanetSwiper's tap-vs-drag handling).
+  previewVisible: boolean;
+  previewFading: boolean;
+  triggerPreview: () => void;
+  dismissPreview: () => void;
 }
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
+
+const PREVIEW_VISIBLE_MS = 3000;
+const PREVIEW_FADE_MS = 400;
 
 export function ContributionProvider({ children }: { children: ReactNode }) {
   const [score, setScore] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [toastNonce, setToastNonce] = useState(0);
   const [reactionNonce, setReactionNonce] = useState(0);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
+  const previewHideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const previewUnmountTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(previewHideTimer.current);
+      clearTimeout(previewUnmountTimer.current);
+    };
+  }, []);
+
+  const dismissPreview = useCallback(() => {
+    clearTimeout(previewHideTimer.current);
+    clearTimeout(previewUnmountTimer.current);
+    setPreviewFading(true);
+    previewUnmountTimer.current = setTimeout(() => {
+      setPreviewVisible(false);
+      setPreviewFading(false);
+    }, PREVIEW_FADE_MS);
+  }, []);
+
+  const triggerPreview = useCallback(() => {
+    clearTimeout(previewHideTimer.current);
+    clearTimeout(previewUnmountTimer.current);
+    setPreviewFading(false);
+    setPreviewVisible(true);
+    previewHideTimer.current = setTimeout(dismissPreview, PREVIEW_VISIBLE_MS);
+  }, [dismissPreview]);
 
   // Shared by the in-section action buttons (origin = the button that was
   // clicked) and the site-wide floating ZAP button (origin = its fixed
@@ -114,6 +152,10 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
+      previewVisible,
+      previewFading,
+      triggerPreview,
+      dismissPreview,
     }),
     [
       score,
@@ -127,6 +169,10 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
+      previewVisible,
+      previewFading,
+      triggerPreview,
+      dismissPreview,
     ]
   );
 

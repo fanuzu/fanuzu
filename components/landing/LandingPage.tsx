@@ -26,6 +26,7 @@ import PreregModal from './PreregModal';
 import AttributionTracker from './AttributionTracker';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
+import AppPreviewOverlay from './AppPreviewOverlay';
 
 export default function LandingPage() {
   return (
@@ -55,6 +56,7 @@ export default function LandingPage() {
               <Footer />
               <ZapButton />
               <ContributionToast />
+              <AppPreviewOverlay />
               <PreregModal />
             </div>
           </PreregModalProvider>
