@@ -52,7 +52,7 @@ export default function Experience() {
                 </button>
               ))}
             </div>
-            <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, padding: 20 }}>
+            <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#B8AFC4', marginBottom: 10 }}>
                 <span>{tr.exp.scoreLabel}</span>
                 <span style={{ color: '#FFFAFC', fontWeight: 700 }}>{score}</span>

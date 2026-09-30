@@ -43,11 +43,11 @@ export default function Why() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 20 }}>
-        <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 18, padding: 30 }}>
+        <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 18, padding: 30 }}>
           <h3 style={{ fontSize: 19, fontWeight: 600, margin: '0 0 12px', color: '#FFFAFC' }}>{tr.philosophy.card1T}</h3>
           <p style={{ fontSize: 14.5, lineHeight: 1.65, color: '#B8AFC4', margin: 0 }}>{tr.philosophy.card1D}</p>
         </div>
-        <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 18, padding: 30 }}>
+        <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 18, padding: 30 }}>
           <h3 style={{ fontSize: 19, fontWeight: 600, margin: '0 0 12px', color: '#FFFAFC' }}>{tr.philosophy.card2T}</h3>
           <p style={{ fontSize: 14.5, lineHeight: 1.65, color: '#B8AFC4', margin: 0 }}>{tr.philosophy.card2D}</p>
         </div>

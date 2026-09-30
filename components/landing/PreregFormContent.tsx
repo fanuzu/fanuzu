@@ -285,8 +285,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         style={{
           maxWidth: 560,
           margin: '32px auto 0',
-          background: 'rgba(255,255,255,.04)',
-          border: '1px solid rgba(255,255,255,.08)',
+          background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+          border: '1px solid rgba(255,125,221,.18)',
           borderRadius: 18,
           padding: '22px 26px',
         }}
@@ -310,7 +310,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         }}
       >
         {steps.map((pst) => (
-          <div key={pst.n} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, padding: 22 }}>
+          <div key={pst.n} style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 22 }}>
             <div
               style={{
                 width: 26,
@@ -343,8 +343,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               flexDirection: 'column',
               gap: 16,
               textAlign: 'left',
-              background: 'rgba(255,255,255,.04)',
-              border: '1px solid rgba(255,255,255,.08)',
+              background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+              border: '1px solid rgba(255,125,221,.18)',
               borderRadius: 20,
               padding: 32,
             }}
@@ -439,7 +439,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
             <div
               style={{
                 background: 'rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,255,255,.08)',
+                border: '1px solid rgba(255,125,221,.18)',
                 borderRadius: 12,
                 padding: '14px 16px',
                 fontSize: 13,

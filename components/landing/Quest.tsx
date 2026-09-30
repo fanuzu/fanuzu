@@ -26,8 +26,8 @@ export default function Quest() {
               <div
                 key={i}
                 style={{
-                  background: 'rgba(255,255,255,.04)',
-                  border: '1px solid rgba(255,255,255,.08)',
+                  background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+                  border: '1px solid rgba(255,125,221,.18)',
                   borderRadius: 14,
                   padding: '16px 18px',
                   fontSize: 14,

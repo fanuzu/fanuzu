@@ -52,7 +52,7 @@ export default function Origin() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 20, marginBottom: 36 }}>
           {tr.origin.benefits.map((b, i) => (
-            <div key={i} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 18, padding: 26 }}>
+            <div key={i} style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 18, padding: 26 }}>
               <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 14px', color: '#FFFAFC' }}>{b.title}</h3>
               {b.items.map((bi, j) => (
                 <div key={j} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>

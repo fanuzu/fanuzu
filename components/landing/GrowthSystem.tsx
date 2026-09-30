@@ -22,7 +22,7 @@ export default function GrowthSystem() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 20 }}>
         {cards.map((c, i) => (
-          <div key={i} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 18, padding: 28 }}>
+          <div key={i} style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 18, padding: 28 }}>
             <div
               style={{
                 width: 38,
