@@ -65,6 +65,10 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
   const previewUnmountTimer = useRef<ReturnType<typeof setTimeout>>();
+  // Once the user closes the preview, don't pop it back up on further
+  // planet taps — closing it is treated as "got it, don't show again"
+  // for the rest of this visit.
+  const previewDismissedRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -73,6 +77,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const dismissPreview = useCallback(() => {
+    previewDismissedRef.current = true;
     clearTimeout(previewUnmountTimer.current);
     setPreviewFading(true);
     previewUnmountTimer.current = setTimeout(() => {
@@ -82,6 +87,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const triggerPreview = useCallback(() => {
+    if (previewDismissedRef.current) return;
     clearTimeout(previewUnmountTimer.current);
     setPreviewFading(false);
     setPreviewVisible(true);
