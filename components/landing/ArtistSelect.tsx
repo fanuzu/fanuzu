@@ -5,19 +5,29 @@ import { useLang } from '@/components/providers/LangProvider';
 import { POPULAR_ARTISTS } from '@/lib/artists';
 
 const pillStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,.04)',
-  border: '1px solid rgba(255,255,255,.1)',
+  background: 'linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02))',
+  border: '1px solid rgba(255,255,255,.12)',
   borderRadius: 14,
-  padding: '16px 10px',
+  padding: '17px 10px',
   color: '#FFFAFC',
   fontSize: 'clamp(12px,3.6vw,14.5px)',
-  fontWeight: 600,
+  fontWeight: 700,
   fontFamily: 'inherit',
   cursor: 'pointer',
   textAlign: 'center',
   overflowWrap: 'anywhere',
   wordBreak: 'break-word',
+  transition: 'transform .15s ease, box-shadow .15s ease, border-color .15s ease',
 };
+
+// Purely decorative — same positional order as prereg.benefits in every
+// locale (POP reward, join order, badge), so it's safe to key by index
+// without touching the translated copy itself.
+const BENEFIT_ACCENTS = [
+  { emoji: '⚡', color: '#FF7DDD' },
+  { emoji: '🎟️', color: '#7CE8FF' },
+  { emoji: '🏅', color: '#9B7CFF' },
+];
 
 export default function ArtistSelect({
   onConfirm,
@@ -173,30 +183,56 @@ export default function ArtistSelect({
         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
         {tr.prereg.statusBadge}
       </div>
-      <h2 id={headingId} style={{ fontSize: 'clamp(26px,4vw,34px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 12px', color: '#FFFAFC' }}>
-        {tr.prereg.selectTitle}
+      <h2
+        id={headingId}
+        style={{
+          fontSize: 'clamp(28px,4.6vw,38px)',
+          lineHeight: 1.3,
+          fontWeight: 800,
+          margin: '0 0 12px',
+          background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 60%,var(--planet-a2))',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          color: 'transparent',
+        }}
+      >
+        ✨ {tr.prereg.selectTitle}
       </h2>
       <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 22px' }}>{tr.prereg.selectSub}</p>
 
       <div
         style={{
-          display: 'inline-flex',
+          display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          gap: '8px 18px',
-          background: 'rgba(255,255,255,.04)',
-          border: '1px solid rgba(255,255,255,.08)',
-          borderRadius: 14,
-          padding: '14px 20px',
+          gap: 10,
           margin: '0 0 28px',
         }}
       >
-        {tr.prereg.benefits.map((b, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: '#FFFAFC' }}>
-            <span style={{ color: '#FF7DDD', flex: '0 0 auto' }}>✦</span>
-            {b}
-          </div>
-        ))}
+        {tr.prereg.benefits.map((b, i) => {
+          const accent = BENEFIT_ACCENTS[i % BENEFIT_ACCENTS.length];
+          return (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 7,
+                fontSize: 12.5,
+                fontWeight: 700,
+                color: '#FFFAFC',
+                background: `linear-gradient(135deg,${accent.color}26,${accent.color}0d)`,
+                border: `1px solid ${accent.color}55`,
+                borderRadius: 999,
+                padding: '9px 16px',
+                boxShadow: `0 0 16px ${accent.color}22`,
+              }}
+            >
+              <span style={{ fontSize: 14, flex: '0 0 auto' }}>{accent.emoji}</span>
+              {b}
+            </div>
+          );
+        })}
       </div>
 
       <div
@@ -207,14 +243,25 @@ export default function ArtistSelect({
           textAlign: 'left',
         }}
       >
-        {POPULAR_ARTISTS.map((artist) => (
-          <button key={artist} onClick={() => reveal(artist)} style={pillStyle}>
+        {POPULAR_ARTISTS.map((artist, i) => (
+          <button
+            key={artist}
+            onClick={() => reveal(artist)}
+            className="artist-pill"
+            style={{ ...pillStyle, animation: `fadeUp .4s ease-out ${Math.min(i, 12) * 0.03}s both` }}
+          >
             {artist}
           </button>
         ))}
         <button
           onClick={() => setShowCustomInput(true)}
-          style={{ ...pillStyle, color: '#B8AFC4', border: '1px dashed rgba(255,255,255,.16)' }}
+          className="artist-pill"
+          style={{
+            ...pillStyle,
+            color: '#B8AFC4',
+            border: '1px dashed rgba(255,255,255,.16)',
+            animation: `fadeUp .4s ease-out ${Math.min(POPULAR_ARTISTS.length, 12) * 0.03}s both`,
+          }}
         >
           {tr.prereg.selectOther}
         </button>

@@ -90,6 +90,16 @@ body {
   color: #05030B;
 }
 
+.artist-pill:hover, .artist-pill:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  border-color: rgba(255,125,221,.55);
+  background: linear-gradient(160deg,rgba(255,125,221,.14),rgba(155,124,255,.06));
+  box-shadow: 0 10px 26px rgba(255,125,221,.22);
+}
+.artist-pill:active {
+  transform: translateY(0) scale(.98);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .001ms !important;
