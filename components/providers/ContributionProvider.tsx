@@ -54,7 +54,6 @@ interface ContributionContextValue {
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
 
-const PREVIEW_VISIBLE_MS = 3000;
 const PREVIEW_FADE_MS = 400;
 
 export function ContributionProvider({ children }: { children: ReactNode }) {
@@ -65,18 +64,15 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
-  const previewHideTimer = useRef<ReturnType<typeof setTimeout>>();
   const previewUnmountTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     return () => {
-      clearTimeout(previewHideTimer.current);
       clearTimeout(previewUnmountTimer.current);
     };
   }, []);
 
   const dismissPreview = useCallback(() => {
-    clearTimeout(previewHideTimer.current);
     clearTimeout(previewUnmountTimer.current);
     setPreviewFading(true);
     previewUnmountTimer.current = setTimeout(() => {
@@ -86,12 +82,10 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const triggerPreview = useCallback(() => {
-    clearTimeout(previewHideTimer.current);
     clearTimeout(previewUnmountTimer.current);
     setPreviewFading(false);
     setPreviewVisible(true);
-    previewHideTimer.current = setTimeout(dismissPreview, PREVIEW_VISIBLE_MS);
-  }, [dismissPreview]);
+  }, []);
 
   // Shared by the in-section action buttons (origin = the button that was
   // clicked) and the site-wide floating ZAP button (origin = its fixed
