@@ -6,7 +6,7 @@ import { useLang } from '@/components/providers/LangProvider';
 
 const PREVIEW_IMAGES = [
   { src: '/images/app-preview-campaign.png', rotate: -7, delay: 0 },
-  { src: '/images/app-preview-inside.png', rotate: 6, delay: 0.08 },
+  { src: '/images/app-preview-inside.png', rotate: 6, delay: 0.03 },
 ];
 
 export default function AppPreviewOverlay() {
@@ -31,8 +31,8 @@ export default function AppPreviewOverlay() {
         WebkitBackdropFilter: 'blur(6px)',
         cursor: 'pointer',
         opacity: fading ? 0 : 1,
-        transition: 'opacity .4s ease',
-        animation: fading ? undefined : 'previewBackdropIn .35s ease',
+        transition: 'opacity .3s ease',
+        animation: fading ? undefined : 'previewBackdropIn .12s ease-out',
       }}
     >
       <button
@@ -76,7 +76,7 @@ export default function AppPreviewOverlay() {
               boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 50px 6px rgba(255,125,221,.28)',
               transform: fading ? 'scale(.94) translateY(-16px) rotate(var(--rotate))' : undefined,
               transition: fading ? 'transform .4s ease' : undefined,
-              animation: fading ? undefined : `previewPhoneIn .5s cubic-bezier(.22,.61,.36,1) ${p.delay}s both`,
+              animation: fading ? undefined : `previewPhoneIn .22s cubic-bezier(.22,.61,.36,1) ${p.delay}s both`,
               zIndex: i,
               '--rotate': `${p.rotate}deg`,
             } as React.CSSProperties
