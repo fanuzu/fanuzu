@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
 import { useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
+import { useLang } from '@/components/providers/LangProvider';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
 
@@ -11,6 +12,8 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
   const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview } = useContribution();
   const pulsing = usePlanetReactionPulse();
+  const { tr } = useLang();
+  const [hintSeen, setHintSeen] = useState(false);
 
   const orbRef = useRef<HTMLDivElement | null>(null);
   const imgPrevRef = useRef<HTMLImageElement>(null);
@@ -126,7 +129,10 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
         setPreviewTheme(null);
         // Barely moved (or didn't move at all) — a tap on the planet
         // itself, not a swipe attempt. Flash the app preview.
-        if (movedDx < 6) triggerPreview();
+        if (movedDx < 6) {
+          setHintSeen(true);
+          triggerPreview();
+        }
       }
     };
 
@@ -273,6 +279,35 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
           />
         </div>
+        {!hintSeen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '4%',
+              right: '2%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '7px 13px',
+              borderRadius: 999,
+              background: 'rgba(10,6,19,.78)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,125,221,.4)',
+              boxShadow: '0 8px 24px rgba(0,0,0,.4), 0 0 18px rgba(255,125,221,.25)',
+              color: '#FFFAFC',
+              fontSize: 12,
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+              animation: 'tapHintPulse 1.8s ease-in-out infinite',
+              zIndex: 4,
+            }}
+          >
+            <span style={{ fontSize: 15, display: 'inline-block', animation: 'tapHintFinger 1.8s ease-in-out infinite' }}>👆</span>
+            {tr.hero.tapHint}
+          </div>
+        )}
         {children}
       </div>
       <div style={{ display: 'flex', gap: 8 }}>

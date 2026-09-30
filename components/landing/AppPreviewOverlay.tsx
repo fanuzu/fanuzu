@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useContribution } from '@/components/providers/ContributionProvider';
+import { useLang } from '@/components/providers/LangProvider';
 
 const PREVIEW_IMAGES = [
   { src: '/images/app-preview-campaign.png', rotate: -7, delay: 0 },
@@ -10,6 +11,7 @@ const PREVIEW_IMAGES = [
 
 export default function AppPreviewOverlay() {
   const { previewVisible, previewFading, dismissPreview } = useContribution();
+  const { tr } = useLang();
   const fading = previewFading;
   if (!previewVisible) return null;
 
@@ -33,6 +35,33 @@ export default function AppPreviewOverlay() {
         animation: fading ? undefined : 'previewBackdropIn .35s ease',
       }}
     >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          dismissPreview();
+        }}
+        aria-label={tr.nav.close}
+        style={{
+          position: 'absolute',
+          top: 'max(18px, env(safe-area-inset-top))',
+          right: 18,
+          width: 36,
+          height: 36,
+          borderRadius: '50%',
+          border: '1px solid rgba(255,255,255,.2)',
+          background: 'rgba(255,255,255,.08)',
+          color: '#FFFAFC',
+          fontSize: 17,
+          lineHeight: 1,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 5,
+        }}
+      >
+        ×
+      </button>
       {PREVIEW_IMAGES.map((p, i) => (
         <div
           key={p.src}

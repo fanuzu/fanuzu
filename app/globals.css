@@ -69,6 +69,14 @@
   55% { transform: scale(0.98); filter: brightness(1.08); }
   100% { transform: scale(1); filter: brightness(1); }
 }
+@keyframes tapHintPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 0 18px rgba(255,125,221,.25); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 0 26px rgba(255,125,221,.45); }
+}
+@keyframes tapHintFinger {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
 @keyframes previewBackdropIn {
   from { opacity: 0; }
   to { opacity: 1; }
