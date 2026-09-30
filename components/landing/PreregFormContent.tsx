@@ -48,6 +48,13 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   const [termsConsent, setTermsConsent] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const allConsent = age14Consent && termsConsent && privacyConsent && marketingConsent;
+  function setAllConsent(checked: boolean) {
+    setAge14Consent(checked);
+    setTermsConsent(checked);
+    setPrivacyConsent(checked);
+    setMarketingConsent(checked);
+  }
 
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [errorText, setErrorText] = useState('');
@@ -452,6 +459,30 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
             <p style={{ fontSize: 11.5, lineHeight: 1.5, color: '#6B6478', margin: 0 }}>{tr.prereg.rewardNote}</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <label
+                htmlFor={`${uid}-all`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#FFFAFC',
+                  cursor: 'pointer',
+                  paddingBottom: 10,
+                  marginBottom: 2,
+                  borderBottom: '1px solid rgba(255,255,255,.1)',
+                }}
+              >
+                <input
+                  id={`${uid}-all`}
+                  type="checkbox"
+                  checked={allConsent}
+                  onChange={(e) => setAllConsent(e.target.checked)}
+                  style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }}
+                />
+                {tr.prereg.agreeAll}
+              </label>
               <label htmlFor={`${uid}-age14`} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#B8AFC4', cursor: 'pointer' }}>
                 <input id={`${uid}-age14`} type="checkbox" required checked={age14Consent} onChange={(e) => setAge14Consent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
                 <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.age14Consent}</span>

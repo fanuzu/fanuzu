@@ -41,7 +41,7 @@ export interface TranslationSet {
     emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
     referralToggle: string; referralHint: string; referralPlaceholder: string;
     rewardNoRef: string; rewardRef: string; rewardNote: string;
-    requiredBadge: string; optionalBadge: string;
+    requiredBadge: string; optionalBadge: string; agreeAll: string;
     age14Consent: string; termsConsent: string; privacyConsentLabel: string; marketingConsent: string; viewDoc: string;
     trustNote: string;
     submit: string; submitting: string; error: string;
@@ -175,7 +175,7 @@ ko: {
     rewardNoRef:'INVITE CODE 없이 등록하면 나에게 50 POP',
     rewardRef:'INVITE CODE를 입력하면 나와 초대한 친구 모두 100 POP',
     rewardNote:'사전등록 POP은 정식 오픈 후 지급돼요.',
-    requiredBadge:'[필수]',optionalBadge:'[선택]',age14Consent:'만 14세 이상입니다',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
+    requiredBadge:'[필수]',optionalBadge:'[선택]',agreeAll:'전체 동의',age14Consent:'만 14세 이상입니다',termsConsent:'서비스 이용약관에 동의합니다',privacyConsentLabel:'개인정보 수집 및 이용에 동의합니다',marketingConsent:'FANUZU 소식 및 마케팅 정보 수신에 동의합니다',viewDoc:'보기',
     trustNote:'🔒 안전하게 보호되고, 사전등록 확인용으로만 써요. 스팸 없음.',
     submit:'내 bias 행성 사전등록하기',submitting:'등록 중···',
     error:'신청을 저장하지 못했어요. 잠시 후 다시 시도해주세요.',
@@ -306,7 +306,7 @@ en: {
     rewardNoRef:'No invite code → 50 POP for you',
     rewardRef:'Valid INVITE CODE → 100 POP each for you and whoever invited you',
     rewardNote:'Pre-registration POP will be granted after FANUZU officially launches.',
-    requiredBadge:'[Required]',optionalBadge:'[Optional]',age14Consent:'I am 14 years of age or older',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
+    requiredBadge:'[Required]',optionalBadge:'[Optional]',agreeAll:'Agree to all',age14Consent:'I am 14 years of age or older',termsConsent:'I agree to the Terms of Service',privacyConsentLabel:'I agree to the collection and use of my personal information',marketingConsent:'I agree to receive FANUZU news and marketing information',viewDoc:'View',
     trustNote:'🔒 Stored securely, used only to confirm your spot. No spam.',
     submit:'Pre-register my artist’s planet',submitting:'Registering···',
     error:'We couldn\'t save your request. Please try again shortly.',
@@ -437,7 +437,7 @@ ja: {
     rewardNoRef:'INVITE CODEなし → あなたに50 POP',
     rewardRef:'有効なINVITE CODEあり → あなたと招待した人に100 POPずつ',
     rewardNote:'事前登録POPはFANUZU正式リリース後に付与されます。',
-    requiredBadge:'[必須]',optionalBadge:'[任意]',age14Consent:'満14歳以上です',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
+    requiredBadge:'[必須]',optionalBadge:'[任意]',agreeAll:'すべて同意する',age14Consent:'満14歳以上です',termsConsent:'利用規約に同意します',privacyConsentLabel:'個人情報の収集及び利用に同意します',marketingConsent:'FANUZUのお知らせ及びマーケティング情報の受信に同意します',viewDoc:'表示',
     trustNote:'🔒 情報は安全に保護、確認用途のみ。迷惑メールなし。',
     submit:'推しの惑星を事前登録',submitting:'登録中···',
     error:'申請を保存できませんでした。しばらくしてから再度お試しください。',
@@ -569,7 +569,7 @@ es: {
     rewardNoRef:'Sin invite code → 50 POP para ti',
     rewardRef:'Con un INVITE CODE válido → 100 POP para ti y 100 POP para quien te invitó',
     rewardNote:'El POP de preinscripción se otorgará después del lanzamiento oficial de FANUZU.',
-    requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',age14Consent:'Tengo 14 años de edad o más',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
+    requiredBadge:'[Obligatorio]',optionalBadge:'[Opcional]',agreeAll:'Aceptar todo',age14Consent:'Tengo 14 años de edad o más',termsConsent:'Acepto los Términos de Servicio',privacyConsentLabel:'Acepto la recopilación y el uso de mi información personal',marketingConsent:'Acepto recibir noticias e información de marketing de FANUZU',viewDoc:'Ver',
     trustNote:'🔒 Tu información está protegida, solo para confirmar tu registro. Sin spam.',
     submit:'Preinscribir el planeta de mi artista',submitting:'Registrando···',
     error:'No pudimos guardar tu solicitud. Inténtalo de nuevo en breve.',
@@ -700,7 +700,7 @@ zhHans: {
     rewardNoRef:'无 INVITE CODE → 你获得 50 POP',
     rewardRef:'使用有效 INVITE CODE → 你和邀请人各获得 100 POP',
     rewardNote:'预注册 POP 将在 FANUZU 正式上线后发放。',
-    requiredBadge:'【必填】',optionalBadge:'【选填】',age14Consent:'我年满14周岁',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
+    requiredBadge:'【必填】',optionalBadge:'【选填】',agreeAll:'全部同意',age14Consent:'我年满14周岁',termsConsent:'我同意服务条款',privacyConsentLabel:'我同意个人信息的收集与使用',marketingConsent:'我同意接收FANUZU的消息与营销信息',viewDoc:'查看',
     trustNote:'🔒 信息安全保护，仅用于确认登记，绝无垃圾邮件。',
     submit:'预注册我的艺人星球',submitting:'注册中···',
     error:'申请未能保存，请稍后重试。',
@@ -831,7 +831,7 @@ zhHant: {
     rewardNoRef:'無 INVITE CODE → 你獲得 50 POP',
     rewardRef:'使用有效 INVITE CODE → 你和邀請人各獲得 100 POP',
     rewardNote:'預先登記 POP 將於 FANUZU 正式上線後發放。',
-    requiredBadge:'【必填】',optionalBadge:'【選填】',age14Consent:'我年滿14週歲',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
+    requiredBadge:'【必填】',optionalBadge:'【選填】',agreeAll:'全部同意',age14Consent:'我年滿14週歲',termsConsent:'我同意服務條款',privacyConsentLabel:'我同意個人資訊的收集與使用',marketingConsent:'我同意接收FANUZU的消息與行銷資訊',viewDoc:'查看',
     trustNote:'🔒 資訊安全保護，僅用於確認登記，絕無垃圾郵件。',
     submit:'預先登記我的藝人星球',submitting:'註冊中···',
     error:'申請未能儲存，請稍後重試。',
