@@ -11,14 +11,7 @@ export default function Why() {
         <h2 style={{ fontSize: 'clamp(30px,4.4vw,44px)', lineHeight: 1.2, fontWeight: 700, letterSpacing: '-0.01em', margin: '0 0 20px' }}>
           <span style={{ color: '#FFFAFC' }}>{tr.philosophy.t1}</span>
           <br />
-          <span
-            style={{
-              background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}
-          >
+          <span className="gradient-text" style={{ backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)' }}>
             {tr.philosophy.t2}
           </span>
         </h2>

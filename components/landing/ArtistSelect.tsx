@@ -92,15 +92,13 @@ export default function ArtistSelect({
         </div>
         <h2
           id={headingId}
+          className="gradient-text"
           style={{
             fontSize: 'clamp(30px,5vw,44px)',
             lineHeight: 1.2,
             fontWeight: 800,
             margin: '0 0 10px',
-            background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1))',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            color: 'transparent',
+            backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1))',
           }}
         >
           {pendingArtist.toUpperCase()} PLANET
@@ -185,15 +183,13 @@ export default function ArtistSelect({
       </div>
       <h2
         id={headingId}
+        className="gradient-text"
         style={{
           fontSize: 'clamp(28px,4.6vw,38px)',
           lineHeight: 1.3,
           fontWeight: 800,
           margin: '0 0 12px',
-          background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 60%,var(--planet-a2))',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          color: 'transparent',
+          backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 60%,var(--planet-a2))',
         }}
       >
         ✨ {tr.prereg.selectTitle}

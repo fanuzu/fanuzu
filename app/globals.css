@@ -90,6 +90,24 @@ body {
   color: #05030B;
 }
 
+/* Gradient-clipped headline text (background-image painted through the
+   glyph shapes). Some embedded WebViews (notably KakaoTalk's in-app
+   browser on Android) don't support background-clip: text — without a
+   guard, that leaves color:transparent applied but the clip not, so the
+   heading disappears and only the solid gradient rectangle shows. The
+   @supports query keeps a plain white fallback until the browser proves
+   it can actually clip to text. */
+.gradient-text {
+  color: #FFFAFC;
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .gradient-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
 .artist-pill:hover, .artist-pill:focus-visible {
   transform: translateY(-2px) scale(1.03);
   border-color: rgba(255,125,221,.55);

@@ -73,24 +73,20 @@ export default function Hero() {
           <span style={{ color: '#FFFAFC' }}>{tr.hero.t1}</span>
           <br />
           <span
+            className="gradient-text"
             style={{
-              background: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 55%,var(--planet-a2))',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
+              backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 55%,var(--planet-a2))',
+              transition: 'background-image 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
             {tr.hero.t2}
           </span>
           <br />
           <span
+            className="gradient-text"
             style={{
-              background: 'linear-gradient(90deg,var(--planet-a1),var(--planet-a2))',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              transition: 'background 1.1s cubic-bezier(.22,.61,.36,1)',
+              backgroundImage: 'linear-gradient(90deg,var(--planet-a1),var(--planet-a2))',
+              transition: 'background-image 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
             {tr.hero.t3}
