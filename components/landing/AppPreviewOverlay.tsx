@@ -1,12 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+import { useRef, useState } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
 
 const PREVIEW_IMAGES = [
-  { src: '/images/app-preview-campaign.png', rotate: -7, delay: 0 },
-  { src: '/images/app-preview-inside.png', rotate: 6, delay: 0.03 },
+  { src: '/images/app-preview-nebula.png' },
+  { src: '/images/app-preview-planet.png' },
 ];
 
 const SPARKLES = [
@@ -19,7 +20,23 @@ export default function AppPreviewOverlay() {
   const { previewVisible, previewFading, dismissPreview } = useContribution();
   const { tr } = useLang();
   const fading = previewFading;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
   if (!previewVisible) return null;
+
+  const handleScroll = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const i = Math.round(track.scrollLeft / track.clientWidth);
+    setActiveIndex(Math.max(0, Math.min(PREVIEW_IMAGES.length - 1, i)));
+  };
+
+  const goTo = (i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+  };
 
   return (
     <div
@@ -89,33 +106,71 @@ export default function AppPreviewOverlay() {
         ×
       </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(-28px,-4vw,-10px)' }}>
-        {PREVIEW_IMAGES.map((p, i) => (
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        onClick={(e) => e.stopPropagation()}
+        className="preview-carousel"
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          width: 'clamp(190px,56vw,240px)',
+          aspectRatio: '375/812',
+          borderRadius: 28,
+          cursor: 'grab',
+          animation: fading ? undefined : 'previewPhoneIn .22s cubic-bezier(.22,.61,.36,1) both',
+          transform: fading ? 'scale(.94) translateY(-16px)' : undefined,
+          transition: fading ? 'transform .4s ease' : undefined,
+        }}
+      >
+        {PREVIEW_IMAGES.map((p) => (
           <div
             key={p.src}
-            style={
-              {
-                position: 'relative',
-                width: 'clamp(150px,32vw,220px)',
-                aspectRatio: '375/812',
-                borderRadius: 28,
-                overflow: 'hidden',
-                border: '3px solid transparent',
-                backgroundImage:
-                  'linear-gradient(#0a0714,#0a0714), linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
-                backgroundOrigin: 'border-box',
-                backgroundClip: 'padding-box, border-box',
-                boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 50px 8px rgba(255,125,221,.32)',
-                transform: fading ? 'scale(.94) translateY(-16px) rotate(var(--rotate))' : undefined,
-                transition: fading ? 'transform .4s ease' : undefined,
-                animation: fading ? undefined : `previewPhoneIn .22s cubic-bezier(.22,.61,.36,1) ${p.delay}s both`,
-                zIndex: i,
-                '--rotate': `${p.rotate}deg`,
-              } as React.CSSProperties
-            }
+            style={{
+              position: 'relative',
+              flex: '0 0 100%',
+              scrollSnapAlign: 'center',
+              borderRadius: 28,
+              overflow: 'hidden',
+              border: '3px solid transparent',
+              backgroundImage:
+                'linear-gradient(#0a0714,#0a0714), linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box',
+              boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 50px 8px rgba(255,125,221,.32)',
+            }}
           >
-            <Image src={p.src} alt="FANUZU app preview" fill sizes="220px" style={{ objectFit: 'cover' }} />
+            <Image src={p.src} alt="FANUZU app preview" fill sizes="240px" style={{ objectFit: 'cover' }} />
           </div>
+        ))}
+      </div>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          display: 'flex',
+          gap: 8,
+          opacity: fading ? 0 : 1,
+          transition: fading ? 'opacity .3s ease' : undefined,
+        }}
+      >
+        {PREVIEW_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            aria-label={`Slide ${i + 1}`}
+            style={{
+              width: i === activeIndex ? 20 : 6,
+              height: 6,
+              borderRadius: 4,
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              background: i === activeIndex ? 'linear-gradient(90deg,var(--planet-a1),var(--planet-a2))' : 'rgba(255,255,255,.3)',
+              transition: 'width .3s ease, background .3s ease',
+            }}
+          />
         ))}
       </div>
 

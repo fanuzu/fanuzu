@@ -93,6 +93,13 @@
   0%, 100% { opacity: .25; transform: scale(.8) rotate(0deg); }
   50% { opacity: 1; transform: scale(1.15) rotate(15deg); }
 }
+.preview-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.preview-carousel::-webkit-scrollbar {
+  display: none;
+}
 
 html, body {
   margin: 0;
