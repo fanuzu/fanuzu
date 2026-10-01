@@ -231,7 +231,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: '개인정보 보호 담당자 및 권익침해 구제',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / 대표자 Syvia Hong / 사업자등록번호 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / 대표자 Sylvia Hong / 사업자등록번호 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea' },
             { kind: 'p', text: '고객문의: help@fanuzu.co.kr / 개인정보 보호 담당자: 이지민' },
             { kind: 'p', text: '개인정보 침해 상담이 필요한 경우 개인정보침해신고센터(국번 없이 118), 개인정보분쟁조정위원회 등 관계 기관에 도움을 요청할 수 있습니다.' },
@@ -439,7 +439,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: 'Contact and Remedies for Rights Infringement',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / CEO Syvia Hong / Business Registration No. 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / CEO Sylvia Hong / Business Registration No. 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea' },
             { kind: 'p', text: 'Contact: help@fanuzu.co.kr / Data Protection Officer: Jimin Lee' },
             { kind: 'p', text: 'If you need help with a privacy infringement, you may contact the Korea Privacy Infringement Report Center (dial 118, no area code) or the Personal Information Dispute Mediation Committee, among other relevant authorities.' },
@@ -647,7 +647,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: '個人情報保護担当者及び権利侵害の救済',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / 代表者 Syvia Hong / 事業者登録番号 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / 代表者 Sylvia Hong / 事業者登録番号 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea' },
             { kind: 'p', text: 'お問い合わせ: help@fanuzu.co.kr / 個人情報保護担当者: イ・ジミン' },
             { kind: 'p', text: '個人情報侵害の相談が必要な場合は、個人情報侵害申告センター（局番なしの118）、個人情報紛争調停委員会等の関係機関にご相談いただけます。' },
@@ -855,7 +855,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: 'Contacto y Remedios por Infracción de Derechos',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / CEO Syvia Hong / N.º de Registro Empresarial 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / CEO Sylvia Hong / N.º de Registro Empresarial 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, República de Corea' },
             { kind: 'p', text: 'Contacto: help@fanuzu.co.kr / Encargado de Protección de Datos: Jimin Lee' },
             { kind: 'p', text: 'Si necesitas ayuda con una infracción de privacidad, puedes contactar al Centro de Reporte de Infracciones de Privacidad de Corea (línea 118, sin código de área) o a la Comisión de Mediación de Disputas de Información Personal, entre otras autoridades pertinentes.' },
@@ -1063,7 +1063,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: '个人信息保护负责人及权益侵害救济',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / 代表人 Syvia Hong / 工商注册号 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / 代表人 Sylvia Hong / 工商注册号 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea' },
             { kind: 'p', text: '客服邮箱：help@fanuzu.co.kr / 个人信息保护负责人：Jimin Lee' },
             { kind: 'p', text: '如需个人信息侵害相关咨询，可联系个人信息侵害举报中心（无需区号118）、个人信息纠纷调解委员会等相关机构。' },
@@ -1271,7 +1271,7 @@ export const LEGAL: Record<Lang, LegalContent> = {
         {
           n: '8', title: '個人資訊保護負責人及權益侵害救濟',
           blocks: [
-            { kind: 'p', text: 'Fancake Inc. / 代表人 Syvia Hong / 工商註冊號 2748603844' },
+            { kind: 'p', text: 'Fancake Inc. / 代表人 Sylvia Hong / 工商註冊號 2748603844' },
             { kind: 'p', text: '117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea' },
             { kind: 'p', text: '客服郵箱：help@fanuzu.co.kr / 個人資訊保護負責人：Jimin Lee' },
             { kind: 'p', text: '如需個人資訊侵害相關諮詢，可聯絡個人資訊侵害檢舉中心（免區碼118）、個人資訊糾紛調解委員會等相關機構。' },

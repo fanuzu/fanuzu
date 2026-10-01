@@ -188,7 +188,7 @@ ko: {
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
-    company:'Fancake Inc. · 대표자 Syvia Hong · 사업자등록번호 2748603844',
+    company:'Fancake Inc. · 대표자 Sylvia Hong · 사업자등록번호 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'고객문의 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
   errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'INVITE CODE를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 INVITE CODE는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
@@ -319,7 +319,7 @@ en: {
     btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
     shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → {url}'},
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
-    company:'Fancake Inc. · CEO Syvia Hong · Business Reg. No. 2748603844',
+    company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'Contact help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
   errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that invite code.',selfReferralNotAllowed:'You can’t use your own invite code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
@@ -450,7 +450,7 @@ ja: {
     btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました',
     shareMessage:'Bring your fandom to FANUZU. 私のINVITE CODE {code}で一緒に → {url}'},
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
-    company:'Fancake Inc. · 代表 Syvia Hong · 事業者登録番号 2748603844',
+    company:'Fancake Inc. · 代表 Sylvia Hong · 事業者登録番号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'お問い合わせ help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. All rights reserved.'},
   errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'INVITE CODEが見つかりません。',selfReferralNotAllowed:'自分のINVITE CODEは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
@@ -582,7 +582,7 @@ es: {
     btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
     shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → {url}'},
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
-    company:'Fancake Inc. · CEO Syvia Hong · N.º de registro 2748603844',
+    company:'Fancake Inc. · CEO Sylvia Hong · N.º de registro 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'Contacto help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. Todos los derechos reservados.'},
   errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese invite code.',selfReferralNotAllowed:'No puedes usar tu propio invite code.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
@@ -713,7 +713,7 @@ zhHans: {
     btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
-    company:'Fancake Inc. · 代表人 Syvia Hong · 工商注册号 2748603844',
+    company:'Fancake Inc. · 代表人 Sylvia Hong · 工商注册号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'客服邮箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有权利。'},
   errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
@@ -844,7 +844,7 @@ zhHant: {
     btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
-    company:'Fancake Inc. · 代表人 Syvia Hong · 工商註冊號 2748603844',
+    company:'Fancake Inc. · 代表人 Sylvia Hong · 工商註冊號 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
     contact:'客服郵箱 help@fanuzu.co.kr',copyright:'© 2026 Fancake Inc. 保留所有權利。'},
   errors:{invalidEmail:'請輸入有效的電子郵件地址。',emailAlreadyRegistered:'此電子郵件已完成預先登記。',invalidReferral:'找不到這組 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'請勾選必選同意項目。',rateLimit:'操作過於頻繁，請稍後再試。',serverError:'發生錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
