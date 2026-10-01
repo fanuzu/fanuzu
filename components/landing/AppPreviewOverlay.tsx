@@ -192,7 +192,7 @@ export default function AppPreviewOverlay() {
           animation: fading ? undefined : 'previewCaptionIn .3s ease-out .12s both',
         }}
       >
-        ✨ {tr.hero.previewCaption}
+        ✨ {activeIndex < 2 ? tr.hero.previewCaption : tr.hero.previewCaptionGrowth}
       </div>
     </div>
   );

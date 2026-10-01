@@ -5,7 +5,7 @@ export interface TranslationSet {
   hero: {
     badge: string; t1: string; t2: string; t3: string; coreMessage: string; d1: string; d2: string; d3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; sub: string[];
-    statLabel: string; statNumber: string; statSub: string; liveViewersLabel: string; tapHint: string; previewCaption: string;
+    statLabel: string; statNumber: string; statSub: string; liveViewersLabel: string; tapHint: string; previewCaption: string; previewCaptionGrowth: string;
   };
   philosophy: { t1: string; t2: string; d1: string; d2: string; big: string; bigSub: string; card1T: string; card1D: string; card2T: string; card2D: string };
   pop: { t1: string; t2: string; d1: string; d2: string; highlight: string; flow: string[]; steps: { t: string; d: string }[] };
@@ -71,7 +71,7 @@ ko: {
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
     ctaPrimary:'내 bias 행성에 참여하기',ctaPrereg:'나의 bias 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     sub:['팬의 시간이 빛나는 구조','팬덤 공동 성장 중심','기여의 기록이 남는 경험','성장한 팬덤이 캠페인을 만드는 구조'],
-    statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
+    statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   philosophy:{t1:'좋아하는 마음,',t2:'행동이 되면 힘이 돼요.',
     d1:'팬심은 숫자 하나로 안 끝나요.',
     d2:'시간, 꾸준함, 기록이 힘이 돼요.',
@@ -202,7 +202,7 @@ en: {
     d3:'As fan contributions gather, the fandom planet grows — enabling even bigger CAMPAIGNS and actions for our artists.',
     ctaPrimary:'Join my artist’s planet',ctaPrereg:'Pre-register my fandom planet',ctaSecondary:'Why FANUZU',
     sub:['Fan actions become POP','POP grows our planet','Move together through QUESTS','Unite our power in CAMPAIGNS'],
-    statLabel:'Fan contributions today',statNumber:'12,480 POP',statSub:'POP is FANUZU’s contribution point for recording fan time and actions.',liveViewersLabel:'{n} people viewing now',tapHint:'Tap to preview',previewCaption:'Our actions grow the fandom planet and build our fandom’s power.'},
+    statLabel:'Fan contributions today',statNumber:'12,480 POP',statSub:'POP is FANUZU’s contribution point for recording fan time and actions.',liveViewersLabel:'{n} people viewing now',tapHint:'Tap to preview',previewCaption:'FANUZU is a planet that records every moment between us and our artist.',previewCaptionGrowth:'Our actions grow the fandom planet and build our fandom’s power.'},
   philosophy:{t1:'Love becomes power',t2:'the moment it turns into action.',
     d1:'A fan’s heart isn’t just a number.',
     d2:'Time, consistency, record. That’s the real power.',
@@ -333,7 +333,7 @@ ja: {
     d3:'ファンダムが成長すると、QUESTとCAMPAIGNを通じて、その力をアーティストのためのアクションへつなげられます。',
     ctaPrimary:'推しの惑星に参加する',ctaPrereg:'ファンダム惑星を事前登録',ctaSecondary:'FANUZUが選ばれる理由',
     sub:['ファンのアクションがPOPに','POPでファンダム惑星が成長','QUESTで一緒に動く','CAMPAIGNで力をひとつに'],
-    statLabel:'本日集まったファンの貢献',statNumber:'12,480 POP',statSub:'POPは、ファンの時間とアクションを記録するFANUZUの貢献ポイントです。',liveViewersLabel:'今 {n}人が見ています',tapHint:'タップしてプレビュー',previewCaption:'私たちの行動がファンダム惑星を成長させ、ファンダムの力を育てます'},
+    statLabel:'本日集まったファンの貢献',statNumber:'12,480 POP',statSub:'POPは、ファンの時間とアクションを記録するFANUZUの貢献ポイントです。',liveViewersLabel:'今 {n}人が見ています',tapHint:'タップしてプレビュー',previewCaption:'FANUZUは、アーティストと私たちのすべての瞬間を記録する惑星です',previewCaptionGrowth:'私たちの行動がファンダム惑星を成長させ、ファンダムの力を育てます'},
   philosophy:{t1:'「好き」は、',t2:'行動になると力になる。',
     d1:'ファンの気持ちは数字だけじゃ語れない。',
     d2:'時間、継続、記録。それが本当の力。',
@@ -464,7 +464,7 @@ es: {
     d3:'A medida que el fandom crece, QUEST y CAMPAIGN convierten esa fuerza en acciones reales para el artista.',
     ctaPrimary:'Unirme al planeta de mi artista',ctaPrereg:'Preinscribir mi planeta fandom',ctaSecondary:'Por qué FANUZU',
     sub:['Tus acciones se convierten en POP','POP hace crecer nuestro planeta','Nos movemos juntos con QUEST','Unimos fuerzas en CAMPAIGN'],
-    statLabel:'Contribuciones de hoy',statNumber:'12,480 POP',statSub:'POP es el punto de contribución de FANUZU que registra el tiempo y las acciones de los fans.',liveViewersLabel:'{n} personas viendo ahora',tapHint:'Toca para ver la vista previa',previewCaption:'Nuestras acciones hacen crecer el planeta del fandom y fortalecen nuestro poder como fandom.'},
+    statLabel:'Contribuciones de hoy',statNumber:'12,480 POP',statSub:'POP es el punto de contribución de FANUZU que registra el tiempo y las acciones de los fans.',liveViewersLabel:'{n} personas viendo ahora',tapHint:'Toca para ver la vista previa',previewCaption:'FANUZU es un planeta que registra cada momento entre nosotros y nuestro artista.',previewCaptionGrowth:'Nuestras acciones hacen crecer el planeta del fandom y fortalecen nuestro poder como fandom.'},
   philosophy:{t1:'El cariño se vuelve fuerza',t2:'en el momento en que se convierte en acción.',
     d1:'Lo que siente un fan no cabe en un número.',
     d2:'Tiempo, constancia, historia. Esa es la fuerza real.',
@@ -596,7 +596,7 @@ zhHans: {
     d3:'当粉丝星球不断成长，我们就能通过 QUEST 和 CAMPAIGN 一起行动，把力量传递给艺人。',
     ctaPrimary:'加入我喜欢的艺人星球',ctaPrereg:'预注册粉丝星球',ctaSecondary:'FANUZU 有什么不同',
     sub:['粉丝行动变成 POP','POP 推动星球成长','通过 QUEST 一起行动','用 CAMPAIGN 汇聚力量'],
-    statLabel:'今日粉丝贡献',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用来记录粉丝时间与行动的贡献积分。',liveViewersLabel:'现在有 {n} 人正在浏览',tapHint:'点击查看预览',previewCaption:'我们的行动能让粉丝星球成长，壮大粉丝的力量'},
+    statLabel:'今日粉丝贡献',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用来记录粉丝时间与行动的贡献积分。',liveViewersLabel:'现在有 {n} 人正在浏览',tapHint:'点击查看预览',previewCaption:'FANUZU 是记录我们与艺人所有瞬间的星球',previewCaptionGrowth:'我们的行动能让粉丝星球成长，壮大粉丝的力量'},
   philosophy:{t1:'喜欢，',t2:'化为行动才是力量。',
     d1:'粉丝的心意，不止一个数字。',
     d2:'时间、坚持、记录。这才是真正的力量。',
@@ -727,7 +727,7 @@ zhHant: {
     d3:'當粉絲星球持續成長，我們就能透過 QUEST 和 CAMPAIGN 一起行動，把力量傳遞給藝人。',
     ctaPrimary:'加入我喜歡的藝人星球',ctaPrereg:'預先登記粉絲星球',ctaSecondary:'FANUZU 有什麼不同',
     sub:['粉絲行動變成 POP','POP 推動星球成長','透過 QUEST 一起行動','用 CAMPAIGN 匯聚力量'],
-    statLabel:'今日粉絲貢獻',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用來記錄粉絲時間與行動的貢獻積分。',liveViewersLabel:'現在有 {n} 人正在瀏覽',tapHint:'點擊查看預覽',previewCaption:'我們的行動能讓粉絲星球成長，壯大粉絲的力量'},
+    statLabel:'今日粉絲貢獻',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用來記錄粉絲時間與行動的貢獻積分。',liveViewersLabel:'現在有 {n} 人正在瀏覽',tapHint:'點擊查看預覽',previewCaption:'FANUZU 是記錄我們與藝人所有瞬間的星球',previewCaptionGrowth:'我們的行動能讓粉絲星球成長，壯大粉絲的力量'},
   philosophy:{t1:'喜歡，',t2:'化為行動才是力量。',
     d1:'粉絲的心意，不只是一個數字。',
     d2:'時間、堅持、記錄。這才是真正的力量。',
