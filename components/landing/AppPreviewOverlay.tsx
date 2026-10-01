@@ -6,6 +6,8 @@ import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
 
 const PREVIEW_IMAGES = [
+  { src: '/images/app-preview-campaign.png' },
+  { src: '/images/app-preview-inside.png' },
   { src: '/images/app-preview-nebula.png' },
   { src: '/images/app-preview-planet.png' },
 ];
