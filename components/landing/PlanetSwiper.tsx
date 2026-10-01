@@ -283,29 +283,35 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
           <div
             style={{
               position: 'absolute',
-              top: '4%',
-              right: '2%',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '7px 13px',
-              borderRadius: 999,
-              background: 'rgba(10,6,19,.78)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,125,221,.4)',
-              boxShadow: '0 8px 24px rgba(0,0,0,.4), 0 0 18px rgba(255,125,221,.25)',
-              color: '#FFFAFC',
-              fontSize: 12,
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%,-50%)',
               pointerEvents: 'none',
-              animation: 'tapHintPulse 1.8s ease-in-out infinite',
               zIndex: 4,
             }}
           >
-            <span style={{ fontSize: 15, display: 'inline-block', animation: 'tapHintFinger 1.8s ease-in-out infinite' }}>👆</span>
-            {tr.hero.tapHint}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '7px 13px',
+                borderRadius: 999,
+                background: 'rgba(10,6,19,.78)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,125,221,.4)',
+                boxShadow: '0 8px 24px rgba(0,0,0,.4), 0 0 18px rgba(255,125,221,.25)',
+                color: '#FFFAFC',
+                fontSize: 12,
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                animation: 'tapHintPulse 1.8s ease-in-out infinite',
+              }}
+            >
+              <span style={{ fontSize: 15, display: 'inline-block', animation: 'tapHintFinger 1.8s ease-in-out infinite' }}>👆</span>
+              {tr.hero.tapHint}
+            </div>
           </div>
         )}
         {children}
