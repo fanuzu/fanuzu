@@ -89,26 +89,6 @@ export default function AppPreviewOverlay() {
         ×
       </button>
 
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          padding: '6px 16px',
-          borderRadius: 999,
-          background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
-          color: '#05030B',
-          fontSize: 12,
-          fontWeight: 800,
-          letterSpacing: '.03em',
-          transform: 'rotate(-3deg)',
-          boxShadow: '0 8px 22px rgba(0,0,0,.4), 0 0 20px rgba(255,125,221,.35)',
-          animation: fading ? undefined : 'previewCaptionIn .28s ease-out both',
-        }}
-      >
-        👀 REAL APP SCREENS
-      </div>
-
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(-28px,-4vw,-10px)' }}>
         {PREVIEW_IMAGES.map((p, i) => (
           <div
