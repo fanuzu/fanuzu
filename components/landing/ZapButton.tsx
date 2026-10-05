@@ -71,7 +71,7 @@ export default function ZapButton() {
         animation: 'zapPulse 2.4s ease-in-out infinite',
       }}
     >
-      <span style={{ fontSize: 20, lineHeight: 1 }}>🤲</span>
+      <span style={{ fontSize: 20, lineHeight: 1 }}>👆</span>
       <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em' }}>GIVE</span>
     </button>
   );
