@@ -145,7 +145,7 @@ ko: {
     benefits:[
       {title:'시작의 기록',items:['PASSPORT에 뱃지 기록','참여 순번 표시','고유 번호 부여']},
       {title:'시각적 차별화',items:['전용 패스포트 테두리','별빛 홀로그램','닉네임 옆 특별 배지']},
-      {title:'명예 참여권',items:['초기 테마 투표','첫 캠페인 제안권','행성 역사관 첫 메시지']}
+      {title:'명예 참여권',items:['초기 테마 투표','첫 캠페인 제안권','행성 역사관 첫 메시지','투명하고 공정한 투표권']}
     ],
     note:'뱃지는 결제·추천 수와 상관없어요. 사전등록만 하면 돼요.',
     ctaLabel:'PRE-REG BADGE 받기',ctaSub:'사전등록만 하면 패스포트에 그대로 기록돼요.'},
@@ -276,7 +276,7 @@ en: {
     benefits:[
       {title:'Founding record',items:['Badge recorded in PASSPORT','Your join order shown','A unique number, just yours']},
       {title:'Visual recognition',items:['A dedicated passport border','A moving starlight hologram','A badge next to your nickname']},
-      {title:'Early access',items:['Vote on the planet’s theme','Propose the first campaign','Leave the first message in planet history']}
+      {title:'Early access',items:['Vote on the planet’s theme','Propose the first campaign','Leave the first message in planet history','Fair, transparent governance voting']}
     ],
     note:'No spending, no referral count — just pre-register.',
     ctaLabel:'Get the PRE-REG BADGE',ctaSub:'Just pre-register. It’s yours, recorded in PASSPORT.'},
@@ -407,7 +407,7 @@ ja: {
     benefits:[
       {title:'はじまりの記録',items:['PASSPORTにバッジを記録','参加順番を表示','あなただけの番号']},
       {title:'特別なビジュアル',items:['専用パスポートの縁取り','星光のホログラム','ニックネーム横の特別バッジ']},
-      {title:'初期参加特典',items:['初期テーマ投票','最初のキャンペーン提案権','惑星史料館への最初のメッセージ']}
+      {title:'初期参加特典',items:['初期テーマ投票','最初のキャンペーン提案権','惑星史料館への最初のメッセージ','公正で透明なガバナンス投票権']}
     ],
     note:'課金でも紹介人数でもない。事前登録するだけでいい。',
     ctaLabel:'PRE-REG BADGEを受け取る',ctaSub:'事前登録するだけ。そのままPASSPORTに残る。'},
@@ -539,7 +539,7 @@ es: {
     benefits:[
       {title:'Registro fundador',items:['Insignia registrada en PASSPORT','Tu orden de ingreso visible','Un número único para ti']},
       {title:'Distinción visual',items:['Un borde de pasaporte exclusivo','Un holograma de luz estelar','Una insignia junto a tu apodo']},
-      {title:'Acceso anticipado',items:['Vota el tema del planeta','Propón la primera campaña','Deja el primer mensaje en la historia del planeta']}
+      {title:'Acceso anticipado',items:['Vota el tema del planeta','Propón la primera campaña','Deja el primer mensaje en la historia del planeta','Voto en una gobernanza justa y transparente']}
     ],
     note:'No depende del gasto ni de referidos — solo preinscríbete.',
     ctaLabel:'Consigue la PRE-REG BADGE',ctaSub:'Solo preinscríbete. Queda registrada en tu PASSPORT.'},
@@ -670,7 +670,7 @@ zhHans: {
     benefits:[
       {title:'初始记录',items:['徽章记录在PASSPORT','显示参与顺序','专属编号']},
       {title:'专属视觉',items:['专属护照边框','星光全息效果','昵称旁的专属徽章']},
-      {title:'早期特权',items:['参与主题投票','首个活动提案权','星球历史馆首条留言']}
+      {title:'早期特权',items:['参与主题投票','首个活动提案权','星球历史馆首条留言','公正透明的治理投票权']}
     ],
     note:'不看消费、不看邀请数——预注册就有。',
     ctaLabel:'领取PRE-REG BADGE',ctaSub:'只要预注册，直接记录进PASSPORT。'},
@@ -801,7 +801,7 @@ zhHant: {
     benefits:[
       {title:'初始記錄',items:['徽章記錄在PASSPORT','顯示參與順序','專屬編號']},
       {title:'專屬視覺',items:['專屬護照邊框','星光全息效果','暱稱旁的專屬徽章']},
-      {title:'早期特權',items:['參與主題投票','首個活動提案權','星球歷史館首則留言']}
+      {title:'早期特權',items:['參與主題投票','首個活動提案權','星球歷史館首則留言','公正透明的治理投票權']}
     ],
     note:'不看消費、不看邀請數——預先登記就有。',
     ctaLabel:'領取PRE-REG BADGE',ctaSub:'只要預先登記，直接記錄進PASSPORT。'},
