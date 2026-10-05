@@ -64,7 +64,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 를',t2:'우주에서',t3:'가장 밝게 빛나게.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
     coreMessage:'우리의 행동이 K-POP 아티스트의 힘이 돼요.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
@@ -195,7 +195,7 @@ ko: {
 },
 en: {
   nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the universe.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
     coreMessage:'Our actions give power to K-POP artists.',
     d1:'Walk, stream, view, take part. Every fan action becomes POP, which helps our fandom planet grow.',
     d2:'FANUZU is a K-POP fandom platform that turns scattered fan actions into collective power.',
@@ -326,7 +326,7 @@ en: {
 },
 ja: {
   nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'この宇宙で',t3:'いちばん輝く星に。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
     coreMessage:'私たちのアクションが、K-POPアーティストの力になる。',
     d1:'ストリーミング、投票、応援、参加。ファンのアクションはPOPとして記録され、私たちのファンダム惑星を育てます。',
     d2:'ひとりひとりのファン活動を、ファンダムの大きな力につなげるK-POPファンダムプラットフォーム。',
@@ -457,7 +457,7 @@ ja: {
 },
 es: {
   nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
     coreMessage:'Nuestras acciones dan fuerza a los artistas de K-POP.',
     d1:'Streaming, votaciones, apoyo y participación. Cada acción se convierte en POP y hace crecer el planeta de nuestro fandom.',
     d2:'Una plataforma de fandom K-POP que convierte acciones dispersas en fuerza colectiva.',
@@ -589,7 +589,7 @@ es: {
 },
 zhHans: {
   nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片宇宙中',t3:'闪耀得最亮。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
     coreMessage:'我们的行动，汇聚成 K-POP 艺人的力量。',
     d1:'打榜、投票、应援、参与。每一次粉丝行动都会记录为 POP，并推动我们的粉丝星球成长。',
     d2:'把分散的粉丝行动汇聚成共同力量的 K-POP 粉丝平台。',
@@ -720,7 +720,7 @@ zhHans: {
 },
 zhHant: {
   nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片宇宙中',t3:'閃耀得最亮。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
     coreMessage:'我們的行動，匯聚成 K-POP 藝人的力量。',
     d1:'串流、投票、應援、參與。每一次粉絲行動都會記錄為 POP，讓我們的粉絲星球持續成長。',
     d2:'把分散的粉絲行動匯聚成共同力量的 K-POP 粉絲平台。',
