@@ -48,7 +48,7 @@ export default function ZapButton() {
     <button
       ref={btnRef}
       onClick={handleZap}
-      aria-label="ZAP"
+      aria-label="GIVE"
       style={{
         position: 'fixed',
         left: '50%',
@@ -72,7 +72,7 @@ export default function ZapButton() {
       }}
     >
       <span style={{ fontSize: 20, lineHeight: 1 }}>⚡</span>
-      <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em' }}>ZAP</span>
+      <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em' }}>GIVE</span>
     </button>
   );
 }
