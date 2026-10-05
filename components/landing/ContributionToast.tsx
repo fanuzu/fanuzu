@@ -5,7 +5,7 @@ import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
 
 const VISIBLE_MS = 2600;
-const PLANET_IDS = ['hero-planet-visual', 'experience-planet-visual'];
+const PLANET_IDS = ['hero-planet-visual'];
 // Anchored near the TOP of whichever planet is on screen — reads like a
 // reaction bubble popping up off the planet, rather than a generic toast
 // stuck to the edge of the viewport.
