@@ -70,7 +70,7 @@ ko: {
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
     ctaPrimary:'내 bias 행성에 참여하기',ctaPrereg:'나의 bias 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
-    subIntro:['너의 bias를 향한 노력이, 잊혀지지 않도록.','돈이 팬심의 전부가 되지 않도록.'],
+    subIntro:['너의 bias를 향한 노력이, 잊혀지지 않도록.','결제가 팬심의 전부가 되지 않도록.'],
     sub:['팬의 행동이 POP이 돼요','POP이 우리 행성을 키워요','QUEST로 함께 움직여요','CAMPAIGN으로 힘을 모아요'],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionInside:'K-pop, K-culture, Beauty, Trip, 무엇이든지 물어볼 수 있어요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   philosophy:{t1:'좋아하는 마음,',t2:'행동이 되면 힘이 돼요.',
