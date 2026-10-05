@@ -13,7 +13,7 @@ export default function Experience() {
     score === 0 ? tr.exp.stage0 : score < STAGE1 ? tr.exp.stage1 : score < STAGE2 ? tr.exp.stage2 : tr.exp.stage3;
 
   return (
-    <section id="experience" style={{ position: 'relative', zIndex: 1, padding: '100px 24px' }}>
+    <section id="experience" style={{ position: 'relative', zIndex: 1, padding: '72px 24px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 640, margin: '0 auto 56px', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
@@ -24,7 +24,6 @@ export default function Experience() {
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 4px' }}>{tr.exp.d1}</p>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.exp.d2}</p>
         </div>
-
         <div style={{ display: 'flex', flexWrap: 'wrap-reverse', gap: 44, alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ flex: '1 1 340px', minWidth: 280, maxWidth: 420 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 26 }}>
@@ -69,6 +68,7 @@ export default function Experience() {
                 />
               </div>
             </div>
+            <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#7CE8FF', fontWeight: 600, marginTop: 14, marginBottom: 0 }}>{tr.exp.highlight}</p>
           </div>
 
           <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>

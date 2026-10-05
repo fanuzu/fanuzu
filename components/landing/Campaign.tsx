@@ -9,10 +9,9 @@ export default function Campaign() {
     { label: tr.campaign.s2l, title: tr.campaign.s2t, desc: tr.campaign.s2d, hasArrow: true },
     { label: tr.campaign.s3l, title: tr.campaign.s3t, desc: tr.campaign.s3d, hasArrow: false },
   ];
-  const flow = tr.campaign.flow;
 
   return (
-    <section id="campaign" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '100px 24px' }}>
+    <section id="campaign" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '72px 24px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 680, margin: '0 auto 20px', textAlign: 'center' }}>
           <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>{tr.campaign.tagline}</div>
@@ -21,10 +20,8 @@ export default function Campaign() {
             <br />
             {tr.campaign.t2}
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.bridge}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.d1}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.d2}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.campaign.d3}</p>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.campaign.lead}</p>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.campaign.d2}</p>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: 16, justifyContent: 'center', margin: '56px 0 36px' }}>
@@ -50,24 +47,19 @@ export default function Campaign() {
           ))}
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 36 }}>
-          {flow.map((label, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div
-                style={{
-                  background: 'rgba(255,125,221,.1)',
-                  border: '1px solid rgba(255,125,221,.3)',
-                  borderRadius: 999,
-                  padding: '9px 18px',
-                  fontSize: 13,
-                  color: '#FFFAFC',
-                }}
-              >
-                {label}
+        <div style={{ maxWidth: 820, margin: '0 auto 36px', textAlign: 'center' }}>
+          <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>
+            {tr.campaign.examplesLabel}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px', justifyContent: 'center', marginBottom: 14 }}>
+            {tr.campaign.examples.map((ex, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, color: '#B8AFC4' }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF' }} />
+                {ex}
               </div>
-              {i < flow.length - 1 && <span style={{ color: '#B8AFC4' }}>→</span>}
-            </div>
-          ))}
+            ))}
+          </div>
+          <p style={{ textAlign: 'center', fontSize: 12.5, lineHeight: 1.6, color: '#6B6478', margin: 0 }}>{tr.campaign.popNote}</p>
         </div>
 
         <p style={{ textAlign: 'center', fontSize: 'clamp(17px,2.2vw,21px)', fontWeight: 600, lineHeight: 1.5, color: '#FFFAFC', maxWidth: 640, margin: '0 auto 14px' }}>

@@ -8,7 +8,7 @@ export default function Origin() {
   const { openModal } = usePreregModal();
 
   return (
-    <section id="origin" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '100px 24px' }}>
+    <section id="origin" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '72px 24px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 640, margin: '0 auto 20px', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>

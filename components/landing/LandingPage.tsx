@@ -10,12 +10,7 @@ import MeteorShower from './MeteorShower';
 import ParticleLayer from './ParticleLayer';
 import Nav from './Nav';
 import Hero from './Hero';
-import Why from './Why';
-import PopIntro from './PopIntro';
 import Experience from './Experience';
-import GrowthSystem from './GrowthSystem';
-import FandomAction from './FandomAction';
-import Quest from './Quest';
 import Campaign from './Campaign';
 import Passport from './Passport';
 import Origin from './Origin';
@@ -42,12 +37,7 @@ export default function LandingPage() {
               <ParticleLayer />
               <Nav />
               <Hero />
-              <Why />
-              <PopIntro />
               <Experience />
-              <GrowthSystem />
-              <FandomAction />
-              <Quest />
               <Campaign />
               <Passport />
               <Origin />

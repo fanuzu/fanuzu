@@ -7,7 +7,7 @@ export default function Passport() {
   const { tr } = useLang();
 
   return (
-    <section id="passport" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '100px 24px' }}>
+    <section id="passport" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '72px 24px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 52, alignItems: 'center' }}>
         <div style={{ flex: '1 1 420px', minWidth: 280 }}>
           <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>
@@ -16,8 +16,7 @@ export default function Passport() {
             {tr.passport.t2}
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.passport.d1}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.passport.d2}</p>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.passport.d3}</p>
+          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.passport.d2}</p>
         </div>
         <div style={{ flex: '1 1 380px', minWidth: 300, display: 'flex', justifyContent: 'center' }}>
           <div
