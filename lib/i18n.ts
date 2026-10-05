@@ -157,7 +157,7 @@ ko: {
     d2:'사전등록하면 PRE-REG BADGE 지급.',
     statusBadge:'사전신청',statusNote:'오픈 일정은 미정. 지금 신청하면 자리 확보.',
     benefitsLabel:'사전신청 혜택',
-    benefits:['지금 50 POP, INVITE CODE면 100 POP','오늘 날짜로 참여 순번 확보','PRE-REG BADGE 지급'],
+    benefits:['지금 50 POP, INVITE CODE면 100 POP','1티어 팬덤행성 시민권 선착순 발급','PRE-REG BADGE 지급'],
     selectTitle:'어느 우주에서 오셨나요?',selectSub:'함께 만들어갈 bias 행성을 선택해주세요.',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
     founderCountLabel:'현재 개척자 {n}명',foundingCta:'나의 별에 참여하기',selectBack:'다른 bias 선택',selectChange:'변경',
     steps:[
@@ -288,7 +288,7 @@ en: {
     d2:'Pre-register, get the PRE-REG BADGE.',
     statusBadge:'PRE-REGISTRATION',statusNote:'No launch date yet. Register now, save your spot.',
     benefitsLabel:'What pre-registering gets you',
-    benefits:['50 POP now — 100 POP with an invite code','Your join order, locked in today','A PRE-REG BADGE, guaranteed'],
+    benefits:['50 POP now — 100 POP with an invite code','Tier-1 Fandom Planet citizenship, first come first served','A PRE-REG BADGE, guaranteed'],
     selectTitle:'Which universe are you from?',selectSub:'Pick the artist planet you want to help build.',selectOther:'From another universe?',selectConfirm:'Confirm',
     founderCountLabel:'{n} founding fans so far',foundingCta:'Join my star',selectBack:'Choose a different artist',selectChange:'Change',
     steps:[
@@ -419,7 +419,7 @@ ja: {
     d2:'事前登録でPRE-REG BADGE。',
     statusBadge:'事前登録',statusNote:'開始日は未定。今登録して席を確保。',
     benefitsLabel:'事前登録の特典',
-    benefits:['今すぐ50 POP、INVITE CODEで100 POP','今日の日付で参加順番を確保','PRE-REG BADGEを贈呈'],
+    benefits:['今すぐ50 POP、INVITE CODEで100 POP','先着順で1ティア・ファンダム惑星市民権を発給','PRE-REG BADGEを贈呈'],
     selectTitle:'どの宇宙から来ましたか？',selectSub:'一緒に育てたいアーティストの惑星を選んでください。',selectOther:'別の宇宙から来ましたか？',selectConfirm:'確認',
     founderCountLabel:'現在の開拓者 {n}人',foundingCta:'私の星に参加する',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
     steps:[
@@ -551,7 +551,7 @@ es: {
     d2:'Preinscríbete, recibe la PRE-REG BADGE.',
     statusBadge:'PREINSCRIPCIÓN',statusNote:'Sin fecha de lanzamiento aún. Regístrate y asegura tu lugar.',
     benefitsLabel:'Beneficios de preinscribirte',
-    benefits:['50 POP ahora — 100 POP con código de invitación','Tu turno de ingreso, asegurado hoy','Una PRE-REG BADGE garantizada'],
+    benefits:['50 POP ahora — 100 POP con código de invitación','Ciudadanía Nivel 1 del Planeta Fandom, por orden de llegada','Una PRE-REG BADGE garantizada'],
     selectTitle:'¿De qué universo vienes?',selectSub:'Elige el planeta del artista que quieres ayudar a construir.',selectOther:'¿Vienes de otro universo?',selectConfirm:'Confirmar',
     founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme a mi estrella',selectBack:'Elegir otro artista',selectChange:'Cambiar',
     steps:[
@@ -682,7 +682,7 @@ zhHans: {
     d2:'预注册即得PRE-REG BADGE。',
     statusBadge:'预注册',statusNote:'上线日期未定，现在登记先占位。',
     benefitsLabel:'预注册福利',
-    benefits:['立即50 POP，用INVITE CODE得100 POP','今天锁定你的加入顺位','获得PRE-REG BADGE'],
+    benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，获得1级粉丝星球公民权','获得PRE-REG BADGE'],
     selectTitle:'你来自哪个宇宙？',selectSub:'选择你想一起打造的艺人星球。',selectOther:'来自其他宇宙？',selectConfirm:'确认',
     founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入我的星',selectBack:'选择其他艺人',selectChange:'更改',
     steps:[
@@ -813,7 +813,7 @@ zhHant: {
     d2:'預先登記即得PRE-REG BADGE。',
     statusBadge:'預先登記',statusNote:'上線日期未定，現在登記先佔位。',
     benefitsLabel:'預先登記福利',
-    benefits:['立即50 POP，用INVITE CODE得100 POP','今天鎖定你的加入順位','獲得PRE-REG BADGE'],
+    benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，獲得1級粉絲星球公民權','獲得PRE-REG BADGE'],
     selectTitle:'你來自哪個宇宙？',selectSub:'選擇你想一起打造的藝人星球。',selectOther:'來自其他宇宙？',selectConfirm:'確認',
     founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入我的星',selectBack:'選擇其他藝人',selectChange:'更改',
     steps:[
