@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useLang } from '@/components/providers/LangProvider';
 import { STAGE1, STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 
@@ -19,6 +20,28 @@ export default function Experience() {
   return (
     <section id="experience" style={{ position: 'relative', zIndex: 1, padding: '72px 24px' }}>
       <div style={{ maxWidth: 640, margin: '0 auto' }}>
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '16/9',
+            borderRadius: 20,
+            overflow: 'hidden',
+            border: '1px solid rgba(255,125,221,.22)',
+            boxShadow: '0 20px 50px rgba(0,0,0,.4)',
+            marginBottom: 40,
+          }}
+        >
+          <Image src="/images/experience-awards.jpg" alt="" fill sizes="640px" style={{ objectFit: 'cover' }} />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg,transparent 40%,rgba(5,3,11,.85) 100%)',
+              pointerEvents: 'none',
+            }}
+          />
+        </div>
         <div style={{ maxWidth: 640, margin: '0 auto 40px', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
             {tr.exp.t1}
