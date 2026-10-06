@@ -81,6 +81,36 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralNote: '分享你的推薦碼，使用者和你都將獲得100 POP。',
     closingLine: 'FANUZU正式上線的那一刻，我們會第一時間通知你。',
   },
+  id: {
+    subject: '[FANUZU] Pra-pendaftaranmu selesai',
+    eyebrow: 'FANUZU adalah action fandom tempat aksimu menjadi kontribusi untuk sang artis.',
+    title: 'Pra-pendaftaranmu selesai.',
+    intro: (a) => `Pra-pendaftaranmu untuk planet fandom ${a} telah kami terima.`,
+    rewardLine: (n) => `Kontribusi pertama yang disiapkan: ${n} POP (diberikan setelah kamu menyelesaikan pendaftaran peluncuran resmi FANUZU)`,
+    referralLabel: 'Kode undanganmu',
+    referralNote: 'Bagikan kodemu — siapa pun yang memakainya, dan kamu, sama-sama dapat 100 POP.',
+    closingLine: 'Kami akan jadi yang pertama memberitahumu begitu FANUZU resmi diluncurkan.',
+  },
+  fil: {
+    subject: '[FANUZU] Kumpleto na ang pre-registration mo',
+    eyebrow: 'Ang FANUZU ay ang action fandom kung saan ang mga kilos mo ay nagiging kontribusyon para sa artist.',
+    title: 'Kumpleto na ang pre-registration mo.',
+    intro: (a) => `Natanggap na ang pre-registration mo para sa planeta ng fandom ng ${a}.`,
+    rewardLine: (n) => `Nakalaang unang kontribusyon: ${n} POP (ibibigay pagkatapos mong kumpletuhin ang opisyal na launch sign-up ng FANUZU)`,
+    referralLabel: 'Invite code mo',
+    referralNote: 'Ibahagi ang code mo — ang sinumang gumamit nito, at ikaw, ay parehong makakakuha ng 100 POP.',
+    closingLine: 'Kami ang unang magsasabi sa iyo sa sandaling ilunsad ang FANUZU.',
+  },
+  th: {
+    subject: '[FANUZU] การลงทะเบียนล่วงหน้าของคุณเสร็จสมบูรณ์',
+    eyebrow: 'FANUZU คือ action fandom ที่การกระทำของคุณกลายเป็นการสนับสนุนศิลปิน',
+    title: 'การลงทะเบียนล่วงหน้าของคุณเสร็จสมบูรณ์แล้ว',
+    intro: (a) => `เราได้รับการลงทะเบียนล่วงหน้าของคุณสำหรับดาวเคราะห์แฟนด้อมของ ${a} แล้ว`,
+    rewardLine: (n) => `การสนับสนุนแรกที่จองไว้: ${n} POP (มอบให้หลังจากคุณลงทะเบียนเปิดตัวอย่างเป็นทางการของ FANUZU เสร็จสมบูรณ์)`,
+    referralLabel: 'รหัสเชิญของคุณ',
+    referralNote: 'แชร์รหัสของคุณ — ใครก็ตามที่ใช้มัน รวมถึงคุณ จะได้รับ 100 POP ทั้งคู่',
+    closingLine: 'เราจะเป็นคนแรกที่แจ้งให้คุณทราบทันทีที่ FANUZU เปิดตัว',
+  },
 };
 
 function escapeHtml(value: string): string {

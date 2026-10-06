@@ -10,6 +10,9 @@ export const HTML_LANG: Record<Lang, string> = {
   es: 'es',
   zhHans: 'zh-CN',
   zhHant: 'zh-TW',
+  id: 'id',
+  fil: 'fil',
+  th: 'th',
 };
 
 // Doc section 20: hreflang alternates use zh-Hans/zh-Hant rather than
@@ -21,4 +24,7 @@ export const HREFLANG_TAG: Record<Lang, string> = {
   es: 'es',
   zhHans: 'zh-Hans',
   zhHant: 'zh-Hant',
+  id: 'id',
+  fil: 'fil',
+  th: 'th',
 };

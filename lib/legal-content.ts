@@ -37,7 +37,7 @@ const EFFECTIVE_ES = 'Vigencia: 1 de septiembre de 2026 · Versión 1.1';
 const EFFECTIVE_ZH_HANS = '生效日期：2026年9月1日 · 版本1.1';
 const EFFECTIVE_ZH_HANT = '生效日期：2026年9月1日 · 版本1.1';
 
-export const LEGAL: Record<Lang, LegalContent> = {
+export const LEGAL_BASE: Record<'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant', LegalContent> = {
   ko: {
     terms: {
       eyebrow: 'TERMS OF SERVICE',
@@ -1286,4 +1286,15 @@ export const LEGAL: Record<Lang, LegalContent> = {
       backLink: '← 返回 FANUZU',
     },
   },
+};
+
+// Terms/Privacy aren't yet translated for these locales — show English
+// rather than fabricate legal text via machine translation. Swap these
+// for real translations once available (see id/fil/th in lib/i18n.ts,
+// which ARE fully translated — only this legal content is pending).
+export const LEGAL: Record<Lang, LegalContent> = {
+  ...LEGAL_BASE,
+  id: LEGAL_BASE.en,
+  fil: LEGAL_BASE.en,
+  th: LEGAL_BASE.en,
 };
