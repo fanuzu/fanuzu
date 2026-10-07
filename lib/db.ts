@@ -176,6 +176,13 @@ const SCHEMA_SQL = `
   ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS landing_path TEXT;
   CREATE INDEX IF NOT EXISTS idx_prereg_utm_source ON preregistrations (utm_source);
 
+  -- Country, read from Vercel's edge geo header (ISO 3166-1 alpha-2, e.g.
+  -- "KR") at submission time — never asked of the fan directly, so it adds
+  -- zero friction to the form. Null off-Vercel or whenever Vercel can't
+  -- geolocate the request.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS country TEXT;
+  CREATE INDEX IF NOT EXISTS idx_prereg_country ON preregistrations (country);
+
   -- Every landing hit that carries a referral code and/or UTM params, logged
   -- before we know whether it converts — this is what makes click-through
   -- and conversion-rate-per-referrer measurable, not just raw signup counts.

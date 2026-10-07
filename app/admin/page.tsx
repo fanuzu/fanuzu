@@ -37,6 +37,11 @@ interface ReferralRow {
   conversions: number;
 }
 
+interface CountryRow {
+  country: string;
+  count: number;
+}
+
 interface ReferralProgramSummary {
   total: number;
   referred: number;
@@ -243,6 +248,7 @@ export default function AdminPage() {
   const [artists, setArtists] = useState<Artist[] | null>(null);
   const [utm, setUtm] = useState<UtmRow[] | null>(null);
   const [referrals, setReferrals] = useState<ReferralRow[] | null>(null);
+  const [countries, setCountries] = useState<CountryRow[] | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -283,6 +289,7 @@ export default function AdminPage() {
         setArtists(null);
         setUtm(null);
         setReferrals(null);
+        setCountries(null);
         return;
       }
       if (statsRes.status === 503 || artistsRes.status === 503 || analyticsRes.status === 503) {
@@ -301,6 +308,7 @@ export default function AdminPage() {
       setArtists(artistsData.artists);
       setUtm(analyticsData.utm);
       setReferrals(analyticsData.referrals);
+      setCountries(analyticsData.countries);
       sessionStorage.setItem(STORAGE_KEY, pw);
       setPassword(pw);
       loadReferralProgram(pw, {});
@@ -559,6 +567,32 @@ export default function AdminPage() {
                   </tbody>
                 </table>
                 {referrals!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No referral activity yet.</p>}
+              </div>
+
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '28px 0 10px' }}>Pre-registrations by country</h3>
+              <p style={{ fontSize: 11.5, color: '#6B6478', margin: '0 0 10px' }}>
+                Geolocated from the request at sign-up (Vercel edge header) — never asked of the fan. "(unknown)" means the
+                country couldn't be detected (local dev, non-Vercel traffic).
+              </p>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Country</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Pre-registrations</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {countries?.map((row) => (
+                      <tr key={row.country} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 700, fontFamily: 'monospace' }}>{row.country}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>{row.count.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {countries?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No pre-registrations yet.</p>}
+                {countries === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
               </div>
             </div>
 

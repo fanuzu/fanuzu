@@ -17,6 +17,7 @@ const COLUMNS: (keyof FandomExportRow)[] = [
   'fandomName',
   'fanSinceYear',
   'language',
+  'country',
   'referralCodeInput',
   'rewardAmount',
   'artistJoinOrder',

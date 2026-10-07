@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { submitPreregistration, type PreregRequestBody } from '@/lib/prereg';
-import { clientIp } from '@/lib/request-ip';
+import { clientIp, clientCountry } from '@/lib/request-ip';
 
 export const runtime = 'nodejs';
 
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await submitPreregistration(body, clientIp(request));
+    const result = await submitPreregistration(body, clientIp(request), clientCountry(request));
     return NextResponse.json(result, { status: result.success ? 200 : 400 });
   } catch (err) {
     console.error('prereg submission failed:', err);

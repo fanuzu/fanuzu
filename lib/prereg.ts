@@ -146,7 +146,8 @@ function parseDate(value: unknown): Date | null {
  */
 export async function submitPreregistration(
   body: PreregRequestBody,
-  ip: string
+  ip: string,
+  country: string | null = null
 ): Promise<PreregSuccess | PreregFailure> {
   await ensureSchema();
   const pool = getPool();
@@ -243,8 +244,8 @@ export async function submitPreregistration(
          terms_version, privacy_version, terms_accepted_at, privacy_accepted_at,
          marketing_consent, marketing_consent_at,
          artist_join_order, origin_100_eligible, origin_100_number, referral_code,
-         utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29)
+         utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path, country
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30)
        RETURNING id`,
       [
         email,
@@ -276,6 +277,7 @@ export async function submitPreregistration(
         utmTerm || null,
         utmContent || null,
         landingPath || null,
+        country,
       ]
     );
     preregistrationId = insertResult.rows[0].id;
