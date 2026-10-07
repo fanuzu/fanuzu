@@ -32,6 +32,7 @@ export interface TranslationSet {
     statusBadge: string; statusNote: string; benefitsLabel: string; benefits: string[];
     selectTitle: string; selectSub: string; selectOther: string; selectConfirm: string;
     founderCountLabel: string; foundingCta: string; selectBack: string; selectChange: string;
+    rankingTitle: string;
     steps: { t: string; d: string }[];
     artistLabel: string; artistPlaceholder: string; fandomLabel: string; fandomPlaceholder: string;
     emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
@@ -123,6 +124,7 @@ ko: {
     benefits:['지금 50 POP, INVITE CODE면 100 POP','1티어 팬덤행성 시민권 선착순 발급','PRE-REG BADGE 지급'],
     selectTitle:'어느 우주에서 오셨나요?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
     founderCountLabel:'현재 개척자 {n}명',foundingCta:'나의 별에 참여하기',selectBack:'다른 bias 선택',selectChange:'변경',
+    rankingTitle:'사전등록 TOP 3',
     steps:[
       {t:'내 bias 등록',d:'없으면 생성 신청, 있으면 바로 참여.'},
       {t:'추천 코드로 연결',d:'코드 공유하고 팬 초대.'},
@@ -221,6 +223,7 @@ en: {
     benefits:['50 POP now — 100 POP with an invite code','Tier-1 Fandom Planet citizenship, first come first served','A PRE-REG BADGE, guaranteed'],
     selectTitle:'Which universe are you from?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'From another universe?',selectConfirm:'Confirm',
     founderCountLabel:'{n} founding fans so far',foundingCta:'Join my star',selectBack:'Choose a different artist',selectChange:'Change',
+    rankingTitle:'Pre-registration TOP 3',
     steps:[
       {t:'Join my artist',d:'Request it, or join if it exists.'},
       {t:'Invite fans',d:'Share your code, bring fans in.'},
@@ -319,6 +322,7 @@ ja: {
     benefits:['今すぐ50 POP、INVITE CODEで100 POP','先着順で1ティア・ファンダム惑星市民権を発給','PRE-REG BADGEを贈呈'],
     selectTitle:'どの宇宙から来ましたか？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'別の宇宙から来ましたか？',selectConfirm:'確認',
     founderCountLabel:'現在の開拓者 {n}人',foundingCta:'私の星に参加する',selectBack:'別のアーティストを選ぶ',selectChange:'変更',
+    rankingTitle:'事前登録 TOP 3',
     steps:[
       {t:'推しを登録',d:'なければ申請、あれば即参加。'},
       {t:'ファンを招待',d:'コードをシェアして仲間を招待。'},
@@ -417,6 +421,7 @@ es: {
     benefits:['50 POP ahora — 100 POP con código de invitación','Ciudadanía Nivel 1 del Planeta Fandom, por orden de llegada','Una PRE-REG BADGE garantizada'],
     selectTitle:'¿De qué universo vienes?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'¿Vienes de otro universo?',selectConfirm:'Confirmar',
     founderCountLabel:'{n} fans fundadores hasta ahora',foundingCta:'Unirme a mi estrella',selectBack:'Elegir otro artista',selectChange:'Cambiar',
+    rankingTitle:'TOP 3 de preinscripción',
     steps:[
       {t:'Únete con tu artista',d:'Solicítalo, o únete si ya existe.'},
       {t:'Invita a fans',d:'Comparte tu código, suma fans.'},
@@ -515,6 +520,7 @@ zhHans: {
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，获得1级粉丝星球公民权','获得PRE-REG BADGE'],
     selectTitle:'你来自哪个宇宙？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'来自其他宇宙？',selectConfirm:'确认',
     founderCountLabel:'目前已有 {n} 位开拓者',foundingCta:'加入我的星',selectBack:'选择其他艺人',selectChange:'更改',
+    rankingTitle:'预注册 TOP 3',
     steps:[
       {t:'登记艺人',d:'没有就申请，有就直接加入。'},
       {t:'邀请粉丝',d:'分享邀请码，拉更多人进来。'},
@@ -613,6 +619,7 @@ zhHant: {
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，獲得1級粉絲星球公民權','獲得PRE-REG BADGE'],
     selectTitle:'你來自哪個宇宙？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'來自其他宇宙？',selectConfirm:'確認',
     founderCountLabel:'目前已有 {n} 位開拓者',foundingCta:'加入我的星',selectBack:'選擇其他藝人',selectChange:'更改',
+    rankingTitle:'預先登記 TOP 3',
     steps:[
       {t:'登記藝人',d:'沒有就申請，有就直接加入。'},
       {t:'邀請粉絲',d:'分享邀請碼，拉更多人進來。'},
@@ -711,6 +718,7 @@ id: {
     benefits:['50 POP sekarang — 100 POP dengan kode undangan','Kewarganegaraan Tier-1 Planet Fandom, siapa cepat dia dapat','PRE-REG BADGE, dijamin'],
     selectTitle:'Kamu dari semesta mana?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'Dari semesta lain?',selectConfirm:'Konfirmasi',
     founderCountLabel:'{n} fan pendiri sejauh ini',foundingCta:'Gabung ke bintangku',selectBack:'Pilih artis lain',selectChange:'Ubah',
+    rankingTitle:'TOP 3 Pra-pendaftaran',
     steps:[
       {t:'Gabung ke artisku',d:'Ajukan permintaan, atau gabung jika sudah ada.'},
       {t:'Undang fan',d:'Bagikan kodemu, ajak fan lain.'},
@@ -809,6 +817,7 @@ fil: {
     benefits:['50 POP ngayon — 100 POP kapag may invite code','Tier-1 Fandom Planet citizenship, first come first served','Garantisadong PRE-REG BADGE'],
     selectTitle:'Saang universe ka galing?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'Galing sa ibang universe?',selectConfirm:'Kumpirmahin',
     founderCountLabel:'{n} founding fans sa ngayon',foundingCta:'Sumali sa bituin ko',selectBack:'Pumili ng ibang artist',selectChange:'Palitan',
+    rankingTitle:'TOP 3 sa Pre-registration',
     steps:[
       {t:'Sumali sa artist ko',d:'Humiling kung wala pa, o sumali kung meron na.'},
       {t:'Mag-imbita ng fans',d:'Ibahagi ang code mo, mag-imbita ng kapwa fan.'},
@@ -907,6 +916,7 @@ th: {
     benefits:['50 POP ทันที — 100 POP หากมีรหัสเชิญ','สิทธิ์พลเมืองดาวเคราะห์แฟนด้อมระดับ Tier-1 ใครมาก่อนได้ก่อน','PRE-REG BADGE รับประกัน'],
     selectTitle:'คุณมาจากจักรวาลไหน?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'มาจากจักรวาลอื่นหรือเปล่า?',selectConfirm:'ยืนยัน',
     founderCountLabel:'มีแฟนผู้ก่อตั้งแล้ว {n} คน',foundingCta:'เข้าร่วมดาวของฉัน',selectBack:'เลือกศิลปินอื่น',selectChange:'เปลี่ยน',
+    rankingTitle:'TOP 3 การลงทะเบียนล่วงหน้า',
     steps:[
       {t:'เข้าร่วมกับศิลปินของฉัน',d:'ขอสร้างถ้ายังไม่มี หรือเข้าร่วมถ้ามีอยู่แล้ว'},
       {t:'เชิญแฟน',d:'แชร์รหัสของคุณ ชวนแฟนคนอื่นเข้าร่วม'},

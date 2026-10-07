@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import { POPULAR_ARTISTS } from '@/lib/artists';
+import ArtistRanking from './ArtistRanking';
 
 const pillStyle: React.CSSProperties = {
   background: 'linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02))',
@@ -230,6 +231,8 @@ export default function ArtistSelect({
           );
         })}
       </div>
+
+      <ArtistRanking />
 
       <div
         style={{
