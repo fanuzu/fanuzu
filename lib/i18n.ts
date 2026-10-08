@@ -952,12 +952,19 @@ th: {
 }
 };
 
-export function detectLang(): Lang {
+// Saved preference and browser language only — no final 'en' fallback, so
+// the caller can tell "nothing matched" apart from "matched English" and
+// try a weaker signal (country) before giving up to English. Browser
+// language is deliberately checked before country: it's what someone
+// actually configured their device to, a stronger preference signal than
+// where their network happens to be (travelers, VPNs, expats browsing in
+// a non-local language on purpose, etc.).
+export function detectLangFromBrowserOrSaved(): Lang | null {
   try {
     const saved = localStorage.getItem('fanuzu_lang');
     if (saved && saved in T) return saved as Lang;
   } catch (e) {}
-  const nav = (navigator.language || 'en').toLowerCase();
+  const nav = (navigator.language || '').toLowerCase();
   if (nav.startsWith('ko')) return 'ko';
   if (nav.startsWith('ja')) return 'ja';
   if (nav.startsWith('es')) return 'es';
@@ -965,5 +972,32 @@ export function detectLang(): Lang {
   if (nav.startsWith('id')) return 'id';
   if (nav.startsWith('fil') || nav.startsWith('tl')) return 'fil';
   if (nav.startsWith('th')) return 'th';
-  return 'en';
+  return null;
+}
+
+// Fallback-only signal, used when neither a saved preference nor the
+// browser's language matches one of our locales — e.g. a visitor whose
+// browser is set to French or German. Deliberately narrow: only the
+// countries where one of our languages is clearly the primary one map to
+// anything; everywhere else stays null so the caller's own 'en' default
+// applies, rather than guessing wrong for a country we're not confident
+// about.
+const COUNTRY_TO_LANG: Record<string, Lang> = {
+  KR: 'ko',
+  JP: 'ja',
+  CN: 'zhHans',
+  TW: 'zhHant',
+  HK: 'zhHant',
+  MO: 'zhHant',
+  ID: 'id',
+  PH: 'fil',
+  TH: 'th',
+  ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es', PE: 'es', VE: 'es',
+  EC: 'es', GT: 'es', CU: 'es', BO: 'es', DO: 'es', HN: 'es', PY: 'es',
+  SV: 'es', NI: 'es', CR: 'es', PA: 'es', UY: 'es', GQ: 'es',
+};
+
+export function langFromCountry(country: string | null | undefined): Lang | null {
+  if (!country) return null;
+  return COUNTRY_TO_LANG[country.toUpperCase()] ?? null;
 }

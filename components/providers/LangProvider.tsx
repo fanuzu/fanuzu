@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { LANGS, LANG_LABELS, T, detectLang, type Lang, type TranslationSet } from '@/lib/i18n';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { LANGS, LANG_LABELS, T, detectLangFromBrowserOrSaved, langFromCountry, type Lang, type TranslationSet } from '@/lib/i18n';
 import { HTML_LANG } from '@/lib/locale';
 
 interface LangContextValue {
@@ -15,9 +15,30 @@ const LangContext = createContext<LangContextValue | null>(null);
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>('en');
+  // Flips true the moment anything sets the language explicitly (a saved
+  // preference, a browser-language match, or the visitor picking one by
+  // hand) — guards the async country lookup below from clobbering a
+  // choice that landed while that request was still in flight.
+  const resolvedRef = useRef(false);
 
   useEffect(() => {
-    setLangState(detectLang());
+    const fromBrowserOrSaved = detectLangFromBrowserOrSaved();
+    if (fromBrowserOrSaved) {
+      resolvedRef.current = true;
+      setLangState(fromBrowserOrSaved);
+      return;
+    }
+    // Neither a saved choice nor the browser's language matched one of our
+    // locales — ask the server which country this request geolocated to
+    // and guess a more relevant language than a flat English default.
+    fetch('/api/geo')
+      .then((res) => res.json())
+      .then((data: { country: string | null }) => {
+        if (resolvedRef.current) return;
+        const guessed = langFromCountry(data.country);
+        if (guessed) setLangState(guessed);
+      })
+      .catch(() => {});
   }, []);
 
   // Doc section 3: <html lang> must track the active locale (screen readers
@@ -27,6 +48,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
   }, [lang]);
 
   const setLang = (code: Lang) => {
+    resolvedRef.current = true;
     setLangState(code);
     try {
       localStorage.setItem('fanuzu_lang', code);
