@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getUtmBreakdown, getReferralStats, getCountryBreakdown } from '@/lib/tracking';
+import { getUtmBreakdown, getReferralStats, getCountryBreakdown, getSuspiciousRegistrations } from '@/lib/tracking';
 import { checkAdminAuth } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
@@ -14,8 +14,13 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [utm, referrals, countries] = await Promise.all([getUtmBreakdown(), getReferralStats(), getCountryBreakdown()]);
-    return NextResponse.json({ utm, referrals, countries });
+    const [utm, referrals, countries, suspicious] = await Promise.all([
+      getUtmBreakdown(),
+      getReferralStats(),
+      getCountryBreakdown(),
+      getSuspiciousRegistrations(),
+    ]);
+    return NextResponse.json({ utm, referrals, countries, suspicious });
   } catch (err) {
     console.error('admin analytics query failed:', err);
     return NextResponse.json({ error: 'server_error' }, { status: 500 });

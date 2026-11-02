@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 interface ArtistCount {
   artist: string;
@@ -20,6 +20,7 @@ interface Artist {
   logoUrl: string | null;
   imageLicense: boolean;
   heroImageUrl: string | null;
+  preregGoal: number | null;
   preregCount: number;
 }
 
@@ -68,6 +69,33 @@ interface ReferralSearchRow {
   createdAt: string;
 }
 
+interface BasePartnerRow {
+  id: number;
+  name: string;
+  xHandle: string | null;
+  fandom: string;
+  code: string;
+  targetCount: number | null;
+  isActive: boolean;
+  preregCount: number;
+  achievementPct: number | null;
+  createdAt: string;
+}
+
+interface SuspiciousRow {
+  id: number;
+  email: string;
+  artistName: string;
+  ip: string;
+  createdAt: string;
+  windowCount: number;
+}
+
+interface TrendPoint {
+  day: string;
+  count: number;
+}
+
 const STORAGE_KEY = 'fanuzu_admin_password';
 
 // GET with a custom auth header can't be a plain <a href> download, so fetch
@@ -106,6 +134,7 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
   const [logoUrl, setLogoUrl] = useState(artist.logoUrl ?? '');
   const [imageLicense, setImageLicense] = useState(artist.imageLicense);
   const [heroImageUrl, setHeroImageUrl] = useState(artist.heroImageUrl ?? '');
+  const [preregGoal, setPreregGoal] = useState(artist.preregGoal !== null ? String(artist.preregGoal) : '');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
 
@@ -116,7 +145,8 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
     logoLicense !== artist.logoLicense ||
     logoUrl !== (artist.logoUrl ?? '') ||
     imageLicense !== artist.imageLicense ||
-    heroImageUrl !== (artist.heroImageUrl ?? '');
+    heroImageUrl !== (artist.heroImageUrl ?? '') ||
+    preregGoal !== (artist.preregGoal !== null ? String(artist.preregGoal) : '');
 
   async function save() {
     setSaving(true);
@@ -133,6 +163,7 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
           logoUrl: logoUrl || null,
           imageLicense,
           heroImageUrl: heroImageUrl || null,
+          preregGoal: preregGoal.trim() ? Number(preregGoal.trim()) : null,
         }),
       });
       const data = await res.json();
@@ -182,6 +213,17 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
             <option value="pending">pending</option>
             <option value="official">official</option>
           </select>
+        </label>
+        <label style={{ fontSize: 11, color: '#9089A0' }}>
+          Public progress goal (optional)
+          <input
+            style={{ ...fieldStyle, marginTop: 4 }}
+            type="number"
+            min="0"
+            placeholder="Hidden unless set"
+            value={preregGoal}
+            onChange={(e) => setPreregGoal(e.target.value)}
+          />
         </label>
       </div>
 
@@ -263,6 +305,19 @@ export default function AdminPage() {
   const [toDate, setToDate] = useState('');
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
+  const [basePartners, setBasePartners] = useState<BasePartnerRow[] | null>(null);
+  const [basePartnerError, setBasePartnerError] = useState('');
+  const [basePartnerSaving, setBasePartnerSaving] = useState(false);
+  const [newPartnerName, setNewPartnerName] = useState('');
+  const [newPartnerXHandle, setNewPartnerXHandle] = useState('');
+  const [newPartnerFandom, setNewPartnerFandom] = useState('');
+  const [newPartnerTarget, setNewPartnerTarget] = useState('');
+  const [trendForCode, setTrendForCode] = useState<string | null>(null);
+  const [trendPoints, setTrendPoints] = useState<TrendPoint[] | null>(null);
+  const [trendLoading, setTrendLoading] = useState(false);
+
+  const [suspicious, setSuspicious] = useState<SuspiciousRow[] | null>(null);
+
   useEffect(() => {
     document.title = 'Admin — FANUZU';
     const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -290,6 +345,7 @@ export default function AdminPage() {
         setUtm(null);
         setReferrals(null);
         setCountries(null);
+        setSuspicious(null);
         return;
       }
       if (statsRes.status === 503 || artistsRes.status === 503 || analyticsRes.status === 503) {
@@ -309,13 +365,103 @@ export default function AdminPage() {
       setUtm(analyticsData.utm);
       setReferrals(analyticsData.referrals);
       setCountries(analyticsData.countries);
+      setSuspicious(analyticsData.suspicious);
       sessionStorage.setItem(STORAGE_KEY, pw);
       setPassword(pw);
       loadReferralProgram(pw, {});
+      loadBasePartners(pw);
     } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function loadBasePartners(pw: string) {
+    setBasePartnerError('');
+    try {
+      const res = await fetch('/api/admin/base-partners', { headers: { 'x-admin-password': pw } });
+      if (!res.ok) {
+        setBasePartnerError('Could not load base partners.');
+        return;
+      }
+      const data = await res.json();
+      setBasePartners(data.partners);
+    } catch {
+      setBasePartnerError('Network error. Please try again.');
+    }
+  }
+
+  async function handleCreateBasePartner(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newPartnerName.trim() || !newPartnerFandom.trim()) return;
+    setBasePartnerSaving(true);
+    setBasePartnerError('');
+    try {
+      const res = await fetch('/api/admin/base-partners', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({
+          name: newPartnerName.trim(),
+          xHandle: newPartnerXHandle.trim() || null,
+          fandom: newPartnerFandom.trim(),
+          targetCount: newPartnerTarget.trim() ? Number(newPartnerTarget.trim()) : null,
+        }),
+      });
+      if (!res.ok) {
+        setBasePartnerError('Could not create base partner.');
+        return;
+      }
+      setNewPartnerName('');
+      setNewPartnerXHandle('');
+      setNewPartnerFandom('');
+      setNewPartnerTarget('');
+      loadBasePartners(password);
+    } catch {
+      setBasePartnerError('Network error. Please try again.');
+    } finally {
+      setBasePartnerSaving(false);
+    }
+  }
+
+  async function handleToggleBasePartner(id: number, isActive: boolean) {
+    setBasePartnerError('');
+    try {
+      const res = await fetch(`/api/admin/base-partners/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ isActive }),
+      });
+      if (!res.ok) {
+        setBasePartnerError('Could not update base partner.');
+        return;
+      }
+      loadBasePartners(password);
+    } catch {
+      setBasePartnerError('Network error. Please try again.');
+    }
+  }
+
+  async function handleShowTrend(partner: BasePartnerRow) {
+    if (trendForCode === partner.code) {
+      setTrendForCode(null);
+      setTrendPoints(null);
+      return;
+    }
+    setTrendForCode(partner.code);
+    setTrendPoints(null);
+    setTrendLoading(true);
+    try {
+      const res = await fetch(`/api/admin/base-partners/trend?basePartnerId=${partner.id}`, {
+        headers: { 'x-admin-password': password },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setTrendPoints(data.trend);
+    } catch {
+      // Trend panel just stays empty on failure — non-critical view.
+    } finally {
+      setTrendLoading(false);
     }
   }
 
@@ -737,6 +883,227 @@ export default function AdminPage() {
                 </table>
                 {referralRows?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No matching pre-registrations.</p>}
                 {referralRows === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Base partners</h2>
+              <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
+                Fandom-base-account invite codes (X/Twitter fan accounts) — distinct from fans' own personal codes above.
+                A code always grants 100 POP, same as a personal referral; deactivating one makes it resolve as if no
+                code were entered at all, never an error for anyone who still has the old link.
+              </p>
+
+              {basePartnerError && <p style={{ color: '#FF7DDD', fontSize: 13, marginBottom: 12 }}>{basePartnerError}</p>}
+
+              <form
+                onSubmit={handleCreateBasePartner}
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}
+              >
+                <input
+                  style={{ ...fieldStyle, width: 180 }}
+                  placeholder="Base account name"
+                  value={newPartnerName}
+                  onChange={(e) => setNewPartnerName(e.target.value)}
+                />
+                <input
+                  style={{ ...fieldStyle, width: 140 }}
+                  placeholder="X handle (optional)"
+                  value={newPartnerXHandle}
+                  onChange={(e) => setNewPartnerXHandle(e.target.value)}
+                />
+                <input
+                  style={{ ...fieldStyle, width: 140 }}
+                  placeholder="Fandom (e.g. TWS)"
+                  value={newPartnerFandom}
+                  onChange={(e) => setNewPartnerFandom(e.target.value)}
+                />
+                <input
+                  style={{ ...fieldStyle, width: 120 }}
+                  type="number"
+                  min="0"
+                  placeholder="Target (optional)"
+                  value={newPartnerTarget}
+                  onChange={(e) => setNewPartnerTarget(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  disabled={basePartnerSaving || !newPartnerName.trim() || !newPartnerFandom.trim()}
+                  style={{
+                    background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                    color: '#05030B',
+                    fontWeight: 700,
+                    fontSize: 12.5,
+                    padding: '0 18px',
+                    border: 'none',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                    opacity: basePartnerSaving ? 0.7 : 1,
+                  }}
+                >
+                  {basePartnerSaving ? '···' : 'Create + generate code'}
+                </button>
+              </form>
+
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Code</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Base account</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Fandom</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Sign-ups</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Target</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Achieved</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Active</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {basePartners?.map((p) => (
+                      <Fragment key={p.id}>
+                        <tr style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                          <td style={{ padding: '8px 12px 8px 0', fontWeight: 700, fontFamily: 'monospace' }}>{p.code}</td>
+                          <td style={{ padding: '8px 12px 8px 0' }}>
+                            {p.name}
+                            {p.xHandle && <span style={{ color: '#6B6478' }}> ({p.xHandle})</span>}
+                          </td>
+                          <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{p.fandom}</td>
+                          <td style={{ padding: '8px 0', textAlign: 'right' }}>
+                            <button
+                              onClick={() => handleShowTrend(p)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#7CE8FF',
+                                fontWeight: 700,
+                                fontSize: 13,
+                                cursor: 'pointer',
+                                fontFamily: 'inherit',
+                                textDecoration: 'underline',
+                                padding: 0,
+                              }}
+                            >
+                              {p.preregCount.toLocaleString()}
+                            </button>
+                          </td>
+                          <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', color: '#9089A0' }}>
+                            {p.targetCount ? p.targetCount.toLocaleString() : '—'}
+                          </td>
+                          <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', fontWeight: 700 }}>
+                            {p.achievementPct !== null ? `${p.achievementPct}%` : '—'}
+                          </td>
+                          <td style={{ padding: '8px 12px 8px 0' }}>
+                            <button
+                              onClick={() => handleToggleBasePartner(p.id, !p.isActive)}
+                              style={{
+                                background: p.isActive ? 'rgba(124,232,255,.12)' : 'rgba(255,255,255,.06)',
+                                border: `1px solid ${p.isActive ? 'rgba(124,232,255,.4)' : 'rgba(255,255,255,.14)'}`,
+                                color: p.isActive ? '#7CE8FF' : '#6B6478',
+                                fontSize: 11.5,
+                                fontWeight: 600,
+                                padding: '5px 10px',
+                                borderRadius: 999,
+                                cursor: 'pointer',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {p.isActive ? 'Active' : 'Inactive'}
+                            </button>
+                          </td>
+                          <td style={{ padding: '8px 0' }} />
+                        </tr>
+                        {trendForCode === p.code && (
+                          <tr style={{ borderTop: '1px solid rgba(255,255,255,.04)' }}>
+                            <td colSpan={8} style={{ padding: '4px 0 14px' }}>
+                              {trendLoading && <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>Loading daily trend···</p>}
+                              {!trendLoading && trendPoints?.length === 0 && (
+                                <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>No sign-ups yet via this code.</p>
+                              )}
+                              {!trendLoading && trendPoints && trendPoints.length > 0 && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 420 }}>
+                                  {trendPoints.map((pt) => (
+                                    <div key={pt.day} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 11.5 }}>
+                                      <span style={{ width: 84, flex: '0 0 auto', color: '#6B6478' }}>{pt.day}</span>
+                                      <div style={{ flex: 1, background: 'rgba(255,255,255,.06)', borderRadius: 4, overflow: 'hidden', height: 14 }}>
+                                        <div
+                                          style={{
+                                            width: `${Math.max(3, (pt.count / Math.max(...trendPoints.map((x) => x.count))) * 100)}%`,
+                                            height: '100%',
+                                            background: 'linear-gradient(90deg,#7CE8FF,#9B7CFF)',
+                                          }}
+                                        />
+                                      </div>
+                                      <span style={{ width: 24, flex: '0 0 auto', textAlign: 'right', fontWeight: 700 }}>{pt.count}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+                      </Fragment>
+                    ))}
+                  </tbody>
+                </table>
+                {basePartners?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No base partners yet.</p>}
+                {basePartners === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Suspicious registrations</h2>
+              <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
+                Flags a sign-up whenever it's one of 3+ from the same IP within a trailing 10 minutes — a lighter,
+                review-only signal layered on top of the hard rate limit (10 min / 8 attempts) that already blocks
+                scripted abuse outright.
+              </p>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>IP</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Email</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Artist</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>In window</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Registered</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {suspicious?.map((r) => (
+                      <tr key={r.id} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                        <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace', color: '#FF7DDD' }}>{r.ip}</td>
+                        <td style={{ padding: '8px 12px 8px 0' }}>{r.email}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{r.artistName}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: 700 }}>{r.windowCount}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleString()}</td>
+                        <td style={{ padding: '8px 0', textAlign: 'right' }}>
+                          <button
+                            onClick={() => handleDeleteRegistration(r.id, r.email)}
+                            disabled={deletingId === r.id}
+                            style={{
+                              background: 'transparent',
+                              border: '1px solid rgba(255,125,221,.3)',
+                              color: '#FF7DDD',
+                              fontSize: 11.5,
+                              fontWeight: 600,
+                              padding: '5px 10px',
+                              borderRadius: 6,
+                              cursor: deletingId === r.id ? 'default' : 'pointer',
+                              opacity: deletingId === r.id ? 0.6 : 1,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {deletingId === r.id ? '···' : 'Delete'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {suspicious?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Nothing flagged.</p>}
+                {suspicious === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
               </div>
             </div>
           </>

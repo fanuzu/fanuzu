@@ -3,6 +3,7 @@
 // client component — see lib/artist-registry.ts for why (pulls `pg` into
 // the browser bundle).
 import { ensureSchema, getPool } from './db';
+import { normalizeArtistSlug } from './artists';
 
 const MAX_FIELD_LEN = 200;
 
@@ -318,6 +319,7 @@ export interface FandomExportRow {
   language: string | null;
   country: string | null;
   referralCodeInput: string | null;
+  basePartnerCode: string | null;
   rewardAmount: number;
   artistJoinOrder: number;
   preregBadgeEligible: boolean;
@@ -338,7 +340,7 @@ export interface FandomExportRow {
 export async function getFandomExportRows(artistId: number | null): Promise<FandomExportRow[]> {
   await ensureSchema();
   const pool = getPool();
-  const where = artistId !== null ? 'WHERE artist_id = $1' : '';
+  const where = artistId !== null ? 'WHERE p.artist_id = $1' : '';
   const params = artistId !== null ? [artistId] : [];
   const { rows } = await pool.query<{
     id: number;
@@ -349,6 +351,7 @@ export async function getFandomExportRows(artistId: number | null): Promise<Fand
     language: string | null;
     country: string | null;
     referral_code_input: string | null;
+    base_partner_code: string | null;
     reward_amount: number;
     artist_join_order: number;
     origin_100_eligible: boolean;
@@ -358,12 +361,14 @@ export async function getFandomExportRows(artistId: number | null): Promise<Fand
     utm_campaign: string | null;
     created_at: string;
   }>(
-    `SELECT id, email, artist_name_input, fandom_name, fan_since_year, language, country, referral_code_input,
-            reward_amount, artist_join_order, origin_100_eligible, origin_100_number,
-            utm_source, utm_medium, utm_campaign, created_at
-     FROM preregistrations
+    `SELECT p.id, p.email, p.artist_name_input, p.fandom_name, p.fan_since_year, p.language, p.country,
+            p.referral_code_input, b.code AS base_partner_code,
+            p.reward_amount, p.artist_join_order, p.origin_100_eligible, p.origin_100_number,
+            p.utm_source, p.utm_medium, p.utm_campaign, p.created_at
+     FROM preregistrations p
+     LEFT JOIN base_partners b ON b.id = p.base_partner_id
      ${where}
-     ORDER BY artist_join_order ASC`,
+     ORDER BY p.artist_join_order ASC`,
     params
   );
   return rows.map((r) => ({
@@ -375,6 +380,7 @@ export async function getFandomExportRows(artistId: number | null): Promise<Fand
     language: r.language,
     country: r.country,
     referralCodeInput: r.referral_code_input,
+    basePartnerCode: r.base_partner_code,
     rewardAmount: r.reward_amount,
     artistJoinOrder: r.artist_join_order,
     preregBadgeEligible: r.origin_100_eligible,
@@ -384,4 +390,94 @@ export async function getFandomExportRows(artistId: number | null): Promise<Fand
     utmCampaign: r.utm_campaign,
     createdAt: r.created_at,
   }));
+}
+
+export interface SuspiciousRegistrationRow {
+  id: number;
+  email: string;
+  artistName: string;
+  ip: string;
+  createdAt: string;
+  windowCount: number;
+}
+
+// Admin-only fraud-review surface: flags a registration whenever it's one of
+// 3+ (SUSPICIOUS_THRESHOLD) from the same IP within a trailing
+// SUSPICIOUS_WINDOW_MINUTES — a tighter, non-blocking signal layered on top
+// of the hard rate limit in lib/prereg.ts (10 min / 8 attempts), which exists
+// to slow down scripted abuse rather than to flag it for review. Rows with
+// no IP (pre-dating the `ip` column, or off-Vercel) are never flagged.
+const SUSPICIOUS_WINDOW_MINUTES = 10;
+const SUSPICIOUS_THRESHOLD = 3;
+
+export async function getSuspiciousRegistrations(): Promise<SuspiciousRegistrationRow[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{
+    id: number;
+    email: string;
+    artist_name_input: string;
+    ip: string;
+    created_at: string;
+    window_count: string;
+  }>(
+    `SELECT id, email, artist_name_input, ip, created_at, window_count FROM (
+       SELECT id, email, artist_name_input, ip, created_at,
+              COUNT(*) OVER (
+                PARTITION BY ip ORDER BY created_at
+                RANGE BETWEEN INTERVAL '${SUSPICIOUS_WINDOW_MINUTES} minutes' PRECEDING AND CURRENT ROW
+              ) AS window_count
+       FROM preregistrations
+       WHERE ip IS NOT NULL
+     ) windowed
+     WHERE window_count >= ${SUSPICIOUS_THRESHOLD}
+     ORDER BY ip, created_at DESC`
+  );
+  return rows.map((r) => ({
+    id: r.id,
+    email: r.email,
+    artistName: r.artist_name_input,
+    ip: r.ip,
+    createdAt: r.created_at,
+    windowCount: Number(r.window_count),
+  }));
+}
+
+export interface DailyTrendPoint {
+  day: string;
+  count: number;
+}
+
+export interface DailyTrendFilter {
+  fandom?: string;
+  basePartnerId?: number;
+}
+
+// Admin-only: registrations per day, optionally scoped to one fandom
+// (artist_name_normalized) and/or one base partner code — same filter
+// shape doubles as "fandom trend" and "code trend" (doc requirement 3c)
+// depending on which fields are passed.
+export async function getDailyRegistrationTrend(filter: DailyTrendFilter): Promise<DailyTrendPoint[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const clauses: string[] = [];
+  const params: unknown[] = [];
+  if (filter.fandom) {
+    params.push(normalizeArtistSlug(filter.fandom));
+    clauses.push(`artist_name_normalized = $${params.length}`);
+  }
+  if (filter.basePartnerId) {
+    params.push(filter.basePartnerId);
+    clauses.push(`base_partner_id = $${params.length}`);
+  }
+  const where = clauses.length > 0 ? `WHERE ${clauses.join(' AND ')}` : '';
+  const { rows } = await pool.query<{ day: string; count: string }>(
+    `SELECT to_char(date_trunc('day', created_at), 'YYYY-MM-DD') AS day, COUNT(*) AS count
+     FROM preregistrations
+     ${where}
+     GROUP BY day
+     ORDER BY day ASC`,
+    params
+  );
+  return rows.map((r) => ({ day: r.day, count: Number(r.count) }));
 }
