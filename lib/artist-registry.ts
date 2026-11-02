@@ -17,6 +17,7 @@ export interface ArtistRecord {
   logoUrl: string | null;
   imageLicense: boolean;
   heroImageUrl: string | null;
+  preregGoal: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -46,6 +47,7 @@ interface ArtistRow {
   logo_url: string | null;
   image_license: boolean;
   hero_image_url: string | null;
+  prereg_goal: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -62,6 +64,7 @@ function mapRow(row: ArtistRow): ArtistRecord {
     logoUrl: row.logo_url,
     imageLicense: row.image_license,
     heroImageUrl: row.hero_image_url,
+    preregGoal: row.prereg_goal,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -105,6 +108,30 @@ export async function listArtistsWithCounts(): Promise<ArtistWithCount[]> {
   return rows.map((r) => ({ ...mapRow(r), preregCount: Number(r.prereg_count) }));
 }
 
+export interface FandomProgressRow {
+  fandom: string;
+  count: number;
+  goal: number;
+}
+
+// Public (behind the SHOW_FANDOM_PROGRESS flag — see
+// app/api/prereg/fandom-progress): only the fandoms an admin has given a
+// goal to, and only the artist name + aggregate count — never a base
+// partner's or individual's data (doc requirement 6).
+export async function getFandomProgress(): Promise<FandomProgressRow[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{ artist_name: string; prereg_goal: number; count: string }>(
+    `SELECT a.artist_name, a.prereg_goal, COUNT(p.id) AS count
+     FROM artists a
+     LEFT JOIN preregistrations p ON p.artist_id = a.id
+     WHERE a.prereg_goal IS NOT NULL
+     GROUP BY a.id
+     ORDER BY a.artist_name ASC`
+  );
+  return rows.map((r) => ({ fandom: r.artist_name, count: Number(r.count), goal: r.prereg_goal }));
+}
+
 export interface ArtistUpdateInput {
   fandomName?: string | null;
   agency?: string | null;
@@ -113,6 +140,9 @@ export interface ArtistUpdateInput {
   logoUrl?: string | null;
   imageLicense?: boolean;
   heroImageUrl?: string | null;
+  // Arbitrary admin-set target for the optional public progress bar (see
+  // app/api/prereg/fandom-progress) — null hides this fandom from it.
+  preregGoal?: number | null;
 }
 
 // Admin-only: partial update, `updated_at` bumped automatically. Never
@@ -136,6 +166,7 @@ export async function updateArtist(id: number, input: ArtistUpdateInput): Promis
   if (input.logoUrl !== undefined) set('logo_url', input.logoUrl);
   if (input.imageLicense !== undefined) set('image_license', input.imageLicense);
   if (input.heroImageUrl !== undefined) set('hero_image_url', input.heroImageUrl);
+  if (input.preregGoal !== undefined) set('prereg_goal', input.preregGoal);
 
   if (fields.length === 0) {
     const { rows } = await pool.query<ArtistRow>('SELECT * FROM artists WHERE id = $1', [id]);

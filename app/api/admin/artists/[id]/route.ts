@@ -56,6 +56,15 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     }
     input.officialStatus = body.officialStatus as OfficialStatus;
   }
+  if (body.preregGoal !== undefined) {
+    if (body.preregGoal === null) {
+      input.preregGoal = null;
+    } else if (Number.isInteger(body.preregGoal) && (body.preregGoal as number) >= 0) {
+      input.preregGoal = body.preregGoal as number;
+    } else {
+      return NextResponse.json({ error: 'invalid_prereg_goal' }, { status: 400 });
+    }
+  }
 
   try {
     const artist = await updateArtist(id, input);
