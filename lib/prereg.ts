@@ -3,6 +3,7 @@ import { LANGS, type Lang } from './i18n';
 import { sendPreregConfirmationEmail } from './email';
 import { normalizeArtistSlug } from './artists';
 import { getArtistBySlug } from './artist-registry';
+import { findBasePartnerByCode } from './base-partners';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -196,20 +197,34 @@ export async function submitPreregistration(
     return fail('email_already_registered', 'This email has already pre-registered.');
   }
 
+  // A code may resolve to either a personal referral (another fan's own
+  // code) or a fandom base-account code (lib/base-partners.ts) — personal
+  // codes are checked first since they're the more specific match. An
+  // inactive base code is deliberately treated as if no code were entered
+  // at all: a fandom base account that gets deactivated shouldn't suddenly
+  // start throwing errors for anyone who still has the old link saved.
   let referrer: { id: number; email: string } | null = null;
+  let basePartnerId: number | null = null;
   if (referralCodeInput) {
     const { rows } = await pool.query<{ id: number; email: string }>(
       'SELECT id, email FROM preregistrations WHERE referral_code = $1',
       [referralCodeInput.toUpperCase()]
     );
     const row = rows[0];
-    if (!row) {
-      return fail('invalid_referral', "We couldn't find that referral code.");
+    if (row) {
+      if (row.email.toLowerCase() === emailNormalized) {
+        return fail('self_referral_not_allowed', 'You cannot use your own referral code.');
+      }
+      referrer = row;
+    } else {
+      const basePartner = await findBasePartnerByCode(referralCodeInput);
+      if (!basePartner) {
+        return fail('invalid_referral', "We couldn't find that referral code.");
+      }
+      if (basePartner.isActive) {
+        basePartnerId = basePartner.id;
+      }
     }
-    if (row.email.toLowerCase() === emailNormalized) {
-      return fail('self_referral_not_allowed', 'You cannot use your own referral code.');
-    }
-    referrer = row;
   }
 
   const artistNameNormalized = normalizeArtistSlug(artistName);
@@ -224,7 +239,7 @@ export async function submitPreregistration(
   const preregBadgeEligible = true;
   const preregBadgeNumber = artistJoinOrder;
 
-  const rewardAmount = referrer ? 100 : 50;
+  const rewardAmount = referrer || basePartnerId ? 100 : 50;
   const referralCode = await generateReferralCode();
 
   // Only ever links to an existing registry row (see lib/artists.ts) — a
@@ -244,8 +259,9 @@ export async function submitPreregistration(
          terms_version, privacy_version, terms_accepted_at, privacy_accepted_at,
          marketing_consent, marketing_consent_at,
          artist_join_order, origin_100_eligible, origin_100_number, referral_code,
-         utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path, country
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30)
+         utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path, country,
+         base_partner_id, ip
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32)
        RETURNING id`,
       [
         email,
@@ -278,14 +294,21 @@ export async function submitPreregistration(
         utmContent || null,
         landingPath || null,
         country,
+        basePartnerId,
+        ip,
       ]
     );
     preregistrationId = insertResult.rows[0].id;
 
+    const ledgerRewardType = referrer
+      ? 'PREREGISTRATION_REFERRAL'
+      : basePartnerId
+      ? 'PREREGISTRATION_BASE_REFERRAL'
+      : 'PREREGISTRATION_BASIC';
     await client.query(
       `INSERT INTO pop_reward_ledger (preregistration_id, reward_type, amount, related_preregistration_id)
        VALUES ($1,$2,$3,$4)`,
-      [preregistrationId, referrer ? 'PREREGISTRATION_REFERRAL' : 'PREREGISTRATION_BASIC', rewardAmount, referrer ? referrer.id : null]
+      [preregistrationId, ledgerRewardType, rewardAmount, referrer ? referrer.id : null]
     );
 
     if (referrer) {

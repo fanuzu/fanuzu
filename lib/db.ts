@@ -242,6 +242,44 @@ const SCHEMA_SQL = `
   );
   CREATE INDEX IF NOT EXISTS idx_referrals_referrer ON referrals (referrer_preregistration_id);
   CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals (referral_code);
+
+  -- Fandom-base-account invite codes (X/Twitter fan accounts), distinct from
+  -- the personal per-registrant codes above: one base partner can be shared
+  -- by an unlimited number of fans, carries no "self-referral" concept, and
+  -- is tracked separately so admin can see which base account is actually
+  -- driving sign-ups for a given fandom. code is matched case-insensitively
+  -- (see idx_base_partners_code) so a fan typing lowercase still matches.
+  CREATE TABLE IF NOT EXISTS base_partners (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    x_handle TEXT,
+    fandom TEXT NOT NULL,
+    code TEXT NOT NULL,
+    target_count INTEGER,
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_base_partners_code ON base_partners (upper(code));
+  CREATE INDEX IF NOT EXISTS idx_base_partners_fandom ON base_partners (fandom);
+
+  -- Nullable: only set when the invite code entered at sign-up resolved to a
+  -- base partner rather than another fan's personal code (see
+  -- lib/prereg.ts). ip is new here too — previously only logged per-attempt
+  -- in rate_limit_log, never persisted on the successful registration itself,
+  -- which made "same IP, several sign-ups in a short window" unanswerable
+  -- without this column. Already covered by the existing privacy policy's
+  -- IP/fraud-detection disclosure (lib/legal-content.ts), so no copy change
+  -- needed.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS base_partner_id INTEGER REFERENCES base_partners(id);
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS ip TEXT;
+  CREATE INDEX IF NOT EXISTS idx_prereg_base_partner ON preregistrations (base_partner_id);
+  CREATE INDEX IF NOT EXISTS idx_prereg_ip_created ON preregistrations (ip, created_at);
+
+  -- Optional public per-fandom pre-registration goal (doc: public progress
+  -- bar, flagged off by default via SHOW_FANDOM_PROGRESS). Deliberately its
+  -- own arbitrary admin-set number, independent of any individual base
+  -- partner's own target_count above.
+  ALTER TABLE artists ADD COLUMN IF NOT EXISTS prereg_goal INTEGER;
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

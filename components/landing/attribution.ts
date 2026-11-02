@@ -25,7 +25,10 @@ export interface Attribution {
 export function captureFromUrl(): { attribution: Omit<Attribution, 'capturedAt'>; hasAnyParam: boolean } {
   const params = new URLSearchParams(window.location.search);
   const attribution = {
-    referralCode: params.get('ref') || undefined,
+    // ?code= is a fandom base-partner link (see lib/base-partners.ts) —
+    // shares the same input field as a personal ?ref= code, so it prefills
+    // the same way. ?ref= wins on the rare chance both are present.
+    referralCode: params.get('ref') || params.get('code') || undefined,
     artist: params.get('artist') || undefined,
     utmSource: params.get('utm_source') || undefined,
     utmMedium: params.get('utm_medium') || undefined,
@@ -35,6 +38,22 @@ export function captureFromUrl(): { attribution: Omit<Attribution, 'capturedAt'>
   };
   const hasAnyParam = Object.values(attribution).some(Boolean);
   return { attribution, hasAnyParam };
+}
+
+// A ?code= link names a fandom, not a specific artist string — resolved
+// server-side (lib/base-partners.ts) so the only thing a visitor's own link
+// reveals is the fandom it belongs to, never the partner's identity or
+// target/count. Returns null on any invalid/inactive code or network error,
+// in which case the code still prefills the form (above) but doesn't
+// auto-select an artist.
+export async function resolveBaseCodeArtist(code: string): Promise<string | null> {
+  try {
+    const res = await fetch(`/api/base-code/${encodeURIComponent(code)}`);
+    const data = await res.json();
+    return data.valid && typeof data.fandom === 'string' ? data.fandom : null;
+  } catch {
+    return null;
+  }
 }
 
 export function readAttribution(): Attribution | null {
