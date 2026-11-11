@@ -44,11 +44,14 @@ interface ContributionContextValue {
   // fired) — the planet's "impact" animation, so it's timed to when the
   // particle visually lands rather than the moment you tapped.
   reactionNonce: number;
-  // Bumped only by the floating GIVE button specifically (not the
-  // in-section action buttons that also go through addAction) — drives the
-  // one-shot Santa-on-a-sleigh flight (SantaSleigh.tsx), a seasonal touch
-  // tied to GIVE's own "big" gesture rather than every small contribution.
-  santaNonce: number;
+  // Set only by the floating GIVE button specifically (not the in-section
+  // action buttons that also go through addAction) — drives the one-shot
+  // Santa-on-a-sleigh flight (SantaSleigh.tsx) from GIVE's own on-screen
+  // position spiraling in toward the planet, a seasonal touch tied to
+  // GIVE's own "big" gesture rather than every small contribution. id
+  // changes on every tap (even if the coordinates happen to repeat) so the
+  // watcher can always tell a new flight apart from the one just finishing.
+  santaFlight: { id: number; fromX: number; fromY: number; toX: number; toY: number } | null;
   // A quick "here's the app" screenshot flash, triggered by tapping the
   // planet itself (see PlanetSwiper's tap-vs-drag handling).
   previewVisible: boolean;
@@ -66,7 +69,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [toastNonce, setToastNonce] = useState(0);
   const [reactionNonce, setReactionNonce] = useState(0);
-  const [santaNonce, setSantaNonce] = useState(0);
+  const [santaFlight, setSantaFlight] = useState<ContributionContextValue['santaFlight']>(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
@@ -99,18 +102,23 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     setPreviewVisible(true);
   }, []);
 
+  // Shared by spawnParticle and zapFromPoint's own santaFlight path — both
+  // fly toward wherever the tracked planet currently is, falling back to
+  // the viewport center if no planet is mounted/tracked yet.
+  const getPlanetCenter = useCallback(() => {
+    const planetEl = planetRef.current;
+    if (planetEl) {
+      const pr = planetEl.getBoundingClientRect();
+      return { x: pr.left + pr.width / 2, y: pr.top + pr.height / 2 };
+    }
+    return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  }, []);
+
   // Shared by the in-section action buttons (origin = the button that was
   // clicked) and the site-wide floating ZAP button (origin = its fixed
   // on-screen position, since it doesn't sit next to the planet).
   const spawnParticle = useCallback((fromX: number, fromY: number, value: number) => {
-    const planetEl = planetRef.current;
-    let toX = window.innerWidth / 2;
-    let toY = window.innerHeight / 2;
-    if (planetEl) {
-      const pr = planetEl.getBoundingClientRect();
-      toX = pr.left + pr.width / 2;
-      toY = pr.top + pr.height / 2;
-    }
+    const { x: toX, y: toY } = getPlanetCenter();
     const id = Date.now() + Math.random();
     const particle: Particle = { id, fromX, fromY, dx: toX - fromX, dy: toY - fromY };
     setScore((s) => s + value);
@@ -120,7 +128,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       setParticles((ps) => ps.filter((p) => p.id !== id));
       setReactionNonce((n) => n + 1);
     }, 900);
-  }, []);
+  }, [getPlanetCenter]);
 
   const addAction = useCallback(
     (value: number) => (e: MouseEvent<HTMLButtonElement>) => {
@@ -133,9 +141,10 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const zapFromPoint = useCallback(
     (value: number, origin: { x: number; y: number }) => {
       spawnParticle(origin.x, origin.y, value);
-      setSantaNonce((n) => n + 1);
+      const { x: toX, y: toY } = getPlanetCenter();
+      setSantaFlight({ id: Date.now() + Math.random(), fromX: origin.x, fromY: origin.y, toX, toY });
     },
-    [spawnParticle]
+    [spawnParticle, getPlanetCenter]
   );
 
   const glowIntensity = Math.min(1, score / 90);
@@ -159,7 +168,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
-      santaNonce,
+      santaFlight,
       previewVisible,
       previewFading,
       triggerPreview,
@@ -177,7 +186,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
-      santaNonce,
+      santaFlight,
       previewVisible,
       previewFading,
       triggerPreview,

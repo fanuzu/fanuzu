@@ -73,6 +73,22 @@ export default function ZapButton() {
     >
       <span style={{ fontSize: 20, lineHeight: 1 }}>👆</span>
       <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em' }}>GIVE</span>
+      {/* Seasonal touch, purely decorative — perched on top of the circle,
+          tilted like a hat actually worn rather than a flat sticker. */}
+      <svg
+        aria-hidden
+        viewBox="0 0 64 64"
+        width={34}
+        height={34}
+        style={{ position: 'absolute', top: -16, left: -4, transform: 'rotate(-18deg)', pointerEvents: 'none' }}
+      >
+        <path
+          d="M10 46 C 8 20, 40 2, 55 20 C 61 28, 50 35, 43 39 L 15 55 C 9 57, 7 51, 10 46 Z"
+          fill="#E8373F"
+        />
+        <rect x="2" y="40" width="46" height="13" rx="6.5" fill="#FFFAFC" transform="rotate(-20 25 46.5)" />
+        <circle cx="55" cy="19" r="7" fill="#FFFAFC" />
+      </svg>
     </button>
   );
 }
