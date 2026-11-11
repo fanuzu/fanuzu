@@ -59,7 +59,15 @@ export default function Nav() {
           gap: 'clamp(8px,3vw,16px)',
         }}
       >
-        <Logo spin />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Logo spin />
+          <span
+            aria-hidden
+            style={{ fontSize: 16, lineHeight: 1, animation: 'twinkle 2.6s ease-in-out infinite' }}
+          >
+            ❄️
+          </span>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px,2vw,10px)' }}>
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button

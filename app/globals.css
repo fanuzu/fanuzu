@@ -47,6 +47,11 @@
   55% { opacity: .9; }
   100% { transform: translateX(420px) scaleX(1); opacity: 0; }
 }
+@keyframes snowFall {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(var(--drift), 55vh); }
+  100% { transform: translate(0, 115vh); }
+}
 @keyframes modalBackdropIn {
   from { opacity: 0; }
   to { opacity: 1; }

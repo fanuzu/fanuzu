@@ -8,6 +8,7 @@ import PlanetAtmosphere from './PlanetAtmosphere';
 import StarField from './StarField';
 import MeteorShower from './MeteorShower';
 import ParticleLayer from './ParticleLayer';
+import SnowFall from './SnowFall';
 import Nav from './Nav';
 import Hero from './Hero';
 import Experience from './Experience';
@@ -35,6 +36,7 @@ export default function LandingPage() {
               <StarField />
               <MeteorShower />
               <ParticleLayer />
+              <SnowFall />
               <Nav />
               <Hero />
               <Experience />
