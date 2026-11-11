@@ -4,6 +4,7 @@ import { LangProvider } from '@/components/providers/LangProvider';
 import { ContributionProvider } from '@/components/providers/ContributionProvider';
 import { PlanetThemeProvider } from '@/components/providers/PlanetThemeProvider';
 import { PreregModalProvider } from '@/components/providers/PreregModalProvider';
+import { CarolProvider } from '@/components/providers/CarolProvider';
 import PlanetAtmosphere from './PlanetAtmosphere';
 import StarField from './StarField';
 import MeteorShower from './MeteorShower';
@@ -23,7 +24,6 @@ import AttributionTracker from './AttributionTracker';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
 import SantaSleigh from './SantaSleigh';
-import BackgroundCarol from './BackgroundCarol';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
 export default function LandingPage() {
@@ -32,29 +32,30 @@ export default function LandingPage() {
       <ContributionProvider>
         <PlanetThemeProvider>
           <PreregModalProvider>
-            <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
-              <AttributionTracker />
-              <PlanetAtmosphere />
-              <StarField />
-              <MeteorShower />
-              <ParticleLayer />
-              <SnowFall />
-              <Nav />
-              <Hero />
-              <Experience />
-              <Campaign />
-              <Passport />
-              <Origin />
-              <Compare />
-              <Prereg />
-              <Footer />
-              <ZapButton />
-              <ContributionToast />
-              <SantaSleigh />
-              <BackgroundCarol />
-              <AppPreviewOverlay />
-              <PreregModal />
-            </div>
+            <CarolProvider>
+              <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
+                <AttributionTracker />
+                <PlanetAtmosphere />
+                <StarField />
+                <MeteorShower />
+                <ParticleLayer />
+                <SnowFall />
+                <Nav />
+                <Hero />
+                <Experience />
+                <Campaign />
+                <Passport />
+                <Origin />
+                <Compare />
+                <Prereg />
+                <Footer />
+                <ZapButton />
+                <ContributionToast />
+                <SantaSleigh />
+                <AppPreviewOverlay />
+                <PreregModal />
+              </div>
+            </CarolProvider>
           </PreregModalProvider>
         </PlanetThemeProvider>
       </ContributionProvider>

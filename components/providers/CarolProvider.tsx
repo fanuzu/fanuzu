@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 
 const VOLUME = 0.32;
 const MUTE_KEY = 'fanuzu_carol_muted';
@@ -8,16 +8,31 @@ const MUTE_KEY = 'fanuzu_carol_muted';
 // browsers that block autoplay-with-sound until a real user gesture.
 const UNLOCK_EVENTS: (keyof DocumentEventMap)[] = ['pointerdown', 'keydown', 'touchstart'];
 
+interface CarolContextValue {
+  muted: boolean;
+  ready: boolean;
+  toggleMute: () => void;
+}
+
+const CarolContext = createContext<CarolContextValue | null>(null);
+
 // Seasonal background loop, independent of SantaSleigh's short GIVE-tap
-// jingle (a different, longer file — see public/audio/carol-loop.mp3).
+// bell accent (a different, longer file — see public/audio/carol-loop.mp3).
+// Deliberately not the same Jingle Bells recording as that accent: the two
+// play simultaneously, and overlapping the same melody at a different
+// offset read as a phasing glitch rather than an intentional sound effect.
 // Browsers refuse audio-with-sound before any user gesture, so this tries
 // to start immediately and, if that's rejected, falls back to starting on
 // the visitor's very first tap/click/key anywhere on the page — which also
 // covers the common case where that first tap IS the auto-opening pre-reg
-// modal. A small corner toggle (not asked for explicitly, but looping
-// audio with zero way to silence it is a real annoyance/accessibility
-// issue) remembers the visitor's mute choice across visits.
-export default function BackgroundCarol() {
+// modal.
+//
+// The audio element itself lives here (mounted once for the page's whole
+// life), but the mute toggle is rendered by Nav — a context provider
+// rather than a single self-contained component so the control can live
+// next to the language switcher instead of a hard-to-notice floating
+// corner icon.
+export function CarolProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [muted, setMuted] = useState(false);
   const [ready, setReady] = useState(false);
@@ -64,35 +79,15 @@ export default function BackgroundCarol() {
   }
 
   return (
-    <>
+    <CarolContext.Provider value={{ muted, ready, toggleMute }}>
+      {children}
       <audio ref={audioRef} src="/audio/carol-loop.mp3" loop preload="auto" />
-      {ready && (
-        <button
-          onClick={toggleMute}
-          aria-label={muted ? 'Unmute background carol' : 'Mute background carol'}
-          style={{
-            position: 'fixed',
-            left: 16,
-            bottom: 'max(16px, env(safe-area-inset-bottom))',
-            zIndex: 150,
-            width: 38,
-            height: 38,
-            borderRadius: '50%',
-            border: '1px solid rgba(255,255,255,.18)',
-            background: 'rgba(10,6,19,.72)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            color: '#FFFAFC',
-            fontSize: 15,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {muted ? '🔇' : '🔔'}
-        </button>
-      )}
-    </>
+    </CarolContext.Provider>
   );
+}
+
+export function useCarol(): CarolContextValue {
+  const ctx = useContext(CarolContext);
+  if (!ctx) throw new Error('useCarol must be used within a CarolProvider');
+  return ctx;
 }

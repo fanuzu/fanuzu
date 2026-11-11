@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
+import { useCarol } from '@/components/providers/CarolProvider';
 import Logo from './Logo';
 
 export default function Nav() {
   const { tr, lang, setLang, langList } = useLang();
   const { openModal } = usePreregModal();
+  const { muted, ready: carolReady, toggleMute } = useCarol();
   const [isScrolled, setIsScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
@@ -69,6 +71,29 @@ export default function Nav() {
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px,2vw,10px)' }}>
+          {carolReady && (
+            <button
+              onClick={toggleMute}
+              aria-label={muted ? 'Unmute background carol' : 'Mute background carol'}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'clamp(28px,7vw,34px)',
+                height: 'clamp(28px,7vw,34px)',
+                flex: '0 0 auto',
+                border: '1px solid rgba(255,255,255,.1)',
+                background: 'rgba(255,255,255,.06)',
+                color: '#FFFAFC',
+                fontSize: 'clamp(12px,3vw,14px)',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              {muted ? '🔇' : '🔔'}
+            </button>
+          )}
           <div ref={langMenuRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setLangOpen((o) => !o)}
