@@ -23,6 +23,7 @@ import AttributionTracker from './AttributionTracker';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
 import SantaSleigh from './SantaSleigh';
+import BackgroundCarol from './BackgroundCarol';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
 export default function LandingPage() {
@@ -50,6 +51,7 @@ export default function LandingPage() {
               <ZapButton />
               <ContributionToast />
               <SantaSleigh />
+              <BackgroundCarol />
               <AppPreviewOverlay />
               <PreregModal />
             </div>
