@@ -76,13 +76,23 @@ export default function ZapButton() {
       {/* Seasonal touch, purely decorative — the button IS Santa's head: the
           fur band hugs the top of the circle (centered, nearly full width),
           with the cone rising from center and drooping off to the side,
-          same as the classic "hat on a round avatar" treatment. */}
+          same as the classic "hat on a round avatar" treatment. Tilted
+          rather than dead-center so it reads as actually worn — pivoted
+          near where the band meets the head, not the shape's own center,
+          so it rocks sideways on the head instead of lifting off it. */}
       <svg
         aria-hidden
         viewBox="0 0 100 60"
         width={78}
         height={47}
-        style={{ position: 'absolute', top: -25, left: -5, pointerEvents: 'none' }}
+        style={{
+          position: 'absolute',
+          top: -25,
+          left: -5,
+          pointerEvents: 'none',
+          transform: 'rotate(-11deg)',
+          transformOrigin: '47% 82%',
+        }}
       >
         <path
           d="M14 42 C 9 12, 42 -4, 63 7 C 86 18, 94 30, 85 38 C 78 44, 54 45, 36 45 Z"
