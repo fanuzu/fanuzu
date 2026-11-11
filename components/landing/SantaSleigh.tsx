@@ -16,6 +16,7 @@ export default function SantaSleigh() {
   const [flying, setFlying] = useState(false);
   const isFirstRender = useRef(true);
   const hideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -28,27 +29,42 @@ export default function SantaSleigh() {
     requestAnimationFrame(() => setFlying(true));
     clearTimeout(hideTimer.current);
     hideTimer.current = setTimeout(() => setFlying(false), FLIGHT_MS);
+
+    // GIVE is a direct click, so this satisfies every browser's autoplay-
+    // with-sound gesture requirement. Rewind first so a rapid repeat tap
+    // restarts the jingle instead of being a no-op on an already-playing
+    // <audio> element.
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.volume = 0.55;
+      audio.play().catch(() => {});
+    }
+
     return () => clearTimeout(hideTimer.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [santaNonce]);
 
-  if (!flying) return null;
-
   return (
-    <div
-      aria-hidden
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 200,
-        pointerEvents: 'none',
-        fontSize: 'clamp(28px,6vw,46px)',
-        whiteSpace: 'nowrap',
-        animation: `santaFly ${FLIGHT_MS}ms ease-in-out`,
-      }}
-    >
-      🦌🛷🎅
-    </div>
+    <>
+      <audio ref={audioRef} src="/audio/jingle.mp3" preload="auto" style={{ display: 'none' }} />
+      {flying && (
+        <div
+          aria-hidden
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 200,
+            pointerEvents: 'none',
+            fontSize: 'clamp(28px,6vw,46px)',
+            whiteSpace: 'nowrap',
+            animation: `santaFly ${FLIGHT_MS}ms ease-in-out`,
+          }}
+        >
+          🦌🛷🎅
+        </div>
+      )}
+    </>
   );
 }
