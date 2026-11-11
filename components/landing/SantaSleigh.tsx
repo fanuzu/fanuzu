@@ -35,7 +35,7 @@ export default function SantaSleigh() {
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = 0;
-      audio.volume = 0.55;
+      audio.volume = 0.5;
       audio.play().catch(() => {});
     }
 
@@ -89,7 +89,7 @@ export default function SantaSleigh() {
 
   return (
     <>
-      <audio ref={audioRef} src="/audio/jingle.mp3" preload="auto" style={{ display: 'none' }} />
+      <audio ref={audioRef} src="/audio/give-bell.mp3" preload="auto" style={{ display: 'none' }} />
       <div
         ref={elRef}
         aria-hidden
