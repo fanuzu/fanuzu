@@ -157,6 +157,14 @@ const SCHEMA_SQL = `
     ('hearts2hearts', 'Hearts2Hearts', NULL, 'SM Entertainment')
   ON CONFLICT (slug) DO NOTHING;
 
+  -- Picker refresh: A2O LITE and RESCENE added. fandom_name/agency left NULL
+  -- where not confidently known rather than guessed; an admin can fill them
+  -- in later from the Artist registry screen.
+  INSERT INTO artists (slug, artist_name, fandom_name, agency) VALUES
+    ('a2o lite', 'A2O LITE', NULL, NULL),
+    ('rescene', 'RESCENE', NULL, NULL)
+  ON CONFLICT (slug) DO NOTHING;
+
   -- Fandom-level querying (admin CSV export, per-artist breakdown) leans on
   -- this join constantly — preregistrations was only indexed on the raw
   -- normalized name before artist_id existed.

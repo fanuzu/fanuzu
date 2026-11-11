@@ -23,6 +23,8 @@ export const POPULAR_ARTISTS: string[] = [
   'TWS',
   'CORTIS',
   'Hearts2Hearts',
+  'A2O LITE',
+  'RESCENE',
 ];
 
 // Same normalization preregistrations.artist_name_normalized has always
