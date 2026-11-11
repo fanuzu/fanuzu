@@ -44,6 +44,11 @@ interface ContributionContextValue {
   // fired) — the planet's "impact" animation, so it's timed to when the
   // particle visually lands rather than the moment you tapped.
   reactionNonce: number;
+  // Bumped only by the floating GIVE button specifically (not the
+  // in-section action buttons that also go through addAction) — drives the
+  // one-shot Santa-on-a-sleigh flight (SantaSleigh.tsx), a seasonal touch
+  // tied to GIVE's own "big" gesture rather than every small contribution.
+  santaNonce: number;
   // A quick "here's the app" screenshot flash, triggered by tapping the
   // planet itself (see PlanetSwiper's tap-vs-drag handling).
   previewVisible: boolean;
@@ -61,6 +66,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [toastNonce, setToastNonce] = useState(0);
   const [reactionNonce, setReactionNonce] = useState(0);
+  const [santaNonce, setSantaNonce] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
@@ -127,6 +133,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const zapFromPoint = useCallback(
     (value: number, origin: { x: number; y: number }) => {
       spawnParticle(origin.x, origin.y, value);
+      setSantaNonce((n) => n + 1);
     },
     [spawnParticle]
   );
@@ -152,6 +159,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
+      santaNonce,
       previewVisible,
       previewFading,
       triggerPreview,
@@ -169,6 +177,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       zapFromPoint,
       toastNonce,
       reactionNonce,
+      santaNonce,
       previewVisible,
       previewFading,
       triggerPreview,
