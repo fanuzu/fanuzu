@@ -5,6 +5,10 @@ import { useContribution } from '@/components/providers/ContributionProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
 const VISIBLE_MS = 3400;
+// Don't nudge toward the app on the very first post-upgrade tap — that
+// still feels like part of the upgrade moment. Wait until a handful of
+// taps show the person is deliberately continuing past it.
+const MIN_TAPS_BEFORE_CTA = 5;
 // Doubles as the launch flag: unset/empty means the app isn't out yet, so
 // there's nowhere real to send a tap — set it (a NEXT_PUBLIC_ var, since
 // this reads in the browser) once a real store link exists and this
@@ -24,6 +28,7 @@ export default function AppLevelCta() {
   const { openModal } = usePreregModal();
   const [visible, setVisible] = useState(false);
   const isFirstRender = useRef(true);
+  const tapCount = useRef(0);
   const hideTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
@@ -31,6 +36,8 @@ export default function AppLevelCta() {
       isFirstRender.current = false;
       return;
     }
+    tapCount.current += 1;
+    if (tapCount.current < MIN_TAPS_BEFORE_CTA) return;
     setVisible(true);
     clearTimeout(hideTimer.current);
     hideTimer.current = setTimeout(() => setVisible(false), VISIBLE_MS);
