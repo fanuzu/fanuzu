@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 export const runtime = 'nodejs';
-export const alt = 'FANUZU | 팬의 시간을 기여로';
+export const alt = 'FANUZU | 최애를 위한 우주로 초대';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -17,9 +17,11 @@ export const contentType = 'image/png';
 // Satori (the renderer behind ImageResponse) ships no default CJK glyphs,
 // so the Korean tagline would render blank without an explicit Korean
 // font — assets/fonts/NotoSansKR-*.ttf, subset with pyftsubset down to just
-// the ~37 characters this file actually draws (full Noto Sans KR is ~6MB
-// per weight; the subset is under 6KB) so it isn't a multi-megabyte addition
-// to the repo for three glyphs' worth of Korean text.
+// the ~39 characters this file actually draws (full Noto Sans KR is ~6MB
+// per weight; the subset is under 7KB) so it isn't a multi-megabyte addition
+// to the repo for a few words' worth of Korean text. Re-subset (see git
+// history for the pyftsubset command) whenever the Korean text here changes
+// to a character not already covered — an uncovered glyph renders blank.
 // Deterministic pseudo-random, same approach as StarField/MeteorShower —
 // this image is only ever generated once at build time, but a plain
 // sine-seeded spread still looks better than a regular grid.
@@ -175,7 +177,7 @@ export default async function OpengraphImage() {
           </div>
 
           <div style={{ display: 'flex', marginTop: 28, fontSize: 36, color: '#B8AFC4', fontWeight: 500 }}>
-            팬의 시간을 기여로
+            최애를 위한 우주로 초대
           </div>
           <div style={{ display: 'flex', marginTop: 44, fontSize: 24, color: '#6B6478', letterSpacing: 1 }}>
             fanuzu.co.kr
