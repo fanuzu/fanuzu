@@ -3,7 +3,7 @@ export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant' | 'id' | 'fil
 export interface TranslationSet {
   nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string };
   hero: {
-    badge: string; t1: string; t2: string; t3: string; coreMessage: string; d1: string; d2: string; d3: string;
+    badge: string; t1: string; t2: string; t3: string; d1: string; d2: string; d3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; subIntro: string[]; sub: string[];
     statLabel: string; statNumber: string; statSub: string; liveViewersLabel: string; tapHint: string; previewCaption: string; previewCaptionInside: string; previewCaptionGrowth: string;
   };
@@ -16,7 +16,7 @@ export interface TranslationSet {
     t1: string; t2: string; lead: string; d2: string;
     s1l: string; s1t: string; s1d: string; s2l: string; s2t: string; s2d: string; s3l: string; s3t: string; s3d: string;
     examplesLabel: string; examples: string[]; popNote: string;
-    highlight: string; tagline: string; result: string;
+    tagline: string;
   };
   passport: {
     t1: string; t2: string; d1: string; d2: string; cardLabel: string; nickname: string; planet: string;
@@ -62,12 +62,11 @@ export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 bias 를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
-    coreMessage:'우리의 행동이 K-POP 아티스트의 힘이 돼요.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
     ctaPrimary:'내 bias 행성에 참여하기',ctaPrereg:'나의 bias 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
-    subIntro:['너의 bias를 향한 노력이, 잊혀지지 않도록.','결제가 팬심의 전부가 되지 않도록.'],
+    subIntro:['너의 bias를 향한 노력이, 잊혀지지 않도록.'],
     sub:['팬의 행동이 POP이 돼요','POP이 우리 행성을 키워요','QUEST로 함께 움직여요','CAMPAIGN으로 힘을 모아요'],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionInside:'K-pop, K-culture, Beauty, Trip, 무엇이든지 물어볼 수 있어요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   exp:{t1:'총공이',t2:'팬덤 행성을 성장시켜요.',
@@ -92,9 +91,7 @@ ko: {
     s3l:'3단계',s3t:'캠페인',s3d:'커진 힘으로 컴백, 생일, 기부를 지원해요.',
     examplesLabel:'퀘스트 예시',examples:['컴백곡 스트리밍하기','시상식 투표 참여하기','신곡 영상 함께 보기','SNS에 컴백 소식 알리기'],
     popNote:'일부 퀘스트는 POP도 줘요.',
-    highlight:'함께 만든 힘을, 아티스트를 위한 행동으로.',
-    tagline:'흩어진 행동을 하나의 캠페인으로.',
-    result:'함께 만든 결과는 기록되고 FPI와 행성 성장으로 이어져요.'},
+    tagline:'흩어진 행동을 하나의 캠페인으로.'},
   passport:{t1:'좋아했다는 기억 말고,',t2:'함께했다는 기록.',
     d1:'PASSPORT는 내가 얼마나 함께했는지 보여줘요.',
     d2:'퀘스트, 캠페인, 함께한 순간이 쌓여서 응원의 기록이 돼요.',
@@ -161,7 +158,6 @@ ko: {
 en: {
   nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
-    coreMessage:'Our actions give power to K-POP artists.',
     d1:'Walk, stream, view, take part. Every fan action becomes POP, which helps our fandom planet grow.',
     d2:'FANUZU is a K-POP fandom platform that turns scattered fan actions into collective power.',
     d3:'As fan contributions gather, the fandom planet grows — enabling even bigger CAMPAIGNS and actions for our artists.',
@@ -191,9 +187,7 @@ en: {
     s3l:'Step 3',s3t:'Campaign',s3d:'That power fuels comebacks, birthdays, donations.',
     examplesLabel:'Example QUESTS',examples:['Stream the comeback track','Vote for an award','Watch the new MV','Share the comeback on social'],
     popNote:'Some QUESTS reward POP too.',
-    highlight:'Our power, turned into action for the artist.',
-    tagline:'Scattered actions, one CAMPAIGN.',
-    result:'What we build gets recorded — in FPI and the planet’s growth.'},
+    tagline:'Scattered actions, one CAMPAIGN.'},
   passport:{t1:'Not just a memory of loving them —',t2:'proof you were there.',
     d1:'PASSPORT shows how long you’ve been here.',
     d2:'QUESTS, CAMPAIGNS, every moment — recorded as proof of your support.',
@@ -260,7 +254,6 @@ en: {
 ja: {
   nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
-    coreMessage:'私たちのアクションが、K-POPアーティストの力になる。',
     d1:'ストリーミング、投票、応援、参加。ファンのアクションはPOPとして記録され、私たちのファンダム惑星を育てます。',
     d2:'ひとりひとりのファン活動を、ファンダムの大きな力につなげるK-POPファンダムプラットフォーム。',
     d3:'ファンダムが成長すると、QUESTとCAMPAIGNを通じて、その力をアーティストのためのアクションへつなげられます。',
@@ -290,9 +283,7 @@ ja: {
     s3l:'STEP 3',s3t:'CAMPAIGN',s3d:'その力でカムバックや誕生日、寄付を支える。',
     examplesLabel:'QUESTの例',examples:['カムバック曲をストリーミング','授賞式に投票','新しいMVを見る','SNSでカムバックを広める'],
     popNote:'一部のQUESTはPOPも獲得できる。',
-    highlight:'みんなの力を、アーティストのための行動へ。',
-    tagline:'バラバラな行動を、ひとつのCAMPAIGNに。',
-    result:'作った結果は記録され、FPIと惑星の成長につながる。'},
+    tagline:'バラバラな行動を、ひとつのCAMPAIGNに。'},
   passport:{t1:'「好きだった」記憶じゃなく、',t2:'「一緒にいた」証明。',
     d1:'PASSPORTは、どれだけ一緒にいたかを見せる。',
     d2:'QUEST、CAMPAIGN、瞬間。積み重ねが応援の記録になる。',
@@ -359,7 +350,6 @@ ja: {
 es: {
   nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
-    coreMessage:'Nuestras acciones dan fuerza a los artistas de K-POP.',
     d1:'Streaming, votaciones, apoyo y participación. Cada acción se convierte en POP y hace crecer el planeta de nuestro fandom.',
     d2:'Una plataforma de fandom K-POP que convierte acciones dispersas en fuerza colectiva.',
     d3:'A medida que el fandom crece, QUEST y CAMPAIGN convierten esa fuerza en acciones reales para el artista.',
@@ -389,9 +379,7 @@ es: {
     s3l:'Paso 3',s3t:'Campaña',s3d:'Esa fuerza apoya comebacks, cumpleaños, donaciones.',
     examplesLabel:'QUESTS de ejemplo',examples:['Hacer streaming del comeback','Votar en una premiación','Ver el nuevo MV','Compartir el comeback en redes'],
     popNote:'Algunos QUESTS también dan POP.',
-    highlight:'Nuestra fuerza, convertida en acción para el artista.',
-    tagline:'Acciones dispersas, un solo CAMPAIGN.',
-    result:'Lo que logramos se registra — en el FPI y en el crecimiento del planeta.'},
+    tagline:'Acciones dispersas, un solo CAMPAIGN.'},
   passport:{t1:'No solo un recuerdo de haber amado —',t2:'la prueba de haber estado ahí.',
     d1:'PASSPORT muestra cuánto tiempo llevas aquí.',
     d2:'QUESTS, CAMPAIGNS, momentos — todo se convierte en tu historial de apoyo.',
@@ -458,7 +446,6 @@ es: {
 zhHans: {
   nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
-    coreMessage:'我们的行动，汇聚成 K-POP 艺人的力量。',
     d1:'打榜、投票、应援、参与。每一次粉丝行动都会记录为 POP，并推动我们的粉丝星球成长。',
     d2:'把分散的粉丝行动汇聚成共同力量的 K-POP 粉丝平台。',
     d3:'当粉丝星球不断成长，我们就能通过 QUEST 和 CAMPAIGN 一起行动，把力量传递给艺人。',
@@ -488,9 +475,7 @@ zhHans: {
     s3l:'第三步',s3t:'CAMPAIGN',s3d:'这股力量支持回归、生日、公益。',
     examplesLabel:'QUEST范例',examples:['为回归歌曲打榜','参与颁奖投票','一起看新 MV','在社交平台宣传回归'],
     popNote:'部分QUEST还会奖励POP。',
-    highlight:'把我们的力量，变成艺人的行动。',
-    tagline:'分散的行动，汇成一个CAMPAIGN。',
-    result:'我们的成果会被记录，反映在FPI与星球成长中。'},
+    tagline:'分散的行动，汇成一个CAMPAIGN。'},
   passport:{t1:'不只是喜欢过的回忆，',t2:'更是同行过的证明。',
     d1:'PASSPORT记录你陪伴了多久。',
     d2:'QUEST、CAMPAIGN、瞬间，累积成你的应援记录。',
@@ -557,7 +542,6 @@ zhHans: {
 zhHant: {
   nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
-    coreMessage:'我們的行動，匯聚成 K-POP 藝人的力量。',
     d1:'串流、投票、應援、參與。每一次粉絲行動都會記錄為 POP，讓我們的粉絲星球持續成長。',
     d2:'把分散的粉絲行動匯聚成共同力量的 K-POP 粉絲平台。',
     d3:'當粉絲星球持續成長，我們就能透過 QUEST 和 CAMPAIGN 一起行動，把力量傳遞給藝人。',
@@ -587,9 +571,7 @@ zhHant: {
     s3l:'第三步',s3t:'CAMPAIGN',s3d:'這股力量支持回歸、生日、公益。',
     examplesLabel:'QUEST範例',examples:['為回歸歌曲衝串流','參與頒獎投票','一起看新 MV','在社群平台宣傳回歸'],
     popNote:'部分QUEST還會獎勵POP。',
-    highlight:'把我們的力量，變成藝人的行動。',
-    tagline:'分散的行動，匯成一個CAMPAIGN。',
-    result:'我們的成果會被記錄，反映在FPI與星球成長中。'},
+    tagline:'分散的行動，匯成一個CAMPAIGN。'},
   passport:{t1:'不只是喜歡過的回憶，',t2:'更是同行過的證明。',
     d1:'PASSPORT記錄你陪伴了多久。',
     d2:'QUEST、CAMPAIGN、瞬間，累積成你的應援記錄。',
@@ -656,7 +638,6 @@ zhHant: {
 id: {
   nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat bintang kita',t2:'bersinar paling terang',t3:'di alam semesta fandom.',
-    coreMessage:'Aksi kita memberi kekuatan untuk artis K-POP.',
     d1:'Jalan, streaming, tonton, ikut serta. Setiap aksi fan jadi POP, yang membantu planet fandom kita tumbuh.',
     d2:'FANUZU adalah platform fandom K-POP yang mengubah aksi fan yang terpisah menjadi kekuatan kolektif.',
     d3:'Saat kontribusi fan terkumpul, planet fandom tumbuh — memungkinkan CAMPAIGN dan aksi yang lebih besar untuk artis kita.',
@@ -686,9 +667,7 @@ id: {
     s3l:'Langkah 3',s3t:'Campaign',s3d:'Kekuatan itu mendukung comeback, ulang tahun, donasi.',
     examplesLabel:'Contoh QUEST',examples:['Streaming lagu comeback','Vote untuk penghargaan','Tonton MV baru','Bagikan comeback di media sosial'],
     popNote:'Beberapa QUEST juga memberi POP.',
-    highlight:'Kekuatan kita, diubah jadi aksi untuk sang artis.',
-    tagline:'Aksi yang terpisah, menjadi satu CAMPAIGN.',
-    result:'Apa yang kita bangun tercatat — di FPI dan pertumbuhan planet.'},
+    tagline:'Aksi yang terpisah, menjadi satu CAMPAIGN.'},
   passport:{t1:'Bukan cuma kenangan menyukai mereka —',t2:'bukti kamu ada di sana.',
     d1:'PASSPORT menunjukkan sudah berapa lama kamu di sini.',
     d2:'QUEST, CAMPAIGN, setiap momen — tercatat sebagai bukti dukunganmu.',
@@ -755,7 +734,6 @@ id: {
 fil: {
   nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang bituin natin',t3:'sa fandom universe.',
-    coreMessage:'Ang mga kilos natin ang nagbibigay lakas sa mga K-POP artist.',
     d1:'Maglakad, mag-stream, manood, lumahok. Bawat kilos ng fan ay nagiging POP, na tumutulong sa paglaki ng planeta ng ating fandom.',
     d2:'Ang FANUZU ay isang K-POP fandom platform na ginagawang collective power ang magkakahiwalay na kilos ng mga fan.',
     d3:'Habang dumarami ang kontribusyon ng mga fan, lumalaki ang planeta ng fandom — na nagbibigay-daan sa mas malalaking CAMPAIGN at kilos para sa ating mga artist.',
@@ -785,9 +763,7 @@ fil: {
     s3l:'Hakbang 3',s3t:'Campaign',s3d:'Ang lakas na iyon ang sumusuporta sa comeback, birthday, donasyon.',
     examplesLabel:'Halimbawang QUEST',examples:['I-stream ang comeback track','Bumoto para sa isang award','Panoorin ang bagong MV','I-share ang comeback sa social media'],
     popNote:'May mga QUEST na nagbibigay rin ng POP.',
-    highlight:'Ang lakas natin, ginawang kilos para sa artist.',
-    tagline:'Magkakahiwalay na kilos, nagiging isang CAMPAIGN.',
-    result:'Naitatala ang binuo natin — sa FPI at sa paglaki ng planeta.'},
+    tagline:'Magkakahiwalay na kilos, nagiging isang CAMPAIGN.'},
   passport:{t1:'Hindi lang alaala ng pagmamahal sa kanila —',t2:'patunay na narito ka.',
     d1:'Ipinapakita ng PASSPORT kung gaano na katagal kang dito.',
     d2:'QUEST, CAMPAIGN, bawat sandali — naitatala bilang patunay ng suporta mo.',
@@ -854,7 +830,6 @@ fil: {
 th: {
   nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ทำให้ดาวของเรา',t2:'สว่างที่สุด',t3:'ในจักรวาลแฟนด้อม',
-    coreMessage:'การกระทำของเราคือพลังให้ศิลปิน K-POP',
     d1:'เดิน ฟัง ดู มีส่วนร่วม ทุกการกระทำของแฟนกลายเป็น POP ที่ช่วยให้ดาวเคราะห์แฟนด้อมของเราเติบโต',
     d2:'FANUZU คือแพลตฟอร์มแฟนด้อม K-POP ที่เปลี่ยนการกระทำของแฟนที่กระจัดกระจายให้กลายเป็นพลังรวมหมู่',
     d3:'เมื่อการสนับสนุนของแฟนรวมกัน ดาวเคราะห์แฟนด้อมก็เติบโต — ทำให้เกิด CAMPAIGN และการกระทำที่ยิ่งใหญ่ขึ้นเพื่อศิลปินของเรา',
@@ -884,9 +859,7 @@ th: {
     s3l:'ขั้นตอนที่ 3',s3t:'Campaign',s3d:'พลังนั้นสนับสนุนคัมแบ็ก วันเกิด และการบริจาค',
     examplesLabel:'ตัวอย่าง QUEST',examples:['สตรีมเพลงคัมแบ็ก','โหวตให้รางวัล','ดู MV ใหม่','แชร์คัมแบ็กบนโซเชียล'],
     popNote:'บาง QUEST ก็ให้ POP ด้วย',
-    highlight:'พลังของเรา เปลี่ยนเป็นการกระทำเพื่อศิลปิน',
-    tagline:'การกระทำที่กระจัดกระจาย รวมเป็นหนึ่ง CAMPAIGN',
-    result:'สิ่งที่เราสร้างจะถูกบันทึกไว้ — ใน FPI และการเติบโตของดาวเคราะห์'},
+    tagline:'การกระทำที่กระจัดกระจาย รวมเป็นหนึ่ง CAMPAIGN'},
   passport:{t1:'ไม่ใช่แค่ความทรงจำที่เคยชอบพวกเขา —',t2:'แต่คือหลักฐานว่าคุณเคยอยู่ตรงนั้น',
     d1:'PASSPORT แสดงให้เห็นว่าคุณอยู่ที่นี่มานานแค่ไหน',
     d2:'QUEST, CAMPAIGN, ทุกช่วงเวลา — ถูกบันทึกไว้เป็นหลักฐานการสนับสนุนของคุณ',
