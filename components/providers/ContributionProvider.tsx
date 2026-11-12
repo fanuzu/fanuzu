@@ -52,6 +52,12 @@ interface ContributionContextValue {
   // changes on every tap (even if the coordinates happen to repeat) so the
   // watcher can always tell a new flight apart from the one just finishing.
   santaFlight: { id: number; fromX: number; fromY: number; toX: number; toY: number } | null;
+  // Bumped exactly once, the moment score crosses from below STAGE2 to at
+  // or above it — the planet's nebula -> formed-planet reveal (see
+  // PlanetSwiper) and the celebratory badge (PlanetUpgradeBadge) both fire
+  // off this, not off score itself, so they trigger once at the crossing
+  // rather than once per contribution after it.
+  planetUpgradedNonce: number;
   // A quick "here's the app" screenshot flash, triggered by tapping the
   // planet itself (see PlanetSwiper's tap-vs-drag handling).
   previewVisible: boolean;
@@ -70,6 +76,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [toastNonce, setToastNonce] = useState(0);
   const [reactionNonce, setReactionNonce] = useState(0);
   const [santaFlight, setSantaFlight] = useState<ContributionContextValue['santaFlight']>(null);
+  const [planetUpgradedNonce, setPlanetUpgradedNonce] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
@@ -121,7 +128,13 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     const { x: toX, y: toY } = getPlanetCenter();
     const id = Date.now() + Math.random();
     const particle: Particle = { id, fromX, fromY, dx: toX - fromX, dy: toY - fromY };
-    setScore((s) => s + value);
+    setScore((s) => {
+      const next = s + value;
+      if (s < STAGE2 && next >= STAGE2) {
+        setPlanetUpgradedNonce((n) => n + 1);
+      }
+      return next;
+    });
     setParticles((ps) => [...ps, particle]);
     setToastNonce((n) => n + 1);
     setTimeout(() => {
@@ -169,6 +182,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       toastNonce,
       reactionNonce,
       santaFlight,
+      planetUpgradedNonce,
       previewVisible,
       previewFading,
       triggerPreview,
@@ -187,6 +201,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       toastNonce,
       reactionNonce,
       santaFlight,
+      planetUpgradedNonce,
       previewVisible,
       previewFading,
       triggerPreview,

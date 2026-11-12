@@ -3,17 +3,31 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
-import { useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
+import { STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
 
+// Shown for every carousel slide, regardless of which planet is selected,
+// until score reaches STAGE2 — nothing is "formed" yet, so swiping between
+// planets pre-upgrade shows the same unformed nebula everywhere rather than
+// three different half-finished states we don't have art for.
+const NEBULA_IMAGE = '/images/nebula.png';
+
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview } = useContribution();
+  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview, score } = useContribution();
   const pulsing = usePlanetReactionPulse();
   const { tr } = useLang();
   const [hintSeen, setHintSeen] = useState(false);
+
+  // A ref (not just the `isUpgraded` value) because loadSlideImages is
+  // called from long-lived pointer-event closures set up once in the mount
+  // effect below (empty deps) — those closures would otherwise see whatever
+  // isUpgraded was true at mount forever, never the current value.
+  const isUpgraded = score >= STAGE2;
+  const isUpgradedRef = useRef(isUpgraded);
+  isUpgradedRef.current = isUpgraded;
 
   const orbRef = useRef<HTMLDivElement | null>(null);
   const imgPrevRef = useRef<HTMLImageElement>(null);
@@ -45,10 +59,12 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
     }
   };
 
+  const slideSrc = (i: number) => (isUpgradedRef.current ? PLANETS[wrap(i)].image : NEBULA_IMAGE);
+
   const loadSlideImages = (i: number) => {
-    if (imgPrevRef.current) imgPrevRef.current.src = PLANETS[wrap(i - 1)].image;
-    if (imgCurRef.current) imgCurRef.current.src = PLANETS[i].image;
-    if (imgNextRef.current) imgNextRef.current.src = PLANETS[wrap(i + 1)].image;
+    if (imgPrevRef.current) imgPrevRef.current.src = slideSrc(i - 1);
+    if (imgCurRef.current) imgCurRef.current.src = slideSrc(i);
+    if (imgNextRef.current) imgNextRef.current.src = slideSrc(i + 1);
   };
 
   const commit = (direction: 1 | -1) => {
@@ -150,6 +166,19 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Live reveal: the moment score crosses into isUpgraded, swap all three
+  // mounted <img> elements from the nebula to each slide's real planet —
+  // without this, the carousel would only pick up the change the next time
+  // the visitor swipes, which could be long after the actual crossing.
+  const wasUpgradedRef = useRef(isUpgraded);
+  useEffect(() => {
+    if (!wasUpgradedRef.current && isUpgraded) {
+      loadSlideImages(indexRef.current);
+    }
+    wasUpgradedRef.current = isUpgraded;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpgraded]);
 
   const planet = PLANETS[index];
 
