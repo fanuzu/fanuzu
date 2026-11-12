@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 export const runtime = 'nodejs';
-export const alt = 'FANUZU | 최애를 위한 우주로 초대';
+export const alt = 'FANUZU | 최애를 위한 우주';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -177,7 +177,7 @@ export default async function OpengraphImage() {
           </div>
 
           <div style={{ display: 'flex', marginTop: 28, fontSize: 36, color: '#B8AFC4', fontWeight: 500 }}>
-            최애를 위한 우주로 초대
+            최애를 위한 우주
           </div>
           <div style={{ display: 'flex', marginTop: 44, fontSize: 24, color: '#6B6478', letterSpacing: 1 }}>
             fanuzu.co.kr
