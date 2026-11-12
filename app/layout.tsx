@@ -10,7 +10,7 @@ const SITE_URL = 'https://fanuzu.co.kr';
 // engines may not fully credit it without distinct URLs per locale.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'FANUZU | 팬의 시간을 기여로',
+  title: 'FANUZU | 최애를 위한 우주',
   description:
     'FANUZU turns fan time into contribution: fans turn actions into POP, grow a fandom planet, and launch real campaigns for the artists they love.',
   alternates: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'FANUZU | 팬의 시간을 기여로',
+    title: 'FANUZU | 최애를 위한 우주',
     description:
       'FANUZU turns fan time into contribution: fans turn actions into POP, grow a fandom planet, and launch real campaigns for the artists they love.',
     url: SITE_URL,
