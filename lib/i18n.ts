@@ -70,7 +70,7 @@ ko: {
     sub:['팬의 행동이 POP이 돼요','POP이 우리 행성을 키워요','QUEST로 함께 움직여요','CAMPAIGN으로 힘을 모아요'],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionInside:'K-pop, K-culture, Beauty, Trip, 무엇이든지 물어볼 수 있어요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   exp:{t1:'총공이',t2:'팬덤 행성을 성장시켜요.',
-    d1:'POP은 그냥 포인트가 아니에요.',d2:'작은 빛이 모이면 행성이 바로 반응해요.',
+    d1:'POP은 별을 빛나게하고 행성을 성장시켜요.',d2:'',
     highlight:'내 순간 하나가 행성을 밝히는 빛이 돼요.',
     buttons:[{label:'음악 감상',value:8},{label:'콘텐츠 참여',value:10},{label:'팬과 소통',value:12},{label:'추억 기록',value:14},{label:'캠페인 참여',value:16}],
     stage0:'행성이 기다리고 있어요.\n오늘의 행동을 기여로.',

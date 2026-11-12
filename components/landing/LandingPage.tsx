@@ -1,5 +1,6 @@
 'use client';
 
+import { useLayoutEffect } from 'react';
 import { LangProvider } from '@/components/providers/LangProvider';
 import { ContributionProvider } from '@/components/providers/ContributionProvider';
 import { PlanetThemeProvider } from '@/components/providers/PlanetThemeProvider';
@@ -29,6 +30,17 @@ import SantaSleigh from './SantaSleigh';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
 export default function LandingPage() {
+  // Browsers restore the prior scroll position on reload by default
+  // (history.scrollRestoration === 'auto'), which drops a visitor back
+  // wherever they'd scrolled to instead of the top. Opting into 'manual'
+  // (as early as possible, before paint) makes every reload start fresh.
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <LangProvider>
       <ContributionProvider>
