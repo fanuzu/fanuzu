@@ -91,7 +91,7 @@ export default function Nav() {
                 fontFamily: 'inherit',
               }}
             >
-              {muted ? '🔇' : '🔔'}
+              {muted ? '🔇' : '🔊'}
             </button>
           )}
           <div ref={langMenuRef} style={{ position: 'relative' }}>
