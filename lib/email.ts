@@ -23,7 +23,7 @@ interface EmailCopy {
 const EMAIL_COPY: Record<Lang, EmailCopy> = {
   ko: {
     subject: '[FANUZU] 사전등록이 완료되었습니다',
-    eyebrow: '행동이 아티스트를 위한 기여가 되는 액션 팬덤, FANUZU입니다.',
+    eyebrow: '나의 최애를 우주에서 가장 빛나게 만드는 FANUZU입니다.',
     title: '사전등록이 완료되었습니다.',
     intro: (a) => `${a} 팬덤 행성에 대한 사전등록이 정상적으로 접수되었습니다.`,
     rewardLine: (n) => `예약된 첫 기여: ${n} POP (FANUZU 정식 오픈 가입 프로세스 완료 후 지급됩니다.)`,
