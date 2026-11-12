@@ -5,6 +5,7 @@ import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
 import { STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
+import { ZAP_VALUE } from './ZapButton';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
 
@@ -34,6 +35,10 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const isUpgradedRef = useRef(isUpgraded);
   isUpgradedRef.current = isUpgraded;
   const formProgress = Math.min(1, score / STAGE2);
+  // A ring alone doesn't tell anyone what to click or why it's moving — an
+  // ambient progress indicator isn't instruction. Spelled out explicitly,
+  // tied to GIVE by name, with a live count rather than a static line.
+  const tapsRemaining = Math.max(0, Math.ceil((STAGE2 - score) / ZAP_VALUE));
 
   // A short, loud animation right at the crossing — without this the
   // nebula just quietly became a planet, which read as "did something
@@ -431,8 +436,32 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
         ))}
       </div>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{planet.label}</div>
-        <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 2 }}>{planet.tagline}</div>
+        {isUpgraded ? (
+          <>
+            <div style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{planet.label}</div>
+            <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 2 }}>{planet.tagline}</div>
+          </>
+        ) : (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 7,
+              padding: '7px 14px',
+              borderRadius: 999,
+              background: 'rgba(255,125,221,.1)',
+              border: '1px solid rgba(255,125,221,.3)',
+              color: '#FFFAFC',
+              fontSize: 12.5,
+              fontWeight: 700,
+            }}
+          >
+            <span style={{ fontSize: 14 }}>👆</span>
+            {tapsRemaining > 0
+              ? `Tap GIVE ${tapsRemaining} more time${tapsRemaining > 1 ? 's' : ''} to finish forming`
+              : 'Your planet is forming…'}
+          </div>
+        )}
       </div>
     </div>
   );

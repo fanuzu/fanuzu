@@ -17,7 +17,7 @@ import { usePreregModal } from '@/components/providers/PreregModalProvider';
 // regardless of scroll position, rather than tracking the planet —
 // simpler and more predictable than a button that repositions itself as
 // you scroll.
-const ZAP_VALUE = 20;
+export const ZAP_VALUE = 20;
 const SCROLL_SETTLE_MS = 700;
 
 export default function ZapButton() {
