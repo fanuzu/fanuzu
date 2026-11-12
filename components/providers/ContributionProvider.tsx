@@ -58,6 +58,11 @@ interface ContributionContextValue {
   // off this, not off score itself, so they trigger once at the crossing
   // rather than once per contribution after it.
   planetUpgradedNonce: number;
+  // Bumped every time GIVE is tapped while the planet has *already*
+  // upgraded (not the crossing tap itself — that fires planetUpgradedNonce
+  // instead) — drives AppLevelCta's nudge toward the app, since there's no
+  // further visual payoff left to give on the web for continued taps.
+  postUpgradeGiveNonce: number;
   // A quick "here's the app" screenshot flash, triggered by tapping the
   // planet itself (see PlanetSwiper's tap-vs-drag handling).
   previewVisible: boolean;
@@ -77,6 +82,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [reactionNonce, setReactionNonce] = useState(0);
   const [santaFlight, setSantaFlight] = useState<ContributionContextValue['santaFlight']>(null);
   const [planetUpgradedNonce, setPlanetUpgradedNonce] = useState(0);
+  const [postUpgradeGiveNonce, setPostUpgradeGiveNonce] = useState(0);
+  const scoreRef = useRef(score);
+  scoreRef.current = score;
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
@@ -153,9 +161,16 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
 
   const zapFromPoint = useCallback(
     (value: number, origin: { x: number; y: number }) => {
+      // Read before spawnParticle's setScore applies this tap's value, so
+      // a tap landing exactly on STAGE2 is "the crossing" (handled by
+      // planetUpgradedNonce), not "already upgraded" (this one).
+      const alreadyUpgraded = scoreRef.current >= STAGE2;
       spawnParticle(origin.x, origin.y, value);
       const { x: toX, y: toY } = getPlanetCenter();
       setSantaFlight({ id: Date.now() + Math.random(), fromX: origin.x, fromY: origin.y, toX, toY });
+      if (alreadyUpgraded) {
+        setPostUpgradeGiveNonce((n) => n + 1);
+      }
     },
     [spawnParticle, getPlanetCenter]
   );
@@ -183,6 +198,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       reactionNonce,
       santaFlight,
       planetUpgradedNonce,
+      postUpgradeGiveNonce,
       previewVisible,
       previewFading,
       triggerPreview,
@@ -202,6 +218,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       reactionNonce,
       santaFlight,
       planetUpgradedNonce,
+      postUpgradeGiveNonce,
       previewVisible,
       previewFading,
       triggerPreview,

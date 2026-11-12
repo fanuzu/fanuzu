@@ -24,6 +24,7 @@ import AttributionTracker from './AttributionTracker';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
 import PlanetUpgradeBadge from './PlanetUpgradeBadge';
+import AppLevelCta from './AppLevelCta';
 import SantaSleigh from './SantaSleigh';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
@@ -53,6 +54,7 @@ export default function LandingPage() {
                 <ZapButton />
                 <ContributionToast />
                 <PlanetUpgradeBadge />
+                <AppLevelCta />
                 <SantaSleigh />
                 <AppPreviewOverlay />
                 <PreregModal />
