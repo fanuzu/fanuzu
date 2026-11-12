@@ -14,9 +14,14 @@ const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.le
 // three different half-finished states we don't have art for.
 const NEBULA_IMAGE = '/images/nebula.png';
 
+const RING_RADIUS = 48;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+const BURST_MS = 1100;
+
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview, score } = useContribution();
+  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview, score, planetUpgradedNonce } =
+    useContribution();
   const pulsing = usePlanetReactionPulse();
   const { tr } = useLang();
   const [hintSeen, setHintSeen] = useState(false);
@@ -28,6 +33,24 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const isUpgraded = score >= STAGE2;
   const isUpgradedRef = useRef(isUpgraded);
   isUpgradedRef.current = isUpgraded;
+  const formProgress = Math.min(1, score / STAGE2);
+
+  // A short, loud animation right at the crossing — without this the
+  // nebula just quietly became a planet, which read as "did something
+  // break?" rather than a deliberate reveal.
+  const [bursting, setBursting] = useState(false);
+  const isFirstBurstRender = useRef(true);
+  const burstTimer = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => {
+    if (isFirstBurstRender.current) {
+      isFirstBurstRender.current = false;
+      return;
+    }
+    setBursting(true);
+    clearTimeout(burstTimer.current);
+    burstTimer.current = setTimeout(() => setBursting(false), BURST_MS);
+    return () => clearTimeout(burstTimer.current);
+  }, [planetUpgradedNonce]);
 
   const orbRef = useRef<HTMLDivElement | null>(null);
   const imgPrevRef = useRef<HTMLImageElement>(null);
@@ -225,6 +248,45 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             pointerEvents: 'none',
           }}
         />
+        {!isUpgraded && (
+          <svg
+            viewBox="0 0 100 100"
+            style={{ position: 'absolute', inset: '2%', pointerEvents: 'none', transform: 'rotate(-90deg)' }}
+          >
+            <circle cx="50" cy="50" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,.1)" strokeWidth="2.5" />
+            <circle
+              cx="50"
+              cy="50"
+              r={RING_RADIUS}
+              fill="none"
+              stroke="url(#formRingGradient)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeDasharray={RING_CIRCUMFERENCE}
+              strokeDashoffset={RING_CIRCUMFERENCE * (1 - formProgress)}
+              style={{ transition: 'stroke-dashoffset .6s cubic-bezier(.22,.61,.36,1)' }}
+            />
+            <defs>
+              <linearGradient id="formRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="var(--planet-a1)" />
+                <stop offset="100%" stopColor="var(--planet-a2)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        )}
+        {bursting && (
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              inset: '8%',
+              borderRadius: '50%',
+              pointerEvents: 'none',
+              background: 'radial-gradient(circle, rgba(255,255,255,.9), rgba(255,125,221,.5) 45%, transparent 72%)',
+              animation: `planetFormFlash ${BURST_MS}ms ease-out`,
+            }}
+          />
+        )}
         <button
           onClick={() => goTo(-1)}
           aria-label="Previous planet"
@@ -279,7 +341,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             borderRadius: '50%',
             overflow: 'hidden',
             boxShadow: `0 0 ${glowBlur}px ${glowSpread}px rgba(var(--planet-g1),${glowOpacity}),0 0 90px 10px rgba(var(--planet-g2),.25)`,
-            animation: 'floatY 7s ease-in-out infinite',
+            animation: bursting ? `planetFormPunch ${BURST_MS}ms ease-out, floatY 7s ease-in-out infinite` : 'floatY 7s ease-in-out infinite',
             filter: `brightness(${planetBrightness})`,
             transformOrigin: 'center',
             transition: 'box-shadow .6s ease, filter .6s ease',
