@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 
 const VISIBLE_MS = 3400;
@@ -12,23 +12,20 @@ const VISIBLE_MS = 3400;
 // other short badge-style callouts tied to one feature (PRE-REG BADGE,
 // GIVE) — this one has no form/flow of its own to translate around.
 export default function PlanetUpgradeBadge() {
-  const { planetUpgradedNonce } = useContribution();
-  const [visible, setVisible] = useState(false);
+  const { planetUpgradedNonce, activeOverlay, claimOverlay } = useContribution();
   const isFirstRender = useRef(true);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    setVisible(true);
-    clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => setVisible(false), VISIBLE_MS);
-    return () => clearTimeout(hideTimer.current);
-  }, [planetUpgradedNonce]);
+    // Highest-priority overlay — this always wins the shared slot, even
+    // preempting a contribution toast fired by the same crossing tap.
+    claimOverlay('upgrade', VISIBLE_MS);
+  }, [planetUpgradedNonce, claimOverlay]);
 
-  if (!visible) return null;
+  if (activeOverlay !== 'upgrade') return null;
 
   return (
     <div

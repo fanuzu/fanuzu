@@ -69,7 +69,25 @@ interface ContributionContextValue {
   previewFading: boolean;
   triggerPreview: () => void;
   dismissPreview: () => void;
+  // The one floating reaction bubble (contribution toast, planet-upgrade
+  // badge, app-level nudge) allowed on screen at a time — without this,
+  // two of them could land on the same tap (e.g. the toast and the
+  // upgrade badge both fire off the same contribution) and visually pile
+  // up. null means nothing is claiming the slot right now.
+  activeOverlay: OverlayKind | null;
+  // Asks for the shared slot. A higher- or equal-priority kind always
+  // wins and preempts whatever's showing (even mid-display); a
+  // lower-priority kind is silently dropped rather than queued, since
+  // these are decorative reactions, not something that must eventually
+  // be seen.
+  claimOverlay: (kind: OverlayKind, ms: number) => boolean;
+  // Lets a claimed overlay clear itself early (e.g. on click) instead of
+  // waiting out its own timer.
+  releaseOverlay: (kind: OverlayKind) => void;
 }
+
+export type OverlayKind = 'toast' | 'appCta' | 'upgrade';
+const OVERLAY_PRIORITY: Record<OverlayKind, number> = { toast: 1, appCta: 2, upgrade: 3 };
 
 const ContributionContext = createContext<ContributionContextValue | null>(null);
 
@@ -89,6 +107,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [previewFading, setPreviewFading] = useState(false);
   const planetRef = useRef<HTMLDivElement | null>(null);
   const previewUnmountTimer = useRef<ReturnType<typeof setTimeout>>();
+  const [activeOverlay, setActiveOverlay] = useState<OverlayKind | null>(null);
+  const activeOverlayRef = useRef<OverlayKind | null>(null);
+  const overlayTimer = useRef<ReturnType<typeof setTimeout>>();
   // Once the user closes the preview, don't pop it back up on further
   // planet taps — closing it is treated as "got it, don't show again"
   // for the rest of this visit.
@@ -97,6 +118,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     return () => {
       clearTimeout(previewUnmountTimer.current);
+      clearTimeout(overlayTimer.current);
     };
   }, []);
 
@@ -115,6 +137,28 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     clearTimeout(previewUnmountTimer.current);
     setPreviewFading(false);
     setPreviewVisible(true);
+  }, []);
+
+  const claimOverlay = useCallback((kind: OverlayKind, ms: number) => {
+    const current = activeOverlayRef.current;
+    if (current && OVERLAY_PRIORITY[current] > OVERLAY_PRIORITY[kind]) {
+      return false;
+    }
+    activeOverlayRef.current = kind;
+    setActiveOverlay(kind);
+    clearTimeout(overlayTimer.current);
+    overlayTimer.current = setTimeout(() => {
+      activeOverlayRef.current = null;
+      setActiveOverlay(null);
+    }, ms);
+    return true;
+  }, []);
+
+  const releaseOverlay = useCallback((kind: OverlayKind) => {
+    if (activeOverlayRef.current !== kind) return;
+    clearTimeout(overlayTimer.current);
+    activeOverlayRef.current = null;
+    setActiveOverlay(null);
   }, []);
 
   // Shared by spawnParticle and zapFromPoint's own santaFlight path — both
@@ -203,6 +247,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       previewFading,
       triggerPreview,
       dismissPreview,
+      activeOverlay,
+      claimOverlay,
+      releaseOverlay,
     }),
     [
       score,
@@ -223,6 +270,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       previewFading,
       triggerPreview,
       dismissPreview,
+      activeOverlay,
+      claimOverlay,
+      releaseOverlay,
     ]
   );
 

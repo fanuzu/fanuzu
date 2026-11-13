@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
@@ -24,12 +24,10 @@ const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL;
 // straight to the store. Fixed English, same convention as the other new
 // mechanic copy (GIVE, PLANET UPGRADE, the forming-progress hint).
 export default function AppLevelCta() {
-  const { postUpgradeGiveNonce } = useContribution();
+  const { postUpgradeGiveNonce, activeOverlay, claimOverlay, releaseOverlay } = useContribution();
   const { openModal } = usePreregModal();
-  const [visible, setVisible] = useState(false);
   const isFirstRender = useRef(true);
   const tapCount = useRef(0);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -38,16 +36,15 @@ export default function AppLevelCta() {
     }
     tapCount.current += 1;
     if (tapCount.current < MIN_TAPS_BEFORE_CTA) return;
-    setVisible(true);
-    clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => setVisible(false), VISIBLE_MS);
-    return () => clearTimeout(hideTimer.current);
-  }, [postUpgradeGiveNonce]);
+    // Mid-priority overlay — loses the shared slot to the (rarer) upgrade
+    // badge, but still outranks the ambient contribution toast.
+    claimOverlay('appCta', VISIBLE_MS);
+  }, [postUpgradeGiveNonce, claimOverlay]);
 
-  if (!visible) return null;
+  if (activeOverlay !== 'appCta') return null;
 
   function handleClick() {
-    setVisible(false);
+    releaseOverlay('appCta');
     if (!APP_STORE_URL) {
       openModal();
     }

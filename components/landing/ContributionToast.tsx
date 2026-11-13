@@ -41,11 +41,9 @@ function computeTopNearPlanet(): number | null {
 // Cycles through a few variations in turn (rather than repeating the same
 // line, or picking randomly and risking back-to-back repeats).
 export default function ContributionToast() {
-  const { toastNonce } = useContribution();
+  const { toastNonce, activeOverlay, claimOverlay } = useContribution();
   const { tr } = useLang();
-  const [visible, setVisible] = useState(false);
   const [topPx, setTopPx] = useState<number | null>(null);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
   const isFirstRender = useRef(true);
   const messages = tr.exp.contributionToasts;
   const message = messages[(toastNonce - 1 + messages.length) % messages.length] ?? messages[0];
@@ -60,14 +58,14 @@ export default function ContributionToast() {
     // planet's position is already settled — safe to measure once here
     // rather than tracking continuously through the toast's brief life.
     setTopPx(computeTopNearPlanet());
-    setVisible(true);
-    clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => setVisible(false), VISIBLE_MS);
-    return () => clearTimeout(hideTimer.current);
+    // Lowest-priority overlay — if the same tap also triggers the
+    // planet-upgrade badge or app CTA, this quietly loses the shared slot
+    // instead of stacking on top of it.
+    claimOverlay('toast', VISIBLE_MS);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toastNonce]);
 
-  if (!visible) return null;
+  if (activeOverlay !== 'toast') return null;
 
   return (
     <div
