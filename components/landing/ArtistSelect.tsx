@@ -21,15 +21,6 @@ const pillStyle: React.CSSProperties = {
   transition: 'transform .15s ease, box-shadow .15s ease, border-color .15s ease',
 };
 
-// Purely decorative — same positional order as prereg.benefits in every
-// locale (POP reward, join order, badge), so it's safe to key by index
-// without touching the translated copy itself.
-const BENEFIT_ACCENTS = [
-  { emoji: '⚡', color: '#FF7DDD' },
-  { emoji: '🎟️', color: '#7CE8FF' },
-  { emoji: '🏅', color: '#9B7CFF' },
-];
-
 export default function ArtistSelect({
   onConfirm,
   headingId,
@@ -76,41 +67,6 @@ export default function ArtistSelect({
         ✨ {tr.prereg.selectTitle}
       </h2>
       <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 22px' }}>{tr.prereg.selectSub}</p>
-
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: 10,
-          margin: '0 0 28px',
-        }}
-      >
-        {tr.prereg.benefits.map((b, i) => {
-          const accent = BENEFIT_ACCENTS[i % BENEFIT_ACCENTS.length];
-          return (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 7,
-                fontSize: 12.5,
-                fontWeight: 700,
-                color: '#FFFAFC',
-                background: `linear-gradient(135deg,${accent.color}26,${accent.color}0d)`,
-                border: `1px solid ${accent.color}55`,
-                borderRadius: 999,
-                padding: '9px 16px',
-                boxShadow: `0 0 16px ${accent.color}22`,
-              }}
-            >
-              <span style={{ fontSize: 14, flex: '0 0 auto' }}>{accent.emoji}</span>
-              {b}
-            </div>
-          );
-        })}
-      </div>
 
       <ArtistRanking />
 
