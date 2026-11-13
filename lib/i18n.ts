@@ -34,8 +34,8 @@ export interface TranslationSet {
     founderCountLabel: string; foundingCta: string; selectBack: string; selectChange: string;
     rankingTitle: string;
     steps: { t: string; d: string }[];
-    artistLabel: string; artistPlaceholder: string; fandomLabel: string; fandomPlaceholder: string;
-    emailLabel: string; emailPlaceholder: string; fanSinceLabel: string; fanSincePlaceholder: string;
+    artistLabel: string; artistPlaceholder: string;
+    emailLabel: string; emailPlaceholder: string;
     referralToggle: string; referralHint: string; referralPlaceholder: string;
     rewardNoRef: string; rewardRef: string; rewardNote: string;
     requiredBadge: string; optionalBadge: string; agreeAll: string;
@@ -128,9 +128,7 @@ ko: {
       {t:'기록 획득',d:'뱃지는 나에게, 기록은 PASSPORT에.'}
     ],
     artistLabel:'내가 밝히고 싶은 최애',artistPlaceholder:'최애 이름 입력',
-    fandomLabel:'팬덤명 (선택)',fandomPlaceholder:'팬덤명 입력',
     emailLabel:'이메일',emailPlaceholder:'이메일 주소',
-    fanSinceLabel:'입덕 연도 (선택)',fanSincePlaceholder:'예: 2022',
     referralToggle:'+ INVITE CODE 입력',
     referralHint:'INVITE CODE 있나요? 없어도 바로 사전등록할 수 있어요.',
     referralPlaceholder:'INVITE CODE 입력',
@@ -224,9 +222,7 @@ en: {
       {t:'Get your record',d:'Badge for you, history in PASSPORT.'}
     ],
     artistLabel:'Artist I want to support',artistPlaceholder:'Enter artist name',
-    fandomLabel:'Fandom name (optional)',fandomPlaceholder:'Enter fandom name',
     emailLabel:'Email',emailPlaceholder:'Email address',
-    fanSinceLabel:'Fan since (optional)',fanSincePlaceholder:'e.g. 2022',
     referralToggle:'+ Add an INVITE CODE',
     referralHint:'Have an INVITE CODE? It’s optional — you can pre-register without one.',
     referralPlaceholder:'Enter invite code',
@@ -320,9 +316,7 @@ ja: {
       {t:'記録を獲得',d:'バッジは自分に、記録はPASSPORTに。'}
     ],
     artistLabel:'応援したいアーティスト',artistPlaceholder:'アーティスト名を入力',
-    fandomLabel:'ファンダム名（任意）',fandomPlaceholder:'ファンダム名を入力',
     emailLabel:'メールアドレス',emailPlaceholder:'メールアドレス',
-    fanSinceLabel:'ファンになった年（任意）',fanSincePlaceholder:'例: 2022',
     referralToggle:'+ INVITE CODEを入力',
     referralHint:'INVITE CODEがある場合のみ入力してください。なくても事前登録できます。',
     referralPlaceholder:'INVITE CODEを入力',
@@ -416,9 +410,7 @@ es: {
       {t:'Consigue tu registro',d:'La insignia es tuya; la historia, en PASSPORT.'}
     ],
     artistLabel:'Artista al que quiero apoyar',artistPlaceholder:'Ingresa el nombre del artista',
-    fandomLabel:'Nombre del fandom (opcional)',fandomPlaceholder:'Ingresa el nombre del fandom',
     emailLabel:'Correo electrónico',emailPlaceholder:'Correo electrónico',
-    fanSinceLabel:'Fan desde (opcional)',fanSincePlaceholder:'ej. 2022',
     referralToggle:'+ Añadir un INVITE CODE',
     referralHint:'¿Tienes un INVITE CODE? Es opcional; puedes preinscribirte sin uno.',
     referralPlaceholder:'Ingresa el invite code',
@@ -512,9 +504,7 @@ zhHans: {
       {t:'获得记录',d:'徽章归你，记录进PASSPORT。'}
     ],
     artistLabel:'我想支持的艺人',artistPlaceholder:'输入艺人姓名',
-    fandomLabel:'粉丝名（选填）',fandomPlaceholder:'输入粉丝团名称',
     emailLabel:'电子邮箱',emailPlaceholder:'电子邮箱地址',
-    fanSinceLabel:'入坑年份（选填）',fanSincePlaceholder:'例如 2022',
     referralToggle:'+ 输入 INVITE CODE',
     referralHint:'有 INVITE CODE 吗？这是选填项，没有也可以直接预注册。',
     referralPlaceholder:'输入 INVITE CODE',
@@ -608,9 +598,7 @@ zhHant: {
       {t:'獲得記錄',d:'徽章歸你，記錄進PASSPORT。'}
     ],
     artistLabel:'我想支持的藝人',artistPlaceholder:'輸入藝人姓名',
-    fandomLabel:'粉絲團名稱（選填）',fandomPlaceholder:'輸入粉絲團名稱',
     emailLabel:'電子郵箱',emailPlaceholder:'電子郵箱地址',
-    fanSinceLabel:'入坑年份（選填）',fanSincePlaceholder:'例如 2022',
     referralToggle:'+ 輸入 INVITE CODE',
     referralHint:'有 INVITE CODE 嗎？這是選填項，沒有也可以直接預先登記。',
     referralPlaceholder:'輸入 INVITE CODE',
@@ -704,9 +692,7 @@ id: {
       {t:'Dapatkan catatanmu',d:'Badge untukmu, sejarah di PASSPORT.'}
     ],
     artistLabel:'Artis yang ingin kudukung',artistPlaceholder:'Masukkan nama artis',
-    fandomLabel:'Nama fandom (opsional)',fandomPlaceholder:'Masukkan nama fandom',
     emailLabel:'Email',emailPlaceholder:'Alamat email',
-    fanSinceLabel:'Fan sejak (opsional)',fanSincePlaceholder:'contoh: 2022',
     referralToggle:'+ Tambahkan INVITE CODE',
     referralHint:'Punya INVITE CODE? Ini opsional — kamu bisa pra-daftar tanpanya.',
     referralPlaceholder:'Masukkan kode undangan',
@@ -800,9 +786,7 @@ fil: {
       {t:'Kunin ang talaan mo',d:'Badge para sa’yo, kasaysayan sa PASSPORT.'}
     ],
     artistLabel:'Artist na gusto kong suportahan',artistPlaceholder:'Ilagay ang pangalan ng artist',
-    fandomLabel:'Pangalan ng fandom (opsyonal)',fandomPlaceholder:'Ilagay ang pangalan ng fandom',
     emailLabel:'Email',emailPlaceholder:'Email address',
-    fanSinceLabel:'Naging fan simula noong (opsyonal)',fanSincePlaceholder:'hal. 2022',
     referralToggle:'+ Magdagdag ng INVITE CODE',
     referralHint:'May INVITE CODE ka ba? Opsyonal ito — pwede kang mag-pre-register kahit wala nito.',
     referralPlaceholder:'Ilagay ang invite code',
@@ -896,9 +880,7 @@ th: {
       {t:'รับบันทึกของคุณ',d:'แบดจ์สำหรับคุณ ประวัติศาสตร์ใน PASSPORT'}
     ],
     artistLabel:'ศิลปินที่ฉันอยากสนับสนุน',artistPlaceholder:'กรอกชื่อศิลปิน',
-    fandomLabel:'ชื่อแฟนด้อม (ไม่บังคับ)',fandomPlaceholder:'กรอกชื่อแฟนด้อม',
     emailLabel:'อีเมล',emailPlaceholder:'ที่อยู่อีเมล',
-    fanSinceLabel:'เป็นแฟนตั้งแต่ (ไม่บังคับ)',fanSincePlaceholder:'เช่น 2022',
     referralToggle:'+ เพิ่ม INVITE CODE',
     referralHint:'มี INVITE CODE ไหม? ไม่บังคับ — คุณลงทะเบียนล่วงหน้าได้โดยไม่ต้องมี',
     referralPlaceholder:'กรอกรหัสเชิญ',

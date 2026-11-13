@@ -26,9 +26,6 @@ const inputStyle: React.CSSProperties = {
   outline: 'none',
 };
 
-const CURRENT_YEAR = new Date().getFullYear();
-const FAN_SINCE_YEARS = Array.from({ length: 40 }, (_, i) => CURRENT_YEAR - i);
-
 // Bumped whenever the corresponding legal document's content changes;
 // stored alongside each consent so we know which version a user agreed to.
 const TERMS_VERSION = '1.1';
@@ -40,9 +37,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   const [step, setStep] = useState<'select' | 'form'>('select');
   const [artistName, setArtistName] = useState('');
-  const [fandomName, setFandomName] = useState('');
   const [email, setEmail] = useState('');
-  const [fanSince, setFanSince] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [age14Consent, setAge14Consent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
@@ -127,9 +122,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           artistName,
-          fandomName,
           email,
-          fanSince,
           language: lang,
           referralCode,
           age14Consent,
@@ -243,12 +236,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
       <div style={{ maxWidth: 1180, margin: '0 auto', width: '100%' }}>
         <ArtistSelect
           headingId={headingId}
-          onConfirm={(artist, fandom) => {
+          onConfirm={(artist) => {
             setArtistName(artist);
-            // Prefill from the registry (still editable) so most fans never
-            // have to type their fandom's name at all — no registry match
-            // (e.g. a custom "Other" entry) just leaves the field as-is.
-            if (fandom) setFandomName(fandom);
             setStep('form');
           }}
         />
@@ -390,17 +379,6 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               </div>
             </div>
             <div>
-              <label htmlFor={`${uid}-fandom`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fandomLabel}</label>
-              <input
-                id={`${uid}-fandom`}
-                type="text"
-                placeholder={tr.prereg.fandomPlaceholder}
-                value={fandomName}
-                onChange={(e) => setFandomName(e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div>
               <label htmlFor={`${uid}-email`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.emailLabel}</label>
               <input
                 id={`${uid}-email`}
@@ -411,24 +389,6 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                 onChange={(e) => setEmail(e.target.value)}
                 style={inputStyle}
               />
-            </div>
-            <div>
-              <label htmlFor={`${uid}-fan-since`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.fanSinceLabel}</label>
-              <select
-                id={`${uid}-fan-since`}
-                value={fanSince}
-                onChange={(e) => setFanSince(e.target.value)}
-                style={{ ...inputStyle, appearance: 'auto', cursor: 'pointer' }}
-              >
-                <option value="" style={{ color: '#6B6478', background: '#1A1030' }}>
-                  {tr.prereg.fanSincePlaceholder}
-                </option>
-                {FAN_SINCE_YEARS.map((y) => (
-                  <option key={y} value={y} style={{ color: '#FFFAFC', background: '#1A1030' }}>
-                    {y}
-                  </option>
-                ))}
-              </select>
             </div>
 
             <div>
