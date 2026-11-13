@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import { POPULAR_ARTISTS } from '@/lib/artists';
 import ArtistRanking from './ArtistRanking';
-import FandomProgress from './FandomProgress';
 
 const pillStyle: React.CSSProperties = {
   background: 'linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02))',
@@ -35,133 +34,12 @@ export default function ArtistSelect({
   onConfirm,
   headingId,
 }: {
-  onConfirm: (artist: string, fandomName: string | null) => void;
+  onConfirm: (artist: string) => void;
   headingId?: string;
 }) {
   const { tr } = useLang();
-  const [pendingArtist, setPendingArtist] = useState<string | null>(null);
-  const [official, setOfficial] = useState(false);
-  const [fandomName, setFandomName] = useState<string | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customText, setCustomText] = useState('');
-
-  // Founder count is fetched and known here, but deliberately never
-  // rendered — showing an exact live number (especially "0") lets anyone
-  // gauge real signup volume just by opening the picker. official/fandomName
-  // still come from the same lookup for the OFFICIAL badge and the
-  // fandom-name autofill.
-  async function reveal(artist: string) {
-    setPendingArtist(artist);
-    setOfficial(false);
-    setFandomName(null);
-    try {
-      const res = await fetch(`/api/prereg/artist-count?artist=${encodeURIComponent(artist)}`);
-      const data = await res.json();
-      setOfficial(data.official === true);
-      setFandomName(typeof data.fandomName === 'string' ? data.fandomName : null);
-    } catch {
-      // Badge/fandom prefill simply stay at their defaults on failure.
-    }
-  }
-
-  function backToGrid() {
-    setPendingArtist(null);
-    setOfficial(false);
-    setFandomName(null);
-  }
-
-  if (pendingArtist) {
-    return (
-      <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            background: 'rgba(255,125,221,.1)',
-            border: '1px solid rgba(255,125,221,.3)',
-            padding: '7px 14px',
-            borderRadius: 999,
-            fontSize: 11.5,
-            letterSpacing: '.08em',
-            color: '#FF7DDD',
-            fontWeight: 700,
-            marginBottom: 22,
-          }}
-        >
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
-          {tr.prereg.statusBadge}
-        </div>
-        <h2
-          id={headingId}
-          className="gradient-text"
-          style={{
-            fontSize: 'clamp(30px,5vw,44px)',
-            lineHeight: 1.2,
-            fontWeight: 800,
-            margin: '0 0 10px',
-            backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1))',
-          }}
-        >
-          {pendingArtist.toUpperCase()} PLANET
-        </h2>
-        <FandomProgress artist={pendingArtist} />
-        {official && (
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 5,
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-              color: '#05030B',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '.06em',
-              padding: '4px 10px',
-              borderRadius: 999,
-              marginBottom: 22,
-            }}
-          >
-            ✓ OFFICIAL
-          </div>
-        )}
-        <button
-          onClick={() => onConfirm(pendingArtist, fandomName)}
-          style={{
-            background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-            color: '#05030B',
-            fontWeight: 700,
-            fontSize: 16,
-            padding: '16px 32px',
-            border: 'none',
-            borderRadius: 999,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-            marginTop: official ? 10 : 28,
-            marginBottom: 16,
-          }}
-        >
-          {tr.prereg.foundingCta}
-        </button>
-        <div>
-          <button
-            onClick={backToGrid}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#9089A0',
-              fontSize: 13,
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              textDecoration: 'underline',
-            }}
-          >
-            {tr.prereg.selectBack}
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
@@ -247,7 +125,7 @@ export default function ArtistSelect({
         {POPULAR_ARTISTS.map((artist, i) => (
           <button
             key={artist}
-            onClick={() => reveal(artist)}
+            onClick={() => onConfirm(artist)}
             className="artist-pill"
             style={{ ...pillStyle, animation: `fadeUp .4s ease-out ${Math.min(i, 12) * 0.03}s both` }}
           >
@@ -272,7 +150,7 @@ export default function ArtistSelect({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (customText.trim()) reveal(customText.trim());
+            if (customText.trim()) onConfirm(customText.trim());
           }}
           style={{ display: 'flex', gap: 10, marginTop: 16 }}
         >

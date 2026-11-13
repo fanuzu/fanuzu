@@ -3,6 +3,7 @@
 import { useEffect, useId, useState, type FormEvent } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import ArtistSelect from './ArtistSelect';
+import FandomProgress from './FandomProgress';
 import { readAttribution, type Attribution } from './attribution';
 
 interface PreregResult {
@@ -37,6 +38,11 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
   const [step, setStep] = useState<'select' | 'form'>('select');
   const [artistName, setArtistName] = useState('');
+  // The artist grid used to show a confirmation screen with this badge
+  // before handing off to the form — now the grid jumps straight to the
+  // form, so the lookup (and the badge it enables) happens here instead,
+  // arriving a beat after the form itself rather than blocking the jump.
+  const [officialArtist, setOfficialArtist] = useState(false);
   const [email, setEmail] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [age14Consent, setAge14Consent] = useState(false);
@@ -77,7 +83,22 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const steps = tr.prereg.steps.map((s, i) => ({ n: i + 1, t: s.t, d: s.d }));
+  useEffect(() => {
+    if (!artistName) {
+      setOfficialArtist(false);
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/prereg/artist-count?artist=${encodeURIComponent(artistName)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled) setOfficialArtist(data.official === true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [artistName]);
 
   const rewardHintText = referralCode.trim() ? tr.prereg.rewardRef : tr.prereg.rewardNoRef;
   const rewardTextColor = referralCode.trim() ? '#FF7DDD' : '#B8AFC4';
@@ -296,41 +317,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         ))}
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
-          gap: 16,
-          maxWidth: 900,
-          margin: '32px auto 48px',
-        }}
-      >
-        {steps.map((pst) => (
-          <div key={pst.n} style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 22 }}>
-            <div
-              style={{
-                width: 26,
-                height: 26,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
-                fontSize: 12,
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 12,
-              }}
-            >
-              {pst.n}
-            </div>
-            <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 8px', color: '#FFFAFC' }}>{pst.t}</h3>
-            <p style={{ fontSize: 13, lineHeight: 1.55, color: '#B8AFC4', margin: 0 }}>{pst.d}</p>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ maxWidth: 560, margin: '0 auto' }}>
+      <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
         {showForm && (
           <form
             onSubmit={submitPrereg}
@@ -359,7 +346,27 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   padding: '13px 16px',
                 }}
               >
-                <span style={{ fontSize: 15, fontWeight: 700, color: '#FFFAFC' }}>{artistName}</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 700, color: '#FFFAFC' }}>
+                  {artistName}
+                  {officialArtist && (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                        color: '#05030B',
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: '.05em',
+                        padding: '3px 8px',
+                        borderRadius: 999,
+                      }}
+                    >
+                      ✓ OFFICIAL
+                    </span>
+                  )}
+                </span>
                 <button
                   type="button"
                   onClick={() => setStep('select')}
@@ -377,6 +384,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   {tr.prereg.selectChange}
                 </button>
               </div>
+              <FandomProgress artist={artistName} />
             </div>
             <div>
               <label htmlFor={`${uid}-email`} style={{ display: 'block', fontSize: 12.5, color: '#B8AFC4', marginBottom: 6 }}>{tr.prereg.emailLabel}</label>
