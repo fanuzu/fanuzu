@@ -21,7 +21,7 @@ export default function ParticleLayer() {
               margin: -5,
               borderRadius: '50%',
               background: 'radial-gradient(circle,#FFFAFC,#FF7DDD 60%,transparent)',
-              boxShadow: '0 0 16px 4px #FF7DDD',
+              boxShadow: '0 0 9px 2px rgba(255,125,221,.65)',
               pointerEvents: 'none',
               zIndex: 9999,
               '--dx': `${p.dx}px`,

@@ -24,12 +24,12 @@ export default function Passport() {
               width: '100%',
               maxWidth: 400,
               background: 'linear-gradient(155deg,#241736,#0A0613 60%)',
-              border: '1.5px solid rgba(255,125,221,.4)',
+              border: '1.5px solid rgba(255,125,221,.25)',
               borderRadius: 14,
               padding: 0,
               position: 'relative',
               overflow: 'hidden',
-              boxShadow: '0 20px 60px rgba(155,124,255,.18)',
+              boxShadow: '0 16px 40px rgba(155,124,255,.12)',
               animation: 'passportGlow 1s ease-in-out infinite',
             }}
           >

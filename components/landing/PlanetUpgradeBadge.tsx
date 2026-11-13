@@ -48,7 +48,7 @@ export default function PlanetUpgradeBadge() {
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
         border: '1px solid rgba(255,125,221,.45)',
-        boxShadow: '0 20px 50px rgba(0,0,0,.5), 0 0 40px rgba(255,125,221,.3)',
+        boxShadow: '0 20px 50px rgba(0,0,0,.5), 0 0 22px rgba(255,125,221,.18)',
         animation: 'modalPanelIn .4s cubic-bezier(.22,.61,.36,1)',
       }}
     >

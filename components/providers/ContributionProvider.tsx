@@ -220,9 +220,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   );
 
   const glowIntensity = Math.min(1, score / 90);
-  const glowBlur = 40 + glowIntensity * 60;
-  const glowSpread = 6 + glowIntensity * 14;
-  const glowOpacity = (0.35 + glowIntensity * 0.45).toFixed(2);
+  const glowBlur = 26 + glowIntensity * 34;
+  const glowSpread = 3 + glowIntensity * 7;
+  const glowOpacity = (0.22 + glowIntensity * 0.26).toFixed(2);
   const planetBrightness = (1 + glowIntensity * 0.22).toFixed(2);
   const progressPct = Math.min(100, (score / 100) * 100);
 

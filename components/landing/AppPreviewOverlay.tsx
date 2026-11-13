@@ -101,7 +101,7 @@ export default function AppPreviewOverlay() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 6px 20px rgba(0,0,0,.4), 0 0 16px rgba(255,125,221,.4)',
+          boxShadow: '0 6px 20px rgba(0,0,0,.4), 0 0 9px rgba(255,125,221,.22)',
           zIndex: 5,
         }}
       >
@@ -140,7 +140,7 @@ export default function AppPreviewOverlay() {
                 'linear-gradient(#0a0714,#0a0714), linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
               backgroundOrigin: 'border-box',
               backgroundClip: 'padding-box, border-box',
-              boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 50px 8px rgba(255,125,221,.32)',
+              boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 28px 4px rgba(255,125,221,.18)',
             }}
           >
             <Image src={p.src} alt="FANUZU app preview" fill sizes="240px" style={{ objectFit: 'cover' }} />
