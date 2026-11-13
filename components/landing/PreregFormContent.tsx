@@ -411,19 +411,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               />
             </div>
 
-            <div
-              style={{
-                background: 'rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,125,221,.18)',
-                borderRadius: 12,
-                padding: '14px 16px',
-                fontSize: 13,
-                lineHeight: 1.6,
-                color: rewardTextColor,
-              }}
-            >
-              {rewardHintText}
-            </div>
+            <p style={{ fontSize: 13, lineHeight: 1.5, margin: 0, color: rewardTextColor }}>{rewardHintText}</p>
             <p style={{ fontSize: 11.5, lineHeight: 1.5, color: '#6B6478', margin: 0 }}>{tr.prereg.rewardNote}</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
