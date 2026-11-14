@@ -117,7 +117,7 @@ ko: {
     d2:'사전등록하면 PRE-REG BADGE 지급.',
     statusBadge:'사전신청',
     benefitsLabel:'사전신청 혜택',
-    benefits:['지금 50 POP, INVITE CODE면 100 POP','1티어 팬덤행성 시민권 선착순 발급','PRE-REG BADGE 지급'],
+    benefits:['지금 50 POP, INVITE CODE면 100 POP','팬덤행성 1차 이주 증명 뱃지 지급'],
     selectTitle:'어느 우주에서 오셨나요?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
     selectChange:'변경',
     rankingTitle:'사전등록 TOP 3',
