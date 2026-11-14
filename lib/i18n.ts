@@ -28,7 +28,7 @@ export interface TranslationSet {
   };
   compare: { t1: string; t2: string; oldT: string; oldItems: string[]; newT: string; newItems: string[] };
   prereg: {
-    t1: string; t2: string; d1: string; d2: string;
+    t1: string; t2: string; d1: string;
     statusBadge: string; benefitsLabel: string; benefits: string[];
     selectTitle: string; selectSub: string; selectOther: string; selectConfirm: string;
     selectChange: string;
@@ -114,7 +114,6 @@ ko: {
     newT:'FANUZU',newItems:['매일의 기여','쌓이는 기록','팬덤의 성장','PASSPORT에 남는 역사']},
   prereg:{t1:'아직 아무도 밝히지 않은',t2:'당신의 별.',
     d1:'내 최애 행성에 가장 먼저 도착하기.',
-    d2:'사전등록하면 PRE-REG BADGE 지급.',
     statusBadge:'사전신청',
     benefitsLabel:'사전신청 혜택',
     benefits:['지금 50 POP, INVITE CODE면 100 POP','팬덤행성 1차 이주 증명 뱃지 지급'],
@@ -203,7 +202,6 @@ en: {
     newT:'FANUZU',newItems:['Everyday contribution','A record that grows','Fandom growth','History kept in PASSPORT']},
   prereg:{t1:'A star no one’s lit yet —',t2:'yours, waiting.',
     d1:'Be first on your artist’s planet.',
-    d2:'Pre-register, get the PRE-REG BADGE.',
     statusBadge:'PRE-REGISTRATION',
     benefitsLabel:'What pre-registering gets you',
     benefits:['50 POP now — 100 POP with an invite code','Tier-1 Fandom Planet citizenship, first come first served','A PRE-REG BADGE, guaranteed'],
@@ -292,7 +290,6 @@ ja: {
     newT:'FANUZU',newItems:['毎日の貢献','積み重なる記録','ファンダムの成長','PASSPORTに残る歴史']},
   prereg:{t1:'まだ誰も照らしていない、',t2:'あなたの星。',
     d1:'推しの惑星に、いちばんに到着。',
-    d2:'事前登録でPRE-REG BADGE。',
     statusBadge:'事前登録',
     benefitsLabel:'事前登録の特典',
     benefits:['今すぐ50 POP、INVITE CODEで100 POP','先着順で1ティア・ファンダム惑星市民権を発給','PRE-REG BADGEを贈呈'],
@@ -381,7 +378,6 @@ es: {
     newT:'FANUZU',newItems:['Contribución diaria','Una historia que se acumula','Crecimiento del fandom','Historia guardada en PASSPORT']},
   prereg:{t1:'Una estrella que nadie ha iluminado aún —',t2:'la tuya, esperando.',
     d1:'Sé el primero en el planeta de tu artista.',
-    d2:'Preinscríbete, recibe la PRE-REG BADGE.',
     statusBadge:'PREINSCRIPCIÓN',
     benefitsLabel:'Beneficios de preinscribirte',
     benefits:['50 POP ahora — 100 POP con código de invitación','Ciudadanía Nivel 1 del Planeta Fandom, por orden de llegada','Una PRE-REG BADGE garantizada'],
@@ -470,7 +466,6 @@ zhHans: {
     newT:'FANUZU',newItems:['每日贡献','持续累积的记录','粉丝群体共同成长','留在 PASSPORT 中的历史']},
   prereg:{t1:'还没人点亮的星，',t2:'是你的。',
     d1:'第一个抵达你的艺人星球。',
-    d2:'预注册即得PRE-REG BADGE。',
     statusBadge:'预注册',
     benefitsLabel:'预注册福利',
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，获得1级粉丝星球公民权','获得PRE-REG BADGE'],
@@ -559,7 +554,6 @@ zhHant: {
     newT:'FANUZU',newItems:['每日貢獻','持續累積的記錄','粉絲群體共同成長','留在 PASSPORT 中的歷史']},
   prereg:{t1:'還沒人點亮的星，',t2:'是你的。',
     d1:'第一個抵達你的藝人星球。',
-    d2:'預先登記即得PRE-REG BADGE。',
     statusBadge:'預先登記',
     benefitsLabel:'預先登記福利',
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，獲得1級粉絲星球公民權','獲得PRE-REG BADGE'],
@@ -648,7 +642,6 @@ id: {
     newT:'FANUZU',newItems:['Kontribusi setiap hari','Catatan yang terus tumbuh','Pertumbuhan fandom','Sejarah tersimpan di PASSPORT']},
   prereg:{t1:'Bintang yang belum ada yang menyalakannya —',t2:'milikmu, menunggu.',
     d1:'Jadilah yang pertama di planet artismu.',
-    d2:'Pra-daftar, dapatkan PRE-REG BADGE.',
     statusBadge:'PRA-PENDAFTARAN',
     benefitsLabel:'Yang kamu dapat dari pra-daftar',
     benefits:['50 POP sekarang — 100 POP dengan kode undangan','Kewarganegaraan Tier-1 Planet Fandom, siapa cepat dia dapat','PRE-REG BADGE, dijamin'],
@@ -737,7 +730,6 @@ fil: {
     newT:'FANUZU',newItems:['Araw-araw na kontribusyon','Talaan na patuloy na lumalaki','Paglago ng fandom','Kasaysayang nakatago sa PASSPORT']},
   prereg:{t1:'Isang bituin na wala pang nagpapaningas —',t2:'sa’yo, naghihintay.',
     d1:'Maging una sa planeta ng artist mo.',
-    d2:'Mag-pre-register, kunin ang PRE-REG BADGE.',
     statusBadge:'PRE-REGISTRATION',
     benefitsLabel:'Makukuha mo sa pag-pre-register',
     benefits:['50 POP ngayon — 100 POP kapag may invite code','Tier-1 Fandom Planet citizenship, first come first served','Garantisadong PRE-REG BADGE'],
@@ -826,7 +818,6 @@ th: {
     newT:'FANUZU',newItems:['การสนับสนุนทุกวัน','บันทึกที่เติบโตขึ้นเรื่อยๆ','การเติบโตของแฟนด้อม','ประวัติศาสตร์ที่เก็บไว้ใน PASSPORT']},
   prereg:{t1:'ดาวที่ยังไม่มีใครจุดประกาย —',t2:'ของคุณ กำลังรออยู่',
     d1:'เป็นคนแรกบนดาวเคราะห์ของศิลปินคุณ',
-    d2:'ลงทะเบียนล่วงหน้า รับ PRE-REG BADGE',
     statusBadge:'ลงทะเบียนล่วงหน้า',
     benefitsLabel:'สิ่งที่คุณจะได้รับจากการลงทะเบียนล่วงหน้า',
     benefits:['50 POP ทันที — 100 POP หากมีรหัสเชิญ','สิทธิ์พลเมืองดาวเคราะห์แฟนด้อมระดับ Tier-1 ใครมาก่อนได้ก่อน','PRE-REG BADGE รับประกัน'],
