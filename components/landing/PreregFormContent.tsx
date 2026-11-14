@@ -294,8 +294,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
           {tr.prereg.t2}
         </h2>
         <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.prereg.d1}</p>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 14px' }}>{tr.prereg.d2}</p>
-        <p style={{ fontSize: 12.5, lineHeight: 1.6, color: '#6B6478', margin: 0 }}>{tr.prereg.statusNote}</p>
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.prereg.d2}</p>
       </div>
 
       <div

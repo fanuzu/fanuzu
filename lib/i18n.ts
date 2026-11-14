@@ -29,7 +29,7 @@ export interface TranslationSet {
   compare: { t1: string; t2: string; oldT: string; oldItems: string[]; newT: string; newItems: string[] };
   prereg: {
     t1: string; t2: string; d1: string; d2: string;
-    statusBadge: string; statusNote: string; benefitsLabel: string; benefits: string[];
+    statusBadge: string; benefitsLabel: string; benefits: string[];
     selectTitle: string; selectSub: string; selectOther: string; selectConfirm: string;
     selectChange: string;
     rankingTitle: string;
@@ -115,7 +115,7 @@ ko: {
   prereg:{t1:'아직 아무도 밝히지 않은',t2:'당신의 별.',
     d1:'내 최애 행성에 가장 먼저 도착하기.',
     d2:'사전등록하면 PRE-REG BADGE 지급.',
-    statusBadge:'사전신청',statusNote:'오픈 일정은 미정. 지금 신청하면 자리 확보.',
+    statusBadge:'사전신청',
     benefitsLabel:'사전신청 혜택',
     benefits:['지금 50 POP, INVITE CODE면 100 POP','1티어 팬덤행성 시민권 선착순 발급','PRE-REG BADGE 지급'],
     selectTitle:'어느 우주에서 오셨나요?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'다른 우주에서 오셨나요',selectConfirm:'확인',
@@ -204,7 +204,7 @@ en: {
   prereg:{t1:'A star no one’s lit yet —',t2:'yours, waiting.',
     d1:'Be first on your artist’s planet.',
     d2:'Pre-register, get the PRE-REG BADGE.',
-    statusBadge:'PRE-REGISTRATION',statusNote:'No launch date yet. Register now, save your spot.',
+    statusBadge:'PRE-REGISTRATION',
     benefitsLabel:'What pre-registering gets you',
     benefits:['50 POP now — 100 POP with an invite code','Tier-1 Fandom Planet citizenship, first come first served','A PRE-REG BADGE, guaranteed'],
     selectTitle:'Which universe are you from?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'From another universe?',selectConfirm:'Confirm',
@@ -293,7 +293,7 @@ ja: {
   prereg:{t1:'まだ誰も照らしていない、',t2:'あなたの星。',
     d1:'推しの惑星に、いちばんに到着。',
     d2:'事前登録でPRE-REG BADGE。',
-    statusBadge:'事前登録',statusNote:'開始日は未定。今登録して席を確保。',
+    statusBadge:'事前登録',
     benefitsLabel:'事前登録の特典',
     benefits:['今すぐ50 POP、INVITE CODEで100 POP','先着順で1ティア・ファンダム惑星市民権を発給','PRE-REG BADGEを贈呈'],
     selectTitle:'どの宇宙から来ましたか？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'別の宇宙から来ましたか？',selectConfirm:'確認',
@@ -382,7 +382,7 @@ es: {
   prereg:{t1:'Una estrella que nadie ha iluminado aún —',t2:'la tuya, esperando.',
     d1:'Sé el primero en el planeta de tu artista.',
     d2:'Preinscríbete, recibe la PRE-REG BADGE.',
-    statusBadge:'PREINSCRIPCIÓN',statusNote:'Sin fecha de lanzamiento aún. Regístrate y asegura tu lugar.',
+    statusBadge:'PREINSCRIPCIÓN',
     benefitsLabel:'Beneficios de preinscribirte',
     benefits:['50 POP ahora — 100 POP con código de invitación','Ciudadanía Nivel 1 del Planeta Fandom, por orden de llegada','Una PRE-REG BADGE garantizada'],
     selectTitle:'¿De qué universo vienes?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'¿Vienes de otro universo?',selectConfirm:'Confirmar',
@@ -471,7 +471,7 @@ zhHans: {
   prereg:{t1:'还没人点亮的星，',t2:'是你的。',
     d1:'第一个抵达你的艺人星球。',
     d2:'预注册即得PRE-REG BADGE。',
-    statusBadge:'预注册',statusNote:'上线日期未定，现在登记先占位。',
+    statusBadge:'预注册',
     benefitsLabel:'预注册福利',
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，获得1级粉丝星球公民权','获得PRE-REG BADGE'],
     selectTitle:'你来自哪个宇宙？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'来自其他宇宙？',selectConfirm:'确认',
@@ -560,7 +560,7 @@ zhHant: {
   prereg:{t1:'還沒人點亮的星，',t2:'是你的。',
     d1:'第一個抵達你的藝人星球。',
     d2:'預先登記即得PRE-REG BADGE。',
-    statusBadge:'預先登記',statusNote:'上線日期未定，現在登記先佔位。',
+    statusBadge:'預先登記',
     benefitsLabel:'預先登記福利',
     benefits:['立即50 POP，用INVITE CODE得100 POP','先到先得，獲得1級粉絲星球公民權','獲得PRE-REG BADGE'],
     selectTitle:'你來自哪個宇宙？',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'來自其他宇宙？',selectConfirm:'確認',
@@ -649,7 +649,7 @@ id: {
   prereg:{t1:'Bintang yang belum ada yang menyalakannya —',t2:'milikmu, menunggu.',
     d1:'Jadilah yang pertama di planet artismu.',
     d2:'Pra-daftar, dapatkan PRE-REG BADGE.',
-    statusBadge:'PRA-PENDAFTARAN',statusNote:'Belum ada tanggal peluncuran. Daftar sekarang, amankan tempatmu.',
+    statusBadge:'PRA-PENDAFTARAN',
     benefitsLabel:'Yang kamu dapat dari pra-daftar',
     benefits:['50 POP sekarang — 100 POP dengan kode undangan','Kewarganegaraan Tier-1 Planet Fandom, siapa cepat dia dapat','PRE-REG BADGE, dijamin'],
     selectTitle:'Kamu dari semesta mana?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'Dari semesta lain?',selectConfirm:'Konfirmasi',
@@ -738,7 +738,7 @@ fil: {
   prereg:{t1:'Isang bituin na wala pang nagpapaningas —',t2:'sa’yo, naghihintay.',
     d1:'Maging una sa planeta ng artist mo.',
     d2:'Mag-pre-register, kunin ang PRE-REG BADGE.',
-    statusBadge:'PRE-REGISTRATION',statusNote:'Wala pang petsa ng paglunsad. Magparehistro na ngayon, siguruhin ang puwesto mo.',
+    statusBadge:'PRE-REGISTRATION',
     benefitsLabel:'Makukuha mo sa pag-pre-register',
     benefits:['50 POP ngayon — 100 POP kapag may invite code','Tier-1 Fandom Planet citizenship, first come first served','Garantisadong PRE-REG BADGE'],
     selectTitle:'Saang universe ka galing?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'Galing sa ibang universe?',selectConfirm:'Kumpirmahin',
@@ -827,7 +827,7 @@ th: {
   prereg:{t1:'ดาวที่ยังไม่มีใครจุดประกาย —',t2:'ของคุณ กำลังรออยู่',
     d1:'เป็นคนแรกบนดาวเคราะห์ของศิลปินคุณ',
     d2:'ลงทะเบียนล่วงหน้า รับ PRE-REG BADGE',
-    statusBadge:'ลงทะเบียนล่วงหน้า',statusNote:'ยังไม่มีวันเปิดตัว ลงทะเบียนตอนนี้เพื่อจองที่ของคุณ',
+    statusBadge:'ลงทะเบียนล่วงหน้า',
     benefitsLabel:'สิ่งที่คุณจะได้รับจากการลงทะเบียนล่วงหน้า',
     benefits:['50 POP ทันที — 100 POP หากมีรหัสเชิญ','สิทธิ์พลเมืองดาวเคราะห์แฟนด้อมระดับ Tier-1 ใครมาก่อนได้ก่อน','PRE-REG BADGE รับประกัน'],
     selectTitle:'คุณมาจากจักรวาลไหน?',selectSub:'WHO WILL CREATE THE FIRST K-POP UNIVERSE?',selectOther:'มาจากจักรวาลอื่นหรือเปล่า?',selectConfirm:'ยืนยัน',
