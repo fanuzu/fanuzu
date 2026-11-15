@@ -16,11 +16,12 @@ const NEBULA_IMAGE = '/images/nebula.png';
 
 const RING_RADIUS = 48;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-const BURST_MS = 1100;
+const BURST_MS = 1500;
+const SHOCKWAVE_DELAYS_MS = [0, 160, 320];
 
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, score, planetUpgradedNonce } =
+  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, score, planetUpgradedNonce, planetLocked } =
     useContribution();
   const pulsing = usePlanetReactionPulse();
 
@@ -283,6 +284,21 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             }}
           />
         )}
+        {bursting &&
+          SHOCKWAVE_DELAYS_MS.map((delay, i) => (
+            <div
+              key={i}
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: '8%',
+                borderRadius: '50%',
+                pointerEvents: 'none',
+                border: '4px solid rgba(255,255,255,.8)',
+                animation: `planetFormShockwave ${BURST_MS - delay}ms ease-out ${delay}ms both`,
+              }}
+            />
+          ))}
         <button
           onClick={() => goTo(-1)}
           aria-label="Previous planet"
@@ -366,6 +382,23 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
           />
         </div>
+        {planetLocked && (
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              inset: '8%',
+              borderRadius: '50%',
+              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(5,3,11,.5)',
+            }}
+          >
+            <span style={{ fontSize: 'clamp(36px,10vw,56px)' }}>🔒</span>
+          </div>
+        )}
         {children}
       </div>
       <div style={{ display: 'flex', gap: 8 }}>
@@ -392,7 +425,25 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
         ))}
       </div>
       <div style={{ textAlign: 'center' }}>
-        {isUpgraded ? (
+        {planetLocked ? (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 7,
+              padding: '7px 14px',
+              borderRadius: 999,
+              background: 'rgba(124,232,255,.1)',
+              border: '1px solid rgba(124,232,255,.3)',
+              color: '#FFFAFC',
+              fontSize: 12.5,
+              fontWeight: 700,
+            }}
+          >
+            <span style={{ fontSize: 14 }}>🔒</span>
+            Maxed out on web — continue in the FANUZU app
+          </div>
+        ) : isUpgraded ? (
           <>
             <div style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{planet.label}</div>
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 2 }}>{planet.tagline}</div>

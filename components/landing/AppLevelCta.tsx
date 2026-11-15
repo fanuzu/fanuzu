@@ -4,11 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
-const VISIBLE_MS = 3400;
-// Don't nudge toward the app on the very first post-upgrade tap — that
-// still feels like part of the upgrade moment. Wait until a handful of
-// taps show the person is deliberately continuing past it.
-const MIN_TAPS_BEFORE_CTA = 5;
+const VISIBLE_MS = 4200;
 // Doubles as the launch flag: unset/empty means the app isn't out yet, so
 // there's nowhere real to send a tap — set it (a NEXT_PUBLIC_ var, since
 // this reads in the browser) once a real store link exists and this
@@ -16,30 +12,28 @@ const MIN_TAPS_BEFORE_CTA = 5;
 // no code change needed.
 const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL;
 
-// The web planet only has one upgrade in it (nebula -> formed, at STAGE2) —
-// further GIVE taps past that point have no more visual payoff left to
-// give here. Rather than let them feel like they're doing nothing,
-// redirect that energy toward the app: before launch, a nudge back to
-// pre-registration (the thing this whole site exists to convert); after,
-// straight to the store. Fixed English, same convention as the other new
-// mechanic copy (GIVE, PLANET UPGRADE, the forming-progress hint).
+// The web planet only has one upgrade in it (nebula -> formed, at STAGE2),
+// and further GIVE taps past that point now lock the planet (see
+// ContributionProvider's planetLocked/PLANET_LOCK_TAPS and PlanetSwiper's
+// lock indicator) rather than doing nothing silently. This fires exactly
+// once, right at that lock moment, pointing the energy toward the app:
+// before launch, a nudge back to pre-registration (the thing this whole
+// site exists to convert); after, straight to the store. Fixed English,
+// same convention as the other new mechanic copy (GIVE, PLANET UPGRADE).
 export default function AppLevelCta() {
-  const { postUpgradeGiveNonce, activeOverlay, claimOverlay, releaseOverlay } = useContribution();
+  const { planetLockedNonce, activeOverlay, claimOverlay, releaseOverlay } = useContribution();
   const { openModal } = usePreregModal();
   const isFirstRender = useRef(true);
-  const tapCount = useRef(0);
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    tapCount.current += 1;
-    if (tapCount.current < MIN_TAPS_BEFORE_CTA) return;
     // Mid-priority overlay — loses the shared slot to the (rarer) upgrade
     // badge, but still outranks the ambient contribution toast.
     claimOverlay('appCta', VISIBLE_MS);
-  }, [postUpgradeGiveNonce, claimOverlay]);
+  }, [planetLockedNonce, claimOverlay]);
 
   if (activeOverlay !== 'appCta') return null;
 

@@ -58,11 +58,17 @@ interface ContributionContextValue {
   // off this, not off score itself, so they trigger once at the crossing
   // rather than once per contribution after it.
   planetUpgradedNonce: number;
-  // Bumped every time GIVE is tapped while the planet has *already*
-  // upgraded (not the crossing tap itself — that fires planetUpgradedNonce
-  // instead) — drives AppLevelCta's nudge toward the app, since there's no
-  // further visual payoff left to give on the web for continued taps.
-  postUpgradeGiveNonce: number;
+  // True once GIVE has been tapped PLANET_LOCK_TAPS times after the planet
+  // already finished forming — the web side has nothing further to show,
+  // so the planet visually locks and further growth is pushed to the app.
+  // Persistent (unlike a nonce) so PlanetSwiper can render the lock
+  // indicator for as long as it's true, not just for one animation beat.
+  planetLocked: boolean;
+  // Bumped exactly once, the moment planetLocked flips to true — the
+  // one-shot app nudge (AppLevelCta) fires off this instead of off every
+  // post-upgrade tap, so it's shown once rather than repeating on every
+  // tap past the threshold.
+  planetLockedNonce: number;
   // A quick "here's the app" screenshot flash, triggered by tapping the
   // planet itself (see PlanetSwiper's tap-vs-drag handling).
   previewVisible: boolean;
@@ -86,6 +92,10 @@ interface ContributionContextValue {
   releaseOverlay: (kind: OverlayKind) => void;
 }
 
+// How many GIVE taps past the planet-upgrade crossing before the web
+// experience caps out and points further growth at the app.
+const PLANET_LOCK_TAPS = 10;
+
 export type OverlayKind = 'toast' | 'appCta' | 'upgrade';
 const OVERLAY_PRIORITY: Record<OverlayKind, number> = { toast: 1, appCta: 2, upgrade: 3 };
 
@@ -100,7 +110,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [reactionNonce, setReactionNonce] = useState(0);
   const [santaFlight, setSantaFlight] = useState<ContributionContextValue['santaFlight']>(null);
   const [planetUpgradedNonce, setPlanetUpgradedNonce] = useState(0);
-  const [postUpgradeGiveNonce, setPostUpgradeGiveNonce] = useState(0);
+  const [planetLocked, setPlanetLocked] = useState(false);
+  const [planetLockedNonce, setPlanetLockedNonce] = useState(0);
+  const postUpgradeTapCountRef = useRef(0);
   const scoreRef = useRef(score);
   scoreRef.current = score;
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -213,7 +225,11 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       const { x: toX, y: toY } = getPlanetCenter();
       setSantaFlight({ id: Date.now() + Math.random(), fromX: origin.x, fromY: origin.y, toX, toY });
       if (alreadyUpgraded) {
-        setPostUpgradeGiveNonce((n) => n + 1);
+        postUpgradeTapCountRef.current += 1;
+        if (postUpgradeTapCountRef.current === PLANET_LOCK_TAPS) {
+          setPlanetLocked(true);
+          setPlanetLockedNonce((n) => n + 1);
+        }
       }
     },
     [spawnParticle, getPlanetCenter]
@@ -242,7 +258,8 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       reactionNonce,
       santaFlight,
       planetUpgradedNonce,
-      postUpgradeGiveNonce,
+      planetLocked,
+      planetLockedNonce,
       previewVisible,
       previewFading,
       triggerPreview,
@@ -265,7 +282,8 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       reactionNonce,
       santaFlight,
       planetUpgradedNonce,
-      postUpgradeGiveNonce,
+      planetLocked,
+      planetLockedNonce,
       previewVisible,
       previewFading,
       triggerPreview,
