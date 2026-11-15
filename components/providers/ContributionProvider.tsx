@@ -52,11 +52,15 @@ interface ContributionContextValue {
   // changes on every tap (even if the coordinates happen to repeat) so the
   // watcher can always tell a new flight apart from the one just finishing.
   santaFlight: { id: number; fromX: number; fromY: number; toX: number; toY: number } | null;
-  // Bumped exactly once, the moment score crosses from below STAGE2 to at
-  // or above it — the planet's nebula -> formed-planet reveal (see
-  // PlanetSwiper) and the celebratory badge (PlanetUpgradeBadge) both fire
-  // off this, not off score itself, so they trigger once at the crossing
-  // rather than once per contribution after it.
+  // Bumped exactly once, the instant score crosses from below STAGE2 to at
+  // or above it — PlanetSwiper starts its "charging up" anticipation
+  // animation off this, before anything actually reveals.
+  planetCrossedNonce: number;
+  // Bumped exactly once, ANTICIPATION_MS after planetCrossedNonce — the
+  // planet's nebula -> formed-planet reveal (see PlanetSwiper) and the
+  // celebratory badge (PlanetUpgradeBadge) both fire off this, so the
+  // "upgrade complete" announcement lands in sync with the actual reveal
+  // rather than while the planet still visually looks like a nebula.
   planetUpgradedNonce: number;
   // True once GIVE has been tapped PLANET_LOCK_TAPS times after the planet
   // already finished forming — the web side has nothing further to show,
@@ -95,6 +99,9 @@ interface ContributionContextValue {
 // How many GIVE taps past the planet-upgrade crossing before the web
 // experience caps out and points further growth at the app.
 const PLANET_LOCK_TAPS = 10;
+// How long the "charging up" anticipation plays (see PlanetSwiper) between
+// the crossing tap and the actual nebula -> planet reveal.
+export const ANTICIPATION_MS = 1100;
 
 export type OverlayKind = 'toast' | 'appCta' | 'upgrade';
 const OVERLAY_PRIORITY: Record<OverlayKind, number> = { toast: 1, appCta: 2, upgrade: 3 };
@@ -109,7 +116,9 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
   const [toastNonce, setToastNonce] = useState(0);
   const [reactionNonce, setReactionNonce] = useState(0);
   const [santaFlight, setSantaFlight] = useState<ContributionContextValue['santaFlight']>(null);
+  const [planetCrossedNonce, setPlanetCrossedNonce] = useState(0);
   const [planetUpgradedNonce, setPlanetUpgradedNonce] = useState(0);
+  const upgradeRevealTimer = useRef<ReturnType<typeof setTimeout>>();
   const [planetLocked, setPlanetLocked] = useState(false);
   const [planetLockedNonce, setPlanetLockedNonce] = useState(0);
   const postUpgradeTapCountRef = useRef(0);
@@ -131,6 +140,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     return () => {
       clearTimeout(previewUnmountTimer.current);
       clearTimeout(overlayTimer.current);
+      clearTimeout(upgradeRevealTimer.current);
     };
   }, []);
 
@@ -195,7 +205,11 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
     setScore((s) => {
       const next = s + value;
       if (s < STAGE2 && next >= STAGE2) {
-        setPlanetUpgradedNonce((n) => n + 1);
+        setPlanetCrossedNonce((n) => n + 1);
+        clearTimeout(upgradeRevealTimer.current);
+        upgradeRevealTimer.current = setTimeout(() => {
+          setPlanetUpgradedNonce((n) => n + 1);
+        }, ANTICIPATION_MS);
       }
       return next;
     });
@@ -257,6 +271,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       toastNonce,
       reactionNonce,
       santaFlight,
+      planetCrossedNonce,
       planetUpgradedNonce,
       planetLocked,
       planetLockedNonce,
@@ -281,6 +296,7 @@ export function ContributionProvider({ children }: { children: ReactNode }) {
       toastNonce,
       reactionNonce,
       santaFlight,
+      planetCrossedNonce,
       planetUpgradedNonce,
       planetLocked,
       planetLockedNonce,

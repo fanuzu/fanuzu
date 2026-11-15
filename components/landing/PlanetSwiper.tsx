@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
-import { STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
+import { ANTICIPATION_MS, STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 import { ZAP_VALUE } from './ZapButton';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
@@ -21,27 +21,56 @@ const SHOCKWAVE_DELAYS_MS = [0, 160, 320];
 
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, score, planetUpgradedNonce, planetLocked } =
-    useContribution();
+  const {
+    planetRef,
+    glowBlur,
+    glowSpread,
+    glowOpacity,
+    planetBrightness,
+    score,
+    planetCrossedNonce,
+    planetUpgradedNonce,
+    planetLocked,
+  } = useContribution();
   const pulsing = usePlanetReactionPulse();
 
-  // A ref (not just the `isUpgraded` value) because loadSlideImages is
-  // called from long-lived pointer-event closures set up once in the mount
-  // effect below (empty deps) — those closures would otherwise see whatever
-  // isUpgraded was true at mount forever, never the current value.
   const isUpgraded = score >= STAGE2;
-  const isUpgradedRef = useRef(isUpgraded);
-  isUpgradedRef.current = isUpgraded;
   const formProgress = Math.min(1, score / STAGE2);
   // A ring alone doesn't tell anyone what to click or why it's moving — an
   // ambient progress indicator isn't instruction. Spelled out explicitly,
   // tied to GIVE by name, with a live count rather than a static line.
   const tapsRemaining = Math.max(0, Math.ceil((STAGE2 - score) / ZAP_VALUE));
 
-  // A short, loud animation right at the crossing — without this the
-  // nebula just quietly became a planet, which read as "did something
-  // break?" rather than a deliberate reveal.
+  // The actual nebula -> planet image swap and all of its dependent UI
+  // (ring, caption) wait for this rather than `isUpgraded` directly, so the
+  // whole reveal lands together right after the anticipation beat instead
+  // of the moment score technically crosses the threshold.
+  const [revealed, setRevealed] = useState(isUpgraded);
+  // A ref (not just the `revealed` value) because loadSlideImages is called
+  // from long-lived pointer-event closures set up once in the mount effect
+  // below (empty deps) — those closures would otherwise see whatever
+  // `revealed` was at mount forever, never the current value.
+  const revealedRef = useRef(revealed);
+  revealedRef.current = revealed;
+
+  // A short, loud animation right at the reveal — without this the nebula
+  // just quietly became a planet, which read as "did something break?"
+  // rather than a deliberate reveal.
   const [bursting, setBursting] = useState(false);
+  // Shaky, flickering "charging up" state, from the instant score crosses
+  // (planetCrossedNonce) until the delayed reveal actually lands
+  // (planetUpgradedNonce, ANTICIPATION_MS later — see ContributionProvider)
+  // — the stronger cue that something big is about to happen.
+  const [anticipating, setAnticipating] = useState(false);
+  const isFirstCrossRender = useRef(true);
+  useEffect(() => {
+    if (isFirstCrossRender.current) {
+      isFirstCrossRender.current = false;
+      return;
+    }
+    setAnticipating(true);
+  }, [planetCrossedNonce]);
+
   const isFirstBurstRender = useRef(true);
   const burstTimer = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => {
@@ -49,10 +78,14 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
       isFirstBurstRender.current = false;
       return;
     }
+    setAnticipating(false);
+    setRevealed(true);
+    loadSlideImages(indexRef.current);
     setBursting(true);
     clearTimeout(burstTimer.current);
     burstTimer.current = setTimeout(() => setBursting(false), BURST_MS);
     return () => clearTimeout(burstTimer.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planetUpgradedNonce]);
 
   const orbRef = useRef<HTMLDivElement | null>(null);
@@ -85,7 +118,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
     }
   };
 
-  const slideSrc = (i: number) => (isUpgradedRef.current ? PLANETS[wrap(i)].image : NEBULA_IMAGE);
+  const slideSrc = (i: number) => (revealedRef.current ? PLANETS[wrap(i)].image : NEBULA_IMAGE);
 
   const loadSlideImages = (i: number) => {
     if (imgPrevRef.current) imgPrevRef.current.src = slideSrc(i - 1);
@@ -186,20 +219,6 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Live reveal: the moment score crosses into isUpgraded, swap all three
-  // mounted <img> elements from the nebula to each slide's real planet —
-  // without this, the carousel would only pick up the change the next time
-  // the visitor swipes, which could be long after the actual crossing.
-  const wasUpgradedRef = useRef(isUpgraded);
-  useEffect(() => {
-    if (!wasUpgradedRef.current && isUpgraded) {
-      loadSlideImages(indexRef.current);
-    }
-    wasUpgradedRef.current = isUpgraded;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUpgraded]);
-
   const planet = PLANETS[index];
 
   return (
@@ -245,7 +264,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             pointerEvents: 'none',
           }}
         />
-        {!isUpgraded && (
+        {!revealed && (
           <svg
             viewBox="0 0 100 100"
             style={{ position: 'absolute', inset: '2%', pointerEvents: 'none', transform: 'rotate(-90deg)' }}
@@ -353,7 +372,11 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             borderRadius: '50%',
             overflow: 'hidden',
             boxShadow: `0 0 ${glowBlur}px ${glowSpread}px rgba(var(--planet-g1),${glowOpacity}),0 0 54px 5px rgba(var(--planet-g2),.14)`,
-            animation: bursting ? `planetFormPunch ${BURST_MS}ms ease-out, floatY 7s ease-in-out infinite` : 'floatY 7s ease-in-out infinite',
+            animation: bursting
+              ? `planetFormPunch ${BURST_MS}ms ease-out, floatY 7s ease-in-out infinite`
+              : anticipating
+              ? `anticipationCharge ${ANTICIPATION_MS}ms ease-in both, floatY 7s ease-in-out infinite`
+              : 'floatY 7s ease-in-out infinite',
             filter: `brightness(${planetBrightness})`,
             transformOrigin: 'center',
             transition: 'box-shadow .6s ease, filter .6s ease',
@@ -443,7 +466,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             <span style={{ fontSize: 14 }}>🔒</span>
             Maxed out on web — continue in the FANUZU app
           </div>
-        ) : isUpgraded ? (
+        ) : revealed ? (
           <>
             <div style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{planet.label}</div>
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 2 }}>{planet.tagline}</div>
