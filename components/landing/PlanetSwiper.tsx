@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PLANETS, mixPlanetTheme } from '@/lib/planets';
 import { usePlanetTheme } from '@/components/providers/PlanetThemeProvider';
 import { STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
-import { useLang } from '@/components/providers/LangProvider';
 import { ZAP_VALUE } from './ZapButton';
 
 const wrap = (n: number) => ((n % PLANETS.length) + PLANETS.length) % PLANETS.length;
@@ -21,11 +20,9 @@ const BURST_MS = 1100;
 
 export default function PlanetSwiper({ children }: { children?: ReactNode }) {
   const { index, setIndex, setPreviewTheme } = usePlanetTheme();
-  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, triggerPreview, score, planetUpgradedNonce } =
+  const { planetRef, glowBlur, glowSpread, glowOpacity, planetBrightness, score, planetUpgradedNonce } =
     useContribution();
   const pulsing = usePlanetReactionPulse();
-  const { tr } = useLang();
-  const [hintSeen, setHintSeen] = useState(false);
 
   // A ref (not just the `isUpgraded` value) because loadSlideImages is
   // called from long-lived pointer-event closures set up once in the mount
@@ -171,12 +168,6 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
       } else {
         setTransforms(0, true);
         setPreviewTheme(null);
-        // Barely moved (or didn't move at all) — a tap on the planet
-        // itself, not a swipe attempt. Flash the app preview.
-        if (movedDx < 6) {
-          setHintSeen(true);
-          triggerPreview();
-        }
       }
     };
 
@@ -375,41 +366,6 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
           />
         </div>
-        {!hintSeen && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%,-50%)',
-              pointerEvents: 'none',
-              zIndex: 4,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '7px 13px',
-                borderRadius: 999,
-                background: 'rgba(10,6,19,.78)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,125,221,.4)',
-                boxShadow: '0 8px 24px rgba(0,0,0,.4), 0 0 10px rgba(255,125,221,.15)',
-                color: '#FFFAFC',
-                fontSize: 12,
-                fontWeight: 700,
-                whiteSpace: 'nowrap',
-                animation: 'tapHintPulse 1.8s ease-in-out infinite',
-              }}
-            >
-              <span style={{ fontSize: 15, display: 'inline-block', animation: 'tapHintFinger 1.8s ease-in-out infinite' }}>👆</span>
-              {tr.hero.tapHint}
-            </div>
-          </div>
-        )}
         {children}
       </div>
       <div style={{ display: 'flex', gap: 8 }}>

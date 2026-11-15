@@ -14,7 +14,7 @@ export default function Hero() {
   // visitor's own POP from zapping/contributing stacks on top of it, so
   // tapping ZAP visibly moves this number instead of only affecting the
   // planet's glow.
-  const { score } = useContribution();
+  const { score, triggerPreview } = useContribution();
   const displayedPop = popCount + score;
 
   return (
@@ -124,6 +124,27 @@ export default function Hero() {
             </div>
           ))}
         </div>
+        <button
+          type="button"
+          onClick={triggerPreview}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            marginTop: 20,
+            color: '#7CE8FF',
+            fontSize: 13.5,
+            fontWeight: 700,
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+            textDecoration: 'underline',
+          }}
+        >
+          {tr.hero.detailsCta} →
+        </button>
       </div>
 
       <div style={{ flex: '1 1 380px', minWidth: 280, display: 'flex', justifyContent: 'center', position: 'relative' }}>
