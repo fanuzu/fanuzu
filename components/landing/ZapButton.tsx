@@ -71,7 +71,38 @@ export default function ZapButton() {
         animation: 'zapPulse 2.4s ease-in-out infinite',
       }}
     >
-      <span style={{ fontSize: 20, lineHeight: 1 }}>👆</span>
+      <span
+        style={{
+          position: 'relative',
+          width: 24,
+          height: 24,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            width: 22,
+            height: 22,
+            borderRadius: '50%',
+            border: '2px solid rgba(5,3,11,.45)',
+            animation: 'tapRippleGive 1.6s ease-out infinite',
+          }}
+        />
+        <span
+          style={{
+            fontSize: 20,
+            lineHeight: 1,
+            display: 'inline-block',
+            animation: 'fingerTapBounce 1.6s ease-in-out infinite',
+          }}
+        >
+          👆
+        </span>
+      </span>
       <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em' }}>GIVE</span>
       {/* Seasonal touch, purely decorative — the button IS Santa's head: the
           fur band hugs the top of the circle (centered, nearly full width),
