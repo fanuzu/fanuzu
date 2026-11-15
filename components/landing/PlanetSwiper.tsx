@@ -79,6 +79,10 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
       return;
     }
     setAnticipating(false);
+    // Set directly rather than waiting for the next render to sync it —
+    // loadSlideImages (and the slideSrc it calls) reads this ref
+    // synchronously, right now, not after setRevealed's render lands.
+    revealedRef.current = true;
     setRevealed(true);
     loadSlideImages(indexRef.current);
     setBursting(true);
