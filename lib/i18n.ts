@@ -4,7 +4,7 @@ export interface TranslationSet {
   nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string };
   hero: {
     badge: string; t1: string; t2: string; t3: string; d1: string; d2: string; d3: string;
-    ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; sub: { title: string; desc: string }[];
+    ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; subLead: string; sub: { title: string; desc: string }[];
     statLabel: string; statNumber: string; statSub: string; liveViewersLabel: string; tapHint: string; previewCaption: string; previewCaptionInside: string; previewCaptionGrowth: string;
   };
   exp: {
@@ -65,6 +65,7 @@ ko: {
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
     d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
     ctaPrimary:'내 최애 행성에 참여하기',ctaPrereg:'나의 최애 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
+    subLead:'이 모든 활동이 모여 팬덤 행성을 키워요.',
     sub:[{title:'스밍, 투표, 커뮤니티',desc:'최애를 응원하는 다양한 활동'},{title:'팬덤활동 지원',desc:'미션, 이벤트, 리워드까지'},{title:'민주적인 팬덤 운영 시스템',desc:'팬들이 함께 만들어가는 팬덤'}],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',tapHint:'탭해서 미리보기',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionInside:'K-pop, K-culture, Beauty, Trip, 무엇이든지 물어볼 수 있어요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   exp:{t1:'총공이',t2:'팬덤 행성을 성장시켜요.',
@@ -152,6 +153,7 @@ en: {
     d2:'FANUZU is a K-POP fandom platform that turns scattered fan actions into collective power.',
     d3:'As fan contributions gather, the fandom planet grows — enabling even bigger CAMPAIGNS and actions for our artists.',
     ctaPrimary:'Join my artist’s planet',ctaPrereg:'Pre-register my fandom planet',ctaSecondary:'Why FANUZU',
+    subLead:'All of it adds up to grow our fandom planet.',
     sub:[{title:'Streaming, voting, community',desc:'All kinds of activities to support your bias'},{title:'Fandom activity support',desc:'Missions, events, and rewards'},{title:'A democratic fandom system',desc:'A fandom fans build together'}],
     statLabel:'Fan contributions today',statNumber:'12,480 POP',statSub:'POP is FANUZU’s contribution point for recording fan time and actions.',liveViewersLabel:'{n} people viewing now',tapHint:'Tap to preview',previewCaption:'FANUZU is a planet that records every moment between us and our artist.',previewCaptionInside:'Ask about anything — K-pop, K-culture, Beauty, Trip.',previewCaptionGrowth:'Our actions grow the fandom planet and build our fandom’s power.'},
   exp:{t1:'The time we share with our artist',t2:'becomes POP and grows our fandom planet.',
@@ -239,6 +241,7 @@ ja: {
     d2:'ひとりひとりのファン活動を、ファンダムの大きな力につなげるK-POPファンダムプラットフォーム。',
     d3:'ファンダムが成長すると、QUESTとCAMPAIGNを通じて、その力をアーティストのためのアクションへつなげられます。',
     ctaPrimary:'推しの惑星に参加する',ctaPrereg:'ファンダム惑星を事前登録',ctaSecondary:'FANUZUが選ばれる理由',
+    subLead:'そのすべてがファンダム惑星を育てます。',
     sub:[{title:'スミング、投票、コミュニティ',desc:'推しを応援するさまざまな活動'},{title:'ファンダム活動サポート',desc:'ミッション、イベント、リワードまで'},{title:'民主的なファンダム運営システム',desc:'ファンが一緒に作るファンダム'}],
     statLabel:'本日集まったファンの貢献',statNumber:'12,480 POP',statSub:'POPは、ファンの時間とアクションを記録するFANUZUの貢献ポイントです。',liveViewersLabel:'今 {n}人が見ています',tapHint:'タップしてプレビュー',previewCaption:'FANUZUは、アーティストと私たちのすべての瞬間を記録する惑星です',previewCaptionInside:'K-pop、K-culture、Beauty、Tripまで何でも聞けます',previewCaptionGrowth:'私たちの行動がファンダム惑星を成長させ、ファンダムの力を育てます'},
   exp:{t1:'アーティストと過ごした時間が',t2:'POPになり、ファンダム惑星を育てます。',
@@ -326,6 +329,7 @@ es: {
     d2:'Una plataforma de fandom K-POP que convierte acciones dispersas en fuerza colectiva.',
     d3:'A medida que el fandom crece, QUEST y CAMPAIGN convierten esa fuerza en acciones reales para el artista.',
     ctaPrimary:'Unirme al planeta de mi artista',ctaPrereg:'Preinscribir mi planeta fandom',ctaSecondary:'Por qué FANUZU',
+    subLead:'Todo eso hace crecer nuestro planeta del fandom.',
     sub:[{title:'Streaming, votaciones, comunidad',desc:'Actividades para apoyar a tu artista favorito'},{title:'Apoyo a la actividad del fandom',desc:'Misiones, eventos y recompensas'},{title:'Un sistema de fandom democrático',desc:'Un fandom que los fans construyen juntos'}],
     statLabel:'Contribuciones de hoy',statNumber:'12,480 POP',statSub:'POP es el punto de contribución de FANUZU que registra el tiempo y las acciones de los fans.',liveViewersLabel:'{n} personas viendo ahora',tapHint:'Toca para ver la vista previa',previewCaption:'FANUZU es un planeta que registra cada momento entre nosotros y nuestro artista.',previewCaptionInside:'Pregunta lo que quieras: K-pop, K-culture, Beauty, Trip.',previewCaptionGrowth:'Nuestras acciones hacen crecer el planeta del fandom y fortalecen nuestro poder como fandom.'},
   exp:{t1:'El tiempo que compartimos con nuestro artista',t2:'se convierte en POP y hace crecer nuestro planeta fandom.',
@@ -413,6 +417,7 @@ zhHans: {
     d2:'把分散的粉丝行动汇聚成共同力量的 K-POP 粉丝平台。',
     d3:'当粉丝星球不断成长，我们就能通过 QUEST 和 CAMPAIGN 一起行动，把力量传递给艺人。',
     ctaPrimary:'加入我喜欢的艺人星球',ctaPrereg:'预注册粉丝星球',ctaSecondary:'FANUZU 有什么不同',
+    subLead:'这些行动汇聚起来，让粉丝星球不断成长。',
     sub:[{title:'打榜、投票、社区',desc:'为你的爱豆应援的多样活动'},{title:'粉丝活动支持',desc:'任务、活动、奖励一应俱全'},{title:'民主化的粉丝团运营系统',desc:'粉丝们共同打造的粉丝团'}],
     statLabel:'今日粉丝贡献',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用来记录粉丝时间与行动的贡献积分。',liveViewersLabel:'现在有 {n} 人正在浏览',tapHint:'点击查看预览',previewCaption:'FANUZU 是记录我们与艺人所有瞬间的星球',previewCaptionInside:'K-pop、K-culture、Beauty、Trip，什么都可以问',previewCaptionGrowth:'我们的行动能让粉丝星球成长，壮大粉丝的力量'},
   exp:{t1:'我们与艺人共度的时间',t2:'变成POP，让粉丝星球成长。',
@@ -500,6 +505,7 @@ zhHant: {
     d2:'把分散的粉絲行動匯聚成共同力量的 K-POP 粉絲平台。',
     d3:'當粉絲星球持續成長，我們就能透過 QUEST 和 CAMPAIGN 一起行動，把力量傳遞給藝人。',
     ctaPrimary:'加入我喜歡的藝人星球',ctaPrereg:'預先登記粉絲星球',ctaSecondary:'FANUZU 有什麼不同',
+    subLead:'這些行動匯聚起來，讓粉絲星球不斷成長。',
     sub:[{title:'打榜、投票、社群',desc:'為你的愛豆應援的多樣活動'},{title:'粉絲活動支持',desc:'任務、活動、獎勵一應俱全'},{title:'民主化的粉絲團運營系統',desc:'粉絲們共同打造的粉絲團'}],
     statLabel:'今日粉絲貢獻',statNumber:'12,480 POP',statSub:'POP 是 FANUZU 用來記錄粉絲時間與行動的貢獻積分。',liveViewersLabel:'現在有 {n} 人正在瀏覽',tapHint:'點擊查看預覽',previewCaption:'FANUZU 是記錄我們與藝人所有瞬間的星球',previewCaptionInside:'K-pop、K-culture、Beauty、Trip，什麼都可以問',previewCaptionGrowth:'我們的行動能讓粉絲星球成長，壯大粉絲的力量'},
   exp:{t1:'我們與藝人共度的時間',t2:'變成POP，讓粉絲星球成長。',
@@ -587,6 +593,7 @@ id: {
     d2:'FANUZU adalah platform fandom K-POP yang mengubah aksi fan yang terpisah menjadi kekuatan kolektif.',
     d3:'Saat kontribusi fan terkumpul, planet fandom tumbuh — memungkinkan CAMPAIGN dan aksi yang lebih besar untuk artis kita.',
     ctaPrimary:'Gabung ke planet artisku',ctaPrereg:'Pra-daftar planet fandomku',ctaSecondary:'Kenapa FANUZU',
+    subLead:'Semua itu bersama-sama menumbuhkan planet fandom kita.',
     sub:[{title:'Streaming, voting, komunitas',desc:'Beragam aktivitas untuk mendukung biasmu'},{title:'Dukungan aktivitas fandom',desc:'Misi, event, hingga reward'},{title:'Sistem fandom yang demokratis',desc:'Fandom yang dibangun bersama oleh fans'}],
     statLabel:'Kontribusi fan hari ini',statNumber:'12,480 POP',statSub:'POP adalah poin kontribusi FANUZU untuk mencatat waktu dan aksi fan.',liveViewersLabel:'{n} orang sedang melihat',tapHint:'Ketuk untuk pratinjau',previewCaption:'FANUZU adalah planet yang mencatat setiap momen antara kita dan artis kita.',previewCaptionInside:'Tanyakan apa saja — K-pop, K-culture, Beauty, Trip.',previewCaptionGrowth:'Aksi kita menumbuhkan planet fandom dan membangun kekuatan fandom kita.'},
   exp:{t1:'Waktu yang kita habiskan bersama artis kita',t2:'jadi POP dan menumbuhkan planet fandom kita.',
@@ -674,6 +681,7 @@ fil: {
     d2:'Ang FANUZU ay isang K-POP fandom platform na ginagawang collective power ang magkakahiwalay na kilos ng mga fan.',
     d3:'Habang dumarami ang kontribusyon ng mga fan, lumalaki ang planeta ng fandom — na nagbibigay-daan sa mas malalaking CAMPAIGN at kilos para sa ating mga artist.',
     ctaPrimary:'Sumali sa planeta ng artist ko',ctaPrereg:'I-pre-register ang planeta ng fandom ko',ctaSecondary:'Bakit FANUZU',
+    subLead:'Lahat ng iyon ay magkakasamang nagpapalaki sa planeta ng ating fandom.',
     sub:[{title:'Streaming, voting, komunidad',desc:'Iba\'t ibang aktibidad para suportahan ang bias mo'},{title:'Suporta sa aktibidad ng fandom',desc:'Mission, event, hanggang reward'},{title:'Demokratikong sistema ng fandom',desc:'Fandom na sama-samang binubuo ng mga fan'}],
     statLabel:'Kontribusyon ng mga fan ngayon',statNumber:'12,480 POP',statSub:'Ang POP ay contribution point ng FANUZU para itala ang oras at kilos ng mga fan.',liveViewersLabel:'{n} katao ang nanonood ngayon',tapHint:'I-tap para sa preview',previewCaption:'Ang FANUZU ay isang planeta na nag-iistorya ng bawat sandali natin kasama ang artist natin.',previewCaptionInside:'Magtanong ng kahit ano — K-pop, K-culture, Beauty, Trip.',previewCaptionGrowth:'Pinapalaki ng ating mga kilos ang planeta ng fandom at binubuo ang lakas ng ating fandom.'},
   exp:{t1:'Ang oras na ginugol natin kasama ang artist natin',t2:'ay nagiging POP at pinapalaki ang planeta ng ating fandom.',
@@ -761,6 +769,7 @@ th: {
     d2:'FANUZU คือแพลตฟอร์มแฟนด้อม K-POP ที่เปลี่ยนการกระทำของแฟนที่กระจัดกระจายให้กลายเป็นพลังรวมหมู่',
     d3:'เมื่อการสนับสนุนของแฟนรวมกัน ดาวเคราะห์แฟนด้อมก็เติบโต — ทำให้เกิด CAMPAIGN และการกระทำที่ยิ่งใหญ่ขึ้นเพื่อศิลปินของเรา',
     ctaPrimary:'เข้าร่วมดาวเคราะห์ของศิลปินฉัน',ctaPrereg:'ลงทะเบียนล่วงหน้าดาวเคราะห์แฟนด้อมของฉัน',ctaSecondary:'ทำไมต้อง FANUZU',
+    subLead:'ทั้งหมดนี้รวมกันทำให้ดาวเคราะห์แฟนด้อมของเราเติบโต',
     sub:[{title:'สมิง โหวต คอมมูนิตี้',desc:'กิจกรรมหลากหลายเพื่อซัพพอร์ตไบอัสของคุณ'},{title:'สนับสนุนกิจกรรมแฟนด้อม',desc:'ภารกิจ อีเวนต์ ไปจนถึงรีวอร์ด'},{title:'ระบบแฟนด้อมแบบประชาธิปไตย',desc:'แฟนด้อมที่แฟนๆ ร่วมกันสร้าง'}],
     statLabel:'การสนับสนุนของแฟนวันนี้',statNumber:'12,480 POP',statSub:'POP คือแต้มการสนับสนุนของ FANUZU ที่บันทึกเวลาและการกระทำของแฟน',liveViewersLabel:'{n} คนกำลังดูอยู่ตอนนี้',tapHint:'แตะเพื่อดูตัวอย่าง',previewCaption:'FANUZU คือดาวเคราะห์ที่บันทึกทุกช่วงเวลาระหว่างเรากับศิลปินของเรา',previewCaptionInside:'ถามอะไรก็ได้ — K-pop, K-culture, Beauty, Trip',previewCaptionGrowth:'การกระทำของเราทำให้ดาวเคราะห์แฟนด้อมเติบโตและสร้างพลังให้แฟนด้อมของเรา'},
   exp:{t1:'เวลาที่เราใช้ร่วมกับศิลปินของเรา',t2:'กลายเป็น POP และทำให้ดาวเคราะห์แฟนด้อมของเราเติบโต',

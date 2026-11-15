@@ -112,6 +112,7 @@ export default function Hero() {
             {tr.hero.ctaPrereg}
           </button>
         </div>
+        <p style={{ fontSize: 14, color: '#B8AFC4', lineHeight: 1.6, margin: '0 0 14px' }}>{tr.hero.subLead}</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {tr.hero.sub.map((s, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
