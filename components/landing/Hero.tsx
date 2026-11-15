@@ -112,16 +112,14 @@ export default function Hero() {
             {tr.hero.ctaPrereg}
           </button>
         </div>
-        <div style={{ marginBottom: 12 }}>
-          {tr.hero.subIntro.map((line, i) => (
-            <div key={i} style={{ fontSize: 14, color: '#B8AFC4', lineHeight: 1.6 }}>{line}</div>
-          ))}
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {tr.hero.sub.map((s, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, color: '#B8AFC4' }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF' }} />
-              {s}
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF', marginTop: 8, flex: '0 0 auto' }} />
+              <div>
+                <div style={{ fontSize: 14.5, fontWeight: 700, color: '#FFFAFC' }}>{s.title}</div>
+                <div style={{ fontSize: 13, color: '#B8AFC4', marginTop: 2 }}>{s.desc}</div>
+              </div>
             </div>
           ))}
         </div>
