@@ -16,6 +16,18 @@ export const dynamic = 'force-dynamic';
 // second endpoint.
 const TOP_N = 100;
 
+// A leaderboard with a handful of names on it reads as "nobody's here yet"
+// rather than exciting, so the board stays hidden (even with
+// SHOW_ARTIST_RANKING=true) until total participation clears this bar —
+// env-overridable so it can be tuned without a code change. Only applied to
+// the live/in-progress views below; a finalized event is an explicit admin
+// action to reveal final results and is never hidden by this.
+const MIN_PARTICIPANTS_FOR_RANKING = Number(process.env.RANKING_MIN_PARTICIPANTS) || 100;
+
+function totalCount(rows: { count: number }[]): number {
+  return rows.reduce((sum, r) => sum + r.count, 0);
+}
+
 export interface PublicRankingEvent {
   name: string;
   endAt: string | null;
@@ -43,6 +55,9 @@ export async function GET() {
     // existed). No event metadata to show in this case.
     if (!event) {
       const counts = await getVerifiedArtistCounts();
+      if (totalCount(counts) < MIN_PARTICIPANTS_FOR_RANKING) {
+        return NextResponse.json({ enabled: false });
+      }
       const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
       return NextResponse.json({ enabled: true, ranking });
     }
@@ -76,6 +91,9 @@ export async function GET() {
     }
 
     const counts = await getRankingStandingsForEvent(event);
+    if (totalCount(counts) < MIN_PARTICIPANTS_FOR_RANKING) {
+      return NextResponse.json({ enabled: false });
+    }
     const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
     return NextResponse.json({ enabled: true, ranking, event: eventMeta });
   } catch (err) {
