@@ -23,6 +23,7 @@ import Prereg from './Prereg';
 import Footer from './Footer';
 import PreregModal from './PreregModal';
 import AttributionTracker from './AttributionTracker';
+import AdConversionTracker from './AdConversionTracker';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
 import PlanetUpgradeBadge from './PlanetUpgradeBadge';
@@ -50,6 +51,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
             <CarolProvider>
               <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
                 <AttributionTracker />
+                <AdConversionTracker />
                 <PlanetAtmosphere />
                 <StarField />
                 <MeteorShower />

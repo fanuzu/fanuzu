@@ -378,23 +378,56 @@ export async function submitPreregistration(
   };
 }
 
+export interface VerifyEmailResult {
+  // Token matched a registration at all.
+  verified: boolean;
+  // This call is what set email_verified_at (it was previously null) — false
+  // for an already-verified token, so re-clicking an old email link is
+  // harmless rather than an error. Ad-performance tracking (see
+  // app/api/prereg/verify/route.ts) keys its one-shot conversion event off
+  // this flag specifically, so the same registration can never fire a
+  // platform conversion twice no matter how many times the link is clicked.
+  firstVerify: boolean;
+  // This registration's own marketing_consent, so the verify route can
+  // gate the ad conversion event on it without a second query.
+  marketingConsent: boolean;
+}
+
 // Flips email_verified_at the first time a fan clicks the link in their
 // confirmation email (see sendPreregConfirmationEmail's verifyUrl) — this is
 // what gates a registration toward a public ranking/progress count (see
 // getVerifiedArtistCounts / getFandomProgress in lib/artist-registry.ts), not
 // toward the base POP reward or PRE-REG BADGE, which neither need nor wait
-// on it. Returns true for an already-verified token too, so re-clicking an
-// old email link is harmless rather than an error.
-export async function verifyPreregEmail(token: string): Promise<boolean> {
+// on it. SELECT ... FOR UPDATE inside a transaction so two near-simultaneous
+// clicks of the same link can't both observe "not yet verified" and both
+// report firstVerify: true.
+export async function verifyPreregEmail(token: string): Promise<VerifyEmailResult> {
   await ensureSchema();
   const pool = getPool();
-  const { rows } = await pool.query<{ id: number }>(
-    `UPDATE preregistrations SET email_verified_at = COALESCE(email_verified_at, now())
-     WHERE email_verify_token = $1
-     RETURNING id`,
-    [token]
-  );
-  return rows.length > 0;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const { rows } = await client.query<{ id: number; email_verified_at: string | null; marketing_consent: boolean }>(
+      'SELECT id, email_verified_at, marketing_consent FROM preregistrations WHERE email_verify_token = $1 FOR UPDATE',
+      [token]
+    );
+    const row = rows[0];
+    if (!row) {
+      await client.query('ROLLBACK');
+      return { verified: false, firstVerify: false, marketingConsent: false };
+    }
+    const alreadyVerified = row.email_verified_at !== null;
+    if (!alreadyVerified) {
+      await client.query('UPDATE preregistrations SET email_verified_at = now() WHERE id = $1', [row.id]);
+    }
+    await client.query('COMMIT');
+    return { verified: true, firstVerify: !alreadyVerified, marketingConsent: row.marketing_consent };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 /**
