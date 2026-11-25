@@ -75,6 +75,7 @@ export interface TranslationSet {
     termsToggleLabel: string;
     termsItems: string[];
     termsVerifyGrace: (hours: number) => string;
+    emailVerifiedToast: string;
   };
   footer: { privacy: string; terms: string; tagline: string; company: string; address: string; contact: string; copyright: string };
   errors: {
@@ -187,6 +188,7 @@ ko: {
     termsToggleLabel:'이용 조건 및 보상 안내',
     termsItems:['사전등록 후 이메일 인증을 완료해야 랭킹 집계에 반영돼요.','등록된 아티스트와 연동되고 부정 가입으로 제외되지 않은 건만 집계돼요.','동일 인원일 경우 먼저 그 인원 수에 도달한 쪽이 더 높은 순위예요.','결과가 확정되면 이후 어떤 변경이 있어도 순위는 바뀌지 않아요.','순위별 지원금은 현금이 아닌, 정식 출시 후 앱 내 캠페인을 통해 집행되는 응원 광고 비용이에요.','이 이벤트는 FANUZU가 주최하며, 참여 아티스트 및 소속사의 공식 주최 행사가 아니에요.'],
     termsVerifyGrace:(h) => `이벤트 종료 후 ${h}시간 이내 이메일 인증을 완료한 건까지 인정돼요.`,
+    emailVerifiedToast:'이메일 인증이 완료됐어요! 랭킹에 반영됩니다.',
   },
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
     company:'Fancake Inc. · 대표자 Sylvia Hong · 사업자등록번호 2748603844',
@@ -294,6 +296,7 @@ en: {
     termsToggleLabel:'Terms & rewards details',
     termsItems:['Only pre-registrations with a verified email count toward the ranking.','Only entries linked to a registered artist, and not excluded as fraudulent, are counted.','Ties are broken in favor of whoever reached that count first.','Once results are finalized, the ranking never changes again, no matter what happens afterward.','The ad budget by rank is not a cash payment — it funds a real support-ad campaign run in-app after launch.','This event is organized by FANUZU and is not an official event from the participating artists or their agencies.'],
     termsVerifyGrace:(h) => `Email verifications completed within ${h} hours after the event ends still count.`,
+    emailVerifiedToast:'Email verified! You now count toward the ranking.',
   },
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
@@ -401,6 +404,7 @@ ja: {
     termsToggleLabel:'利用条件・報酬のご案内',
     termsItems:['事前登録後、メール認証を完了した分のみランキングに反映されます。','登録済みアーティストと連携され、不正登録として除外されていない分のみ集計されます。','人数が同じ場合は、先にその人数に到達した方が上位になります。','結果が確定すると、その後どんな変更があっても順位は変わりません。','順位別の支援金は現金ではなく、正式リリース後にアプリ内キャンペーンで実施される応援広告費用です。','本イベントはFANUZUが主催するものであり、参加アーティストや所属事務所が公式に主催するイベントではありません。'],
     termsVerifyGrace:(h) => `イベント終了後${h}時間以内にメール認証を完了した分まで認められます。`,
+    emailVerifiedToast:'メール認証が完了しました！ランキングに反映されます。',
   },
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
     company:'Fancake Inc. · 代表 Sylvia Hong · 事業者登録番号 2748603844',
@@ -508,6 +512,7 @@ es: {
     termsToggleLabel:'Términos y detalles de las recompensas',
     termsItems:['Solo las preinscripciones con el correo verificado cuentan para el ranking.','Solo se cuentan las entradas vinculadas a un artista registrado y no excluidas por fraude.','En caso de empate, gana quien haya alcanzado ese número primero.','Una vez confirmados los resultados, el ranking ya no cambia pase lo que pase después.','El apoyo publicitario por posición no es un pago en efectivo — financia una campaña publicitaria real ejecutada en la app tras el lanzamiento.','Este evento lo organiza FANUZU y no es un evento oficial de los artistas participantes ni de sus agencias.'],
     termsVerifyGrace:(h) => `Las verificaciones de correo completadas dentro de las ${h} horas tras finalizar el evento también cuentan.`,
+    emailVerifiedToast:'¡Correo verificado! Ahora cuentas para el ranking.',
   },
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · N.º de registro 2748603844',
@@ -615,6 +620,7 @@ zhHans: {
     termsToggleLabel:'使用条款与奖励说明',
     termsItems:['预注册后完成邮箱验证的记录才会计入排名。','只统计已关联注册艺人、且未被判定为违规而排除的记录。','人数相同时，先达到该人数的一方排名更高。','结果一旦确定，之后无论发生什么变化，排名都不会再改变。','名次应援广告并非现金支付，而是正式上线后通过应用内活动执行的真实应援广告费用。','本活动由FANUZU主办，并非参与艺人或所属公司官方主办的活动。'],
     termsVerifyGrace:(h) => `活动结束后 ${h} 小时内完成邮箱验证的记录仍会计入。`,
+    emailVerifiedToast:'邮箱验证成功！现已计入排名。',
   },
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商注册号 2748603844',
@@ -722,6 +728,7 @@ zhHant: {
     termsToggleLabel:'使用條款與獎勵說明',
     termsItems:['預先登記後完成信箱驗證的紀錄才會計入排名。','只統計已關聯註冊藝人、且未被判定為違規而排除的紀錄。','人數相同時，先達到該人數的一方排名較高。','結果一旦確定，之後無論發生什麼變化，排名都不會再改變。','名次應援廣告並非現金支付，而是正式上線後透過App內活動執行的真實應援廣告費用。','本活動由FANUZU主辦，並非參與藝人或所屬公司官方主辦的活動。'],
     termsVerifyGrace:(h) => `活動結束後 ${h} 小時內完成信箱驗證的紀錄仍會計入。`,
+    emailVerifiedToast:'信箱驗證成功！現已計入排名。',
   },
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商註冊號 2748603844',
@@ -829,6 +836,7 @@ id: {
     termsToggleLabel:'Syarat & info hadiah',
     termsItems:['Hanya pre-registrasi dengan email terverifikasi yang dihitung dalam ranking.','Hanya entri yang terhubung ke artis terdaftar, dan tidak dikecualikan karena kecurangan, yang dihitung.','Jika jumlahnya sama, yang lebih dulu mencapai jumlah itu mendapat peringkat lebih tinggi.','Setelah hasil difinalisasi, ranking tidak akan berubah lagi apa pun yang terjadi setelahnya.','Dukungan iklan per peringkat bukan pembayaran tunai — ini mendanai kampanye iklan dukungan nyata yang dijalankan di dalam app setelah peluncuran.','Event ini diselenggarakan oleh FANUZU dan bukan acara resmi dari artis peserta atau agensi mereka.'],
     termsVerifyGrace:(h) => `Verifikasi email yang selesai dalam ${h} jam setelah event berakhir tetap dihitung.`,
+    emailVerifiedToast:'Email terverifikasi! Sekarang kamu dihitung dalam ranking.',
   },
   footer:{privacy:'Kebijakan Privasi',terms:'Syarat Layanan',tagline:'Waktu fan, diubah jadi kontribusi. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · No. Reg. Usaha 2748603844',
@@ -936,6 +944,7 @@ fil: {
     termsToggleLabel:'Mga tuntunin at detalye ng reward',
     termsItems:['Tanging pre-registration na may verified email lang ang kasama sa ranking.','Tanging entry na naka-link sa rehistradong artist, at hindi na-exclude dahil sa fraud, ang bibilangin.','Kapag magkapareho ang bilang, ang unang umabot sa bilang na iyon ang mas mataas ang ranggo.','Kapag na-finalize na ang resulta, hindi na ito magbabago kahit anong mangyari pa.','Ang ad support kada ranggo ay hindi cash payment — ginagamit ito para pondohan ang tunay na support-ad campaign na ipapatupad sa loob ng app pagkatapos ng paglulunsad.','Ang event na ito ay inooganisa ng FANUZU at hindi opisyal na event ng mga kasaling artist o ng kanilang ahensya.'],
     termsVerifyGrace:(h) => `Ang pag-verify ng email sa loob ng ${h} oras pagkatapos matapos ang event ay kasama pa rin.`,
+    emailVerifiedToast:'Na-verify na ang email mo! Kasama ka na ngayon sa ranking.',
   },
   footer:{privacy:'Patakaran sa Privacy',terms:'Mga Tuntunin ng Serbisyo',tagline:'Oras ng fan, ginawang kontribusyon. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
@@ -1043,6 +1052,7 @@ th: {
     termsToggleLabel:'เงื่อนไขการใช้งานและรายละเอียดรางวัล',
     termsItems:['เฉพาะการลงทะเบียนล่วงหน้าที่ยืนยันอีเมลแล้วเท่านั้นที่นับรวมในการจัดอันดับ','นับเฉพาะรายการที่เชื่อมโยงกับศิลปินที่ลงทะเบียนไว้ และไม่ถูกคัดออกเพราะทุจริต','หากจำนวนเท่ากัน ฝ่ายที่ถึงจำนวนนั้นก่อนจะได้อันดับสูงกว่า','เมื่อผลลัพธ์ถูกยืนยันแล้ว อันดับจะไม่เปลี่ยนแปลงอีกไม่ว่าจะเกิดอะไรขึ้นภายหลัง','เงินสนับสนุนตามอันดับไม่ใช่การจ่ายเงินสด แต่เป็นค่าใช้จ่ายสำหรับแคมเปญโฆษณาสนับสนุนจริงที่ดำเนินการในแอปหลังเปิดตัวอย่างเป็นทางการ','กิจกรรมนี้จัดโดย FANUZU และไม่ใช่กิจกรรมที่จัดอย่างเป็นทางการโดยศิลปินที่เข้าร่วมหรือต้นสังกัด'],
     termsVerifyGrace:(h) => `การยืนยันอีเมลที่เสร็จสิ้นภายใน ${h} ชั่วโมงหลังกิจกรรมสิ้นสุดยังคงนับรวม`,
+    emailVerifiedToast:'ยืนยันอีเมลสำเร็จ! คุณจะถูกนับรวมในการจัดอันดับแล้ว',
   },
   footer:{privacy:'นโยบายความเป็นส่วนตัว',terms:'ข้อกำหนดการใช้บริการ',tagline:'เวลาของแฟน เปลี่ยนเป็นการสนับสนุน FANUZU',
     company:'Fancake Inc. · ซีอีโอ Sylvia Hong · เลขทะเบียนธุรกิจ 2748603844',
