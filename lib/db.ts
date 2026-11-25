@@ -288,6 +288,17 @@ const SCHEMA_SQL = `
   -- own arbitrary admin-set number, independent of any individual base
   -- partner's own target_count above.
   ALTER TABLE artists ADD COLUMN IF NOT EXISTS prereg_goal INTEGER;
+
+  -- Ranking-event safety (fandom-ranking review): email ownership
+  -- verification and a manual admin exclusion flag. Neither blocks base
+  -- registration, the POP reward, or the PRE-REG BADGE — they only gate
+  -- what's allowed to count toward a public ranking/progress number that
+  -- has real money (ad-budget rewards) attached. See getVerifiedArtistCounts
+  -- / getFandomProgress in lib/artist-registry.ts.
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS email_verify_token TEXT;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ;
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_prereg_verify_token ON preregistrations (email_verify_token) WHERE email_verify_token IS NOT NULL;
+  ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS excluded_from_ranking BOOLEAN NOT NULL DEFAULT false;
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

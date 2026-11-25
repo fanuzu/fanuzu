@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { ensureSchema, getPool } from './db';
 import { LANGS, type Lang } from './i18n';
 import { sendPreregConfirmationEmail } from './email';
@@ -6,6 +7,8 @@ import { getArtistBySlug } from './artist-registry';
 import { findBasePartnerByCode } from './base-partners';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://fanuzu.co.kr';
 
 function resolveLang(value: string): Lang {
   return (LANGS as readonly string[]).includes(value) ? (value as Lang) : 'en';
@@ -228,19 +231,14 @@ export async function submitPreregistration(
   }
 
   const artistNameNormalized = normalizeArtistSlug(artistName);
-  const { rows: countRows } = await pool.query<{ count: string }>(
-    'SELECT COUNT(*) AS count FROM preregistrations WHERE artist_name_normalized = $1',
-    [artistNameNormalized]
-  );
-  const artistJoinOrder = Number(countRows[0].count) + 1;
   // Every valid pre-registration earns the PRE-REG BADGE now (no more
   // first-100-only ORIGIN 100 gate) — eligible is always true, and the
   // badge number is just this fan's own join order.
   const preregBadgeEligible = true;
-  const preregBadgeNumber = artistJoinOrder;
 
   const rewardAmount = referrer || basePartnerId ? 100 : 50;
   const referralCode = await generateReferralCode();
+  const emailVerifyToken = randomUUID();
 
   // Only ever links to an existing registry row (see lib/artists.ts) — a
   // custom "Other" name a fan typed in never auto-creates one. An admin has
@@ -249,8 +247,22 @@ export async function submitPreregistration(
 
   const client = await pool.connect();
   let preregistrationId: number;
+  let artistJoinOrder: number;
   try {
     await client.query('BEGIN');
+
+    // Serializes concurrent registrations for the same artist so the
+    // count-then-insert below can't race: two requests landing at the same
+    // instant used to be able to read the same COUNT and get the same join
+    // order. pg_advisory_xact_lock blocks the second transaction until the
+    // first commits/rolls back, and releases itself automatically either way.
+    await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [artistNameNormalized]);
+
+    const { rows: countRows } = await client.query<{ count: string }>(
+      'SELECT COUNT(*) AS count FROM preregistrations WHERE artist_name_normalized = $1',
+      [artistNameNormalized]
+    );
+    artistJoinOrder = Number(countRows[0].count) + 1;
 
     const insertResult = await client.query<{ id: number }>(
       `INSERT INTO preregistrations (
@@ -258,10 +270,10 @@ export async function submitPreregistration(
          referral_code_input, referred_by_id, reward_amount, age_confirmed, privacy_consent,
          terms_version, privacy_version, terms_accepted_at, privacy_accepted_at,
          marketing_consent, marketing_consent_at,
-         artist_join_order, origin_100_eligible, origin_100_number, referral_code,
+         artist_join_order, origin_100_eligible, origin_100_number, referral_code, email_verify_token,
          utm_source, utm_medium, utm_campaign, utm_term, utm_content, landing_path, country,
          base_partner_id, ip
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32)
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33)
        RETURNING id`,
       [
         email,
@@ -285,8 +297,9 @@ export async function submitPreregistration(
         marketingConsentAt,
         artistJoinOrder,
         preregBadgeEligible,
-        preregBadgeNumber,
+        artistJoinOrder,
         referralCode,
+        emailVerifyToken,
         utmSource || null,
         utmMedium || null,
         utmCampaign || null,
@@ -347,6 +360,7 @@ export async function submitPreregistration(
       rewardAmount,
       referralCode,
       hasRef: !!referrer,
+      verifyUrl: `${SITE_URL}/api/prereg/verify?token=${emailVerifyToken}`,
     });
   } catch (err) {
     console.error('sendPreregConfirmationEmail failed:', err);
@@ -359,9 +373,28 @@ export async function submitPreregistration(
     rewardAmount,
     referralApplied: !!referrer,
     preregBadgeEligible,
-    preregBadgeNumber,
+    preregBadgeNumber: artistJoinOrder,
     referralCode,
   };
+}
+
+// Flips email_verified_at the first time a fan clicks the link in their
+// confirmation email (see sendPreregConfirmationEmail's verifyUrl) — this is
+// what gates a registration toward a public ranking/progress count (see
+// getVerifiedArtistCounts / getFandomProgress in lib/artist-registry.ts), not
+// toward the base POP reward or PRE-REG BADGE, which neither need nor wait
+// on it. Returns true for an already-verified token too, so re-clicking an
+// old email link is harmless rather than an error.
+export async function verifyPreregEmail(token: string): Promise<boolean> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{ id: number }>(
+    `UPDATE preregistrations SET email_verified_at = COALESCE(email_verified_at, now())
+     WHERE email_verify_token = $1
+     RETURNING id`,
+    [token]
+  );
+  return rows.length > 0;
 }
 
 /**

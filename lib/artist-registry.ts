@@ -117,19 +117,55 @@ export interface FandomProgressRow {
 // Public (behind the SHOW_FANDOM_PROGRESS flag — see
 // app/api/prereg/fandom-progress): only the fandoms an admin has given a
 // goal to, and only the artist name + aggregate count — never a base
-// partner's or individual's data (doc requirement 6).
+// partner's or individual's data (doc requirement 6). The count only
+// includes rows that pass the same "safe to show publicly" bar as
+// getVerifiedArtistCounts below (verified email, not admin-excluded) —
+// see that function's comment for why.
 export async function getFandomProgress(): Promise<FandomProgressRow[]> {
   await ensureSchema();
   const pool = getPool();
   const { rows } = await pool.query<{ artist_name: string; prereg_goal: number; count: string }>(
     `SELECT a.artist_name, a.prereg_goal, COUNT(p.id) AS count
      FROM artists a
-     LEFT JOIN preregistrations p ON p.artist_id = a.id
+     LEFT JOIN preregistrations p
+       ON p.artist_id = a.id AND p.email_verified_at IS NOT NULL AND p.excluded_from_ranking = false
      WHERE a.prereg_goal IS NOT NULL
      GROUP BY a.id
      ORDER BY a.artist_name ASC`
   );
   return rows.map((r) => ({ fandom: r.artist_name, count: Number(r.count), goal: r.prereg_goal }));
+}
+
+export interface VerifiedArtistCount {
+  artist: string;
+  count: number;
+}
+
+// Backs any PUBLIC ranking (see app/api/prereg/ranking) — deliberately
+// separate from lib/prereg.ts's getArtistCounts (which admin stats use and
+// which intentionally counts everything, unfiltered, for operational
+// visibility). A ranking with real rewards attached needs a stricter bar:
+//   - email_verified_at IS NOT NULL — unverified rows can't be confirmed to
+//     be a real, owned inbox (see verifyPreregEmail).
+//   - artist_id IS NOT NULL — only registrations linked to a registry artist
+//     count, so the same fandom typed under different free-text spellings
+//     can't fragment into separate ranking entries (or an admin can't yet
+//     merge a typo'd entry into the right one). A fan's own registration,
+//     reward, and badge are completely unaffected either way — this only
+//     affects whether their tap is visible in the public ranking.
+//   - excluded_from_ranking = false — an admin's manual fraud/test flag.
+export async function getVerifiedArtistCounts(): Promise<VerifiedArtistCount[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{ artist_name: string; count: string }>(
+    `SELECT a.artist_name, COUNT(p.id) AS count
+     FROM artists a
+     JOIN preregistrations p
+       ON p.artist_id = a.id AND p.email_verified_at IS NOT NULL AND p.excluded_from_ranking = false
+     GROUP BY a.id
+     ORDER BY COUNT(p.id) DESC`
+  );
+  return rows.map((r) => ({ artist: r.artist_name, count: Number(r.count) }));
 }
 
 export interface ArtistUpdateInput {

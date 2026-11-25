@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getArtistCounts } from '@/lib/prereg';
+import { getVerifiedArtistCounts } from '@/lib/artist-registry';
 
 export const runtime = 'nodejs';
 // No request-specific data is read here, so Next.js would otherwise treat
@@ -22,7 +22,7 @@ export async function GET() {
   }
 
   try {
-    const counts = await getArtistCounts();
+    const counts = await getVerifiedArtistCounts();
     const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
     return NextResponse.json({ enabled: true, ranking });
   } catch (err) {

@@ -7,6 +7,7 @@ interface PreregEmailParams {
   rewardAmount: number;
   referralCode: string;
   hasRef: boolean;
+  verifyUrl: string;
 }
 
 interface EmailCopy {
@@ -18,6 +19,8 @@ interface EmailCopy {
   referralLabel: string;
   referralNote: string;
   closingLine: string;
+  verifyLabel: string;
+  verifyNote: string;
 }
 
 const EMAIL_COPY: Record<Lang, EmailCopy> = {
@@ -30,6 +33,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: '나의 추천 코드',
     referralNote: '추천 코드를 공유하면 코드를 사용한 친구와 나 모두 100 POP을 받을 수 있어요.',
     closingLine: 'FANUZU가 시작되는 순간 가장 먼저 알려드리겠습니다.',
+    verifyLabel:'이메일 인증하기',
+    verifyNote:'팬덤 랭킹전 등 일부 이벤트는 이메일 인증을 완료해야 반영돼요.',
   },
   en: {
     subject: '[FANUZU] Your pre-registration is complete',
@@ -40,6 +45,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: 'Your referral code',
     referralNote: 'Share your code — anyone who uses it, and you, both get 100 POP.',
     closingLine: "We'll be the first to let you know the moment FANUZU launches.",
+    verifyLabel:'Verify email',
+    verifyNote:'Some events, like fandom ranking events, only count registrations with a verified email.',
   },
   ja: {
     subject: '[FANUZU] 事前登録が完了しました',
@@ -50,6 +57,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: '紹介コード',
     referralNote: '紹介コードを共有すると、使った人とあなたの両方に100 POPが贈られます。',
     closingLine: 'FANUZUが始まる瞬間、誰よりも早くお知らせします。',
+    verifyLabel:'メール認証する',
+    verifyNote:'ファンダムランキングなど一部のイベントは、メール認証が完了した登録のみ反映されます。',
   },
   es: {
     subject: '[FANUZU] Tu preinscripción se ha completado',
@@ -60,6 +69,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: 'Tu código de referido',
     referralNote: 'Comparte tu código: quien lo use y tú recibirán 100 POP cada uno.',
     closingLine: 'Serás de los primeros en saberlo en cuanto FANUZU se lance.',
+    verifyLabel:'Verificar correo',
+    verifyNote:'Algunos eventos, como los de ranking de fandom, solo cuentan registros con correo verificado.',
   },
   zhHans: {
     subject: '[FANUZU] 预注册已完成',
@@ -70,6 +81,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: '我的推荐码',
     referralNote: '分享你的推荐码，使用者和你都将获得100 POP。',
     closingLine: 'FANUZU正式上线的那一刻，我们会第一时间通知你。',
+    verifyLabel:'验证邮箱',
+    verifyNote:'部分活动（如粉丝团排名赛）仅计入已验证邮箱的注册。',
   },
   zhHant: {
     subject: '[FANUZU] 預先註冊已完成',
@@ -80,6 +93,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: '我的推薦碼',
     referralNote: '分享你的推薦碼，使用者和你都將獲得100 POP。',
     closingLine: 'FANUZU正式上線的那一刻，我們會第一時間通知你。',
+    verifyLabel:'驗證郵箱',
+    verifyNote:'部分活動（如粉絲團排名賽）僅計入已驗證郵箱的註冊。',
   },
   id: {
     subject: '[FANUZU] Pra-pendaftaranmu selesai',
@@ -90,6 +105,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: 'Kode undanganmu',
     referralNote: 'Bagikan kodemu — siapa pun yang memakainya, dan kamu, sama-sama dapat 100 POP.',
     closingLine: 'Kami akan jadi yang pertama memberitahumu begitu FANUZU resmi diluncurkan.',
+    verifyLabel:'Verifikasi email',
+    verifyNote:'Beberapa event, seperti ranking fandom, hanya menghitung pendaftaran dengan email terverifikasi.',
   },
   fil: {
     subject: '[FANUZU] Kumpleto na ang pre-registration mo',
@@ -100,6 +117,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: 'Invite code mo',
     referralNote: 'Ibahagi ang code mo — ang sinumang gumamit nito, at ikaw, ay parehong makakakuha ng 100 POP.',
     closingLine: 'Kami ang unang magsasabi sa iyo sa sandaling ilunsad ang FANUZU.',
+    verifyLabel:'I-verify ang email',
+    verifyNote:'May mga event, tulad ng fandom ranking, na binibilang lang ang rehistrong may verified na email.',
   },
   th: {
     subject: '[FANUZU] การลงทะเบียนล่วงหน้าของคุณเสร็จสมบูรณ์',
@@ -110,6 +129,8 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralLabel: 'รหัสเชิญของคุณ',
     referralNote: 'แชร์รหัสของคุณ — ใครก็ตามที่ใช้มัน รวมถึงคุณ จะได้รับ 100 POP ทั้งคู่',
     closingLine: 'เราจะเป็นคนแรกที่แจ้งให้คุณทราบทันทีที่ FANUZU เปิดตัว',
+    verifyLabel:'ยืนยันอีเมล',
+    verifyNote:'บางอีเวนต์ เช่น การจัดอันดับแฟนด้อม จะนับเฉพาะการลงทะเบียนที่ยืนยันอีเมลแล้วเท่านั้น',
   },
 };
 
@@ -145,6 +166,10 @@ function renderHtml(copy: EmailCopy, params: PreregEmailParams): string {
         <p style="font-size:12px;color:#6b6478;margin:0 0 4px;">${copy.referralLabel}</p>
         <p style="font-size:16px;font-weight:700;letter-spacing:.02em;margin:0 0 12px;">${referralCode}</p>
         <p style="font-size:12.5px;line-height:1.6;color:#6b6478;margin:0 0 24px;">${copy.referralNote}</p>
+        <div style="text-align:center;margin:0 0 20px;">
+          <a href="${escapeHtml(params.verifyUrl)}" style="display:inline-block;background:linear-gradient(135deg,#FF7DDD,#9B7CFF);color:#05030B;font-weight:700;font-size:13.5px;padding:12px 28px;border-radius:999px;text-decoration:none;">${copy.verifyLabel}</a>
+          <p style="font-size:11.5px;line-height:1.5;color:#8A7FA0;margin:10px 0 0;">${copy.verifyNote}</p>
+        </div>
         <p style="font-size:13.5px;line-height:1.6;color:#1a1030;margin:0;">${copy.closingLine}</p>
       </div>
       <div style="padding:20px 24px 0;">
