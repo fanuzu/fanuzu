@@ -154,16 +154,24 @@ export interface VerifiedArtistCount {
 //     reward, and badge are completely unaffected either way — this only
 //     affects whether their tap is visible in the public ranking.
 //   - excluded_from_ranking = false — an admin's manual fraud/test flag.
+//
+// LEFT JOIN (not JOIN) deliberately includes every registry artist, even
+// ones with zero qualifying registrations — so a fan searching for an
+// artist that just hasn't taken off yet still finds it (ranking-event
+// review item 4) rather than a search that looks broken. Ties are broken
+// by whoever reached that count first (earliest of their qualifying rows),
+// falling back to artist name for the true all-zero group so the order is
+// fully deterministic rather than whatever Postgres feels like returning.
 export async function getVerifiedArtistCounts(): Promise<VerifiedArtistCount[]> {
   await ensureSchema();
   const pool = getPool();
   const { rows } = await pool.query<{ artist_name: string; count: string }>(
     `SELECT a.artist_name, COUNT(p.id) AS count
      FROM artists a
-     JOIN preregistrations p
+     LEFT JOIN preregistrations p
        ON p.artist_id = a.id AND p.email_verified_at IS NOT NULL AND p.excluded_from_ranking = false
      GROUP BY a.id
-     ORDER BY COUNT(p.id) DESC`
+     ORDER BY COUNT(p.id) DESC, MAX(p.created_at) ASC NULLS LAST, a.artist_name ASC`
   );
   return rows.map((r) => ({ artist: r.artist_name, count: Number(r.count) }));
 }

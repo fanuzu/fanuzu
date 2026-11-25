@@ -29,7 +29,10 @@ export default function Nav() {
     fetch('/api/prereg/ranking')
       .then((res) => res.json())
       .then((data) => {
-        if (!cancelled && data.enabled && Array.isArray(data.ranking) && data.ranking.length > 0) {
+        // `enabled` alone is enough now — RankingSection renders an
+        // intro/CTA even while the ranked list itself is still hidden
+        // below the participant minimum (rankingVisible: false).
+        if (!cancelled && data.enabled) {
           setRankingEnabled(true);
         }
       })

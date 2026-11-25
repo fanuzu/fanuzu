@@ -812,7 +812,12 @@ export default function AdminPage() {
         headers: { 'x-admin-password': password },
       });
       if (!res.ok) {
-        setRankingEventsError('랭킹전을 확정하지 못했습니다.');
+        const data = await res.json().catch(() => ({}));
+        setRankingEventsError(
+          data.error === 'too_early'
+            ? '이벤트 종료 시각이 되기 전에는 확정할 수 없습니다.'
+            : '랭킹전을 확정하지 못했습니다.'
+        );
         return;
       }
       loadRankingEvents(password);

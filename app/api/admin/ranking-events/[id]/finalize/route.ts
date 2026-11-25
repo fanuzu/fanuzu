@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { finalizeRankingEvent } from '@/lib/ranking-events';
+import { finalizeRankingEvent, FinalizeTooEarlyError } from '@/lib/ranking-events';
 import { checkAdminAuth } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
@@ -29,6 +29,9 @@ export async function POST(request: Request, { params }: { params: { id: string 
     }
     return NextResponse.json({ event });
   } catch (err) {
+    if (err instanceof FinalizeTooEarlyError) {
+      return NextResponse.json({ error: 'too_early' }, { status: 400 });
+    }
     console.error('admin ranking-event finalize failed:', err);
     return NextResponse.json({ error: 'server_error' }, { status: 500 });
   }

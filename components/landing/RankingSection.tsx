@@ -18,6 +18,17 @@ interface RankingEventMeta {
   rewardFourthToTenth: number;
 }
 
+type RankingEventState = 'active' | 'ended_pending' | 'finalized';
+
+interface RankingApiResponse {
+  enabled: boolean;
+  event?: RankingEventMeta;
+  eventState?: RankingEventState;
+  rankingVisible?: boolean;
+  ranking?: RankingRow[];
+  finalized?: boolean;
+}
+
 // Matches the "5-10 minute refresh" cadence from the ranking-event review —
 // frequent enough that the board feels alive, far enough apart that it's
 // not hammering the DB on every visitor's tab.
@@ -32,9 +43,7 @@ function krw(n: number): string {
 export default function RankingSection() {
   const { tr } = useLang();
   const { openModal } = usePreregModal();
-  const [ranking, setRanking] = useState<RankingRow[] | null>(null);
-  const [event, setEvent] = useState<RankingEventMeta | null>(null);
-  const [finalized, setFinalized] = useState(false);
+  const [data, setData] = useState<RankingApiResponse | null>(null);
   const [query, setQuery] = useState('');
   const [now, setNow] = useState(() => Date.now());
 
@@ -43,15 +52,8 @@ export default function RankingSection() {
     async function load() {
       try {
         const res = await fetch('/api/prereg/ranking');
-        const data = await res.json();
-        if (cancelled) return;
-        if (data.enabled && Array.isArray(data.ranking)) {
-          setRanking(data.ranking);
-          setEvent(data.event ?? null);
-          setFinalized(!!data.finalized);
-        } else {
-          setRanking(null);
-        }
+        const body: RankingApiResponse = await res.json();
+        if (!cancelled) setData(body);
       } catch {
         // Leave whatever was last loaded in place rather than clearing it
         // on a transient network blip.
@@ -72,25 +74,41 @@ export default function RankingSection() {
     return () => clearInterval(t);
   }, []);
 
-  if (!ranking || ranking.length === 0) return null;
+  if (!data || !data.enabled) return null;
 
-  const normalizedQuery = query.trim().toLowerCase();
-  const filtered = normalizedQuery
-    ? ranking.filter((r) => r.artist.toLowerCase().includes(normalizedQuery))
-    : ranking.slice(0, TOP_SHOWN);
+  const { event, eventState, rankingVisible, ranking } = data;
 
+  // Event intro/rewards/period/CTA always render once the event is enabled
+  // (ranking-event review item 1) — only the list below is conditional on
+  // rankingVisible, which is false exactly when participation hasn't
+  // cleared the minimum bar yet.
   let timeLabel: string | null = null;
-  if (!finalized && event?.endAt) {
+  let timeLabelMuted = false;
+  if (eventState === 'finalized') {
+    timeLabel = tr.rankingSection.eventEndedLabel;
+    timeLabelMuted = true;
+  } else if (eventState === 'ended_pending') {
+    timeLabel = tr.rankingSection.verifyingLabel;
+    timeLabelMuted = true;
+  } else if (eventState === 'active' && event?.endAt) {
     const diffMs = new Date(event.endAt).getTime() - now;
     if (diffMs <= 0) {
-      timeLabel = tr.rankingSection.eventEndedLabel;
+      timeLabel = tr.rankingSection.verifyingLabel;
+      timeLabelMuted = true;
     } else {
       const hours = Math.ceil(diffMs / (1000 * 60 * 60));
       timeLabel = hours >= 24 ? tr.rankingSection.daysLeft(Math.ceil(hours / 24)) : tr.rankingSection.hoursLeft(hours);
     }
   }
 
-  const maxCount = ranking[0]?.count || 1;
+  const normalizedQuery = query.trim().toLowerCase();
+  const filtered =
+    rankingVisible && ranking
+      ? normalizedQuery
+        ? ranking.filter((r) => r.artist.toLowerCase().includes(normalizedQuery))
+        : ranking.slice(0, TOP_SHOWN)
+      : [];
+  const maxCount = ranking?.[0]?.count || 1;
 
   return (
     <section id="ranking" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '72px 24px' }}>
@@ -120,71 +138,85 @@ export default function RankingSection() {
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
           {timeLabel && (
-            <div style={{ fontSize: 13, fontWeight: 700, color: finalized ? '#9089A0' : '#7CE8FF' }}>{timeLabel}</div>
-          )}
-          {finalized && !timeLabel && (
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{tr.rankingSection.eventEndedLabel}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: timeLabelMuted ? '#9089A0' : '#7CE8FF' }}>{timeLabel}</div>
           )}
         </div>
 
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={tr.rankingSection.searchPlaceholder}
-          style={{
-            width: '100%',
-            background: 'rgba(255,255,255,.06)',
-            border: '1px solid rgba(255,255,255,.14)',
-            borderRadius: 12,
-            padding: '12px 16px',
-            color: '#FFFAFC',
-            fontSize: 14,
-            marginBottom: 16,
-            outline: 'none',
-            fontFamily: 'inherit',
-          }}
-        />
+        {rankingVisible && ranking ? (
+          <>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={tr.rankingSection.searchPlaceholder}
+              style={{
+                width: '100%',
+                background: 'rgba(255,255,255,.06)',
+                border: '1px solid rgba(255,255,255,.14)',
+                borderRadius: 12,
+                padding: '12px 16px',
+                color: '#FFFAFC',
+                fontSize: 14,
+                marginBottom: 16,
+                outline: 'none',
+                fontFamily: 'inherit',
+              }}
+            />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
-          {filtered.map((row) => {
-            const rank = ranking.findIndex((r) => r.artist === row.artist) + 1;
-            return (
-              <div key={row.artist} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 32, flex: '0 0 auto', fontSize: 14, fontWeight: 800, color: RANK_ACCENTS[rank - 1] ?? '#B8AFC4' }}>
-                  #{rank}
-                </div>
-                <div
-                  style={{
-                    width: 120,
-                    flex: '0 0 auto',
-                    fontSize: 13.5,
-                    fontWeight: 700,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {row.artist}
-                </div>
-                <div style={{ flex: 1, background: 'rgba(255,255,255,.06)', borderRadius: 6, overflow: 'hidden', height: 20 }}>
-                  <div
-                    style={{
-                      width: `${Math.max(2, (row.count / maxCount) * 100)}%`,
-                      height: '100%',
-                      background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
-                    }}
-                  />
-                </div>
-                <div style={{ width: 56, flex: '0 0 auto', textAlign: 'right', fontSize: 13, fontWeight: 700 }}>
-                  {row.count.toLocaleString()}
-                </div>
-              </div>
-            );
-          })}
-          {filtered.length === 0 && (
-            <p style={{ color: '#6B6478', fontSize: 13, textAlign: 'center' }}>{tr.rankingSection.searchNoResults}</p>
-          )}
-        </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+              {filtered.map((row) => {
+                const rank = ranking.findIndex((r) => r.artist === row.artist) + 1;
+                const prev = rank > 1 ? ranking[rank - 2] : null;
+                const needed = prev ? prev.count - row.count + 1 : 0;
+                return (
+                  <div key={row.artist}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{ width: 32, flex: '0 0 auto', fontSize: 14, fontWeight: 800, color: RANK_ACCENTS[rank - 1] ?? '#B8AFC4' }}>
+                        #{rank}
+                      </div>
+                      <div
+                        style={{
+                          width: 120,
+                          flex: '0 0 auto',
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {row.artist}
+                      </div>
+                      <div style={{ flex: 1, background: 'rgba(255,255,255,.06)', borderRadius: 6, overflow: 'hidden', height: 20 }}>
+                        <div
+                          style={{
+                            width: `${Math.max(2, (row.count / maxCount) * 100)}%`,
+                            height: '100%',
+                            background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+                          }}
+                        />
+                      </div>
+                      <div style={{ width: 56, flex: '0 0 auto', textAlign: 'right', fontSize: 13, fontWeight: 700 }}>
+                        {row.count.toLocaleString()}
+                      </div>
+                    </div>
+                    {prev && needed > 0 && (
+                      <div style={{ marginLeft: 44, marginTop: 2, fontSize: 11, color: '#6B6478' }}>
+                        {tr.rankingSection.neededForNext(needed)}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              {filtered.length === 0 && (
+                <p style={{ color: '#6B6478', fontSize: 13, textAlign: 'center' }}>{tr.rankingSection.searchNoResults}</p>
+              )}
+            </div>
+          </>
+        ) : (
+          <p style={{ color: '#9089A0', fontSize: 13.5, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
+            {tr.rankingSection.rankingHiddenMessage}
+          </p>
+        )}
 
         {event && (
           <div

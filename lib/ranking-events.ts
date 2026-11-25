@@ -184,6 +184,11 @@ export interface RankingStandingRow {
 // registrations created at/after start_at (and at/before end_at, if set),
 // so a ranking that's meant to measure fresh sign-ups for this event isn't
 // padded by registrations from long before it existed.
+//
+// LEFT JOIN (not JOIN), same as getVerifiedArtistCounts, so an artist with
+// zero qualifying registrations for this event still shows up (count 0)
+// for search — and the same deterministic tie-break (earliest to reach the
+// current count, then artist name) applies here too.
 export async function getRankingStandingsForEvent(event: RankingEvent): Promise<RankingStandingRow[]> {
   await ensureSchema();
   const pool = getPool();
@@ -200,10 +205,9 @@ export async function getRankingStandingsForEvent(event: RankingEvent): Promise<
   const { rows } = await pool.query<{ artist_name: string; count: string }>(
     `SELECT a.artist_name, COUNT(p.id) AS count
      FROM artists a
-     JOIN preregistrations p ON p.artist_id = a.id
-     WHERE ${conditions.join(' AND ')}
+     LEFT JOIN preregistrations p ON p.artist_id = a.id AND ${conditions.join(' AND ')}
      GROUP BY a.id
-     ORDER BY COUNT(p.id) DESC`,
+     ORDER BY COUNT(p.id) DESC, MAX(p.created_at) ASC NULLS LAST, a.artist_name ASC`,
     params
   );
   return rows.map((r) => ({ artist: r.artist_name, count: Number(r.count) }));
@@ -215,9 +219,22 @@ export interface RankingResultRow {
   rank: number;
 }
 
+// Thrown by finalizeRankingEvent when the event has a set end date that
+// hasn't passed yet — the review's "조기 확정 방지" requirement: finalizing
+// early would freeze a standing before every fan who's going to register
+// has had the chance to.
+export class FinalizeTooEarlyError extends Error {
+  constructor() {
+    super("Cannot finalize before the event's end date.");
+    this.name = 'FinalizeTooEarlyError';
+  }
+}
+
 // Admin-only, irreversible: computes the current standing one last time and
 // writes it into ranking_event_results, then flips status to 'finalized'.
-// Returns null if the event doesn't exist or is already finalized.
+// Returns null if the event doesn't exist or is already finalized. Throws
+// FinalizeTooEarlyError if end_at is set and hasn't passed yet (an event
+// with no end_at has no fixed close, so admin discretion decides).
 export async function finalizeRankingEvent(id: number): Promise<RankingEvent | null> {
   await ensureSchema();
   const pool = getPool();
@@ -233,6 +250,11 @@ export async function finalizeRankingEvent(id: number): Promise<RankingEvent | n
       return null;
     }
     const event = mapRow(eventRows[0]);
+
+    if (event.endAt && new Date() < new Date(event.endAt)) {
+      await client.query('ROLLBACK');
+      throw new FinalizeTooEarlyError();
+    }
 
     const conditions = ['p.email_verified_at IS NOT NULL', 'p.excluded_from_ranking = false'];
     const params: unknown[] = [];

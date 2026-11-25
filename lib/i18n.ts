@@ -65,6 +65,9 @@ export interface TranslationSet {
     navShortcut: string;
     myFandomRankLabel: string;
     inviteToClimbLine: string;
+    rankingHiddenMessage: string;
+    verifyingLabel: string;
+    neededForNext: (n: number) => string;
   };
   footer: { privacy: string; terms: string; tagline: string; company: string; address: string; contact: string; copyright: string };
   errors: {
@@ -169,6 +172,8 @@ ko: {
     daysLeft:(n) => `종료까지 ${n}일 남음`,hoursLeft:(n) => `종료까지 ${n}시간 남음`,eventEndedLabel:'종료된 이벤트',
     navShortcut:'랭킹전',myFandomRankLabel:'내 팬덤 순위',
     inviteToClimbLine:'친구를 초대해서 순위를 더 올려보세요!',
+    rankingHiddenMessage:'아직 최소 참여 인원을 채우지 못해 랭킹이 비공개예요. 더 많은 친구를 초대해서 랭킹을 열어보세요!',verifyingLabel:'결과 검증 중',
+    neededForNext:(n) => `다음 순위까지 ${n}명`,
   },
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
     company:'Fancake Inc. · 대표자 Sylvia Hong · 사업자등록번호 2748603844',
@@ -268,6 +273,8 @@ en: {
     daysLeft:(n) => `${n} day${n === 1 ? '' : 's'} left`,hoursLeft:(n) => `${n} hour${n === 1 ? '' : 's'} left`,eventEndedLabel:'Event ended',
     navShortcut:'Ranking',myFandomRankLabel:'Your fandom rank',
     inviteToClimbLine:'Invite friends to climb the ranking together!',
+    rankingHiddenMessage:'The ranking is still private until enough fans join. Invite friends to help unlock it!',verifyingLabel:'Verifying results',
+    neededForNext:(n) => `${n} more to reach the next rank`,
   },
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
@@ -367,6 +374,8 @@ ja: {
     daysLeft:(n) => `終了まで${n}日`,hoursLeft:(n) => `終了まで${n}時間`,eventEndedLabel:'終了したイベント',
     navShortcut:'ランキング戦',myFandomRankLabel:'自分のファンダム順位',
     inviteToClimbLine:'友達を招待して一緒に順位を上げよう！',
+    rankingHiddenMessage:'最低参加人数に達するまでランキングは非公開です。友達を招待してランキングを公開しよう！',verifyingLabel:'結果を検証中',
+    neededForNext:(n) => `次の順位まであと${n}人`,
   },
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
     company:'Fancake Inc. · 代表 Sylvia Hong · 事業者登録番号 2748603844',
@@ -466,6 +475,8 @@ es: {
     daysLeft:(n) => `Quedan ${n} día${n === 1 ? '' : 's'}`,hoursLeft:(n) => `Quedan ${n} hora${n === 1 ? '' : 's'}`,eventEndedLabel:'Evento finalizado',
     navShortcut:'Ranking',myFandomRankLabel:'Posición de tu fandom',
     inviteToClimbLine:'¡Invita a tus amigos para subir juntos en el ranking!',
+    rankingHiddenMessage:'El ranking sigue privado hasta que se unan suficientes fans. ¡Invita a tus amigos para desbloquearlo!',verifyingLabel:'Verificando resultados',
+    neededForNext:(n) => `Faltan ${n} para subir de posición`,
   },
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · N.º de registro 2748603844',
@@ -565,6 +576,8 @@ zhHans: {
     daysLeft:(n) => `还剩${n}天结束`,hoursLeft:(n) => `还剩${n}小时结束`,eventEndedLabel:'活动已结束',
     navShortcut:'排名赛',myFandomRankLabel:'我的粉丝团排名',
     inviteToClimbLine:'邀请朋友一起提升排名吧！',
+    rankingHiddenMessage:'参与人数还未达到公开门槛，排名暂未公开。快邀请朋友一起解锁排名吧！',verifyingLabel:'结果核实中',
+    neededForNext:(n) => `距离上一名还差${n}人`,
   },
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商注册号 2748603844',
@@ -664,6 +677,8 @@ zhHant: {
     daysLeft:(n) => `還剩${n}天結束`,hoursLeft:(n) => `還剩${n}小時結束`,eventEndedLabel:'活動已結束',
     navShortcut:'排名賽',myFandomRankLabel:'我的粉絲團排名',
     inviteToClimbLine:'邀請朋友一起拉高排名吧！',
+    rankingHiddenMessage:'參與人數尚未達到公開門檻，排名暫未公開。快邀請朋友一起解鎖排名吧！',verifyingLabel:'結果核實中',
+    neededForNext:(n) => `距離上一名還差${n}人`,
   },
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商註冊號 2748603844',
@@ -763,6 +778,8 @@ id: {
     daysLeft:(n) => `${n} hari lagi`,hoursLeft:(n) => `${n} jam lagi`,eventEndedLabel:'Event telah berakhir',
     navShortcut:'Ranking',myFandomRankLabel:'Peringkat fandommu',
     inviteToClimbLine:'Ajak teman untuk naik peringkat bersama!',
+    rankingHiddenMessage:'Ranking masih privat sampai cukup banyak fans bergabung. Ajak teman untuk membukanya!',verifyingLabel:'Memverifikasi hasil',
+    neededForNext:(n) => `${n} lagi untuk naik peringkat`,
   },
   footer:{privacy:'Kebijakan Privasi',terms:'Syarat Layanan',tagline:'Waktu fan, diubah jadi kontribusi. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · No. Reg. Usaha 2748603844',
@@ -862,6 +879,8 @@ fil: {
     daysLeft:(n) => `${n} (na) araw na lang`,hoursLeft:(n) => `${n} (na) oras na lang`,eventEndedLabel:'Tapos na ang event',
     navShortcut:'Ranking',myFandomRankLabel:'Ranggo ng fandom mo',
     inviteToClimbLine:'Mag-imbita ng mga kaibigan para sama-sama kayong umakyat sa ranggo!',
+    rankingHiddenMessage:'Private pa rin ang ranking hanggang sapat na ang dami ng fans na sumali. Mag-imbita ng kaibigan para ma-unlock ito!',verifyingLabel:'Vine-verify ang resulta',
+    neededForNext:(n) => `${n} na lang para umakyat ng ranggo`,
   },
   footer:{privacy:'Patakaran sa Privacy',terms:'Mga Tuntunin ng Serbisyo',tagline:'Oras ng fan, ginawang kontribusyon. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
@@ -961,6 +980,8 @@ th: {
     daysLeft:(n) => `เหลืออีก ${n} วัน`,hoursLeft:(n) => `เหลืออีก ${n} ชั่วโมง`,eventEndedLabel:'กิจกรรมสิ้นสุดแล้ว',
     navShortcut:'การจัดอันดับ',myFandomRankLabel:'อันดับแฟนด้อมของคุณ',
     inviteToClimbLine:'ชวนเพื่อนมาช่วยกันไต่อันดับ!',
+    rankingHiddenMessage:'การจัดอันดับยังเป็นส่วนตัวจนกว่าจะมีแฟนเข้าร่วมมากพอ ชวนเพื่อนมาช่วยปลดล็อกกันเถอะ!',verifyingLabel:'กำลังตรวจสอบผล',
+    neededForNext:(n) => `อีก ${n} คนถึงจะขยับอันดับ`,
   },
   footer:{privacy:'นโยบายความเป็นส่วนตัว',terms:'ข้อกำหนดการใช้บริการ',tagline:'เวลาของแฟน เปลี่ยนเป็นการสนับสนุน FANUZU',
     company:'Fancake Inc. · ซีอีโอ Sylvia Hong · เลขทะเบียนธุรกิจ 2748603844',
