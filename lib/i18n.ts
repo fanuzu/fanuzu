@@ -64,6 +64,8 @@ export interface TranslationSet {
     eventEndedLabel: string;
     startsInDays: (n: number) => string;
     startsInHours: (n: number) => string;
+    countdownStartsLabel: string;
+    countdownEndsLabel: string;
     upcomingNotice: string;
     launchLabel: string;
     navShortcut: string;
@@ -179,6 +181,7 @@ ko: {
     currentRankLabel:'현재 순위',
     daysLeft:(n) => `종료까지 ${n}일 남음`,hoursLeft:(n) => `종료까지 ${n}시간 남음`,eventEndedLabel:'종료된 이벤트',
     startsInDays:(n) => `시작까지 ${n}일 남음`,startsInHours:(n) => `시작까지 ${n}시간 남음`,
+    countdownStartsLabel:'시작까지',countdownEndsLabel:'종료까지',
     upcomingNotice:'지금 사전등록해도 등록 자체는 바로 반영되지만, 이번 랭킹전 집계는 이벤트가 시작된 이후 등록자만 포함돼요.',
     launchLabel:'정식 출시 예정일',
     navShortcut:'랭킹전',myFandomRankLabel:'내 팬덤 순위',
@@ -287,6 +290,7 @@ en: {
     currentRankLabel:'Current rank',
     daysLeft:(n) => `${n} day${n === 1 ? '' : 's'} left`,hoursLeft:(n) => `${n} hour${n === 1 ? '' : 's'} left`,eventEndedLabel:'Event ended',
     startsInDays:(n) => `${n} day${n === 1 ? '' : 's'} until it starts`,startsInHours:(n) => `${n} hour${n === 1 ? '' : 's'} until it starts`,
+    countdownStartsLabel:'Starts in',countdownEndsLabel:'Ends in',
     upcomingNotice:'Pre-registering now is counted right away, but this ranking event only counts registrations made after it starts.',
     launchLabel:'Official launch date',
     navShortcut:'Ranking',myFandomRankLabel:'Your fandom rank',
@@ -395,6 +399,7 @@ ja: {
     currentRankLabel:'現在の順位',
     daysLeft:(n) => `終了まで${n}日`,hoursLeft:(n) => `終了まで${n}時間`,eventEndedLabel:'終了したイベント',
     startsInDays:(n) => `開始まで${n}日`,startsInHours:(n) => `開始まで${n}時間`,
+    countdownStartsLabel:'開始まで',countdownEndsLabel:'終了まで',
     upcomingNotice:'今すぐ事前登録しても登録自体はすぐ反映されますが、このランキング戦の集計はイベント開始後の登録のみ対象です。',
     launchLabel:'正式リリース予定日',
     navShortcut:'ランキング戦',myFandomRankLabel:'自分のファンダム順位',
@@ -503,6 +508,7 @@ es: {
     currentRankLabel:'Posición actual',
     daysLeft:(n) => `Quedan ${n} día${n === 1 ? '' : 's'}`,hoursLeft:(n) => `Quedan ${n} hora${n === 1 ? '' : 's'}`,eventEndedLabel:'Evento finalizado',
     startsInDays:(n) => `Empieza en ${n} día${n === 1 ? '' : 's'}`,startsInHours:(n) => `Empieza en ${n} hora${n === 1 ? '' : 's'}`,
+    countdownStartsLabel:'Empieza en',countdownEndsLabel:'Termina en',
     upcomingNotice:'Preinscribirte ahora se registra de inmediato, pero este ranking solo cuenta las preinscripciones hechas después de que empiece el evento.',
     launchLabel:'Fecha de lanzamiento oficial',
     navShortcut:'Ranking',myFandomRankLabel:'Posición de tu fandom',
@@ -611,6 +617,7 @@ zhHans: {
     currentRankLabel:'当前排名',
     daysLeft:(n) => `还剩${n}天结束`,hoursLeft:(n) => `还剩${n}小时结束`,eventEndedLabel:'活动已结束',
     startsInDays:(n) => `距开始还有${n}天`,startsInHours:(n) => `距开始还有${n}小时`,
+    countdownStartsLabel:'距开始',countdownEndsLabel:'距结束',
     upcomingNotice:'现在预注册会立即生效，但本次排名赛只计入活动开始后的注册记录。',
     launchLabel:'正式上线日期',
     navShortcut:'排名赛',myFandomRankLabel:'我的粉丝团排名',
@@ -719,6 +726,7 @@ zhHant: {
     currentRankLabel:'目前排名',
     daysLeft:(n) => `還剩${n}天結束`,hoursLeft:(n) => `還剩${n}小時結束`,eventEndedLabel:'活動已結束',
     startsInDays:(n) => `距開始還有${n}天`,startsInHours:(n) => `距開始還有${n}小時`,
+    countdownStartsLabel:'距開始',countdownEndsLabel:'距結束',
     upcomingNotice:'現在預先登記會立即生效，但本次排行榜活動只計入活動開始後的登記記錄。',
     launchLabel:'正式上線日期',
     navShortcut:'排名賽',myFandomRankLabel:'我的粉絲團排名',
@@ -827,6 +835,7 @@ id: {
     currentRankLabel:'Peringkat saat ini',
     daysLeft:(n) => `${n} hari lagi`,hoursLeft:(n) => `${n} jam lagi`,eventEndedLabel:'Event telah berakhir',
     startsInDays:(n) => `Dimulai dalam ${n} hari`,startsInHours:(n) => `Dimulai dalam ${n} jam`,
+    countdownStartsLabel:'Dimulai dalam',countdownEndsLabel:'Berakhir dalam',
     upcomingNotice:'Pre-registrasi sekarang langsung tercatat, tapi ranking event ini hanya menghitung pendaftaran setelah event dimulai.',
     launchLabel:'Tanggal peluncuran resmi',
     navShortcut:'Ranking',myFandomRankLabel:'Peringkat fandommu',
@@ -935,6 +944,7 @@ fil: {
     currentRankLabel:'Kasalukuyang ranggo',
     daysLeft:(n) => `${n} (na) araw na lang`,hoursLeft:(n) => `${n} (na) oras na lang`,eventEndedLabel:'Tapos na ang event',
     startsInDays:(n) => `${n} (na) araw bago magsimula`,startsInHours:(n) => `${n} (na) oras bago magsimula`,
+    countdownStartsLabel:'Magsisimula sa',countdownEndsLabel:'Matatapos sa',
     upcomingNotice:'Agad na masa-save ang pre-registration mo ngayon, pero ang ranking event na ito ay bibilangin lang ang mga nagparehistro matapos magsimula ang event.',
     launchLabel:'Opisyal na petsa ng paglulunsad',
     navShortcut:'Ranking',myFandomRankLabel:'Ranggo ng fandom mo',
@@ -1043,6 +1053,7 @@ th: {
     currentRankLabel:'อันดับปัจจุบัน',
     daysLeft:(n) => `เหลืออีก ${n} วัน`,hoursLeft:(n) => `เหลืออีก ${n} ชั่วโมง`,eventEndedLabel:'กิจกรรมสิ้นสุดแล้ว',
     startsInDays:(n) => `อีก ${n} วันจะเริ่ม`,startsInHours:(n) => `อีก ${n} ชั่วโมงจะเริ่ม`,
+    countdownStartsLabel:'เริ่มใน',countdownEndsLabel:'สิ้นสุดใน',
     upcomingNotice:'การลงทะเบียนล่วงหน้าตอนนี้จะถูกบันทึกทันที แต่การจัดอันดับครั้งนี้จะนับเฉพาะผู้ที่ลงทะเบียนหลังกิจกรรมเริ่มเท่านั้น',
     launchLabel:'วันเปิดตัวอย่างเป็นทางการ',
     navShortcut:'การจัดอันดับ',myFandomRankLabel:'อันดับแฟนด้อมของคุณ',

@@ -43,6 +43,23 @@ function krw(n: number): string {
   return `₩${n.toLocaleString()}`;
 }
 
+interface CountdownParts {
+  d: number;
+  h: number;
+  m: number;
+  s: number;
+}
+
+function msToParts(diffMs: number): CountdownParts {
+  const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
+  return {
+    d: Math.floor(totalSeconds / 86400),
+    h: Math.floor((totalSeconds % 86400) / 3600),
+    m: Math.floor((totalSeconds % 3600) / 60),
+    s: totalSeconds % 60,
+  };
+}
+
 // Site-wide, not per-event — the official FANUZU app launch date, shown
 // alongside the ranking event's own dates so a fan knows when the app
 // itself (not just this event) is coming (GENESIS review section 5.1/5.3).
@@ -89,10 +106,12 @@ export default function RankingSection() {
     };
   }, []);
 
-  // A separate, faster tick just for the countdown display — no need to
-  // re-fetch the ranking itself every minute to keep "N hours left" honest.
+  // A separate, faster tick just for the countdown display — ticking every
+  // second (rather than the old 1-minute cadence) is what makes the digital
+  // clock below actually look alive instead of a number that jumps once a
+  // minute; no need to re-fetch the ranking itself this often.
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 60_000);
+    const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
 
@@ -104,28 +123,26 @@ export default function RankingSection() {
   // (ranking-event review item 1) — only the list below is conditional on
   // rankingVisible, which is false exactly when participation hasn't
   // cleared the minimum bar yet.
-  let timeLabel: string | null = null;
-  let timeLabelMuted = false;
+  let staticLabel: string | null = null;
+  let countdownLeadLabel: string | null = null;
+  let countdown: CountdownParts | null = null;
   if (eventState === 'finalized') {
-    timeLabel = tr.rankingSection.eventEndedLabel;
-    timeLabelMuted = true;
+    staticLabel = tr.rankingSection.eventEndedLabel;
   } else if (eventState === 'ended_pending') {
-    timeLabel = tr.rankingSection.verifyingLabel;
-    timeLabelMuted = true;
+    staticLabel = tr.rankingSection.verifyingLabel;
   } else if (eventState === 'upcoming' && event?.startAt) {
     const diffMs = new Date(event.startAt).getTime() - now;
     if (diffMs > 0) {
-      const hours = Math.ceil(diffMs / (1000 * 60 * 60));
-      timeLabel = hours >= 24 ? tr.rankingSection.startsInDays(Math.ceil(hours / 24)) : tr.rankingSection.startsInHours(hours);
+      countdownLeadLabel = tr.rankingSection.countdownStartsLabel;
+      countdown = msToParts(diffMs);
     }
   } else if (eventState === 'active' && event?.endAt) {
     const diffMs = new Date(event.endAt).getTime() - now;
     if (diffMs <= 0) {
-      timeLabel = tr.rankingSection.verifyingLabel;
-      timeLabelMuted = true;
+      staticLabel = tr.rankingSection.verifyingLabel;
     } else {
-      const hours = Math.ceil(diffMs / (1000 * 60 * 60));
-      timeLabel = hours >= 24 ? tr.rankingSection.daysLeft(Math.ceil(hours / 24)) : tr.rankingSection.hoursLeft(hours);
+      countdownLeadLabel = tr.rankingSection.countdownEndsLabel;
+      countdown = msToParts(diffMs);
     }
   }
 
@@ -165,24 +182,36 @@ export default function RankingSection() {
             <h2 style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFAFC' }}>{event.name}</h2>
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
-          {timeLabel && (timeLabelMuted ? (
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{timeLabel}</div>
-          ) : (
-            // Bigger + gradient-colored so the countdown reads as the event's
-            // own pulse rather than one more line of plain caption text.
-            <div
-              className="gradient-text"
-              style={{
-                fontSize: 'clamp(22px,5vw,32px)',
-                fontWeight: 800,
-                letterSpacing: '-.01em',
-                margin: '2px 0 0',
-                backgroundImage: 'linear-gradient(90deg,#FF7DDD,#7CE8FF)',
-              }}
-            >
-              {timeLabel}
+          {staticLabel && <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{staticLabel}</div>}
+          {countdown && (
+            <div style={{ marginTop: 2 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.04em', color: '#9089A0', marginBottom: 6 }}>
+                {countdownLeadLabel}
+              </div>
+              {/* Ticks every second (see the `now` interval above) — digits
+                  only, no per-unit D/H/M/S captions, matching a plain digital
+                  timer rather than another row of labeled stat boxes. */}
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6, fontVariantNumeric: 'tabular-nums' }}>
+                {[countdown.d, countdown.h, countdown.m, countdown.s].map((val, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                    {i > 0 && (
+                      <span style={{ color: '#6B6478', fontSize: 'clamp(16px,3.6vw,24px)', fontWeight: 700 }}>:</span>
+                    )}
+                    <span
+                      className="gradient-text"
+                      style={{
+                        fontSize: 'clamp(20px,4.8vw,32px)',
+                        fontWeight: 800,
+                        backgroundImage: 'linear-gradient(90deg,#FF7DDD,#7CE8FF)',
+                      }}
+                    >
+                      {String(val).padStart(2, '0')}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          )}
           {APP_LAUNCH_DATE && (
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 6 }}>
               {tr.rankingSection.launchLabel}{' '}
