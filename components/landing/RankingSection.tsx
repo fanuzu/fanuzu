@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useLang } from '@/components/providers/LangProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
@@ -178,6 +179,31 @@ export default function RankingSection() {
             </div>
           )}
         </div>
+
+        {event && (
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: '2/1',
+              borderRadius: 18,
+              overflow: 'hidden',
+              border: '1px solid rgba(124,232,255,.22)',
+              boxShadow: '0 20px 50px rgba(0,0,0,.4)',
+              marginBottom: 20,
+            }}
+          >
+            <Image src="/images/genesis-ranking-visual.webp" alt="" fill sizes="720px" style={{ objectFit: 'cover' }} />
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg,transparent 55%,rgba(10,6,19,.9) 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
+        )}
 
         {/* Rewards + CTA sit right after the intro, ahead of the searchable
             list below — so an ad click landing straight on this section
