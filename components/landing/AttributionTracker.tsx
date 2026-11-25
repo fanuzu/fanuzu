@@ -10,6 +10,8 @@ import {
   markVisitTrackedThisSession,
   hasAutoOpenedThisSession,
   markAutoOpenedThisSession,
+  hasRegisteredOnThisDevice,
+  markRegisteredOnThisDevice,
 } from './attribution';
 
 // Renders nothing — mounted once in LandingPage to capture ?ref=/?code=/
@@ -34,6 +36,24 @@ export default function AttributionTracker({ suppressAutoOpen = false }: { suppr
     let cancelled = false;
 
     async function run() {
+      // Landing with ?emailVerified= means this visit came from clicking the
+      // confirmation email's verify link — this device/browser has, by
+      // definition, already completed registration (even if it's a
+      // different device than the one that originally submitted, in which
+      // case hasRegisteredOnThisDevice() alone wouldn't have caught it).
+      // Popping the signup modal right back open here is actively
+      // confusing — it can show a stale cached artist from an unrelated
+      // earlier visit, reading as "did my registration get the wrong
+      // artist?" rather than what's actually just a fresh, unrelated modal.
+      if (new URLSearchParams(window.location.search).has('emailVerified')) {
+        markRegisteredOnThisDevice();
+      }
+      // Once a device has registered, the unprompted pop-open never needs
+      // to happen again — attribution capture and visit tracking below are
+      // still harmless/useful to keep running, so only the auto-open at
+      // the bottom is skipped, not this whole handler.
+      const alreadyRegistered = hasRegisteredOnThisDevice();
+
       const { attribution, hasAnyParam } = captureFromUrl();
 
       // ?code= (a fandom base-partner link) names a fandom rather than a
@@ -64,7 +84,7 @@ export default function AttributionTracker({ suppressAutoOpen = false }: { suppr
         }).catch(() => {});
       }
 
-      if (suppressAutoOpen) {
+      if (suppressAutoOpen || alreadyRegistered) {
         // Still mark organic visits as "seen" so leaving this page and
         // coming back doesn't behave inconsistently with the rest of the
         // site once suppression isn't in play.

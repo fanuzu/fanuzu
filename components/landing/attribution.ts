@@ -6,6 +6,14 @@
 export const ATTRIBUTION_KEY = 'fanuzu_attribution';
 const VISIT_TRACKED_KEY = 'fanuzu_visit_tracked';
 const AUTO_OPENED_KEY = 'fanuzu_prereg_auto_opened';
+// Persistent (no TTL, no per-session reset) — once this browser has
+// completed a registration, the modal never needs to auto-open on it again.
+// Unlike AUTO_OPENED_KEY, this isn't about "once per tab session"; it's
+// "this device is done," permanently. The explicit CTA button still opens
+// the modal for someone who deliberately wants to register a second email
+// from the same device (e.g. helping a friend) — only the unprompted
+// pop-open is suppressed.
+const REGISTERED_KEY = 'fanuzu_registered';
 // Referral program spec section 13: an invite link's ref/artist/UTM params
 // stay usable for 30 days after landing, not forever — someone who clicked a
 // link once in January shouldn't still be crediting that referrer in June.
@@ -112,5 +120,19 @@ export function hasAutoOpenedThisSession(): boolean {
 export function markAutoOpenedThisSession(): void {
   try {
     sessionStorage.setItem(AUTO_OPENED_KEY, '1');
+  } catch {}
+}
+
+export function hasRegisteredOnThisDevice(): boolean {
+  try {
+    return localStorage.getItem(REGISTERED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function markRegisteredOnThisDevice(): void {
+  try {
+    localStorage.setItem(REGISTERED_KEY, '1');
   } catch {}
 }

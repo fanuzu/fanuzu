@@ -4,7 +4,7 @@ import { useEffect, useId, useState, type FormEvent } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 import ArtistSelect from './ArtistSelect';
 import FandomProgress from './FandomProgress';
-import { readAttribution, type Attribution } from './attribution';
+import { readAttribution, markRegisteredOnThisDevice, type Attribution } from './attribution';
 
 interface PreregResult {
   hasRef: boolean;
@@ -197,6 +197,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         code: data.referralCode,
       });
       setFormStatus('success');
+      markRegisteredOnThisDevice();
     } catch {
       setFormStatus('error');
       setErrorText(tr.errors.networkError);
