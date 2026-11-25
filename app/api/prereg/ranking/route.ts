@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getVerifiedArtistCounts } from '@/lib/artist-registry';
-import { getCurrentRankingEvent, getFinalizedResults, getRankingStandingsForEvent } from '@/lib/ranking-events';
+import {
+  getCurrentRankingEvent,
+  getFinalizedResults,
+  getRankingStandingsForEvent,
+  EMAIL_VERIFY_GRACE_HOURS,
+} from '@/lib/ranking-events';
 
 export const runtime = 'nodejs';
 // No request-specific data is read here, so Next.js would otherwise treat
@@ -9,12 +14,6 @@ export const runtime = 'nodejs';
 // flag later" design pointless and freezing the ranking at whatever it was
 // during the build.
 export const dynamic = 'force-dynamic';
-
-// High enough to cover "TOP 100 + search your own fandom" entirely from one
-// response — the public ranking section does its own top-10 cut and
-// client-side search across whatever comes back, rather than needing a
-// second endpoint.
-const TOP_N = 100;
 
 // A leaderboard with a handful of names on it reads as "nobody's here yet"
 // rather than exciting, so the ranked LIST stays hidden until total
@@ -37,6 +36,10 @@ export interface PublicRankingEvent {
   rewardSecond: number;
   rewardThird: number;
   rewardFourthToTenth: number;
+  // Surfaced so the public terms disclosure (RankingSection.tsx) always
+  // states the actual configured grace window rather than a hardcoded
+  // guess that could drift from RANKING_EMAIL_VERIFY_GRACE_HOURS.
+  emailVerifyGraceHours: number;
 }
 
 // Three states the public UI distinguishes (review item 4): 'active' is a
@@ -67,7 +70,12 @@ export async function GET() {
       if (totalCount(counts) < MIN_PARTICIPANTS_FOR_RANKING) {
         return NextResponse.json({ enabled: false });
       }
-      const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
+      // The full registry, not just a top slice (2nd-round review item 4) —
+      // the artist registry is admin-curated and small by construction, so
+      // sending all of it costs nothing, and it's what lets the client's
+      // search find an artist ranked below whatever its own "top 10" cut
+      // shows by default (see RankingSection.tsx).
+      const ranking = counts.map((c) => ({ artist: c.artist, count: c.count }));
       return NextResponse.json({ enabled: true, rankingVisible: true, ranking });
     }
 
@@ -78,6 +86,7 @@ export async function GET() {
       rewardSecond: event.rewardSecond,
       rewardThird: event.rewardThird,
       rewardFourthToTenth: event.rewardFourthToTenth,
+      emailVerifyGraceHours: EMAIL_VERIFY_GRACE_HOURS,
     };
 
     // Finalized: serve the frozen snapshot forever, regardless of what
@@ -86,7 +95,7 @@ export async function GET() {
     // admin decision to publish.
     if (event.status === 'finalized') {
       const results = await getFinalizedResults(event.id);
-      const ranking = results.slice(0, TOP_N).map((r) => ({ artist: r.artist, count: r.count }));
+      const ranking = results.map((r) => ({ artist: r.artist, count: r.count }));
       return NextResponse.json({
         enabled: true,
         event: eventMeta,
@@ -124,7 +133,7 @@ export async function GET() {
       return NextResponse.json({ enabled: true, event: eventMeta, eventState, rankingVisible: false });
     }
 
-    const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
+    const ranking = counts.map((c) => ({ artist: c.artist, count: c.count }));
     return NextResponse.json({ enabled: true, event: eventMeta, eventState, rankingVisible: true, ranking });
   } catch (err) {
     console.error('artist ranking query failed:', err);

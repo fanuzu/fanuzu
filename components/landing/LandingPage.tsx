@@ -50,7 +50,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
           <PreregModalProvider>
             <CarolProvider>
               <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
-                <AttributionTracker />
+                <AttributionTracker suppressAutoOpen={rankingFirst} />
                 <AdConversionTracker />
                 <PlanetAtmosphere />
                 <StarField />

@@ -16,6 +16,7 @@ interface RankingEventMeta {
   rewardSecond: number;
   rewardThird: number;
   rewardFourthToTenth: number;
+  emailVerifyGraceHours: number;
 }
 
 type RankingEventState = 'active' | 'ended_pending' | 'finalized';
@@ -259,6 +260,45 @@ export default function RankingSection() {
           <p style={{ color: '#9089A0', fontSize: 13.5, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
             {tr.rankingSection.rankingHiddenMessage}
           </p>
+        )}
+
+        {/* Plain-language rules (2nd-round review item 9): what counts,
+            the tie-break, the post-event email-verification grace window,
+            and that a finalized result is permanent — stated here rather
+            than left implicit, since real money is attached. Native
+            <details> needs no extra state. */}
+        {event && (
+          <details style={{ marginTop: 4 }}>
+            <summary
+              style={{
+                cursor: 'pointer',
+                fontSize: 12.5,
+                color: '#7CE8FF',
+                fontWeight: 600,
+                listStyle: 'none',
+              }}
+            >
+              {tr.rankingSection.termsToggleLabel}
+            </summary>
+            <ul
+              style={{
+                margin: '12px 0 0',
+                padding: '14px 18px',
+                background: 'rgba(255,255,255,.03)',
+                border: '1px solid rgba(255,255,255,.08)',
+                borderRadius: 12,
+                fontSize: 12,
+                color: '#9089A0',
+                lineHeight: 1.7,
+                listStylePosition: 'inside',
+              }}
+            >
+              {tr.rankingSection.termsItems.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+              <li>{tr.rankingSection.termsVerifyGrace(event.emailVerifyGraceHours)}</li>
+            </ul>
+          </details>
         )}
       </div>
     </section>

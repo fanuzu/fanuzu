@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { updateRankingEvent, type RankingEventUpdateInput, type VisibilityMode } from '@/lib/ranking-events';
+import { updateRankingEvent, CoreFieldsLockedError, type RankingEventUpdateInput, type VisibilityMode } from '@/lib/ranking-events';
 import { checkAdminAuth } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
@@ -69,6 +69,9 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     }
     return NextResponse.json({ event });
   } catch (err) {
+    if (err instanceof CoreFieldsLockedError) {
+      return NextResponse.json({ error: 'core_fields_locked' }, { status: 400 });
+    }
     console.error('admin ranking-event update failed:', err);
     return NextResponse.json({ error: 'server_error' }, { status: 500 });
   }

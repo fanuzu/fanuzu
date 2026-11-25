@@ -6,6 +6,16 @@ import { ensureSchema, getPool } from './db';
 export type RankingEventStatus = 'draft' | 'active' | 'finalized';
 export type VisibilityMode = 'manual' | 'auto';
 
+// 2nd-round review item 3: a fan who registered before the event closed but
+// hasn't yet clicked their confirmation email's verify link shouldn't be
+// silently cut out the moment end_at passes — but a verification arriving
+// arbitrarily late (weeks after the fact) shouldn't be able to retroactively
+// change a result either. Both the live standing and the final snapshot
+// apply the same cutoff: a registration only counts if it was also verified
+// by end_at plus this grace window. Env-overridable, same pattern as
+// RANKING_MIN_PARTICIPANTS, so it can be tuned without a code change.
+export const EMAIL_VERIFY_GRACE_HOURS = Number(process.env.RANKING_EMAIL_VERIFY_GRACE_HOURS) || 48;
+
 export interface RankingEvent {
   id: number;
   name: string;
@@ -117,11 +127,45 @@ export type RankingEventUpdateInput = Partial<RankingEventInput> & {
   status?: 'draft' | 'active';
 };
 
+// Thrown by updateRankingEvent when the request touches a reward amount,
+// the aggregation window (start_at/end_at), or include_existing_registrants
+// on an event that has already left 'draft' — 2nd-round review item 2.
+// Changing what's being measured, or what it pays out, after fans have
+// already started registering under the original terms would be an
+// unannounced rule change mid-event; name/visibility/status aren't locked,
+// since those are operational, not the event's actual terms.
+export class CoreFieldsLockedError extends Error {
+  constructor() {
+    super('Reward amounts, the aggregation window, and the registrant-inclusion rule can only change while the event is still in draft.');
+    this.name = 'CoreFieldsLockedError';
+  }
+}
+
+const LOCKED_AFTER_DRAFT: (keyof RankingEventUpdateInput)[] = [
+  'rewardFirst',
+  'rewardSecond',
+  'rewardThird',
+  'rewardFourthToTenth',
+  'startAt',
+  'endAt',
+  'includeExistingRegistrants',
+];
+
 // Admin-only: an event already 'finalized' can't be edited back — the whole
-// point of finalizing is that it's done moving.
+// point of finalizing is that it's done moving. Once an event has left
+// 'draft' at all (i.e. it's 'active'), its core terms are additionally
+// locked (see CoreFieldsLockedError) even though the row itself isn't
+// finalized yet.
 export async function updateRankingEvent(id: number, input: RankingEventUpdateInput): Promise<RankingEvent | null> {
   await ensureSchema();
   const pool = getPool();
+
+  if (LOCKED_AFTER_DRAFT.some((key) => input[key] !== undefined)) {
+    const { rows } = await pool.query<{ status: RankingEventStatus }>('SELECT status FROM ranking_events WHERE id = $1', [id]);
+    if (rows[0] && rows[0].status !== 'draft') {
+      throw new CoreFieldsLockedError();
+    }
+  }
 
   const fields: string[] = [];
   const values: unknown[] = [];
@@ -177,21 +221,20 @@ export interface RankingStandingRow {
   count: number;
 }
 
-// The live standing for an 'active' event — same safety bar as
-// lib/artist-registry.ts's getVerifiedArtistCounts (verified email,
-// registry-linked artist, not admin-excluded), plus this event's own
-// date-window rule: include_existing_registrants = false restricts it to
-// registrations created at/after start_at (and at/before end_at, if set),
-// so a ranking that's meant to measure fresh sign-ups for this event isn't
-// padded by registrations from long before it existed.
-//
-// LEFT JOIN (not JOIN), same as getVerifiedArtistCounts, so an artist with
-// zero qualifying registrations for this event still shows up (count 0)
-// for search — and the same deterministic tie-break (earliest to reach the
-// current count, then artist name) applies here too.
-export async function getRankingStandingsForEvent(event: RankingEvent): Promise<RankingStandingRow[]> {
-  await ensureSchema();
-  const pool = getPool();
+// Shared by getRankingStandingsForEvent (live) and finalizeRankingEvent (the
+// permanent snapshot) — 2nd-round review item 1 flagged that these two had
+// drifted into slightly different tie-break logic, which must never happen
+// again, so both now build their WHERE/ON conditions from this one place:
+//   - verified email, registry-linked artist, not admin-excluded (same
+//     safety bar as lib/artist-registry.ts's getVerifiedArtistCounts)
+//   - include_existing_registrants = false restricts to registrations
+//     created at/after start_at, so a ranking meant to measure fresh
+//     sign-ups for this event isn't padded by ones from before it existed
+//   - if end_at is set, a registration must have been created by then, AND
+//     (review item 3) verified by end_at plus EMAIL_VERIFY_GRACE_HOURS —
+//     late registrations never count, late *verifications* get a grace
+//     window before they stop counting too
+function buildStandingConditions(event: RankingEvent): { conditions: string[]; params: unknown[] } {
   const conditions = ['p.email_verified_at IS NOT NULL', 'p.excluded_from_ranking = false'];
   const params: unknown[] = [];
   if (!event.includeExistingRegistrants && event.startAt) {
@@ -201,13 +244,32 @@ export async function getRankingStandingsForEvent(event: RankingEvent): Promise<
   if (event.endAt) {
     params.push(event.endAt);
     conditions.push(`p.created_at <= $${params.length}`);
+    const verifyDeadline = new Date(new Date(event.endAt).getTime() + EMAIL_VERIFY_GRACE_HOURS * 3600 * 1000);
+    params.push(verifyDeadline.toISOString());
+    conditions.push(`p.email_verified_at <= $${params.length}`);
   }
+  return { conditions, params };
+}
+
+// Deterministic tie-break (review item 1): whoever reached the current
+// count first (earliest of their qualifying rows), then artist name for the
+// true all-zero group — identical ORDER BY in both the live query below and
+// finalizeRankingEvent's snapshot query.
+const STANDING_ORDER_BY = 'ORDER BY COUNT(p.id) DESC, MAX(p.created_at) ASC NULLS LAST, a.artist_name ASC';
+
+// The live standing for an 'active' event. LEFT JOIN (not JOIN) so an
+// artist with zero qualifying registrations for this event still shows up
+// (count 0) for search.
+export async function getRankingStandingsForEvent(event: RankingEvent): Promise<RankingStandingRow[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { conditions, params } = buildStandingConditions(event);
   const { rows } = await pool.query<{ artist_name: string; count: string }>(
     `SELECT a.artist_name, COUNT(p.id) AS count
      FROM artists a
      LEFT JOIN preregistrations p ON p.artist_id = a.id AND ${conditions.join(' AND ')}
      GROUP BY a.id
-     ORDER BY COUNT(p.id) DESC, MAX(p.created_at) ASC NULLS LAST, a.artist_name ASC`,
+     ${STANDING_ORDER_BY}`,
     params
   );
   return rows.map((r) => ({ artist: r.artist_name, count: Number(r.count) }));
@@ -219,13 +281,15 @@ export interface RankingResultRow {
   rank: number;
 }
 
-// Thrown by finalizeRankingEvent when the event has a set end date that
-// hasn't passed yet — the review's "조기 확정 방지" requirement: finalizing
-// early would freeze a standing before every fan who's going to register
-// has had the chance to.
+// Thrown by finalizeRankingEvent when the event has a set end date and
+// EMAIL_VERIFY_GRACE_HOURS hasn't fully elapsed since — the review's "조기
+// 확정 방지" requirement, extended for "이벤트 종료 후 이메일 인증 인정
+// 범위" (review item 3): finalizing freezes the standing permanently, so it
+// can't happen before every fan who registered in time has also had their
+// full grace window to verify their email.
 export class FinalizeTooEarlyError extends Error {
   constructor() {
-    super("Cannot finalize before the event's end date.");
+    super("Cannot finalize until the event's end date plus its email-verification grace period has passed.");
     this.name = 'FinalizeTooEarlyError';
   }
 }
@@ -233,8 +297,9 @@ export class FinalizeTooEarlyError extends Error {
 // Admin-only, irreversible: computes the current standing one last time and
 // writes it into ranking_event_results, then flips status to 'finalized'.
 // Returns null if the event doesn't exist or is already finalized. Throws
-// FinalizeTooEarlyError if end_at is set and hasn't passed yet (an event
-// with no end_at has no fixed close, so admin discretion decides).
+// FinalizeTooEarlyError if end_at is set and end_at + EMAIL_VERIFY_GRACE_HOURS
+// hasn't passed yet (an event with no end_at has no fixed close, so admin
+// discretion decides).
 export async function finalizeRankingEvent(id: number): Promise<RankingEvent | null> {
   await ensureSchema();
   const pool = getPool();
@@ -251,28 +316,28 @@ export async function finalizeRankingEvent(id: number): Promise<RankingEvent | n
     }
     const event = mapRow(eventRows[0]);
 
-    if (event.endAt && new Date() < new Date(event.endAt)) {
-      await client.query('ROLLBACK');
-      throw new FinalizeTooEarlyError();
+    if (event.endAt) {
+      const verifyDeadline = new Date(new Date(event.endAt).getTime() + EMAIL_VERIFY_GRACE_HOURS * 3600 * 1000);
+      if (new Date() < verifyDeadline) {
+        await client.query('ROLLBACK');
+        throw new FinalizeTooEarlyError();
+      }
     }
 
-    const conditions = ['p.email_verified_at IS NOT NULL', 'p.excluded_from_ranking = false'];
-    const params: unknown[] = [];
-    if (!event.includeExistingRegistrants && event.startAt) {
-      params.push(event.startAt);
-      conditions.push(`p.created_at >= $${params.length}`);
-    }
-    if (event.endAt) {
-      params.push(event.endAt);
-      conditions.push(`p.created_at <= $${params.length}`);
-    }
+    // Same conditions and tie-break as the live standing (see
+    // buildStandingConditions/STANDING_ORDER_BY above) — folded into the
+    // JOIN's own ON clause rather than a separate WHERE, which is
+    // equivalent for an INNER JOIN and keeps this query structurally
+    // identical to the live one. Deliberately still an INNER (not LEFT)
+    // JOIN: a permanent snapshot has no reason to freeze in a 0-count
+    // artist that never actually competed.
+    const { conditions, params } = buildStandingConditions(event);
     const { rows: standingRows } = await client.query<{ artist_id: number; artist_name: string; count: string }>(
       `SELECT a.id AS artist_id, a.artist_name, COUNT(p.id) AS count
        FROM artists a
-       JOIN preregistrations p ON p.artist_id = a.id
-       WHERE ${conditions.join(' AND ')}
+       JOIN preregistrations p ON p.artist_id = a.id AND ${conditions.join(' AND ')}
        GROUP BY a.id
-       ORDER BY COUNT(p.id) DESC`,
+       ${STANDING_ORDER_BY}`,
       params
     );
 
