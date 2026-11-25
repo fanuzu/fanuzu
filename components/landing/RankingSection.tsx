@@ -165,9 +165,24 @@ export default function RankingSection() {
             <h2 style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFAFC' }}>{event.name}</h2>
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
-          {timeLabel && (
-            <div style={{ fontSize: 13, fontWeight: 700, color: timeLabelMuted ? '#9089A0' : '#7CE8FF' }}>{timeLabel}</div>
-          )}
+          {timeLabel && (timeLabelMuted ? (
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{timeLabel}</div>
+          ) : (
+            // Bigger + gradient-colored so the countdown reads as the event's
+            // own pulse rather than one more line of plain caption text.
+            <div
+              className="gradient-text"
+              style={{
+                fontSize: 'clamp(22px,5vw,32px)',
+                fontWeight: 800,
+                letterSpacing: '-.01em',
+                margin: '2px 0 0',
+                backgroundImage: 'linear-gradient(90deg,#FF7DDD,#7CE8FF)',
+              }}
+            >
+              {timeLabel}
+            </div>
+          ))}
           {APP_LAUNCH_DATE && (
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 6 }}>
               {tr.rankingSection.launchLabel}{' '}
@@ -223,16 +238,27 @@ export default function RankingSection() {
               background: 'rgba(255,255,255,.03)',
               border: '1px solid rgba(255,255,255,.08)',
               borderRadius: 14,
-              padding: '16px 20px',
+              padding: '20px 16px',
               marginBottom: 20,
-              fontSize: 12.5,
-              color: '#B8AFC4',
             }}
           >
-            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 8 }}>{tr.rankingSection.rewardLegendLabel}</div>
-            <div>
-              {tr.rankingSection.rankFirst} {krw(event.rewardFirst)} · {tr.rankingSection.rankSecond} {krw(event.rewardSecond)} ·{' '}
-              {tr.rankingSection.rankThird} {krw(event.rewardThird)} · {tr.rankingSection.rankFourthToTenth} {krw(event.rewardFourthToTenth)}
+            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14, textAlign: 'center' }}>
+              {tr.rankingSection.rewardLegendLabel}
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '18px 22px' }}>
+              {[
+                { label: tr.rankingSection.rankFirst, amount: event.rewardFirst, color: RANK_ACCENTS[0] },
+                { label: tr.rankingSection.rankSecond, amount: event.rewardSecond, color: RANK_ACCENTS[1] },
+                { label: tr.rankingSection.rankThird, amount: event.rewardThird, color: RANK_ACCENTS[2] },
+                { label: tr.rankingSection.rankFourthToTenth, amount: event.rewardFourthToTenth, color: '#B8AFC4' },
+              ].map((r, i) => (
+                <div key={r.label} style={{ textAlign: 'center', minWidth: i === 0 ? 108 : 86 }}>
+                  <div style={{ fontSize: i === 0 ? 13 : 11.5, fontWeight: 700, color: r.color, marginBottom: 4 }}>{r.label}</div>
+                  <div style={{ fontSize: i === 0 ? 'clamp(20px,4.5vw,27px)' : 16, fontWeight: 800, color: '#FFFAFC' }}>
+                    {krw(r.amount)}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -327,7 +353,10 @@ export default function RankingSection() {
             </div>
           </>
         ) : (
-          <p style={{ color: '#9089A0', fontSize: 13.5, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
+          // Kept small/quiet on purpose — it's a secondary caveat about what
+          // counts, not something that should compete with the countdown,
+          // rewards, and CTA above it for the visitor's attention.
+          <p style={{ color: '#6B6478', fontSize: 12, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
             {eventState === 'upcoming' ? tr.rankingSection.upcomingNotice : tr.rankingSection.rankingHiddenMessage}
           </p>
         )}
