@@ -229,6 +229,8 @@ export interface ReferralSearchRow {
   rewardAmount: number;
   rewardStatus: string;
   createdAt: string;
+  emailVerified: boolean;
+  excludedFromRanking: boolean;
 }
 
 // Admin-only, referral program spec section 14's search box: by email or
@@ -269,9 +271,11 @@ export async function searchReferrals(filters: ReferralSearchFilters): Promise<R
     reward_amount: number;
     reward_status: string;
     created_at: string;
+    email_verified_at: string | null;
+    excluded_from_ranking: boolean;
   }>(
     `SELECT p.id, p.email, p.referral_code, ref.referral_code AS referred_by_code,
-            p.reward_amount, p.reward_status, p.created_at
+            p.reward_amount, p.reward_status, p.created_at, p.email_verified_at, p.excluded_from_ranking
      FROM preregistrations p
      LEFT JOIN preregistrations ref ON ref.id = p.referred_by_id
      ${where}
@@ -288,6 +292,8 @@ export async function searchReferrals(filters: ReferralSearchFilters): Promise<R
     rewardAmount: r.reward_amount,
     rewardStatus: r.reward_status,
     createdAt: r.created_at,
+    emailVerified: !!r.email_verified_at,
+    excludedFromRanking: r.excluded_from_ranking,
   }));
 }
 

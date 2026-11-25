@@ -299,6 +299,46 @@ const SCHEMA_SQL = `
   ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ;
   CREATE UNIQUE INDEX IF NOT EXISTS idx_prereg_verify_token ON preregistrations (email_verify_token) WHERE email_verify_token IS NOT NULL;
   ALTER TABLE preregistrations ADD COLUMN IF NOT EXISTS excluded_from_ranking BOOLEAN NOT NULL DEFAULT false;
+
+  -- Admin-configured fandom ranking event (Phase 2 of the ranking-event
+  -- review): one row per event. A fresh event starts 'draft' (not shown
+  -- anywhere), admin flips it 'active' to go live, and 'finalized' freezes
+  -- its standing into ranking_event_results below so the public ranking
+  -- never moves again after the event ends, no matter what later happens to
+  -- the underlying registrations (deletions, re-verification, etc).
+  CREATE TABLE IF NOT EXISTS ranking_events (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    start_at TIMESTAMPTZ,
+    end_at TIMESTAMPTZ,
+    visibility_mode TEXT NOT NULL DEFAULT 'manual' CHECK (visibility_mode IN ('manual', 'auto')),
+    is_visible BOOLEAN NOT NULL DEFAULT false,
+    -- false = only count registrations created at/after start_at (a fresh
+    -- cohort for this event); true = count every eligible registration ever
+    -- made, including ones from before the event existed.
+    include_existing_registrants BOOLEAN NOT NULL DEFAULT true,
+    reward_first INTEGER NOT NULL DEFAULT 0,
+    reward_second INTEGER NOT NULL DEFAULT 0,
+    reward_third INTEGER NOT NULL DEFAULT 0,
+    reward_fourth_to_tenth INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'active', 'finalized')),
+    finalized_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+
+  -- Written once, at finalize time (see finalizeRankingEvent) — a frozen
+  -- snapshot, never recomputed, which is the whole point of freezing.
+  CREATE TABLE IF NOT EXISTS ranking_event_results (
+    id SERIAL PRIMARY KEY,
+    ranking_event_id INTEGER NOT NULL REFERENCES ranking_events(id),
+    artist_id INTEGER NOT NULL REFERENCES artists(id),
+    artist_name TEXT NOT NULL,
+    rank INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS idx_ranking_event_results_event ON ranking_event_results (ranking_event_id);
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

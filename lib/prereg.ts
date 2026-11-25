@@ -432,3 +432,17 @@ export async function deleteRegistration(id: number): Promise<boolean> {
     client.release();
   }
 }
+
+// Admin-only: pulls a fraudulent/test row out of ranking-event counts
+// (getVerifiedArtistCounts / getRankingStandingsForEvent) without deleting
+// it — the registration, its POP reward, and its PRE-REG BADGE are
+// untouched either way. Returns false if no row with that id exists.
+export async function setExcludedFromRanking(id: number, excluded: boolean): Promise<boolean> {
+  await ensureSchema();
+  const pool = getPool();
+  const result = await pool.query('UPDATE preregistrations SET excluded_from_ranking = $1 WHERE id = $2', [
+    excluded,
+    id,
+  ]);
+  return (result.rowCount ?? 0) > 0;
+}

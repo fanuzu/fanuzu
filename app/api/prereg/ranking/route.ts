@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getVerifiedArtistCounts } from '@/lib/artist-registry';
+import { getCurrentRankingEvent, getFinalizedResults, getRankingStandingsForEvent } from '@/lib/ranking-events';
 
 export const runtime = 'nodejs';
 // No request-specific data is read here, so Next.js would otherwise treat
@@ -22,7 +23,37 @@ export async function GET() {
   }
 
   try {
-    const counts = await getVerifiedArtistCounts();
+    const event = await getCurrentRankingEvent();
+
+    // No admin-configured event yet — fall back to the plain always-on
+    // verified/linked aggregate (unchanged from before the admin panel
+    // existed).
+    if (!event) {
+      const counts = await getVerifiedArtistCounts();
+      const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
+      return NextResponse.json({ enabled: true, ranking });
+    }
+
+    // Finalized: serve the frozen snapshot forever, regardless of what
+    // happens to the underlying registrations afterward.
+    if (event.status === 'finalized') {
+      const results = await getFinalizedResults(event.id);
+      const ranking = results.slice(0, TOP_N).map((r) => ({ artist: r.artist, count: r.count }));
+      return NextResponse.json({ enabled: true, ranking, finalized: true });
+    }
+
+    // Active: respect this event's own visibility setting before showing
+    // anything — 'manual' means the admin decides, 'auto' means it goes
+    // live automatically at start_at.
+    const visible =
+      event.visibilityMode === 'manual'
+        ? event.isVisible
+        : !event.startAt || new Date() >= new Date(event.startAt);
+    if (!visible) {
+      return NextResponse.json({ enabled: false });
+    }
+
+    const counts = await getRankingStandingsForEvent(event);
     const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
     return NextResponse.json({ enabled: true, ranking });
   } catch (err) {

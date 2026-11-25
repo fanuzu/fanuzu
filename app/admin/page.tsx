@@ -67,6 +67,8 @@ interface ReferralSearchRow {
   rewardAmount: number;
   rewardStatus: string;
   createdAt: string;
+  emailVerified: boolean;
+  excludedFromRanking: boolean;
 }
 
 interface BasePartnerRow {
@@ -94,6 +96,27 @@ interface SuspiciousRow {
 interface TrendPoint {
   day: string;
   count: number;
+}
+
+type RankingEventStatus = 'draft' | 'active' | 'finalized';
+type VisibilityMode = 'manual' | 'auto';
+
+interface RankingEvent {
+  id: number;
+  name: string;
+  startAt: string | null;
+  endAt: string | null;
+  visibilityMode: VisibilityMode;
+  isVisible: boolean;
+  includeExistingRegistrants: boolean;
+  rewardFirst: number;
+  rewardSecond: number;
+  rewardThird: number;
+  rewardFourthToTenth: number;
+  status: RankingEventStatus;
+  finalizedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const STORAGE_KEY = 'fanuzu_admin_password';
@@ -168,12 +191,12 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
       });
       const data = await res.json();
       if (!res.ok) {
-        setSaveError('Save failed.');
+        setSaveError('저장에 실패했습니다.');
         return;
       }
       onSaved({ ...data.artist, preregCount: artist.preregCount });
     } catch {
-      setSaveError('Network error.');
+      setSaveError('네트워크 오류입니다.');
     } finally {
       setSaving(false);
     }
@@ -190,37 +213,37 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
             </span>
           )}
         </div>
-        <span style={{ fontSize: 12, color: '#9089A0' }}>{artist.preregCount.toLocaleString()} pre-registrations</span>
+        <span style={{ fontSize: 12, color: '#9089A0' }}>사전등록 {artist.preregCount.toLocaleString()}건</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 10, marginBottom: 10 }}>
         <label style={{ fontSize: 11, color: '#9089A0' }}>
-          Fandom name
+          팬덤명
           <input style={{ ...fieldStyle, marginTop: 4 }} value={fandomName} onChange={(e) => setFandomName(e.target.value)} />
         </label>
         <label style={{ fontSize: 11, color: '#9089A0' }}>
-          Agency
+          소속사
           <input style={{ ...fieldStyle, marginTop: 4 }} value={agency} onChange={(e) => setAgency(e.target.value)} />
         </label>
         <label style={{ fontSize: 11, color: '#9089A0' }}>
-          Official status
+          공식 상태
           <select
             style={{ ...fieldStyle, marginTop: 4, cursor: 'pointer' }}
             value={officialStatus}
             onChange={(e) => setOfficialStatus(e.target.value as OfficialStatus)}
           >
-            <option value="unofficial">unofficial</option>
-            <option value="pending">pending</option>
-            <option value="official">official</option>
+            <option value="unofficial">비공식</option>
+            <option value="pending">검토 중</option>
+            <option value="official">공식</option>
           </select>
         </label>
         <label style={{ fontSize: 11, color: '#9089A0' }}>
-          Public progress goal (optional)
+          공개 목표 인원 (선택)
           <input
             style={{ ...fieldStyle, marginTop: 4 }}
             type="number"
             min="0"
-            placeholder="Hidden unless set"
+            placeholder="설정 전까지 숨김"
             value={preregGoal}
             onChange={(e) => setPreregGoal(e.target.value)}
           />
@@ -231,16 +254,16 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
         <label style={{ fontSize: 11, color: '#9089A0' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
             <input type="checkbox" checked={logoLicense} onChange={(e) => setLogoLicense(e.target.checked)} />
-            Logo license
+            로고 라이선스
           </span>
-          <input style={fieldStyle} placeholder="Logo URL" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} />
+          <input style={fieldStyle} placeholder="로고 URL" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} />
         </label>
         <label style={{ fontSize: 11, color: '#9089A0' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
             <input type="checkbox" checked={imageLicense} onChange={(e) => setImageLicense(e.target.checked)} />
-            Image license
+            이미지 라이선스
           </span>
-          <input style={fieldStyle} placeholder="Hero image URL" value={heroImageUrl} onChange={(e) => setHeroImageUrl(e.target.value)} />
+          <input style={fieldStyle} placeholder="대표 이미지 URL" value={heroImageUrl} onChange={(e) => setHeroImageUrl(e.target.value)} />
         </label>
       </div>
 
@@ -259,7 +282,7 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
             cursor: dirty ? 'pointer' : 'default',
           }}
         >
-          {saving ? 'Saving···' : 'Save'}
+          {saving ? '저장 중···' : '저장'}
         </button>
         <button
           onClick={() => downloadCsv(`/api/admin/export?artistId=${artist.id}`, password, `fanuzu-${artist.slug}.csv`)}
@@ -274,9 +297,314 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
             cursor: 'pointer',
           }}
         >
-          Export CSV
+          CSV 내보내기
         </button>
         {saveError && <span style={{ fontSize: 12, color: '#FF7DDD' }}>{saveError}</span>}
+      </div>
+    </div>
+  );
+}
+
+const STATUS_LABEL: Record<RankingEventStatus, string> = {
+  draft: '초안',
+  active: '진행중',
+  finalized: '확정됨',
+};
+const STATUS_COLOR: Record<RankingEventStatus, string> = {
+  draft: '#9089A0',
+  active: '#7CE8FF',
+  finalized: '#FF7DDD',
+};
+
+function fmtKrw(n: number): string {
+  return `${n.toLocaleString()}원`;
+}
+
+function RankingEventRow({
+  event,
+  onUpdate,
+  onFinalize,
+}: {
+  event: RankingEvent;
+  onUpdate: (id: number, patch: Record<string, unknown>) => void;
+  onFinalize: (id: number, name: string) => void;
+}) {
+  return (
+    <div style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontWeight: 700, fontSize: 14.5 }}>{event.name}</span>
+          <span
+            style={{
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: '.05em',
+              color: STATUS_COLOR[event.status],
+              border: `1px solid ${STATUS_COLOR[event.status]}`,
+              padding: '2px 7px',
+              borderRadius: 999,
+            }}
+          >
+            {STATUS_LABEL[event.status]}
+          </span>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {event.status === 'draft' && (
+            <button
+              onClick={() => onUpdate(event.id, { status: 'active' })}
+              style={{
+                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                color: '#05030B',
+                fontWeight: 700,
+                fontSize: 11.5,
+                padding: '6px 12px',
+                border: 'none',
+                borderRadius: 8,
+                cursor: 'pointer',
+              }}
+            >
+              진행 시작
+            </button>
+          )}
+          {event.status === 'active' && event.visibilityMode === 'manual' && (
+            <button
+              onClick={() => onUpdate(event.id, { isVisible: !event.isVisible })}
+              style={{
+                background: event.isVisible ? 'rgba(124,232,255,.12)' : 'rgba(255,255,255,.06)',
+                border: `1px solid ${event.isVisible ? 'rgba(124,232,255,.4)' : 'rgba(255,255,255,.14)'}`,
+                color: event.isVisible ? '#7CE8FF' : '#6B6478',
+                fontSize: 11.5,
+                fontWeight: 600,
+                padding: '6px 12px',
+                borderRadius: 8,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {event.isVisible ? '공개 중' : '비공개'}
+            </button>
+          )}
+          {event.status === 'active' && (
+            <button
+              onClick={() => onFinalize(event.id, event.name)}
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(255,125,221,.3)',
+                color: '#FF7DDD',
+                fontSize: 11.5,
+                fontWeight: 600,
+                padding: '6px 12px',
+                borderRadius: 8,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              결과 확정
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 8, fontSize: 12, color: '#9089A0' }}>
+        <div>
+          시작일 {event.startAt ? new Date(event.startAt).toLocaleString() : '미설정'}
+        </div>
+        <div>
+          종료일 {event.endAt ? new Date(event.endAt).toLocaleString() : '미설정'}
+        </div>
+        <div>공개 방식 {event.visibilityMode === 'manual' ? '관리자 결정' : '시작일 자동 공개'}</div>
+        <div>{event.includeExistingRegistrants ? '기존 사전등록자 포함' : '이벤트 시작 이후 등록자만'}</div>
+      </div>
+      <div style={{ marginTop: 10, fontSize: 12, color: '#B8B0C8' }}>
+        1위 {fmtKrw(event.rewardFirst)} · 2위 {fmtKrw(event.rewardSecond)} · 3위 {fmtKrw(event.rewardThird)} · 4~10위(각)
+        {' '}
+        {fmtKrw(event.rewardFourthToTenth)}
+      </div>
+    </div>
+  );
+}
+
+function RankingEventPanel({
+  events,
+  error,
+  saving,
+  newEventName,
+  setNewEventName,
+  newEventStartAt,
+  setNewEventStartAt,
+  newEventEndAt,
+  setNewEventEndAt,
+  newEventVisibilityMode,
+  setNewEventVisibilityMode,
+  newEventIncludeExisting,
+  setNewEventIncludeExisting,
+  newEventRewardFirst,
+  setNewEventRewardFirst,
+  newEventRewardSecond,
+  setNewEventRewardSecond,
+  newEventRewardThird,
+  setNewEventRewardThird,
+  newEventRewardRest,
+  setNewEventRewardRest,
+  onCreate,
+  onUpdate,
+  onFinalize,
+}: {
+  events: RankingEvent[] | null;
+  error: string;
+  saving: boolean;
+  newEventName: string;
+  setNewEventName: (v: string) => void;
+  newEventStartAt: string;
+  setNewEventStartAt: (v: string) => void;
+  newEventEndAt: string;
+  setNewEventEndAt: (v: string) => void;
+  newEventVisibilityMode: VisibilityMode;
+  setNewEventVisibilityMode: (v: VisibilityMode) => void;
+  newEventIncludeExisting: boolean;
+  setNewEventIncludeExisting: (v: boolean) => void;
+  newEventRewardFirst: string;
+  setNewEventRewardFirst: (v: string) => void;
+  newEventRewardSecond: string;
+  setNewEventRewardSecond: (v: string) => void;
+  newEventRewardThird: string;
+  setNewEventRewardThird: (v: string) => void;
+  newEventRewardRest: string;
+  setNewEventRewardRest: (v: string) => void;
+  onCreate: (e: React.FormEvent) => void;
+  onUpdate: (id: number, patch: Record<string, unknown>) => void;
+  onFinalize: (id: number, name: string) => void;
+}) {
+  return (
+    <div style={{ marginTop: 40 }}>
+      <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>랭킹전 관리</h2>
+      <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
+        팬덤별 사전등록 랭킹 이벤트를 만들고 공개 여부·보상·참여 자격을 설정합니다. 랭킹 집계는 이메일 인증을 완료하고
+        공식 레지스트리에 연결된 아티스트로 등록한 사전등록만 포함됩니다 (관리자 승인 전 자유 입력 아티스트명은
+        제외). "결과 확정"을 누르면 그 시점의 순위가 영구히 고정되며 되돌릴 수 없습니다.
+      </p>
+
+      {error && <p style={{ color: '#FF7DDD', fontSize: 13, marginBottom: 12 }}>{error}</p>}
+
+      <form onSubmit={onCreate} style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: 16, marginBottom: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 10, marginBottom: 10 }}>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            이벤트명
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              placeholder="예: FANUZU GENESIS"
+              value={newEventName}
+              onChange={(e) => setNewEventName(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            시작일 (선택)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="datetime-local"
+              value={newEventStartAt}
+              onChange={(e) => setNewEventStartAt(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            종료일 (선택)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="datetime-local"
+              value={newEventEndAt}
+              onChange={(e) => setNewEventEndAt(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            공개 방식
+            <select
+              style={{ ...fieldStyle, marginTop: 4, cursor: 'pointer' }}
+              value={newEventVisibilityMode}
+              onChange={(e) => setNewEventVisibilityMode(e.target.value as VisibilityMode)}
+            >
+              <option value="manual">관리자가 공개 시점 결정</option>
+              <option value="auto">이벤트 시작일 자동 공개</option>
+            </select>
+          </label>
+        </div>
+
+        <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#9089A0', marginBottom: 14 }}>
+          <input
+            type="checkbox"
+            checked={newEventIncludeExisting}
+            onChange={(e) => setNewEventIncludeExisting(e.target.checked)}
+          />
+          기존 사전등록자 포함 (해제 시 이벤트 시작일 이후 등록자만 집계)
+        </label>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 10, marginBottom: 14 }}>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            1위 보상 (원)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="number"
+              min="0"
+              value={newEventRewardFirst}
+              onChange={(e) => setNewEventRewardFirst(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            2위 보상 (원)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="number"
+              min="0"
+              value={newEventRewardSecond}
+              onChange={(e) => setNewEventRewardSecond(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            3위 보상 (원)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="number"
+              min="0"
+              value={newEventRewardThird}
+              onChange={(e) => setNewEventRewardThird(e.target.value)}
+            />
+          </label>
+          <label style={{ fontSize: 11, color: '#9089A0' }}>
+            4~10위 보상 (원, 각각)
+            <input
+              style={{ ...fieldStyle, marginTop: 4 }}
+              type="number"
+              min="0"
+              value={newEventRewardRest}
+              onChange={(e) => setNewEventRewardRest(e.target.value)}
+            />
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          disabled={saving || !newEventName.trim()}
+          style={{
+            background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+            color: '#05030B',
+            fontWeight: 700,
+            fontSize: 12.5,
+            padding: '8px 18px',
+            border: 'none',
+            borderRadius: 8,
+            cursor: 'pointer',
+            opacity: saving ? 0.7 : 1,
+          }}
+        >
+          {saving ? '···' : '랭킹전 만들기'}
+        </button>
+      </form>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {events?.map((ev) => (
+          <RankingEventRow key={ev.id} event={ev} onUpdate={onUpdate} onFinalize={onFinalize} />
+        ))}
+        {events?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13 }}>아직 만들어진 랭킹전이 없습니다.</p>}
+        {events === null && <p style={{ color: '#6B6478', fontSize: 13 }}>불러오는 중···</p>}
       </div>
     </div>
   );
@@ -318,6 +646,19 @@ export default function AdminPage() {
 
   const [suspicious, setSuspicious] = useState<SuspiciousRow[] | null>(null);
 
+  const [rankingEvents, setRankingEvents] = useState<RankingEvent[] | null>(null);
+  const [rankingEventsError, setRankingEventsError] = useState('');
+  const [rankingEventSaving, setRankingEventSaving] = useState(false);
+  const [newEventName, setNewEventName] = useState('');
+  const [newEventStartAt, setNewEventStartAt] = useState('');
+  const [newEventEndAt, setNewEventEndAt] = useState('');
+  const [newEventVisibilityMode, setNewEventVisibilityMode] = useState<VisibilityMode>('manual');
+  const [newEventIncludeExisting, setNewEventIncludeExisting] = useState(true);
+  const [newEventRewardFirst, setNewEventRewardFirst] = useState('1000000');
+  const [newEventRewardSecond, setNewEventRewardSecond] = useState('500000');
+  const [newEventRewardThird, setNewEventRewardThird] = useState('300000');
+  const [newEventRewardRest, setNewEventRewardRest] = useState('100000');
+
   useEffect(() => {
     document.title = 'Admin — FANUZU';
     const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -338,7 +679,7 @@ export default function AdminPage() {
         fetch('/api/admin/analytics', { headers: { 'x-admin-password': pw } }),
       ]);
       if (statsRes.status === 401 || artistsRes.status === 401 || analyticsRes.status === 401) {
-        setError('Incorrect password.');
+        setError('비밀번호가 올바르지 않습니다.');
         sessionStorage.removeItem(STORAGE_KEY);
         setCounts(null);
         setArtists(null);
@@ -349,14 +690,14 @@ export default function AdminPage() {
         return;
       }
       if (statsRes.status === 503 || artistsRes.status === 503 || analyticsRes.status === 503) {
-        setError('ADMIN_PASSWORD is not configured on the server.');
+        setError('서버에 ADMIN_PASSWORD가 설정되어 있지 않습니다.');
         return;
       }
       const statsData = await statsRes.json();
       const artistsData = await artistsRes.json();
       const analyticsData = await analyticsRes.json();
       if (!statsRes.ok || !artistsRes.ok || !analyticsRes.ok) {
-        setError('Something went wrong loading admin data.');
+        setError('관리자 데이터를 불러오는 중 문제가 발생했습니다.');
         return;
       }
       setCounts(statsData.counts);
@@ -370,8 +711,9 @@ export default function AdminPage() {
       setPassword(pw);
       loadReferralProgram(pw, {});
       loadBasePartners(pw);
+      loadRankingEvents(pw);
     } catch {
-      setError('Network error. Please try again.');
+      setError('네트워크 오류입니다. 다시 시도해주세요.');
     } finally {
       setLoading(false);
     }
@@ -382,13 +724,117 @@ export default function AdminPage() {
     try {
       const res = await fetch('/api/admin/base-partners', { headers: { 'x-admin-password': pw } });
       if (!res.ok) {
-        setBasePartnerError('Could not load base partners.');
+        setBasePartnerError('팬베이스 파트너를 불러오지 못했습니다.');
         return;
       }
       const data = await res.json();
       setBasePartners(data.partners);
     } catch {
-      setBasePartnerError('Network error. Please try again.');
+      setBasePartnerError('네트워크 오류입니다. 다시 시도해주세요.');
+    }
+  }
+
+  async function loadRankingEvents(pw: string) {
+    setRankingEventsError('');
+    try {
+      const res = await fetch('/api/admin/ranking-events', { headers: { 'x-admin-password': pw } });
+      if (!res.ok) {
+        setRankingEventsError('랭킹전을 불러오지 못했습니다.');
+        return;
+      }
+      const data = await res.json();
+      setRankingEvents(data.events);
+    } catch {
+      setRankingEventsError('네트워크 오류입니다. 다시 시도해주세요.');
+    }
+  }
+
+  async function handleCreateRankingEvent(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newEventName.trim()) return;
+    setRankingEventSaving(true);
+    setRankingEventsError('');
+    try {
+      const res = await fetch('/api/admin/ranking-events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({
+          name: newEventName.trim(),
+          startAt: newEventStartAt || null,
+          endAt: newEventEndAt || null,
+          visibilityMode: newEventVisibilityMode,
+          includeExistingRegistrants: newEventIncludeExisting,
+          rewardFirst: Number(newEventRewardFirst) || 0,
+          rewardSecond: Number(newEventRewardSecond) || 0,
+          rewardThird: Number(newEventRewardThird) || 0,
+          rewardFourthToTenth: Number(newEventRewardRest) || 0,
+        }),
+      });
+      if (!res.ok) {
+        setRankingEventsError('랭킹전을 만들지 못했습니다.');
+        return;
+      }
+      setNewEventName('');
+      setNewEventStartAt('');
+      setNewEventEndAt('');
+      loadRankingEvents(password);
+    } catch {
+      setRankingEventsError('네트워크 오류입니다. 다시 시도해주세요.');
+    } finally {
+      setRankingEventSaving(false);
+    }
+  }
+
+  async function handleUpdateRankingEvent(id: number, patch: Record<string, unknown>) {
+    setRankingEventsError('');
+    try {
+      const res = await fetch(`/api/admin/ranking-events/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify(patch),
+      });
+      if (!res.ok) {
+        setRankingEventsError('랭킹전을 수정하지 못했습니다.');
+        return;
+      }
+      loadRankingEvents(password);
+    } catch {
+      setRankingEventsError('네트워크 오류입니다. 다시 시도해주세요.');
+    }
+  }
+
+  async function handleFinalizeRankingEvent(id: number, name: string) {
+    if (!window.confirm(`"${name}" 랭킹전을 확정할까요? 확정 후에는 결과가 고정되며 되돌릴 수 없습니다.`)) return;
+    setRankingEventsError('');
+    try {
+      const res = await fetch(`/api/admin/ranking-events/${id}/finalize`, {
+        method: 'POST',
+        headers: { 'x-admin-password': password },
+      });
+      if (!res.ok) {
+        setRankingEventsError('랭킹전을 확정하지 못했습니다.');
+        return;
+      }
+      loadRankingEvents(password);
+    } catch {
+      setRankingEventsError('네트워크 오류입니다. 다시 시도해주세요.');
+    }
+  }
+
+  async function handleToggleExcludedFromRanking(id: number, excludedFromRanking: boolean) {
+    try {
+      const res = await fetch(`/api/admin/preregistrations/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ excludedFromRanking }),
+      });
+      if (!res.ok) {
+        window.alert('처리하지 못했습니다. 다시 시도해주세요.');
+        return;
+      }
+      loadReferralProgram(password, { q: searchQ, hasReferral: hasReferralFilter, from: fromDate, to: toDate });
+    } catch {
+      window.alert('네트워크 오류입니다. 다시 시도해주세요.');
     }
   }
 
@@ -409,7 +855,7 @@ export default function AdminPage() {
         }),
       });
       if (!res.ok) {
-        setBasePartnerError('Could not create base partner.');
+        setBasePartnerError('팬베이스 파트너를 만들지 못했습니다.');
         return;
       }
       setNewPartnerName('');
@@ -418,7 +864,7 @@ export default function AdminPage() {
       setNewPartnerTarget('');
       loadBasePartners(password);
     } catch {
-      setBasePartnerError('Network error. Please try again.');
+      setBasePartnerError('네트워크 오류입니다. 다시 시도해주세요.');
     } finally {
       setBasePartnerSaving(false);
     }
@@ -433,12 +879,12 @@ export default function AdminPage() {
         body: JSON.stringify({ isActive }),
       });
       if (!res.ok) {
-        setBasePartnerError('Could not update base partner.');
+        setBasePartnerError('팬베이스 파트너를 수정하지 못했습니다.');
         return;
       }
       loadBasePartners(password);
     } catch {
-      setBasePartnerError('Network error. Please try again.');
+      setBasePartnerError('네트워크 오류입니다. 다시 시도해주세요.');
     }
   }
 
@@ -481,19 +927,19 @@ export default function AdminPage() {
         headers: { 'x-admin-password': pw },
       });
       if (res.status === 401 || res.status === 503) {
-        setReferralProgramError('Could not load referral program data.');
+        setReferralProgramError('추천인 프로그램 데이터를 불러오지 못했습니다.');
         return;
       }
       const data = await res.json();
       if (!res.ok) {
-        setReferralProgramError('Something went wrong loading referral program data.');
+        setReferralProgramError('추천인 프로그램 데이터를 불러오는 중 문제가 발생했습니다.');
         return;
       }
       setReferralSummary(data.summary);
       setReferrerLeaderboard(data.leaderboard);
       setReferralRows(data.rows);
     } catch {
-      setReferralProgramError('Network error. Please try again.');
+      setReferralProgramError('네트워크 오류입니다. 다시 시도해주세요.');
     } finally {
       setReferralProgramLoading(false);
     }
@@ -505,7 +951,7 @@ export default function AdminPage() {
   }
 
   async function handleDeleteRegistration(id: number, email: string) {
-    if (!window.confirm(`Permanently delete ${email}'s pre-registration? This cannot be undone.`)) return;
+    if (!window.confirm(`${email}의 사전등록을 영구 삭제할까요? 되돌릴 수 없습니다.`)) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/preregistrations/${id}`, {
@@ -513,14 +959,14 @@ export default function AdminPage() {
         headers: { 'x-admin-password': password },
       });
       if (!res.ok && res.status !== 404) {
-        window.alert('Delete failed. Please try again.');
+        window.alert('삭제하지 못했습니다. 다시 시도해주세요.');
         return;
       }
       // Re-run with current filters so the summary tiles and leaderboard
       // stay consistent instead of hand-patching several pieces of state.
       loadReferralProgram(password, { q: searchQ, hasReferral: hasReferralFilter, from: fromDate, to: toDate });
     } catch {
-      window.alert('Network error. Please try again.');
+      window.alert('네트워크 오류입니다. 다시 시도해주세요.');
     } finally {
       setDeletingId(null);
     }
@@ -551,8 +997,8 @@ export default function AdminPage() {
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 32 }}>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 8px' }}>FANUZU Admin</h1>
-            <p style={{ fontSize: 14, color: '#9089A0', margin: 0 }}>Artist registry & pre-registration stats</p>
+            <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 8px' }}>FANUZU 관리자</h1>
+            <p style={{ fontSize: 14, color: '#9089A0', margin: 0 }}>아티스트 등록 현황 및 사전등록 통계</p>
           </div>
           {authed && (
             <button
@@ -569,7 +1015,7 @@ export default function AdminPage() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Export all CSV
+              전체 CSV 내보내기
             </button>
           )}
         </div>
@@ -580,7 +1026,7 @@ export default function AdminPage() {
               type="password"
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
-              placeholder="Admin password"
+              placeholder="관리자 비밀번호"
               autoFocus
               style={{ ...fieldStyle, padding: '12px 14px', fontSize: 14 }}
             />
@@ -600,7 +1046,7 @@ export default function AdminPage() {
                 whiteSpace: 'nowrap',
               }}
             >
-              {loading ? '···' : 'Enter'}
+              {loading ? '···' : '입장'}
             </button>
           </form>
         )}
@@ -610,10 +1056,10 @@ export default function AdminPage() {
         {authed && (
           <>
             <div style={{ marginTop: 8, marginBottom: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Artist registry</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>아티스트 등록</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Only artists with official status = <code>official</code> show the OFFICIAL badge. Logo/image assets stay
-                hidden until their own license checkbox is on — flipping official status alone never unlocks an asset.
+                공식 상태가 <code>official</code>인 아티스트만 OFFICIAL 뱃지가 표시됩니다. 로고/이미지는 각각의 라이선스
+                체크박스가 켜져야 노출되며, 공식 상태만 바꾼다고 자산이 풀리지는 않습니다.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {artists!.map((a) => (
@@ -623,13 +1069,13 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Pre-registrations by artist</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>아티스트별 사전등록</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Every name a fan has typed in, registry or not.
+                팬이 직접 입력한 이름까지 포함한 전체 집계입니다 (레지스트리 등록 여부 무관).
               </p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16 }}>
-                <span style={{ fontSize: 13, color: '#9089A0' }}>{counts!.length} artists</span>
-                <span style={{ fontSize: 13, color: '#9089A0' }}>{total.toLocaleString()} total pre-registrations</span>
+                <span style={{ fontSize: 13, color: '#9089A0' }}>아티스트 {counts!.length}명</span>
+                <span style={{ fontSize: 13, color: '#9089A0' }}>총 사전등록 {total.toLocaleString()}건</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {counts!.map((c) => (
@@ -652,32 +1098,59 @@ export default function AdminPage() {
                     </div>
                   </div>
                 ))}
-                {counts!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13 }}>No pre-registrations yet.</p>}
+                {counts!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13 }}>아직 사전등록이 없습니다.</p>}
               </div>
             </div>
 
+            <RankingEventPanel
+              events={rankingEvents}
+              error={rankingEventsError}
+              saving={rankingEventSaving}
+              newEventName={newEventName}
+              setNewEventName={setNewEventName}
+              newEventStartAt={newEventStartAt}
+              setNewEventStartAt={setNewEventStartAt}
+              newEventEndAt={newEventEndAt}
+              setNewEventEndAt={setNewEventEndAt}
+              newEventVisibilityMode={newEventVisibilityMode}
+              setNewEventVisibilityMode={setNewEventVisibilityMode}
+              newEventIncludeExisting={newEventIncludeExisting}
+              setNewEventIncludeExisting={setNewEventIncludeExisting}
+              newEventRewardFirst={newEventRewardFirst}
+              setNewEventRewardFirst={setNewEventRewardFirst}
+              newEventRewardSecond={newEventRewardSecond}
+              setNewEventRewardSecond={setNewEventRewardSecond}
+              newEventRewardThird={newEventRewardThird}
+              setNewEventRewardThird={setNewEventRewardThird}
+              newEventRewardRest={newEventRewardRest}
+              setNewEventRewardRest={setNewEventRewardRest}
+              onCreate={handleCreateRankingEvent}
+              onUpdate={handleUpdateRankingEvent}
+              onFinalize={handleFinalizeRankingEvent}
+            />
+
             <div style={{ marginTop: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Traffic & referrals</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>유입 및 추천</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Visits are recorded on landing; conversions are pre-registrations that carried the same source.
+                방문은 랜딩 접속 시점에 기록되고, 전환은 같은 소스를 달고 들어온 사전등록을 뜻합니다.
               </p>
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>UTM breakdown</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>UTM 유입 분석</h3>
               <div style={{ overflowX: 'auto', marginBottom: 28 }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Source</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Medium</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Campaign</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Visits</th>
-                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Conversions</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>소스</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>매체</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>캠페인</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>방문</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>전환</th>
                     </tr>
                   </thead>
                   <tbody>
                     {utm!.map((row, i) => (
                       <tr key={i} style={{ borderTop: '1px solid rgba(255,255,255,.08)' }}>
-                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 600 }}>{row.utmSource || '(none)'}</td>
+                        <td style={{ padding: '8px 12px 8px 0', fontWeight: 600 }}>{row.utmSource || '(없음)'}</td>
                         <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{row.utmMedium || '—'}</td>
                         <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{row.utmCampaign || '—'}</td>
                         <td style={{ padding: '8px 0', textAlign: 'right' }}>{row.visits.toLocaleString()}</td>
@@ -686,20 +1159,20 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
-                {utm!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No tracked traffic yet.</p>}
+                {utm!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>아직 추적된 유입이 없습니다.</p>}
               </div>
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Invite link click-throughs</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>추천 링크 클릭 수</h3>
               <p style={{ fontSize: 11.5, color: '#6B6478', margin: '0 0 10px' }}>
-                Raw link clicks vs. conversions per code — see "Referral program" below for actual referral relationships and reward status.
+                코드별 단순 클릭 수 대비 전환 수입니다 — 실제 추천 관계와 보상 상태는 아래 "추천인 프로그램"을 확인하세요.
               </p>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Invite code</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Visits</th>
-                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Conversions</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>초대 코드</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>방문</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>전환</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -712,20 +1185,20 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
-                {referrals!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No referral activity yet.</p>}
+                {referrals!.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>아직 추천 활동이 없습니다.</p>}
               </div>
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '28px 0 10px' }}>Pre-registrations by country</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '28px 0 10px' }}>국가별 사전등록</h3>
               <p style={{ fontSize: 11.5, color: '#6B6478', margin: '0 0 10px' }}>
-                Geolocated from the request at sign-up (Vercel edge header) — never asked of the fan. "(unknown)" means the
-                country couldn't be detected (local dev, non-Vercel traffic).
+                가입 시점 요청(Vercel 엣지 헤더)으로 위치를 추정한 값이며 팬에게 직접 물어보지 않습니다. "(unknown)"은
+                국가를 판별하지 못한 경우입니다 (로컬 개발 환경, Vercel 외 트래픽 등).
               </p>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Country</th>
-                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Pre-registrations</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>국가</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>사전등록</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -737,16 +1210,16 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
-                {countries?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No pre-registrations yet.</p>}
-                {countries === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+                {countries?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>아직 사전등록이 없습니다.</p>}
+                {countries === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>불러오는 중···</p>}
               </div>
             </div>
 
             <div style={{ marginTop: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Referral program</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>추천인 프로그램</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Actual referrer → referred relationships and their reward status. POP is reserved at pre-registration and
-                stays <code>pending</code> until app launch matches this row to a real account.
+                실제 추천인 → 피추천인 관계와 보상 상태입니다. POP은 사전등록 시점에 예약되며, 정식 출시 후 이 행이 실제
+                계정과 연결되기 전까지 <code>pending</code> 상태로 유지됩니다.
               </p>
 
               {referralProgramError && <p style={{ color: '#FF7DDD', fontSize: 13, marginBottom: 12 }}>{referralProgramError}</p>}
@@ -754,30 +1227,30 @@ export default function AdminPage() {
               {referralSummary && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 10, marginBottom: 24 }}>
                   <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
-                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Total pre-registrations</div>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>총 사전등록</div>
                     <div style={{ fontSize: 20, fontWeight: 700 }}>{referralSummary.total.toLocaleString()}</div>
                   </div>
                   <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
-                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Via referral</div>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>추천을 통한 가입</div>
                     <div style={{ fontSize: 20, fontWeight: 700, color: '#FF7DDD' }}>{referralSummary.referred.toLocaleString()}</div>
                   </div>
                   <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '14px 16px' }}>
-                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>Direct sign-ups</div>
+                    <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 4 }}>직접 가입</div>
                     <div style={{ fontSize: 20, fontWeight: 700 }}>{referralSummary.direct.toLocaleString()}</div>
                   </div>
                 </div>
               )}
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Top referrers</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>추천인 TOP</h3>
               <div style={{ overflowX: 'auto', marginBottom: 28 }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referral code</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referrer email</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Referred</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Pending POP</th>
-                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>Paid POP</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>추천 코드</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>추천인 이메일</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>추천 인원</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>미지급 POP</th>
+                      <th style={{ padding: '0 0 8px 0', fontWeight: 600, textAlign: 'right' }}>지급된 POP</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -792,15 +1265,15 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
-                {referrerLeaderboard?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No successful referrals yet.</p>}
-                {referrerLeaderboard === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+                {referrerLeaderboard?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>아직 성사된 추천이 없습니다.</p>}
+                {referrerLeaderboard === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>불러오는 중···</p>}
               </div>
 
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>Search pre-registrations</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#B8B0C8', margin: '0 0 10px' }}>사전등록 검색</h3>
               <form onSubmit={handleReferralSearch} style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
                 <input
                   style={{ ...fieldStyle, width: 200 }}
-                  placeholder="Email or referral code"
+                  placeholder="이메일 또는 추천 코드"
                   value={searchQ}
                   onChange={(e) => setSearchQ(e.target.value)}
                 />
@@ -809,9 +1282,9 @@ export default function AdminPage() {
                   value={hasReferralFilter}
                   onChange={(e) => setHasReferralFilter(e.target.value as 'all' | 'yes' | 'no')}
                 >
-                  <option value="all">All sign-ups</option>
-                  <option value="yes">Via referral</option>
-                  <option value="no">Direct</option>
+                  <option value="all">전체 가입</option>
+                  <option value="yes">추천을 통한 가입</option>
+                  <option value="no">직접 가입</option>
                 </select>
                 <input type="date" style={{ ...fieldStyle, width: 150 }} value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
                 <input type="date" style={{ ...fieldStyle, width: 150 }} value={toDate} onChange={(e) => setToDate(e.target.value)} />
@@ -829,7 +1302,7 @@ export default function AdminPage() {
                     cursor: 'pointer',
                   }}
                 >
-                  {referralProgramLoading ? '···' : 'Search'}
+                  {referralProgramLoading ? '···' : '검색'}
                 </button>
               </form>
 
@@ -837,12 +1310,14 @@ export default function AdminPage() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Email</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Own code</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Referred by</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Reward</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Status</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Registered</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>이메일</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>내 코드</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>추천인</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>보상</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>상태</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>이메일 인증</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>등록일</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }} />
                       <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
                     </tr>
                   </thead>
@@ -856,7 +1331,28 @@ export default function AdminPage() {
                         </td>
                         <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap' }}>{r.rewardAmount} POP</td>
                         <td style={{ padding: '8px 12px 8px 0', textTransform: 'capitalize' }}>{r.rewardStatus}</td>
+                        <td style={{ padding: '8px 12px 8px 0', color: r.emailVerified ? '#7CE8FF' : '#6B6478' }}>
+                          {r.emailVerified ? '인증됨' : '미인증'}
+                        </td>
                         <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
+                        <td style={{ padding: '8px 12px 8px 0', textAlign: 'right' }}>
+                          <button
+                            onClick={() => handleToggleExcludedFromRanking(r.id, !r.excludedFromRanking)}
+                            style={{
+                              background: r.excludedFromRanking ? 'rgba(255,125,221,.12)' : 'rgba(255,255,255,.06)',
+                              border: `1px solid ${r.excludedFromRanking ? 'rgba(255,125,221,.4)' : 'rgba(255,255,255,.14)'}`,
+                              color: r.excludedFromRanking ? '#FF7DDD' : '#6B6478',
+                              fontSize: 11.5,
+                              fontWeight: 600,
+                              padding: '5px 10px',
+                              borderRadius: 999,
+                              cursor: 'pointer',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {r.excludedFromRanking ? '랭킹 제외됨' : '랭킹 집계'}
+                          </button>
+                        </td>
                         <td style={{ padding: '8px 0', textAlign: 'right' }}>
                           <button
                             onClick={() => handleDeleteRegistration(r.id, r.email)}
@@ -874,24 +1370,24 @@ export default function AdminPage() {
                               whiteSpace: 'nowrap',
                             }}
                           >
-                            {deletingId === r.id ? '···' : 'Delete'}
+                            {deletingId === r.id ? '···' : '삭제'}
                           </button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                {referralRows?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No matching pre-registrations.</p>}
-                {referralRows === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+                {referralRows?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>일치하는 사전등록이 없습니다.</p>}
+                {referralRows === null && referralProgramLoading && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>불러오는 중···</p>}
               </div>
             </div>
 
             <div style={{ marginTop: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Base partners</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>팬베이스 파트너</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Fandom-base-account invite codes (X/Twitter fan accounts) — distinct from fans' own personal codes above.
-                A code always grants 100 POP, same as a personal referral; deactivating one makes it resolve as if no
-                code were entered at all, never an error for anyone who still has the old link.
+                팬덤 베이스 계정(X/트위터 팬 계정) 초대 코드입니다 — 위의 개인별 코드와는 별개예요. 코드는 개인 추천과
+                동일하게 항상 100 POP을 지급하며, 비활성화하면 코드를 입력하지 않은 것처럼 처리되어 예전 링크를 쓰던
+                사람에게도 오류 없이 넘어갑니다.
               </p>
 
               {basePartnerError && <p style={{ color: '#FF7DDD', fontSize: 13, marginBottom: 12 }}>{basePartnerError}</p>}
@@ -902,19 +1398,19 @@ export default function AdminPage() {
               >
                 <input
                   style={{ ...fieldStyle, width: 180 }}
-                  placeholder="Base account name"
+                  placeholder="베이스 계정명"
                   value={newPartnerName}
                   onChange={(e) => setNewPartnerName(e.target.value)}
                 />
                 <input
                   style={{ ...fieldStyle, width: 140 }}
-                  placeholder="X handle (optional)"
+                  placeholder="X 계정 (선택)"
                   value={newPartnerXHandle}
                   onChange={(e) => setNewPartnerXHandle(e.target.value)}
                 />
                 <input
                   style={{ ...fieldStyle, width: 140 }}
-                  placeholder="Fandom (e.g. TWS)"
+                  placeholder="팬덤 (예: TWS)"
                   value={newPartnerFandom}
                   onChange={(e) => setNewPartnerFandom(e.target.value)}
                 />
@@ -922,7 +1418,7 @@ export default function AdminPage() {
                   style={{ ...fieldStyle, width: 120 }}
                   type="number"
                   min="0"
-                  placeholder="Target (optional)"
+                  placeholder="목표 인원 (선택)"
                   value={newPartnerTarget}
                   onChange={(e) => setNewPartnerTarget(e.target.value)}
                 />
@@ -941,7 +1437,7 @@ export default function AdminPage() {
                     opacity: basePartnerSaving ? 0.7 : 1,
                   }}
                 >
-                  {basePartnerSaving ? '···' : 'Create + generate code'}
+                  {basePartnerSaving ? '···' : '생성 + 코드 발급'}
                 </button>
               </form>
 
@@ -949,13 +1445,13 @@ export default function AdminPage() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Code</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Base account</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Fandom</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Sign-ups</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Target</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>Achieved</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Active</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>코드</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>베이스 계정</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>팬덤</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>가입 수</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>목표</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>달성률</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>활성</th>
                       <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
                     </tr>
                   </thead>
@@ -1008,7 +1504,7 @@ export default function AdminPage() {
                                 whiteSpace: 'nowrap',
                               }}
                             >
-                              {p.isActive ? 'Active' : 'Inactive'}
+                              {p.isActive ? '활성' : '비활성'}
                             </button>
                           </td>
                           <td style={{ padding: '8px 0' }} />
@@ -1016,9 +1512,9 @@ export default function AdminPage() {
                         {trendForCode === p.code && (
                           <tr style={{ borderTop: '1px solid rgba(255,255,255,.04)' }}>
                             <td colSpan={8} style={{ padding: '4px 0 14px' }}>
-                              {trendLoading && <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>Loading daily trend···</p>}
+                              {trendLoading && <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>일별 추이 불러오는 중···</p>}
                               {!trendLoading && trendPoints?.length === 0 && (
-                                <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>No sign-ups yet via this code.</p>
+                                <p style={{ color: '#6B6478', fontSize: 12.5, margin: 0 }}>이 코드로 가입한 사람이 아직 없습니다.</p>
                               )}
                               {!trendLoading && trendPoints && trendPoints.length > 0 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 420 }}>
@@ -1046,27 +1542,26 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
-                {basePartners?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>No base partners yet.</p>}
-                {basePartners === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+                {basePartners?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>아직 팬베이스 파트너가 없습니다.</p>}
+                {basePartners === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>불러오는 중···</p>}
               </div>
             </div>
 
             <div style={{ marginTop: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>Suspicious registrations</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 4px' }}>부정 등록 의심</h2>
               <p style={{ fontSize: 12.5, color: '#6B6478', margin: '0 0 16px' }}>
-                Flags a sign-up whenever it's one of 3+ from the same IP within a trailing 10 minutes — a lighter,
-                review-only signal layered on top of the hard rate limit (10 min / 8 attempts) that already blocks
-                scripted abuse outright.
+                같은 IP에서 10분 이내 3건 이상 가입이 발생하면 표시됩니다 — 스크립트성 악용을 이미 완전히 차단하는
+                하드 레이트 리밋(10분 / 8회)과 별개로, 검토용으로만 쓰는 가벼운 신호입니다.
               </p>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ textAlign: 'left', color: '#6B6478', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.04em' }}>
                       <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>IP</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Email</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Artist</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>In window</th>
-                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>Registered</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>이메일</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>아티스트</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600, textAlign: 'right' }}>구간 내 건수</th>
+                      <th style={{ padding: '0 12px 8px 0', fontWeight: 600 }}>등록일시</th>
                       <th style={{ padding: '0 0 8px 0', fontWeight: 600 }} />
                     </tr>
                   </thead>
@@ -1095,15 +1590,15 @@ export default function AdminPage() {
                               whiteSpace: 'nowrap',
                             }}
                           >
-                            {deletingId === r.id ? '···' : 'Delete'}
+                            {deletingId === r.id ? '···' : '삭제'}
                           </button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                {suspicious?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Nothing flagged.</p>}
-                {suspicious === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>Loading···</p>}
+                {suspicious?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>표시된 항목이 없습니다.</p>}
+                {suspicious === null && <p style={{ color: '#6B6478', fontSize: 13, marginTop: 8 }}>불러오는 중···</p>}
               </div>
             </div>
           </>
