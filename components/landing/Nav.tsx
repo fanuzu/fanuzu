@@ -6,6 +6,14 @@ import { usePreregModal } from '@/components/providers/PreregModalProvider';
 import { useCarol } from '@/components/providers/CarolProvider';
 import Logo from './Logo';
 
+// GENESIS review section 5.4/5.5: once the app has actually launched, the
+// nav's main CTA should prioritize sending people to the store over the
+// pre-registration modal. Doubles as the launch flag, same pattern as
+// AppLevelCta.tsx's APP_STORE_URL — unset means "not launched yet," so
+// this always falls back to pre-registration until a real store link is
+// set, no code change needed on launch day.
+const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL;
+
 export default function Nav() {
   const { tr, lang, setLang, langList } = useLang();
   const { openModal } = usePreregModal();
@@ -208,23 +216,43 @@ export default function Nav() {
               </div>
             )}
           </div>
-          <button
-            onClick={openModal}
-            style={{
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-              color: '#05030B',
-              fontWeight: 700,
-              fontSize: 'clamp(11px,3.1vw,14px)',
-              padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
-              borderRadius: 999,
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {tr.nav.cta}
-          </button>
+          {APP_STORE_URL ? (
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                color: '#05030B',
+                fontWeight: 700,
+                fontSize: 'clamp(11px,3.1vw,14px)',
+                padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
+                borderRadius: 999,
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tr.nav.appDownloadCta}
+            </a>
+          ) : (
+            <button
+              onClick={openModal}
+              style={{
+                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+                color: '#05030B',
+                fontWeight: 700,
+                fontSize: 'clamp(11px,3.1vw,14px)',
+                padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
+                borderRadius: 999,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tr.nav.cta}
+            </button>
+          )}
         </div>
       </div>
     </nav>

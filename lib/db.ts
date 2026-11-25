@@ -339,6 +339,20 @@ const SCHEMA_SQL = `
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );
   CREATE INDEX IF NOT EXISTS idx_ranking_event_results_event ON ranking_event_results (ranking_event_id);
+
+  -- GENESIS review section 4: core terms (rewards/window/registrant-
+  -- inclusion) are locked once an event leaves 'draft' (see
+  -- lib/ranking-events.ts's CoreFieldsLockedError), but an admin can still
+  -- force one through with a required reason — this is that history, kept
+  -- forever, never editable itself.
+  CREATE TABLE IF NOT EXISTS ranking_event_audit_log (
+    id SERIAL PRIMARY KEY,
+    ranking_event_id INTEGER NOT NULL REFERENCES ranking_events(id),
+    changed_fields JSONB NOT NULL,
+    reason TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS idx_ranking_event_audit_log_event ON ranking_event_audit_log (ranking_event_id);
 `;
 
 // Cached across hot-reloads/invocations within the same process so we don't

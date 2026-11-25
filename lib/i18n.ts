@@ -1,7 +1,7 @@
 export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant' | 'id' | 'fil' | 'th';
 
 export interface TranslationSet {
-  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string };
+  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string; appDownloadCta: string };
   hero: {
     badge: string; t1: string; t2: string; t3: string; d1: string; d2: string; d3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; detailsCta: string; subLead: string; sub: { title: string; desc: string }[];
@@ -62,6 +62,10 @@ export interface TranslationSet {
     daysLeft: (n: number) => string;
     hoursLeft: (n: number) => string;
     eventEndedLabel: string;
+    startsInDays: (n: number) => string;
+    startsInHours: (n: number) => string;
+    upcomingNotice: string;
+    launchLabel: string;
     navShortcut: string;
     myFandomRankLabel: string;
     inviteToClimbLine: string;
@@ -84,7 +88,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 
 export const T: Record<Lang, TranslationSet> = {
 ko: {
-  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기'},
+  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기',appDownloadCta:'앱 다운로드'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 최애를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
     d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
     d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
@@ -167,18 +171,21 @@ ko: {
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
   rankingSection:{
-    eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤의 힘으로 최애에게 광고를 선물하세요.',ctaLabel:'랭킹전 참여하기',
+    eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤의 힘으로 최애에게 광고를 선물하세요.',ctaLabel:'무료로 사전등록하기',
     searchPlaceholder:'내 팬덤 검색',searchNoResults:'검색 결과가 없어요',
-    rewardLegendLabel:'순위별 보상',
+    rewardLegendLabel:'순위별 응원광고 지원',
     rankFirst:'1위',rankSecond:'2위',rankThird:'3위',rankFourthToTenth:'4~10위',
     currentRankLabel:'현재 순위',
     daysLeft:(n) => `종료까지 ${n}일 남음`,hoursLeft:(n) => `종료까지 ${n}시간 남음`,eventEndedLabel:'종료된 이벤트',
+    startsInDays:(n) => `시작까지 ${n}일 남음`,startsInHours:(n) => `시작까지 ${n}시간 남음`,
+    upcomingNotice:'지금 사전등록해도 등록 자체는 바로 반영되지만, 이번 랭킹전 집계는 이벤트가 시작된 이후 등록자만 포함돼요.',
+    launchLabel:'정식 출시 예정일',
     navShortcut:'랭킹전',myFandomRankLabel:'내 팬덤 순위',
     inviteToClimbLine:'친구를 초대해서 순위를 더 올려보세요!',
     rankingHiddenMessage:'아직 최소 참여 인원을 채우지 못해 랭킹이 비공개예요. 더 많은 친구를 초대해서 랭킹을 열어보세요!',verifyingLabel:'결과 검증 중',
     neededForNext:(n) => `다음 순위까지 ${n}명`,
     termsToggleLabel:'이용 조건 및 보상 안내',
-    termsItems:['사전등록 후 이메일 인증을 완료해야 랭킹 집계에 반영돼요.','등록된 아티스트와 연동되고 부정 가입으로 제외되지 않은 건만 집계돼요.','동일 인원일 경우 먼저 그 인원 수에 도달한 쪽이 더 높은 순위예요.','결과가 확정되면 이후 어떤 변경이 있어도 순위는 바뀌지 않아요.'],
+    termsItems:['사전등록 후 이메일 인증을 완료해야 랭킹 집계에 반영돼요.','등록된 아티스트와 연동되고 부정 가입으로 제외되지 않은 건만 집계돼요.','동일 인원일 경우 먼저 그 인원 수에 도달한 쪽이 더 높은 순위예요.','결과가 확정되면 이후 어떤 변경이 있어도 순위는 바뀌지 않아요.','순위별 지원금은 현금이 아닌, 정식 출시 후 앱 내 캠페인을 통해 집행되는 응원 광고 비용이에요.','이 이벤트는 FANUZU가 주최하며, 참여 아티스트 및 소속사의 공식 주최 행사가 아니에요.'],
     termsVerifyGrace:(h) => `이벤트 종료 후 ${h}시간 이내 이메일 인증을 완료한 건까지 인정돼요.`,
   },
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
@@ -188,7 +195,7 @@ ko: {
   errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'INVITE CODE를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 INVITE CODE는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
 },
 en: {
-  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close'},
+  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close',appDownloadCta:'Download the app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
     d1:'Walk, stream, view, take part. Every fan action becomes POP, which helps our fandom planet grow.',
     d2:'FANUZU is a K-POP fandom platform that turns scattered fan actions into collective power.',
@@ -271,18 +278,21 @@ en: {
     btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
     shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → {url}'},
   rankingSection:{
-    eyebrow:'Pre-registration ranking event',subtitle:'Use your fandom\'s power to gift your artist real advertising.',ctaLabel:'Join the ranking event',
+    eyebrow:'Pre-registration ranking event',subtitle:'Use your fandom\'s power to gift your artist real advertising.',ctaLabel:'Pre-register for free',
     searchPlaceholder:'Search your fandom',searchNoResults:'No matching fandom found',
-    rewardLegendLabel:'Rewards by rank',
+    rewardLegendLabel:'Ad support by rank',
     rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
     currentRankLabel:'Current rank',
     daysLeft:(n) => `${n} day${n === 1 ? '' : 's'} left`,hoursLeft:(n) => `${n} hour${n === 1 ? '' : 's'} left`,eventEndedLabel:'Event ended',
+    startsInDays:(n) => `${n} day${n === 1 ? '' : 's'} until it starts`,startsInHours:(n) => `${n} hour${n === 1 ? '' : 's'} until it starts`,
+    upcomingNotice:'Pre-registering now is counted right away, but this ranking event only counts registrations made after it starts.',
+    launchLabel:'Official launch date',
     navShortcut:'Ranking',myFandomRankLabel:'Your fandom rank',
     inviteToClimbLine:'Invite friends to climb the ranking together!',
     rankingHiddenMessage:'The ranking is still private until enough fans join. Invite friends to help unlock it!',verifyingLabel:'Verifying results',
     neededForNext:(n) => `${n} more to reach the next rank`,
     termsToggleLabel:'Terms & rewards details',
-    termsItems:['Only pre-registrations with a verified email count toward the ranking.','Only entries linked to a registered artist, and not excluded as fraudulent, are counted.','Ties are broken in favor of whoever reached that count first.','Once results are finalized, the ranking never changes again, no matter what happens afterward.'],
+    termsItems:['Only pre-registrations with a verified email count toward the ranking.','Only entries linked to a registered artist, and not excluded as fraudulent, are counted.','Ties are broken in favor of whoever reached that count first.','Once results are finalized, the ranking never changes again, no matter what happens afterward.','The ad budget by rank is not a cash payment — it funds a real support-ad campaign run in-app after launch.','This event is organized by FANUZU and is not an official event from the participating artists or their agencies.'],
     termsVerifyGrace:(h) => `Email verifications completed within ${h} hours after the event ends still count.`,
   },
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
@@ -292,7 +302,7 @@ en: {
   errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that invite code.',selfReferralNotAllowed:'You can’t use your own invite code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
 },
 ja: {
-  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる'},
+  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる',appDownloadCta:'アプリをダウンロード'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
     d1:'ストリーミング、投票、応援、参加。ファンのアクションはPOPとして記録され、私たちのファンダム惑星を育てます。',
     d2:'ひとりひとりのファン活動を、ファンダムの大きな力につなげるK-POPファンダムプラットフォーム。',
@@ -375,18 +385,21 @@ ja: {
     btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました',
     shareMessage:'Bring your fandom to FANUZU. 私のINVITE CODE {code}で一緒に → {url}'},
   rankingSection:{
-    eyebrow:'事前登録ランキング戦',subtitle:'ファンダムの力で推しに広告をプレゼントしよう。',ctaLabel:'ランキング戦に参加する',
+    eyebrow:'事前登録ランキング戦',subtitle:'推しを、宇宙で一番輝かせよう。',ctaLabel:'無料で事前登録',
     searchPlaceholder:'自分のファンダムを検索',searchNoResults:'該当するファンダムが見つかりません',
-    rewardLegendLabel:'順位別報酬',
+    rewardLegendLabel:'順位別応援広告',
     rankFirst:'1位',rankSecond:'2位',rankThird:'3位',rankFourthToTenth:'4〜10位',
     currentRankLabel:'現在の順位',
     daysLeft:(n) => `終了まで${n}日`,hoursLeft:(n) => `終了まで${n}時間`,eventEndedLabel:'終了したイベント',
+    startsInDays:(n) => `開始まで${n}日`,startsInHours:(n) => `開始まで${n}時間`,
+    upcomingNotice:'今すぐ事前登録しても登録自体はすぐ反映されますが、このランキング戦の集計はイベント開始後の登録のみ対象です。',
+    launchLabel:'正式リリース予定日',
     navShortcut:'ランキング戦',myFandomRankLabel:'自分のファンダム順位',
     inviteToClimbLine:'友達を招待して一緒に順位を上げよう！',
     rankingHiddenMessage:'最低参加人数に達するまでランキングは非公開です。友達を招待してランキングを公開しよう！',verifyingLabel:'結果を検証中',
     neededForNext:(n) => `次の順位まであと${n}人`,
     termsToggleLabel:'利用条件・報酬のご案内',
-    termsItems:['事前登録後、メール認証を完了した分のみランキングに反映されます。','登録済みアーティストと連携され、不正登録として除外されていない分のみ集計されます。','人数が同じ場合は、先にその人数に到達した方が上位になります。','結果が確定すると、その後どんな変更があっても順位は変わりません。'],
+    termsItems:['事前登録後、メール認証を完了した分のみランキングに反映されます。','登録済みアーティストと連携され、不正登録として除外されていない分のみ集計されます。','人数が同じ場合は、先にその人数に到達した方が上位になります。','結果が確定すると、その後どんな変更があっても順位は変わりません。','順位別の支援金は現金ではなく、正式リリース後にアプリ内キャンペーンで実施される応援広告費用です。','本イベントはFANUZUが主催するものであり、参加アーティストや所属事務所が公式に主催するイベントではありません。'],
     termsVerifyGrace:(h) => `イベント終了後${h}時間以内にメール認証を完了した分まで認められます。`,
   },
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
@@ -396,7 +409,7 @@ ja: {
   errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'INVITE CODEが見つかりません。',selfReferralNotAllowed:'自分のINVITE CODEは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
 },
 es: {
-  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar'},
+  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar',appDownloadCta:'Descargar la app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
     d1:'Streaming, votaciones, apoyo y participación. Cada acción se convierte en POP y hace crecer el planeta de nuestro fandom.',
     d2:'Una plataforma de fandom K-POP que convierte acciones dispersas en fuerza colectiva.',
@@ -479,18 +492,21 @@ es: {
     btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
     shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → {url}'},
   rankingSection:{
-    eyebrow:'Evento de ranking de preinscripción',subtitle:'Usa el poder de tu fandom para regalarle publicidad real a tu artista.',ctaLabel:'Unirme al ranking',
+    eyebrow:'Evento de ranking de preinscripción',subtitle:'Usa el poder de tu fandom para regalarle publicidad real a tu artista.',ctaLabel:'Preinscríbete gratis',
     searchPlaceholder:'Busca tu fandom',searchNoResults:'No se encontró ningún fandom',
-    rewardLegendLabel:'Recompensas por posición',
+    rewardLegendLabel:'Apoyo publicitario por posición',
     rankFirst:'1er lugar',rankSecond:'2do lugar',rankThird:'3er lugar',rankFourthToTenth:'4.º–10.º lugar',
     currentRankLabel:'Posición actual',
     daysLeft:(n) => `Quedan ${n} día${n === 1 ? '' : 's'}`,hoursLeft:(n) => `Quedan ${n} hora${n === 1 ? '' : 's'}`,eventEndedLabel:'Evento finalizado',
+    startsInDays:(n) => `Empieza en ${n} día${n === 1 ? '' : 's'}`,startsInHours:(n) => `Empieza en ${n} hora${n === 1 ? '' : 's'}`,
+    upcomingNotice:'Preinscribirte ahora se registra de inmediato, pero este ranking solo cuenta las preinscripciones hechas después de que empiece el evento.',
+    launchLabel:'Fecha de lanzamiento oficial',
     navShortcut:'Ranking',myFandomRankLabel:'Posición de tu fandom',
     inviteToClimbLine:'¡Invita a tus amigos para subir juntos en el ranking!',
     rankingHiddenMessage:'El ranking sigue privado hasta que se unan suficientes fans. ¡Invita a tus amigos para desbloquearlo!',verifyingLabel:'Verificando resultados',
     neededForNext:(n) => `Faltan ${n} para subir de posición`,
     termsToggleLabel:'Términos y detalles de las recompensas',
-    termsItems:['Solo las preinscripciones con el correo verificado cuentan para el ranking.','Solo se cuentan las entradas vinculadas a un artista registrado y no excluidas por fraude.','En caso de empate, gana quien haya alcanzado ese número primero.','Una vez confirmados los resultados, el ranking ya no cambia pase lo que pase después.'],
+    termsItems:['Solo las preinscripciones con el correo verificado cuentan para el ranking.','Solo se cuentan las entradas vinculadas a un artista registrado y no excluidas por fraude.','En caso de empate, gana quien haya alcanzado ese número primero.','Una vez confirmados los resultados, el ranking ya no cambia pase lo que pase después.','El apoyo publicitario por posición no es un pago en efectivo — financia una campaña publicitaria real ejecutada en la app tras el lanzamiento.','Este evento lo organiza FANUZU y no es un evento oficial de los artistas participantes ni de sus agencias.'],
     termsVerifyGrace:(h) => `Las verificaciones de correo completadas dentro de las ${h} horas tras finalizar el evento también cuentan.`,
   },
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
@@ -500,7 +516,7 @@ es: {
   errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese invite code.',selfReferralNotAllowed:'No puedes usar tu propio invite code.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
 },
 zhHans: {
-  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭'},
+  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭',appDownloadCta:'下载App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
     d1:'打榜、投票、应援、参与。每一次粉丝行动都会记录为 POP，并推动我们的粉丝星球成长。',
     d2:'把分散的粉丝行动汇聚成共同力量的 K-POP 粉丝平台。',
@@ -583,18 +599,21 @@ zhHans: {
     btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
   rankingSection:{
-    eyebrow:'预注册排名赛',subtitle:'用粉丝团的力量，为爱豆送上真实的广告应援。',ctaLabel:'参加排名赛',
+    eyebrow:'预注册排名赛',subtitle:'用粉丝团的力量，为爱豆送上真实的广告应援。',ctaLabel:'免费预注册',
     searchPlaceholder:'搜索我的粉丝团',searchNoResults:'未找到匹配的粉丝团',
-    rewardLegendLabel:'名次奖励',
+    rewardLegendLabel:'名次应援广告',
     rankFirst:'第1名',rankSecond:'第2名',rankThird:'第3名',rankFourthToTenth:'第4~10名',
     currentRankLabel:'当前排名',
     daysLeft:(n) => `还剩${n}天结束`,hoursLeft:(n) => `还剩${n}小时结束`,eventEndedLabel:'活动已结束',
+    startsInDays:(n) => `距开始还有${n}天`,startsInHours:(n) => `距开始还有${n}小时`,
+    upcomingNotice:'现在预注册会立即生效，但本次排名赛只计入活动开始后的注册记录。',
+    launchLabel:'正式上线日期',
     navShortcut:'排名赛',myFandomRankLabel:'我的粉丝团排名',
     inviteToClimbLine:'邀请朋友一起提升排名吧！',
     rankingHiddenMessage:'参与人数还未达到公开门槛，排名暂未公开。快邀请朋友一起解锁排名吧！',verifyingLabel:'结果核实中',
     neededForNext:(n) => `距离上一名还差${n}人`,
     termsToggleLabel:'使用条款与奖励说明',
-    termsItems:['预注册后完成邮箱验证的记录才会计入排名。','只统计已关联注册艺人、且未被判定为违规而排除的记录。','人数相同时，先达到该人数的一方排名更高。','结果一旦确定，之后无论发生什么变化，排名都不会再改变。'],
+    termsItems:['预注册后完成邮箱验证的记录才会计入排名。','只统计已关联注册艺人、且未被判定为违规而排除的记录。','人数相同时，先达到该人数的一方排名更高。','结果一旦确定，之后无论发生什么变化，排名都不会再改变。','名次应援广告并非现金支付，而是正式上线后通过应用内活动执行的真实应援广告费用。','本活动由FANUZU主办，并非参与艺人或所属公司官方主办的活动。'],
     termsVerifyGrace:(h) => `活动结束后 ${h} 小时内完成邮箱验证的记录仍会计入。`,
   },
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
@@ -604,7 +623,7 @@ zhHans: {
   errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
 },
 zhHant: {
-  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉'},
+  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉',appDownloadCta:'下載App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
     d1:'串流、投票、應援、參與。每一次粉絲行動都會記錄為 POP，讓我們的粉絲星球持續成長。',
     d2:'把分散的粉絲行動匯聚成共同力量的 K-POP 粉絲平台。',
@@ -687,18 +706,21 @@ zhHant: {
     btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
   rankingSection:{
-    eyebrow:'預先註冊排名賽',subtitle:'用粉絲團的力量，為愛豆送上真實的廣告應援。',ctaLabel:'參加排名賽',
+    eyebrow:'預先註冊排名賽',subtitle:'讓你的偶像成為宇宙中最閃耀的星！',ctaLabel:'免費預約',
     searchPlaceholder:'搜尋我的粉絲團',searchNoResults:'未找到符合的粉絲團',
-    rewardLegendLabel:'名次獎勵',
+    rewardLegendLabel:'名次應援廣告',
     rankFirst:'第1名',rankSecond:'第2名',rankThird:'第3名',rankFourthToTenth:'第4~10名',
     currentRankLabel:'目前排名',
     daysLeft:(n) => `還剩${n}天結束`,hoursLeft:(n) => `還剩${n}小時結束`,eventEndedLabel:'活動已結束',
+    startsInDays:(n) => `距開始還有${n}天`,startsInHours:(n) => `距開始還有${n}小時`,
+    upcomingNotice:'現在預先登記會立即生效，但本次排行榜活動只計入活動開始後的登記記錄。',
+    launchLabel:'正式上線日期',
     navShortcut:'排名賽',myFandomRankLabel:'我的粉絲團排名',
     inviteToClimbLine:'邀請朋友一起拉高排名吧！',
     rankingHiddenMessage:'參與人數尚未達到公開門檻，排名暫未公開。快邀請朋友一起解鎖排名吧！',verifyingLabel:'結果核實中',
     neededForNext:(n) => `距離上一名還差${n}人`,
     termsToggleLabel:'使用條款與獎勵說明',
-    termsItems:['預先登記後完成信箱驗證的紀錄才會計入排名。','只統計已關聯註冊藝人、且未被判定為違規而排除的紀錄。','人數相同時，先達到該人數的一方排名較高。','結果一旦確定，之後無論發生什麼變化，排名都不會再改變。'],
+    termsItems:['預先登記後完成信箱驗證的紀錄才會計入排名。','只統計已關聯註冊藝人、且未被判定為違規而排除的紀錄。','人數相同時，先達到該人數的一方排名較高。','結果一旦確定，之後無論發生什麼變化，排名都不會再改變。','名次應援廣告並非現金支付，而是正式上線後透過App內活動執行的真實應援廣告費用。','本活動由FANUZU主辦，並非參與藝人或所屬公司官方主辦的活動。'],
     termsVerifyGrace:(h) => `活動結束後 ${h} 小時內完成信箱驗證的紀錄仍會計入。`,
   },
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
@@ -708,7 +730,7 @@ zhHant: {
   errors:{invalidEmail:'請輸入有效的電子郵件地址。',emailAlreadyRegistered:'此電子郵件已完成預先登記。',invalidReferral:'找不到這組 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'請勾選必選同意項目。',rateLimit:'操作過於頻繁，請稍後再試。',serverError:'發生錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
 },
 id: {
-  nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup'},
+  nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup',appDownloadCta:'Unduh aplikasi'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat bintang kita',t2:'bersinar paling terang',t3:'di alam semesta fandom.',
     d1:'Jalan, streaming, tonton, ikut serta. Setiap aksi fan jadi POP, yang membantu planet fandom kita tumbuh.',
     d2:'FANUZU adalah platform fandom K-POP yang mengubah aksi fan yang terpisah menjadi kekuatan kolektif.',
@@ -791,18 +813,21 @@ id: {
     btnPassport:'Pratinjau FANUZU PASSPORT-ku',copiedLabel:'Tersalin',
     shareMessage:'Bawa fandom-mu ke FANUZU. Pakai kode undanganku {code} → {url}'},
   rankingSection:{
-    eyebrow:'Event ranking pra-pendaftaran',subtitle:'Gunakan kekuatan fandom untuk memberi iklan sungguhan ke artismu.',ctaLabel:'Ikuti ranking',
+    eyebrow:'Event ranking pra-pendaftaran',subtitle:'Gunakan kekuatan fandom untuk memberi iklan sungguhan ke artismu.',ctaLabel:'Pra-daftar gratis',
     searchPlaceholder:'Cari fandommu',searchNoResults:'Fandom tidak ditemukan',
-    rewardLegendLabel:'Hadiah per peringkat',
+    rewardLegendLabel:'Dukungan iklan per peringkat',
     rankFirst:'Peringkat 1',rankSecond:'Peringkat 2',rankThird:'Peringkat 3',rankFourthToTenth:'Peringkat 4–10',
     currentRankLabel:'Peringkat saat ini',
     daysLeft:(n) => `${n} hari lagi`,hoursLeft:(n) => `${n} jam lagi`,eventEndedLabel:'Event telah berakhir',
+    startsInDays:(n) => `Dimulai dalam ${n} hari`,startsInHours:(n) => `Dimulai dalam ${n} jam`,
+    upcomingNotice:'Pre-registrasi sekarang langsung tercatat, tapi ranking event ini hanya menghitung pendaftaran setelah event dimulai.',
+    launchLabel:'Tanggal peluncuran resmi',
     navShortcut:'Ranking',myFandomRankLabel:'Peringkat fandommu',
     inviteToClimbLine:'Ajak teman untuk naik peringkat bersama!',
     rankingHiddenMessage:'Ranking masih privat sampai cukup banyak fans bergabung. Ajak teman untuk membukanya!',verifyingLabel:'Memverifikasi hasil',
     neededForNext:(n) => `${n} lagi untuk naik peringkat`,
     termsToggleLabel:'Syarat & info hadiah',
-    termsItems:['Hanya pre-registrasi dengan email terverifikasi yang dihitung dalam ranking.','Hanya entri yang terhubung ke artis terdaftar, dan tidak dikecualikan karena kecurangan, yang dihitung.','Jika jumlahnya sama, yang lebih dulu mencapai jumlah itu mendapat peringkat lebih tinggi.','Setelah hasil difinalisasi, ranking tidak akan berubah lagi apa pun yang terjadi setelahnya.'],
+    termsItems:['Hanya pre-registrasi dengan email terverifikasi yang dihitung dalam ranking.','Hanya entri yang terhubung ke artis terdaftar, dan tidak dikecualikan karena kecurangan, yang dihitung.','Jika jumlahnya sama, yang lebih dulu mencapai jumlah itu mendapat peringkat lebih tinggi.','Setelah hasil difinalisasi, ranking tidak akan berubah lagi apa pun yang terjadi setelahnya.','Dukungan iklan per peringkat bukan pembayaran tunai — ini mendanai kampanye iklan dukungan nyata yang dijalankan di dalam app setelah peluncuran.','Event ini diselenggarakan oleh FANUZU dan bukan acara resmi dari artis peserta atau agensi mereka.'],
     termsVerifyGrace:(h) => `Verifikasi email yang selesai dalam ${h} jam setelah event berakhir tetap dihitung.`,
   },
   footer:{privacy:'Kebijakan Privasi',terms:'Syarat Layanan',tagline:'Waktu fan, diubah jadi kontribusi. FANUZU',
@@ -812,7 +837,7 @@ id: {
   errors:{invalidEmail:'Masukkan alamat email yang valid.',emailAlreadyRegistered:'Email ini sudah pra-terdaftar.',invalidReferral:'Kami tidak menemukan kode undangan itu.',selfReferralNotAllowed:'Kamu tidak bisa memakai kode undanganmu sendiri.',requiredConsent:'Mohon setujui syarat yang wajib.',rateLimit:'Terlalu banyak percobaan. Silakan coba lagi sebentar.',serverError:'Terjadi kesalahan. Silakan coba lagi sebentar.',networkError:'Periksa koneksi internetmu.'}
 },
 fil: {
-  nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara'},
+  nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara',appDownloadCta:'I-download ang app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang bituin natin',t3:'sa fandom universe.',
     d1:'Maglakad, mag-stream, manood, lumahok. Bawat kilos ng fan ay nagiging POP, na tumutulong sa paglaki ng planeta ng ating fandom.',
     d2:'Ang FANUZU ay isang K-POP fandom platform na ginagawang collective power ang magkakahiwalay na kilos ng mga fan.',
@@ -895,18 +920,21 @@ fil: {
     btnPassport:'I-preview ang FANUZU PASSPORT ko',copiedLabel:'Nakopya',
     shareMessage:'Dalhin ang fandom mo sa FANUZU. Gamitin ang invite code ko {code} → {url}'},
   rankingSection:{
-    eyebrow:'Ranking event ng pre-registration',subtitle:'Gamitin ang lakas ng fandom mo para bigyan ang artist mo ng tunay na ad support.',ctaLabel:'Sumali sa ranking',
+    eyebrow:'Ranking event ng pre-registration',subtitle:'Gamitin ang lakas ng fandom mo para bigyan ang artist mo ng tunay na ad support.',ctaLabel:'Mag-pre-register nang libre',
     searchPlaceholder:'Hanapin ang fandom mo',searchNoResults:'Walang nahanap na fandom',
-    rewardLegendLabel:'Reward kada ranggo',
+    rewardLegendLabel:'Ad support kada ranggo',
     rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
     currentRankLabel:'Kasalukuyang ranggo',
     daysLeft:(n) => `${n} (na) araw na lang`,hoursLeft:(n) => `${n} (na) oras na lang`,eventEndedLabel:'Tapos na ang event',
+    startsInDays:(n) => `${n} (na) araw bago magsimula`,startsInHours:(n) => `${n} (na) oras bago magsimula`,
+    upcomingNotice:'Agad na masa-save ang pre-registration mo ngayon, pero ang ranking event na ito ay bibilangin lang ang mga nagparehistro matapos magsimula ang event.',
+    launchLabel:'Opisyal na petsa ng paglulunsad',
     navShortcut:'Ranking',myFandomRankLabel:'Ranggo ng fandom mo',
     inviteToClimbLine:'Mag-imbita ng mga kaibigan para sama-sama kayong umakyat sa ranggo!',
     rankingHiddenMessage:'Private pa rin ang ranking hanggang sapat na ang dami ng fans na sumali. Mag-imbita ng kaibigan para ma-unlock ito!',verifyingLabel:'Vine-verify ang resulta',
     neededForNext:(n) => `${n} na lang para umakyat ng ranggo`,
     termsToggleLabel:'Mga tuntunin at detalye ng reward',
-    termsItems:['Tanging pre-registration na may verified email lang ang kasama sa ranking.','Tanging entry na naka-link sa rehistradong artist, at hindi na-exclude dahil sa fraud, ang bibilangin.','Kapag magkapareho ang bilang, ang unang umabot sa bilang na iyon ang mas mataas ang ranggo.','Kapag na-finalize na ang resulta, hindi na ito magbabago kahit anong mangyari pa.'],
+    termsItems:['Tanging pre-registration na may verified email lang ang kasama sa ranking.','Tanging entry na naka-link sa rehistradong artist, at hindi na-exclude dahil sa fraud, ang bibilangin.','Kapag magkapareho ang bilang, ang unang umabot sa bilang na iyon ang mas mataas ang ranggo.','Kapag na-finalize na ang resulta, hindi na ito magbabago kahit anong mangyari pa.','Ang ad support kada ranggo ay hindi cash payment — ginagamit ito para pondohan ang tunay na support-ad campaign na ipapatupad sa loob ng app pagkatapos ng paglulunsad.','Ang event na ito ay inooganisa ng FANUZU at hindi opisyal na event ng mga kasaling artist o ng kanilang ahensya.'],
     termsVerifyGrace:(h) => `Ang pag-verify ng email sa loob ng ${h} oras pagkatapos matapos ang event ay kasama pa rin.`,
   },
   footer:{privacy:'Patakaran sa Privacy',terms:'Mga Tuntunin ng Serbisyo',tagline:'Oras ng fan, ginawang kontribusyon. FANUZU',
@@ -916,7 +944,7 @@ fil: {
   errors:{invalidEmail:'Maglagay ng valid na email address.',emailAlreadyRegistered:'Pre-registered na ang email na ito.',invalidReferral:'Hindi namin nahanap ang invite code na iyon.',selfReferralNotAllowed:'Hindi mo magagamit ang sarili mong invite code.',requiredConsent:'Pakitanggap ang mga kinakailangang terms.',rateLimit:'Sobrang dami ng pagsubok. Pakisubukang muli sandali.',serverError:'May nagkamali. Pakisubukang muli sandali.',networkError:'Siguraduhing may internet connection ka.'}
 },
 th: {
-  nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด'},
+  nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด',appDownloadCta:'ดาวน์โหลดแอป'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ทำให้ดาวของเรา',t2:'สว่างที่สุด',t3:'ในจักรวาลแฟนด้อม',
     d1:'เดิน ฟัง ดู มีส่วนร่วม ทุกการกระทำของแฟนกลายเป็น POP ที่ช่วยให้ดาวเคราะห์แฟนด้อมของเราเติบโต',
     d2:'FANUZU คือแพลตฟอร์มแฟนด้อม K-POP ที่เปลี่ยนการกระทำของแฟนที่กระจัดกระจายให้กลายเป็นพลังรวมหมู่',
@@ -999,18 +1027,21 @@ th: {
     btnPassport:'ดูตัวอย่าง FANUZU PASSPORT ของฉัน',copiedLabel:'คัดลอกแล้ว',
     shareMessage:'พาแฟนด้อมของคุณมาที่ FANUZU ใช้รหัสเชิญของฉัน {code} → {url}'},
   rankingSection:{
-    eyebrow:'กิจกรรมจัดอันดับการลงทะเบียนล่วงหน้า',subtitle:'ใช้พลังของแฟนด้อมมอบโฆษณาจริงให้ศิลปินของคุณ',ctaLabel:'เข้าร่วมการจัดอันดับ',
+    eyebrow:'กิจกรรมจัดอันดับการลงทะเบียนล่วงหน้า',subtitle:'ใช้พลังของแฟนด้อมมอบโฆษณาจริงให้ศิลปินของคุณ',ctaLabel:'ลงทะเบียนล่วงหน้าฟรี',
     searchPlaceholder:'ค้นหาแฟนด้อมของคุณ',searchNoResults:'ไม่พบแฟนด้อมที่ตรงกัน',
-    rewardLegendLabel:'รางวัลตามอันดับ',
+    rewardLegendLabel:'การสนับสนุนโฆษณาตามอันดับ',
     rankFirst:'อันดับ 1',rankSecond:'อันดับ 2',rankThird:'อันดับ 3',rankFourthToTenth:'อันดับ 4-10',
     currentRankLabel:'อันดับปัจจุบัน',
     daysLeft:(n) => `เหลืออีก ${n} วัน`,hoursLeft:(n) => `เหลืออีก ${n} ชั่วโมง`,eventEndedLabel:'กิจกรรมสิ้นสุดแล้ว',
+    startsInDays:(n) => `อีก ${n} วันจะเริ่ม`,startsInHours:(n) => `อีก ${n} ชั่วโมงจะเริ่ม`,
+    upcomingNotice:'การลงทะเบียนล่วงหน้าตอนนี้จะถูกบันทึกทันที แต่การจัดอันดับครั้งนี้จะนับเฉพาะผู้ที่ลงทะเบียนหลังกิจกรรมเริ่มเท่านั้น',
+    launchLabel:'วันเปิดตัวอย่างเป็นทางการ',
     navShortcut:'การจัดอันดับ',myFandomRankLabel:'อันดับแฟนด้อมของคุณ',
     inviteToClimbLine:'ชวนเพื่อนมาช่วยกันไต่อันดับ!',
     rankingHiddenMessage:'การจัดอันดับยังเป็นส่วนตัวจนกว่าจะมีแฟนเข้าร่วมมากพอ ชวนเพื่อนมาช่วยปลดล็อกกันเถอะ!',verifyingLabel:'กำลังตรวจสอบผล',
     neededForNext:(n) => `อีก ${n} คนถึงจะขยับอันดับ`,
     termsToggleLabel:'เงื่อนไขการใช้งานและรายละเอียดรางวัล',
-    termsItems:['เฉพาะการลงทะเบียนล่วงหน้าที่ยืนยันอีเมลแล้วเท่านั้นที่นับรวมในการจัดอันดับ','นับเฉพาะรายการที่เชื่อมโยงกับศิลปินที่ลงทะเบียนไว้ และไม่ถูกคัดออกเพราะทุจริต','หากจำนวนเท่ากัน ฝ่ายที่ถึงจำนวนนั้นก่อนจะได้อันดับสูงกว่า','เมื่อผลลัพธ์ถูกยืนยันแล้ว อันดับจะไม่เปลี่ยนแปลงอีกไม่ว่าจะเกิดอะไรขึ้นภายหลัง'],
+    termsItems:['เฉพาะการลงทะเบียนล่วงหน้าที่ยืนยันอีเมลแล้วเท่านั้นที่นับรวมในการจัดอันดับ','นับเฉพาะรายการที่เชื่อมโยงกับศิลปินที่ลงทะเบียนไว้ และไม่ถูกคัดออกเพราะทุจริต','หากจำนวนเท่ากัน ฝ่ายที่ถึงจำนวนนั้นก่อนจะได้อันดับสูงกว่า','เมื่อผลลัพธ์ถูกยืนยันแล้ว อันดับจะไม่เปลี่ยนแปลงอีกไม่ว่าจะเกิดอะไรขึ้นภายหลัง','เงินสนับสนุนตามอันดับไม่ใช่การจ่ายเงินสด แต่เป็นค่าใช้จ่ายสำหรับแคมเปญโฆษณาสนับสนุนจริงที่ดำเนินการในแอปหลังเปิดตัวอย่างเป็นทางการ','กิจกรรมนี้จัดโดย FANUZU และไม่ใช่กิจกรรมที่จัดอย่างเป็นทางการโดยศิลปินที่เข้าร่วมหรือต้นสังกัด'],
     termsVerifyGrace:(h) => `การยืนยันอีเมลที่เสร็จสิ้นภายใน ${h} ชั่วโมงหลังกิจกรรมสิ้นสุดยังคงนับรวม`,
   },
   footer:{privacy:'นโยบายความเป็นส่วนตัว',terms:'ข้อกำหนดการใช้บริการ',tagline:'เวลาของแฟน เปลี่ยนเป็นการสนับสนุน FANUZU',

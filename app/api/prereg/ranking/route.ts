@@ -15,6 +15,16 @@ export const runtime = 'nodejs';
 // during the build.
 export const dynamic = 'force-dynamic';
 
+// `Number(x) || fallback` would silently treat a deliberately-set "0" the
+// same as "unset" — matters here too, since an event with no participation
+// floor at all (RANKING_MIN_PARTICIPANTS=0) must not quietly become 100.
+function envNumber(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
 // A leaderboard with a handful of names on it reads as "nobody's here yet"
 // rather than exciting, so the ranked LIST stays hidden until total
 // participation clears this bar — env-overridable so it can be tuned
@@ -23,7 +33,7 @@ export const dynamic = 'force-dynamic';
 // CTA (see rankingVisible below) — and it never applies to a finalized
 // event, since publishing a frozen result is already an explicit admin
 // action.
-const MIN_PARTICIPANTS_FOR_RANKING = Number(process.env.RANKING_MIN_PARTICIPANTS) || 100;
+const MIN_PARTICIPANTS_FOR_RANKING = envNumber('RANKING_MIN_PARTICIPANTS', 100);
 
 function totalCount(rows: { count: number }[]): number {
   return rows.reduce((sum, r) => sum + r.count, 0);
@@ -31,6 +41,7 @@ function totalCount(rows: { count: number }[]): number {
 
 export interface PublicRankingEvent {
   name: string;
+  startAt: string | null;
   endAt: string | null;
   rewardFirst: number;
   rewardSecond: number;
@@ -42,11 +53,14 @@ export interface PublicRankingEvent {
   emailVerifyGraceHours: number;
 }
 
-// Three states the public UI distinguishes (review item 4): 'active' is a
-// normal in-progress countdown; 'ended_pending' is "end_at has passed but
-// an admin hasn't finalized yet" — standings are still live/last-known, not
-// yet the official frozen result; 'finalized' is the permanent snapshot.
-export type RankingEventState = 'active' | 'ended_pending' | 'finalized';
+// Four states the public UI distinguishes: 'upcoming' is "admin has
+// announced it but start_at hasn't arrived yet" (GENESIS review section
+// 5.1's pre-promo window) — a start countdown instead of an end countdown,
+// and the ranking is never computed at all (nothing has started); 'active'
+// is a normal in-progress countdown; 'ended_pending' is "end_at has passed
+// but an admin hasn't finalized yet" — standings are still live/last-known,
+// not yet the official frozen result; 'finalized' is the permanent snapshot.
+export type RankingEventState = 'upcoming' | 'active' | 'ended_pending' | 'finalized';
 
 // Deliberately gated behind an env var (default off) rather than always
 // shown — see ArtistSelect.tsx's note on founder counts: an early, sparse
@@ -81,6 +95,7 @@ export async function GET() {
 
     const eventMeta: PublicRankingEvent = {
       name: event.name,
+      startAt: event.startAt,
       endAt: event.endAt,
       rewardFirst: event.rewardFirst,
       rewardSecond: event.rewardSecond,
@@ -106,10 +121,13 @@ export async function GET() {
       });
     }
 
-    // Active: respect this event's own visibility setting before showing
-    // anything — 'manual' means the admin decides, 'auto' means it goes
-    // live automatically at start_at. This is a separate, coarser switch
-    // from the participant minimum below: if the admin hasn't turned the
+    // Respect this event's own visibility setting before showing anything —
+    // 'manual' means the admin decides (and can turn it on well before
+    // start_at, for a pre-promo window — GENESIS review section 5.1), 'auto'
+    // means it goes live automatically at start_at (so 'auto' mode never
+    // surfaces the 'upcoming' state below; it simply isn't visible at all
+    // until it's already started). This is a separate, coarser switch from
+    // the participant minimum further down: if the admin hasn't turned the
     // event on at all, nothing about it — not even the intro — is shown.
     const visible =
       event.visibilityMode === 'manual'
@@ -119,8 +137,22 @@ export async function GET() {
       return NextResponse.json({ enabled: false });
     }
 
+    const now = new Date();
     const eventState: RankingEventState =
-      event.endAt && new Date() >= new Date(event.endAt) ? 'ended_pending' : 'active';
+      event.startAt && now < new Date(event.startAt)
+        ? 'upcoming'
+        : event.endAt && now >= new Date(event.endAt)
+        ? 'ended_pending'
+        : 'active';
+
+    // Upcoming: start_at hasn't arrived, so there is nothing to count yet —
+    // skip the standings query entirely rather than compute a ranking that
+    // (with include_existing_registrants off, as GENESIS-style events use)
+    // would just be an empty/zero board anyway. The pre-promo screen is
+    // intro + rewards + a start countdown, never a ranking.
+    if (eventState === 'upcoming') {
+      return NextResponse.json({ enabled: true, event: eventMeta, eventState, rankingVisible: false });
+    }
 
     const counts = await getRankingStandingsForEvent(event);
     const rankingVisible = totalCount(counts) >= MIN_PARTICIPANTS_FOR_RANKING;

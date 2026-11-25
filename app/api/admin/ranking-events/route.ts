@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createRankingEvent, listRankingEvents, type VisibilityMode } from '@/lib/ranking-events';
 import { checkAdminAuth } from '@/lib/admin-auth';
+import { parseAdminDateAsKst } from '@/lib/kst';
 
 export const runtime = 'nodejs';
 
@@ -20,12 +21,6 @@ export async function GET(request: Request) {
     console.error('admin ranking-events query failed:', err);
     return NextResponse.json({ error: 'server_error' }, { status: 500 });
   }
-}
-
-function parseDateOrNull(value: unknown): string | null {
-  if (typeof value !== 'string' || !value.trim()) return null;
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? null : d.toISOString();
 }
 
 function parseRewardInt(value: unknown): number {
@@ -58,8 +53,8 @@ export async function POST(request: Request) {
   try {
     const event = await createRankingEvent({
       name,
-      startAt: parseDateOrNull(body.startAt),
-      endAt: parseDateOrNull(body.endAt),
+      startAt: parseAdminDateAsKst(body.startAt),
+      endAt: parseAdminDateAsKst(body.endAt),
       visibilityMode,
       isVisible: false,
       includeExistingRegistrants: body.includeExistingRegistrants !== false,

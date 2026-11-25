@@ -6,6 +6,18 @@ import { ensureSchema, getPool } from './db';
 export type RankingEventStatus = 'draft' | 'active' | 'finalized';
 export type VisibilityMode = 'manual' | 'auto';
 
+// `Number(x) || fallback` would silently treat a deliberately-set "0" the
+// same as "unset", which matters a lot here: GENESIS-style events want
+// EXACTLY 0 grace (no late verifications count at all — review section
+// 6.1), and that must not quietly become 48. Only a genuinely missing/
+// non-numeric env var falls back to the default.
+function envNumber(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
 // 2nd-round review item 3: a fan who registered before the event closed but
 // hasn't yet clicked their confirmation email's verify link shouldn't be
 // silently cut out the moment end_at passes — but a verification arriving
@@ -13,8 +25,9 @@ export type VisibilityMode = 'manual' | 'auto';
 // change a result either. Both the live standing and the final snapshot
 // apply the same cutoff: a registration only counts if it was also verified
 // by end_at plus this grace window. Env-overridable, same pattern as
-// RANKING_MIN_PARTICIPANTS, so it can be tuned without a code change.
-export const EMAIL_VERIFY_GRACE_HOURS = Number(process.env.RANKING_EMAIL_VERIFY_GRACE_HOURS) || 48;
+// RANKING_MIN_PARTICIPANTS, so it can be tuned without a code change — set
+// it to 0 for an event whose policy allows no grace period at all.
+export const EMAIL_VERIFY_GRACE_HOURS = envNumber('RANKING_EMAIL_VERIFY_GRACE_HOURS', 48);
 
 export interface RankingEvent {
   id: number;
@@ -96,6 +109,13 @@ export async function listRankingEvents(): Promise<RankingEvent[]> {
   return rows.map(mapRow);
 }
 
+export async function getRankingEventById(id: number): Promise<RankingEvent | null> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<RankingEventRow>('SELECT * FROM ranking_events WHERE id = $1', [id]);
+  return rows[0] ? mapRow(rows[0]) : null;
+}
+
 export async function createRankingEvent(input: RankingEventInput): Promise<RankingEvent> {
   await ensureSchema();
   const pool = getPool();
@@ -151,19 +171,59 @@ const LOCKED_AFTER_DRAFT: (keyof RankingEventUpdateInput)[] = [
   'includeExistingRegistrants',
 ];
 
+export interface RankingEventAuditEntry {
+  id: number;
+  changedFields: Record<string, unknown>;
+  reason: string;
+  createdAt: string;
+}
+
+// Admin-only, for an event's "unavoidable change" history (see
+// updateRankingEvent's overrideReason) — every row is permanent, nothing
+// here is ever edited or deleted.
+export async function getRankingEventAuditLog(id: number): Promise<RankingEventAuditEntry[]> {
+  await ensureSchema();
+  const pool = getPool();
+  const { rows } = await pool.query<{ id: number; changed_fields: Record<string, unknown>; reason: string; created_at: string }>(
+    'SELECT id, changed_fields, reason, created_at FROM ranking_event_audit_log WHERE ranking_event_id = $1 ORDER BY created_at DESC',
+    [id]
+  );
+  return rows.map((r) => ({ id: r.id, changedFields: r.changed_fields, reason: r.reason, createdAt: r.created_at }));
+}
+
 // Admin-only: an event already 'finalized' can't be edited back — the whole
 // point of finalizing is that it's done moving. Once an event has left
 // 'draft' at all (i.e. it's 'active'), its core terms are additionally
-// locked (see CoreFieldsLockedError) even though the row itself isn't
-// finalized yet.
-export async function updateRankingEvent(id: number, input: RankingEventUpdateInput): Promise<RankingEvent | null> {
+// locked (see CoreFieldsLockedError) — unless `overrideReason` is a
+// non-empty string, in which case the lock is bypassed and the change is
+// permanently recorded in ranking_event_audit_log (GENESIS review section
+// 4: "불가피한 변경이 필요한 경우 변경 사유 및 이력을 기록"). No reason, no
+// override — the lock stays a real lock for everything else.
+export async function updateRankingEvent(
+  id: number,
+  input: RankingEventUpdateInput,
+  overrideReason?: string
+): Promise<RankingEvent | null> {
   await ensureSchema();
   const pool = getPool();
 
-  if (LOCKED_AFTER_DRAFT.some((key) => input[key] !== undefined)) {
-    const { rows } = await pool.query<{ status: RankingEventStatus }>('SELECT status FROM ranking_events WHERE id = $1', [id]);
-    if (rows[0] && rows[0].status !== 'draft') {
-      throw new CoreFieldsLockedError();
+  const touchesLockedFields = LOCKED_AFTER_DRAFT.some((key) => input[key] !== undefined);
+  let auditEntry: { changedFields: Record<string, unknown>; reason: string } | null = null;
+  if (touchesLockedFields) {
+    const { rows } = await pool.query<RankingEventRow>('SELECT * FROM ranking_events WHERE id = $1', [id]);
+    const current = rows[0];
+    if (current && current.status !== 'draft') {
+      if (!overrideReason || !overrideReason.trim()) {
+        throw new CoreFieldsLockedError();
+      }
+      const currentMapped = mapRow(current) as unknown as Record<string, unknown>;
+      const changedFields: Record<string, unknown> = {};
+      for (const key of LOCKED_AFTER_DRAFT) {
+        if (input[key] !== undefined) {
+          changedFields[key] = { from: currentMapped[key], to: input[key] };
+        }
+      }
+      auditEntry = { changedFields, reason: overrideReason.trim() };
     }
   }
 
@@ -200,6 +260,12 @@ export async function updateRankingEvent(id: number, input: RankingEventUpdateIn
     `UPDATE ranking_events SET ${fields.join(', ')} WHERE id = $${i} AND status != 'finalized' RETURNING *`,
     values
   );
+  if (rows[0] && auditEntry) {
+    await pool.query(
+      'INSERT INTO ranking_event_audit_log (ranking_event_id, changed_fields, reason) VALUES ($1,$2,$3)',
+      [id, JSON.stringify(auditEntry.changedFields), auditEntry.reason]
+    );
+  }
   return rows[0] ? mapRow(rows[0]) : null;
 }
 

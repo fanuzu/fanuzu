@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useEffect, useState } from 'react';
+import { formatKst } from '@/lib/kst';
 
 interface ArtistCount {
   artist: string;
@@ -117,6 +118,13 @@ interface RankingEvent {
   finalizedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+interface RankingEventAuditEntry {
+  id: number;
+  changedFields: Record<string, unknown>;
+  reason: string;
+  createdAt: string;
 }
 
 const STORAGE_KEY = 'fanuzu_admin_password';
@@ -320,12 +328,147 @@ function fmtKrw(n: number): string {
   return `${n.toLocaleString()}원`;
 }
 
+function RankingEventOverridePanel({ event, password, onUpdate }: { event: RankingEvent; password: string; onUpdate: (id: number, patch: Record<string, unknown>) => void }) {
+  const [open, setOpen] = useState(false);
+  const [rewardFirst, setRewardFirst] = useState(String(event.rewardFirst));
+  const [rewardSecond, setRewardSecond] = useState(String(event.rewardSecond));
+  const [rewardThird, setRewardThird] = useState(String(event.rewardThird));
+  const [rewardRest, setRewardRest] = useState(String(event.rewardFourthToTenth));
+  const [startAt, setStartAt] = useState('');
+  const [endAt, setEndAt] = useState('');
+  const [includeExisting, setIncludeExisting] = useState(event.includeExistingRegistrants);
+  const [reason, setReason] = useState('');
+  const [auditOpen, setAuditOpen] = useState(false);
+  const [auditEntries, setAuditEntries] = useState<RankingEventAuditEntry[] | null>(null);
+
+  async function loadAudit() {
+    try {
+      const res = await fetch(`/api/admin/ranking-events/${event.id}/audit-log`, { headers: { 'x-admin-password': password } });
+      if (res.ok) {
+        const data = await res.json();
+        setAuditEntries(data.entries ?? []);
+      }
+    } catch {}
+  }
+
+  function submit() {
+    if (!reason.trim()) return;
+    const patch: Record<string, unknown> = { overrideReason: reason.trim() };
+    if (rewardFirst !== String(event.rewardFirst)) patch.rewardFirst = Number(rewardFirst) || 0;
+    if (rewardSecond !== String(event.rewardSecond)) patch.rewardSecond = Number(rewardSecond) || 0;
+    if (rewardThird !== String(event.rewardThird)) patch.rewardThird = Number(rewardThird) || 0;
+    if (rewardRest !== String(event.rewardFourthToTenth)) patch.rewardFourthToTenth = Number(rewardRest) || 0;
+    if (startAt) patch.startAt = startAt;
+    if (endAt) patch.endAt = endAt;
+    if (includeExisting !== event.includeExistingRegistrants) patch.includeExistingRegistrants = includeExisting;
+    onUpdate(event.id, patch);
+    setReason('');
+    setStartAt('');
+    setEndAt('');
+  }
+
+  return (
+    <div style={{ marginTop: 10 }}>
+      <div style={{ display: 'flex', gap: 14 }}>
+        <button
+          onClick={() => setOpen((o) => !o)}
+          style={{ background: 'none', border: 'none', color: '#FF7DDD', fontSize: 11, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+        >
+          {open ? '핵심 조건 긴급 수정 닫기' : '핵심 조건 긴급 수정 (사유 필수)'}
+        </button>
+        <button
+          onClick={() => {
+            setAuditOpen((o) => !o);
+            if (!auditOpen && auditEntries === null) loadAudit();
+          }}
+          style={{ background: 'none', border: 'none', color: '#7CE8FF', fontSize: 11, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+        >
+          {auditOpen ? '변경 이력 닫기' : '변경 이력 보기'}
+        </button>
+      </div>
+
+      {open && (
+        <div style={{ marginTop: 10, padding: 12, background: 'rgba(255,125,221,.06)', border: '1px solid rgba(255,125,221,.25)', borderRadius: 10 }}>
+          <p style={{ fontSize: 11, color: '#FF7DDD', margin: '0 0 10px', lineHeight: 1.5 }}>
+            이벤트 진행 중 보상·기간·집계 기준 변경은 원래 막혀있습니다. 정말 불가피한 경우에만 사유를 적고 수정하세요 — 이 변경은 영구 기록됩니다.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))', gap: 8, marginBottom: 8 }}>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              1위 보상<input style={{ ...fieldStyle, marginTop: 2 }} value={rewardFirst} onChange={(e) => setRewardFirst(e.target.value)} />
+            </label>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              2위 보상<input style={{ ...fieldStyle, marginTop: 2 }} value={rewardSecond} onChange={(e) => setRewardSecond(e.target.value)} />
+            </label>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              3위 보상<input style={{ ...fieldStyle, marginTop: 2 }} value={rewardThird} onChange={(e) => setRewardThird(e.target.value)} />
+            </label>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              4~10위 보상<input style={{ ...fieldStyle, marginTop: 2 }} value={rewardRest} onChange={(e) => setRewardRest(e.target.value)} />
+            </label>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              시작일(KST)<input style={{ ...fieldStyle, marginTop: 2 }} type="datetime-local" value={startAt} onChange={(e) => setStartAt(e.target.value)} />
+            </label>
+            <label style={{ fontSize: 10.5, color: '#9089A0' }}>
+              종료일(KST)<input style={{ ...fieldStyle, marginTop: 2 }} type="datetime-local" value={endAt} onChange={(e) => setEndAt(e.target.value)} />
+            </label>
+          </div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9089A0', marginBottom: 8 }}>
+            <input type="checkbox" checked={includeExisting} onChange={(e) => setIncludeExisting(e.target.checked)} />
+            기존 사전등록자 포함
+          </label>
+          <label style={{ fontSize: 10.5, color: '#9089A0', display: 'block', marginBottom: 8 }}>
+            변경 사유 (필수)
+            <textarea
+              style={{ ...fieldStyle, marginTop: 2, width: '100%', minHeight: 50, resize: 'vertical' }}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="예: 광고주 협의로 4~10위 보상을 조정함"
+            />
+          </label>
+          <button
+            onClick={submit}
+            disabled={!reason.trim()}
+            style={{
+              background: reason.trim() ? '#FF7DDD' : 'rgba(255,255,255,.1)',
+              color: reason.trim() ? '#05030B' : '#6B6478',
+              fontWeight: 700,
+              fontSize: 11.5,
+              padding: '7px 14px',
+              border: 'none',
+              borderRadius: 8,
+              cursor: reason.trim() ? 'pointer' : 'not-allowed',
+            }}
+          >
+            사유와 함께 강제 수정
+          </button>
+        </div>
+      )}
+
+      {auditOpen && (
+        <div style={{ marginTop: 10, padding: 12, background: 'rgba(124,232,255,.05)', border: '1px solid rgba(124,232,255,.2)', borderRadius: 10, fontSize: 11, color: '#B8B0C8' }}>
+          {auditEntries === null && <p style={{ margin: 0 }}>불러오는 중···</p>}
+          {auditEntries?.length === 0 && <p style={{ margin: 0 }}>변경 이력이 없습니다.</p>}
+          {auditEntries?.map((e) => (
+            <div key={e.id} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+              <div style={{ color: '#7CE8FF', fontWeight: 600 }}>{new Date(e.createdAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST</div>
+              <div>사유: {e.reason}</div>
+              <div style={{ color: '#6B6478' }}>{JSON.stringify(e.changedFields)}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RankingEventRow({
   event,
+  password,
   onUpdate,
   onFinalize,
 }: {
   event: RankingEvent;
+  password: string;
   onUpdate: (id: number, patch: Record<string, unknown>) => void;
   onFinalize: (id: number, name: string) => void;
 }) {
@@ -402,16 +545,30 @@ function RankingEventRow({
               결과 확정
             </button>
           )}
+          {event.status === 'finalized' && (
+            <button
+              onClick={() => downloadCsv(`/api/admin/ranking-events/${event.id}/export`, password, `fanuzu-ranking-event-${event.id}-results.csv`)}
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(124,232,255,.3)',
+                color: '#7CE8FF',
+                fontSize: 11.5,
+                fontWeight: 600,
+                padding: '6px 12px',
+                borderRadius: 8,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              최종 결과 CSV
+            </button>
+          )}
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 8, fontSize: 12, color: '#9089A0' }}>
-        <div>
-          시작일 {event.startAt ? new Date(event.startAt).toLocaleString() : '미설정'}
-        </div>
-        <div>
-          종료일 {event.endAt ? new Date(event.endAt).toLocaleString() : '미설정'}
-        </div>
+        <div>시작일 {formatKst(event.startAt)}</div>
+        <div>종료일 {formatKst(event.endAt)}</div>
         <div>공개 방식 {event.visibilityMode === 'manual' ? '관리자 결정' : '시작일 자동 공개'}</div>
         <div>{event.includeExistingRegistrants ? '기존 사전등록자 포함' : '이벤트 시작 이후 등록자만'}</div>
       </div>
@@ -420,6 +577,7 @@ function RankingEventRow({
         {' '}
         {fmtKrw(event.rewardFourthToTenth)}
       </div>
+      {event.status !== 'finalized' && <RankingEventOverridePanel event={event} password={password} onUpdate={onUpdate} />}
     </div>
   );
 }
@@ -428,6 +586,7 @@ function RankingEventPanel({
   events,
   error,
   saving,
+  password,
   newEventName,
   setNewEventName,
   newEventStartAt,
@@ -453,6 +612,7 @@ function RankingEventPanel({
   events: RankingEvent[] | null;
   error: string;
   saving: boolean;
+  password: string;
   newEventName: string;
   setNewEventName: (v: string) => void;
   newEventStartAt: string;
@@ -498,7 +658,7 @@ function RankingEventPanel({
             />
           </label>
           <label style={{ fontSize: 11, color: '#9089A0' }}>
-            시작일 (선택)
+            시작일 (선택, KST 기준으로 입력)
             <input
               style={{ ...fieldStyle, marginTop: 4 }}
               type="datetime-local"
@@ -507,7 +667,7 @@ function RankingEventPanel({
             />
           </label>
           <label style={{ fontSize: 11, color: '#9089A0' }}>
-            종료일 (선택)
+            종료일 (선택, KST 기준으로 입력)
             <input
               style={{ ...fieldStyle, marginTop: 4 }}
               type="datetime-local"
@@ -601,7 +761,7 @@ function RankingEventPanel({
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {events?.map((ev) => (
-          <RankingEventRow key={ev.id} event={ev} onUpdate={onUpdate} onFinalize={onFinalize} />
+          <RankingEventRow key={ev.id} event={ev} password={password} onUpdate={onUpdate} onFinalize={onFinalize} />
         ))}
         {events?.length === 0 && <p style={{ color: '#6B6478', fontSize: 13 }}>아직 만들어진 랭킹전이 없습니다.</p>}
         {events === null && <p style={{ color: '#6B6478', fontSize: 13 }}>불러오는 중···</p>}
@@ -794,7 +954,12 @@ export default function AdminPage() {
         body: JSON.stringify(patch),
       });
       if (!res.ok) {
-        setRankingEventsError('랭킹전을 수정하지 못했습니다.');
+        const data = await res.json().catch(() => ({}));
+        setRankingEventsError(
+          data.error === 'core_fields_locked'
+            ? '진행 중인 이벤트의 핵심 조건은 "긴급 수정" 사유를 적어야 변경할 수 있습니다.'
+            : '랭킹전을 수정하지 못했습니다.'
+        );
         return;
       }
       loadRankingEvents(password);
@@ -1111,6 +1276,7 @@ export default function AdminPage() {
               events={rankingEvents}
               error={rankingEventsError}
               saving={rankingEventSaving}
+              password={password}
               newEventName={newEventName}
               setNewEventName={setNewEventName}
               newEventStartAt={newEventStartAt}

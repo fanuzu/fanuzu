@@ -11,6 +11,7 @@ interface RankingRow {
 
 interface RankingEventMeta {
   name: string;
+  startAt: string | null;
   endAt: string | null;
   rewardFirst: number;
   rewardSecond: number;
@@ -19,7 +20,7 @@ interface RankingEventMeta {
   emailVerifyGraceHours: number;
 }
 
-type RankingEventState = 'active' | 'ended_pending' | 'finalized';
+type RankingEventState = 'upcoming' | 'active' | 'ended_pending' | 'finalized';
 
 interface RankingApiResponse {
   enabled: boolean;
@@ -41,8 +42,27 @@ function krw(n: number): string {
   return `₩${n.toLocaleString()}`;
 }
 
+// Site-wide, not per-event — the official FANUZU app launch date, shown
+// alongside the ranking event's own dates so a fan knows when the app
+// itself (not just this event) is coming (GENESIS review section 5.1/5.3).
+// A plain env var rather than a ranking_events column, since it's true
+// regardless of which ranking event is currently configured.
+const APP_LAUNCH_DATE = process.env.NEXT_PUBLIC_APP_LAUNCH_DATE || '';
+
+const INTL_LOCALE: Record<string, string> = {
+  ko: 'ko-KR',
+  en: 'en-US',
+  ja: 'ja-JP',
+  es: 'es-ES',
+  zhHans: 'zh-CN',
+  zhHant: 'zh-TW',
+  id: 'id-ID',
+  fil: 'fil-PH',
+  th: 'th-TH',
+};
+
 export default function RankingSection() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const { openModal } = usePreregModal();
   const [data, setData] = useState<RankingApiResponse | null>(null);
   const [query, setQuery] = useState('');
@@ -91,6 +111,12 @@ export default function RankingSection() {
   } else if (eventState === 'ended_pending') {
     timeLabel = tr.rankingSection.verifyingLabel;
     timeLabelMuted = true;
+  } else if (eventState === 'upcoming' && event?.startAt) {
+    const diffMs = new Date(event.startAt).getTime() - now;
+    if (diffMs > 0) {
+      const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+      timeLabel = hours >= 24 ? tr.rankingSection.startsInDays(Math.ceil(hours / 24)) : tr.rankingSection.startsInHours(hours);
+    }
   } else if (eventState === 'active' && event?.endAt) {
     const diffMs = new Date(event.endAt).getTime() - now;
     if (diffMs <= 0) {
@@ -140,6 +166,16 @@ export default function RankingSection() {
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
           {timeLabel && (
             <div style={{ fontSize: 13, fontWeight: 700, color: timeLabelMuted ? '#9089A0' : '#7CE8FF' }}>{timeLabel}</div>
+          )}
+          {APP_LAUNCH_DATE && (
+            <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 6 }}>
+              {tr.rankingSection.launchLabel}{' '}
+              {new Date(APP_LAUNCH_DATE).toLocaleDateString(INTL_LOCALE[lang] ?? 'en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </div>
           )}
         </div>
 
@@ -258,7 +294,7 @@ export default function RankingSection() {
           </>
         ) : (
           <p style={{ color: '#9089A0', fontSize: 13.5, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
-            {tr.rankingSection.rankingHiddenMessage}
+            {eventState === 'upcoming' ? tr.rankingSection.upcomingNotice : tr.rankingSection.rankingHiddenMessage}
           </p>
         )}
 

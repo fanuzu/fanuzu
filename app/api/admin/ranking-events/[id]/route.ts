@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { updateRankingEvent, CoreFieldsLockedError, type RankingEventUpdateInput, type VisibilityMode } from '@/lib/ranking-events';
 import { checkAdminAuth } from '@/lib/admin-auth';
+import { parseAdminDateAsKst } from '@/lib/kst';
 
 export const runtime = 'nodejs';
 
@@ -8,8 +9,7 @@ function parseDateOrNull(value: unknown): string | null | undefined {
   if (value === undefined) return undefined;
   if (value === null || (typeof value === 'string' && !value.trim())) return null;
   if (typeof value !== 'string') return undefined;
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? undefined : d.toISOString();
+  return parseAdminDateAsKst(value) ?? undefined;
 }
 
 function parseRewardInt(value: unknown): number | undefined {
@@ -62,8 +62,10 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   if (rewardFourthToTenth !== undefined) input.rewardFourthToTenth = rewardFourthToTenth;
   if (body.status === 'draft' || body.status === 'active') input.status = body.status;
 
+  const overrideReason = typeof body.overrideReason === 'string' ? body.overrideReason : undefined;
+
   try {
-    const event = await updateRankingEvent(id, input);
+    const event = await updateRankingEvent(id, input, overrideReason);
     if (!event) {
       return NextResponse.json({ error: 'not_found_or_finalized' }, { status: 404 });
     }
