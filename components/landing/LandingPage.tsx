@@ -30,7 +30,7 @@ import AppLevelCta from './AppLevelCta';
 import SantaSleigh from './SantaSleigh';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
-export default function LandingPage() {
+export default function LandingPage({ rankingFirst = false }: { rankingFirst?: boolean }) {
   // Browsers restore the prior scroll position on reload by default
   // (history.scrollRestoration === 'auto'), which drops a visitor back
   // wherever they'd scrolled to instead of the top. Opting into 'manual'
@@ -56,8 +56,12 @@ export default function LandingPage() {
                 <ParticleLayer />
                 <SnowFall />
                 <Nav />
+                {/* Ad traffic landing on /ranking (see app/ranking/page.tsx) sees
+                    the event's benefits/CTA as the very first screen, ahead of
+                    Hero — organic homepage traffic keeps the usual order. */}
+                {rankingFirst && <RankingSection />}
                 <Hero />
-                <RankingSection />
+                {!rankingFirst && <RankingSection />}
                 <Experience />
                 <Campaign />
                 <Passport />

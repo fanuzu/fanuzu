@@ -142,6 +142,49 @@ export default function RankingSection() {
           )}
         </div>
 
+        {/* Rewards + CTA sit right after the intro, ahead of the searchable
+            list below — so an ad click landing straight on this section
+            (see app/ranking/page.tsx) sees the benefit and the free
+            participate button without having to scroll past the board. */}
+        {event && (
+          <div
+            style={{
+              background: 'rgba(255,255,255,.03)',
+              border: '1px solid rgba(255,255,255,.08)',
+              borderRadius: 14,
+              padding: '16px 20px',
+              marginBottom: 20,
+              fontSize: 12.5,
+              color: '#B8AFC4',
+            }}
+          >
+            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 8 }}>{tr.rankingSection.rewardLegendLabel}</div>
+            <div>
+              {tr.rankingSection.rankFirst} {krw(event.rewardFirst)} · {tr.rankingSection.rankSecond} {krw(event.rewardSecond)} ·{' '}
+              {tr.rankingSection.rankThird} {krw(event.rewardThird)} · {tr.rankingSection.rankFourthToTenth} {krw(event.rewardFourthToTenth)}
+            </div>
+          </div>
+        )}
+
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <button
+            onClick={openModal}
+            style={{
+              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
+              color: '#05030B',
+              fontWeight: 700,
+              fontSize: 15,
+              padding: '14px 32px',
+              borderRadius: 999,
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            {tr.rankingSection.ctaLabel}
+          </button>
+        </div>
+
         {rankingVisible && ranking ? (
           <>
             <input
@@ -217,45 +260,6 @@ export default function RankingSection() {
             {tr.rankingSection.rankingHiddenMessage}
           </p>
         )}
-
-        {event && (
-          <div
-            style={{
-              background: 'rgba(255,255,255,.03)',
-              border: '1px solid rgba(255,255,255,.08)',
-              borderRadius: 14,
-              padding: '16px 20px',
-              marginBottom: 24,
-              fontSize: 12.5,
-              color: '#B8AFC4',
-            }}
-          >
-            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 8 }}>{tr.rankingSection.rewardLegendLabel}</div>
-            <div>
-              {tr.rankingSection.rankFirst} {krw(event.rewardFirst)} · {tr.rankingSection.rankSecond} {krw(event.rewardSecond)} ·{' '}
-              {tr.rankingSection.rankThird} {krw(event.rewardThird)} · {tr.rankingSection.rankFourthToTenth} {krw(event.rewardFourthToTenth)}
-            </div>
-          </div>
-        )}
-
-        <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={openModal}
-            style={{
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-              color: '#05030B',
-              fontWeight: 700,
-              fontSize: 15,
-              padding: '14px 32px',
-              borderRadius: 999,
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-            }}
-          >
-            {tr.rankingSection.ctaLabel}
-          </button>
-        </div>
       </div>
     </section>
   );
