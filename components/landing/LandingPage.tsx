@@ -24,6 +24,7 @@ import Footer from './Footer';
 import PreregModal from './PreregModal';
 import AttributionTracker from './AttributionTracker';
 import AdConversionTracker from './AdConversionTracker';
+import MetaPageViewTracker from './MetaPageViewTracker';
 import EmailVerifiedNotice from './EmailVerifiedNotice';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
@@ -53,6 +54,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
               <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
                 <AttributionTracker suppressAutoOpen={rankingFirst} />
                 <AdConversionTracker />
+                <MetaPageViewTracker />
                 <EmailVerifiedNotice />
                 <PlanetAtmosphere />
                 <StarField />

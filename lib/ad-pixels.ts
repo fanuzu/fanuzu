@@ -8,9 +8,13 @@
 //     needs both its own pixel id and the specific conversion event id
 //     created for it in the Twitter/X Ads conversion-tracking dashboard)
 //
-// Called exactly once, by AdConversionTracker.tsx, right after a fan's
-// FIRST email verification — never on every page view, so ad platforms
-// count "verified pre-registration," not raw traffic. Verify these against
+// `fireAdConversions` (CompleteRegistration/etc.) is called exactly once,
+// by AdConversionTracker.tsx, right after a fan's FIRST email verification
+// — so ad platforms count "verified pre-registration," not raw traffic.
+// `trackMetaPageView` is the exception: it's meant to fire on every page
+// load (MetaPageViewTracker.tsx), matching Meta's own standard base-pixel
+// behavior — without it, Events Manager never sees anything but the rare
+// conversion event and flags the pixel as inactive. Verify these against
 // each platform's own event-debugging tools once real IDs are in place;
 // the snippets below follow each vendor's standard, documented loading
 // pattern but haven't been exercised against a live ad account here.
@@ -44,13 +48,35 @@ function loadScriptOnce(src: string, markerAttr: string): Promise<void> {
   });
 }
 
-async function trackMeta(): Promise<void> {
+// `fbq('init', ...)` only needs to run once per page even though both
+// PageView (every visit) and CompleteRegistration (one-time, on conversion)
+// call into this — a module-level promise makes a second caller reuse the
+// same in-flight/completed script load + init instead of re-running it.
+let metaInitPromise: Promise<boolean> | null = null;
+
+function ensureMetaPixelInit(): Promise<boolean> {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  if (!pixelId) return;
-  await loadScriptOnce('https://connect.facebook.net/en_US/fbevents.js', 'data-fanuzu-meta-pixel');
-  if (typeof window.fbq !== 'function') return;
-  window.fbq('init', pixelId);
-  window.fbq('track', 'CompleteRegistration');
+  if (!pixelId) return Promise.resolve(false);
+  if (!metaInitPromise) {
+    metaInitPromise = loadScriptOnce('https://connect.facebook.net/en_US/fbevents.js', 'data-fanuzu-meta-pixel').then(() => {
+      if (typeof window.fbq !== 'function') return false;
+      window.fbq('init', pixelId);
+      return true;
+    });
+  }
+  return metaInitPromise;
+}
+
+// Standard Meta Pixel base behavior: fires on every page load, not gated by
+// marketing_consent — an anonymous visitor who hasn't reached the
+// pre-registration form has no consent decision recorded yet to gate on.
+export async function trackMetaPageView(): Promise<void> {
+  if (typeof window === 'undefined') return;
+  if (await ensureMetaPixelInit()) window.fbq?.('track', 'PageView');
+}
+
+async function trackMeta(): Promise<void> {
+  if (await ensureMetaPixelInit()) window.fbq?.('track', 'CompleteRegistration');
 }
 
 async function trackTikTok(): Promise<void> {
