@@ -3,13 +3,24 @@
 import { useEffect, useState } from 'react';
 import { useLang } from '@/components/providers/LangProvider';
 
+// Matches how long this polls for #ranking to show up before giving up
+// (see below) — RankingSection renders it only after its own data fetch
+// resolves, which a cold serverless function + DB round trip can push well
+// past a fixed short delay.
+const MAX_WAIT_MS = 4000;
+const POLL_MS = 200;
+
 // Renders a brief toast and scrolls to the ranking section when landing
 // with ?emailVerified=1 (from the confirmation email's verify link) — what
 // actually becomes true the moment verification succeeds is that this
 // registration now counts toward the public ranking, so that's what this
-// landing should show, not just the plain homepage top. Scrolling to
-// #ranking is a harmless no-op if the ranking feature isn't enabled (no
-// element to scroll to).
+// landing should show, not just the plain homepage top. #ranking only
+// exists once RankingSection's own data fetch has resolved, so this polls
+// for it rather than assuming a fixed delay is enough — a slow fetch (cold
+// start, DB latency) previously meant the single timed attempt fired
+// before the element existed, silently doing nothing but showing the
+// toast. Gives up quietly after MAX_WAIT_MS if the ranking feature isn't
+// enabled at all (no element ever appears).
 export default function EmailVerifiedNotice() {
   const { tr } = useLang();
   const [show, setShow] = useState(false);
@@ -17,11 +28,23 @@ export default function EmailVerifiedNotice() {
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('emailVerified') !== '1') return;
     setShow(true);
-    const scrollTimer = setTimeout(() => {
-      document.getElementById('ranking')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 500);
+
+    let cancelled = false;
+    let elapsed = 0;
+    const tryScroll = () => {
+      if (cancelled) return;
+      const el = document.getElementById('ranking');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      elapsed += POLL_MS;
+      if (elapsed < MAX_WAIT_MS) setTimeout(tryScroll, POLL_MS);
+    };
+    const scrollTimer = setTimeout(tryScroll, POLL_MS);
     const hideTimer = setTimeout(() => setShow(false), 6000);
     return () => {
+      cancelled = true;
       clearTimeout(scrollTimer);
       clearTimeout(hideTimer);
     };
