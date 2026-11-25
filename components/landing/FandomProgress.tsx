@@ -1,11 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLang } from '@/components/providers/LangProvider';
 
 interface ProgressRow {
   fandom: string;
   count: number;
   goal: number;
+}
+
+interface RankingRow {
+  artist: string;
+  count: number;
 }
 
 // Flagged off by default (SHOW_FANDOM_PROGRESS) and only shows a fandom the
@@ -15,7 +21,9 @@ interface ProgressRow {
 // "stay invisible rather than show a half-built feature" pattern as
 // ArtistRanking.tsx.
 export default function FandomProgress({ artist }: { artist: string }) {
+  const { tr } = useLang();
   const [rows, setRows] = useState<ProgressRow[] | null>(null);
+  const [ranking, setRanking] = useState<RankingRow[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,13 +34,35 @@ export default function FandomProgress({ artist }: { artist: string }) {
         if (data.enabled && Array.isArray(data.fandoms)) setRows(data.fandoms);
       })
       .catch(() => {});
+    // Independent of the goal-progress flag — a fandom can have a rank
+    // shown here even without an admin-set goal, as long as a ranking
+    // event is configured.
+    fetch('/api/prereg/ranking')
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.enabled && Array.isArray(data.ranking)) setRanking(data.ranking);
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
   }, []);
 
   const row = rows?.find((r) => r.fandom.toLowerCase() === artist.toLowerCase());
-  if (!row) return null;
+  const rankIndex = ranking?.findIndex((r) => r.artist.toLowerCase() === artist.toLowerCase()) ?? -1;
+  const rank = rankIndex >= 0 ? rankIndex + 1 : null;
+
+  if (!row) {
+    if (!rank) return null;
+    return (
+      <div style={{ maxWidth: 360, margin: '0 auto 22px', textAlign: 'center' }}>
+        <span style={{ fontSize: 12, color: '#7CE8FF', fontWeight: 700, letterSpacing: '.04em' }}>
+          {tr.rankingSection.currentRankLabel} #{rank}
+        </span>
+      </div>
+    );
+  }
 
   const pct = Math.min(100, Math.round((row.count / row.goal) * 1000) / 10);
 
@@ -54,6 +84,11 @@ export default function FandomProgress({ artist }: { artist: string }) {
           }}
         />
       </div>
+      {rank && (
+        <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11.5, color: '#7CE8FF', fontWeight: 700 }}>
+          {tr.rankingSection.currentRankLabel} #{rank}
+        </div>
+      )}
     </div>
   );
 }

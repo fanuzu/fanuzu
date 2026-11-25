@@ -47,6 +47,25 @@ export interface TranslationSet {
     btnCopyCode: string; btnCopyLink: string; btnShare: string; btnShareX: string;
     btnPassport: string; copiedLabel: string; shareMessage: string;
   };
+  rankingSection: {
+    eyebrow: string;
+    subtitle: string;
+    ctaLabel: string;
+    searchPlaceholder: string;
+    searchNoResults: string;
+    rewardLegendLabel: string;
+    rankFirst: string;
+    rankSecond: string;
+    rankThird: string;
+    rankFourthToTenth: string;
+    currentRankLabel: string;
+    daysLeft: (n: number) => string;
+    hoursLeft: (n: number) => string;
+    eventEndedLabel: string;
+    navShortcut: string;
+    myFandomRankLabel: string;
+    inviteToClimbLine: string;
+  };
   footer: { privacy: string; terms: string; tagline: string; company: string; address: string; contact: string; copyright: string };
   errors: {
     invalidEmail: string; emailAlreadyRegistered: string; invalidReferral: string; selfReferralNotAllowed: string;
@@ -141,6 +160,16 @@ ko: {
     btnCopyCode:'INVITE CODE 복사',btnCopyLink:'초대 링크 복사',btnShare:'공유하기',btnShareX:'X에 공유',
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
+  rankingSection:{
+    eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤의 힘으로 최애에게 광고를 선물하세요.',ctaLabel:'랭킹전 참여하기',
+    searchPlaceholder:'내 팬덤 검색',searchNoResults:'검색 결과가 없어요',
+    rewardLegendLabel:'순위별 보상',
+    rankFirst:'1위',rankSecond:'2위',rankThird:'3위',rankFourthToTenth:'4~10위',
+    currentRankLabel:'현재 순위',
+    daysLeft:(n) => `종료까지 ${n}일 남음`,hoursLeft:(n) => `종료까지 ${n}시간 남음`,eventEndedLabel:'종료된 이벤트',
+    navShortcut:'랭킹전',myFandomRankLabel:'내 팬덤 순위',
+    inviteToClimbLine:'친구를 초대해서 순위를 더 올려보세요!',
+  },
   footer:{privacy:'개인정보처리방침',terms:'이용약관',tagline:'팬의 시간을 기여로. FANUZU',
     company:'Fancake Inc. · 대표자 Sylvia Hong · 사업자등록번호 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -230,6 +259,16 @@ en: {
     btnCopyCode:'Copy INVITE CODE',btnCopyLink:'Copy invite link',btnShare:'Share',btnShareX:'Share on X',
     btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
     shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → {url}'},
+  rankingSection:{
+    eyebrow:'Pre-registration ranking event',subtitle:'Use your fandom\'s power to gift your artist real advertising.',ctaLabel:'Join the ranking event',
+    searchPlaceholder:'Search your fandom',searchNoResults:'No matching fandom found',
+    rewardLegendLabel:'Rewards by rank',
+    rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
+    currentRankLabel:'Current rank',
+    daysLeft:(n) => `${n} day${n === 1 ? '' : 's'} left`,hoursLeft:(n) => `${n} hour${n === 1 ? '' : 's'} left`,eventEndedLabel:'Event ended',
+    navShortcut:'Ranking',myFandomRankLabel:'Your fandom rank',
+    inviteToClimbLine:'Invite friends to climb the ranking together!',
+  },
   footer:{privacy:'Privacy Policy',terms:'Terms of Service',tagline:'Fan time, turned into contribution. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -319,6 +358,16 @@ ja: {
     btnCopyCode:'INVITE CODEをコピー',btnCopyLink:'招待リンクをコピー',btnShare:'共有する',btnShareX:'Xでシェア',
     btnPassport:'FANUZU PASSPORTをプレビュー',copiedLabel:'コピーしました',
     shareMessage:'Bring your fandom to FANUZU. 私のINVITE CODE {code}で一緒に → {url}'},
+  rankingSection:{
+    eyebrow:'事前登録ランキング戦',subtitle:'ファンダムの力で推しに広告をプレゼントしよう。',ctaLabel:'ランキング戦に参加する',
+    searchPlaceholder:'自分のファンダムを検索',searchNoResults:'該当するファンダムが見つかりません',
+    rewardLegendLabel:'順位別報酬',
+    rankFirst:'1位',rankSecond:'2位',rankThird:'3位',rankFourthToTenth:'4〜10位',
+    currentRankLabel:'現在の順位',
+    daysLeft:(n) => `終了まで${n}日`,hoursLeft:(n) => `終了まで${n}時間`,eventEndedLabel:'終了したイベント',
+    navShortcut:'ランキング戦',myFandomRankLabel:'自分のファンダム順位',
+    inviteToClimbLine:'友達を招待して一緒に順位を上げよう！',
+  },
   footer:{privacy:'プライバシーポリシー',terms:'利用規約',tagline:'ファンの時間を、貢献に。FANUZU',
     company:'Fancake Inc. · 代表 Sylvia Hong · 事業者登録番号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -408,6 +457,16 @@ es: {
     btnCopyCode:'Copiar mi INVITE CODE',btnCopyLink:'Copiar enlace de invitación',btnShare:'Compartir',btnShareX:'Compartir en X',
     btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
     shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → {url}'},
+  rankingSection:{
+    eyebrow:'Evento de ranking de preinscripción',subtitle:'Usa el poder de tu fandom para regalarle publicidad real a tu artista.',ctaLabel:'Unirme al ranking',
+    searchPlaceholder:'Busca tu fandom',searchNoResults:'No se encontró ningún fandom',
+    rewardLegendLabel:'Recompensas por posición',
+    rankFirst:'1er lugar',rankSecond:'2do lugar',rankThird:'3er lugar',rankFourthToTenth:'4.º–10.º lugar',
+    currentRankLabel:'Posición actual',
+    daysLeft:(n) => `Quedan ${n} día${n === 1 ? '' : 's'}`,hoursLeft:(n) => `Quedan ${n} hora${n === 1 ? '' : 's'}`,eventEndedLabel:'Evento finalizado',
+    navShortcut:'Ranking',myFandomRankLabel:'Posición de tu fandom',
+    inviteToClimbLine:'¡Invita a tus amigos para subir juntos en el ranking!',
+  },
   footer:{privacy:'Política de Privacidad',terms:'Términos de Servicio',tagline:'El tiempo de los fans, convertido en contribución. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · N.º de registro 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -497,6 +556,16 @@ zhHans: {
     btnCopyCode:'复制我的 INVITE CODE',btnCopyLink:'复制邀请链接',btnShare:'分享',btnShareX:'分享到 X',
     btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
+  rankingSection:{
+    eyebrow:'预注册排名赛',subtitle:'用粉丝团的力量，为爱豆送上真实的广告应援。',ctaLabel:'参加排名赛',
+    searchPlaceholder:'搜索我的粉丝团',searchNoResults:'未找到匹配的粉丝团',
+    rewardLegendLabel:'名次奖励',
+    rankFirst:'第1名',rankSecond:'第2名',rankThird:'第3名',rankFourthToTenth:'第4~10名',
+    currentRankLabel:'当前排名',
+    daysLeft:(n) => `还剩${n}天结束`,hoursLeft:(n) => `还剩${n}小时结束`,eventEndedLabel:'活动已结束',
+    navShortcut:'排名赛',myFandomRankLabel:'我的粉丝团排名',
+    inviteToClimbLine:'邀请朋友一起提升排名吧！',
+  },
   footer:{privacy:'隐私政策',terms:'服务条款',tagline:'把粉丝的时间，变成贡献。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商注册号 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -586,6 +655,16 @@ zhHant: {
     btnCopyCode:'複製我的 INVITE CODE',btnCopyLink:'複製邀請連結',btnShare:'分享',btnShareX:'分享到 X',
     btnPassport:'預覽我的 FANUZU PASSPORT',copiedLabel:'已複製',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
+  rankingSection:{
+    eyebrow:'預先註冊排名賽',subtitle:'用粉絲團的力量，為愛豆送上真實的廣告應援。',ctaLabel:'參加排名賽',
+    searchPlaceholder:'搜尋我的粉絲團',searchNoResults:'未找到符合的粉絲團',
+    rewardLegendLabel:'名次獎勵',
+    rankFirst:'第1名',rankSecond:'第2名',rankThird:'第3名',rankFourthToTenth:'第4~10名',
+    currentRankLabel:'目前排名',
+    daysLeft:(n) => `還剩${n}天結束`,hoursLeft:(n) => `還剩${n}小時結束`,eventEndedLabel:'活動已結束',
+    navShortcut:'排名賽',myFandomRankLabel:'我的粉絲團排名',
+    inviteToClimbLine:'邀請朋友一起拉高排名吧！',
+  },
   footer:{privacy:'隱私政策',terms:'服務條款',tagline:'把粉絲的時間，變成貢獻。FANUZU',
     company:'Fancake Inc. · 代表人 Sylvia Hong · 工商註冊號 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -675,6 +754,16 @@ id: {
     btnCopyCode:'Salin INVITE CODE',btnCopyLink:'Salin tautan undangan',btnShare:'Bagikan',btnShareX:'Bagikan di X',
     btnPassport:'Pratinjau FANUZU PASSPORT-ku',copiedLabel:'Tersalin',
     shareMessage:'Bawa fandom-mu ke FANUZU. Pakai kode undanganku {code} → {url}'},
+  rankingSection:{
+    eyebrow:'Event ranking pra-pendaftaran',subtitle:'Gunakan kekuatan fandom untuk memberi iklan sungguhan ke artismu.',ctaLabel:'Ikuti ranking',
+    searchPlaceholder:'Cari fandommu',searchNoResults:'Fandom tidak ditemukan',
+    rewardLegendLabel:'Hadiah per peringkat',
+    rankFirst:'Peringkat 1',rankSecond:'Peringkat 2',rankThird:'Peringkat 3',rankFourthToTenth:'Peringkat 4–10',
+    currentRankLabel:'Peringkat saat ini',
+    daysLeft:(n) => `${n} hari lagi`,hoursLeft:(n) => `${n} jam lagi`,eventEndedLabel:'Event telah berakhir',
+    navShortcut:'Ranking',myFandomRankLabel:'Peringkat fandommu',
+    inviteToClimbLine:'Ajak teman untuk naik peringkat bersama!',
+  },
   footer:{privacy:'Kebijakan Privasi',terms:'Syarat Layanan',tagline:'Waktu fan, diubah jadi kontribusi. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · No. Reg. Usaha 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -764,6 +853,16 @@ fil: {
     btnCopyCode:'Kopyahin ang INVITE CODE',btnCopyLink:'Kopyahin ang invite link',btnShare:'Ibahagi',btnShareX:'Ibahagi sa X',
     btnPassport:'I-preview ang FANUZU PASSPORT ko',copiedLabel:'Nakopya',
     shareMessage:'Dalhin ang fandom mo sa FANUZU. Gamitin ang invite code ko {code} → {url}'},
+  rankingSection:{
+    eyebrow:'Ranking event ng pre-registration',subtitle:'Gamitin ang lakas ng fandom mo para bigyan ang artist mo ng tunay na ad support.',ctaLabel:'Sumali sa ranking',
+    searchPlaceholder:'Hanapin ang fandom mo',searchNoResults:'Walang nahanap na fandom',
+    rewardLegendLabel:'Reward kada ranggo',
+    rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
+    currentRankLabel:'Kasalukuyang ranggo',
+    daysLeft:(n) => `${n} (na) araw na lang`,hoursLeft:(n) => `${n} (na) oras na lang`,eventEndedLabel:'Tapos na ang event',
+    navShortcut:'Ranking',myFandomRankLabel:'Ranggo ng fandom mo',
+    inviteToClimbLine:'Mag-imbita ng mga kaibigan para sama-sama kayong umakyat sa ranggo!',
+  },
   footer:{privacy:'Patakaran sa Privacy',terms:'Mga Tuntunin ng Serbisyo',tagline:'Oras ng fan, ginawang kontribusyon. FANUZU',
     company:'Fancake Inc. · CEO Sylvia Hong · Business Reg. No. 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea',
@@ -853,6 +952,16 @@ th: {
     btnCopyCode:'คัดลอก INVITE CODE',btnCopyLink:'คัดลอกลิงก์เชิญ',btnShare:'แชร์',btnShareX:'แชร์บน X',
     btnPassport:'ดูตัวอย่าง FANUZU PASSPORT ของฉัน',copiedLabel:'คัดลอกแล้ว',
     shareMessage:'พาแฟนด้อมของคุณมาที่ FANUZU ใช้รหัสเชิญของฉัน {code} → {url}'},
+  rankingSection:{
+    eyebrow:'กิจกรรมจัดอันดับการลงทะเบียนล่วงหน้า',subtitle:'ใช้พลังของแฟนด้อมมอบโฆษณาจริงให้ศิลปินของคุณ',ctaLabel:'เข้าร่วมการจัดอันดับ',
+    searchPlaceholder:'ค้นหาแฟนด้อมของคุณ',searchNoResults:'ไม่พบแฟนด้อมที่ตรงกัน',
+    rewardLegendLabel:'รางวัลตามอันดับ',
+    rankFirst:'อันดับ 1',rankSecond:'อันดับ 2',rankThird:'อันดับ 3',rankFourthToTenth:'อันดับ 4-10',
+    currentRankLabel:'อันดับปัจจุบัน',
+    daysLeft:(n) => `เหลืออีก ${n} วัน`,hoursLeft:(n) => `เหลืออีก ${n} ชั่วโมง`,eventEndedLabel:'กิจกรรมสิ้นสุดแล้ว',
+    navShortcut:'การจัดอันดับ',myFandomRankLabel:'อันดับแฟนด้อมของคุณ',
+    inviteToClimbLine:'ชวนเพื่อนมาช่วยกันไต่อันดับ!',
+  },
   footer:{privacy:'นโยบายความเป็นส่วนตัว',terms:'ข้อกำหนดการใช้บริการ',tagline:'เวลาของแฟน เปลี่ยนเป็นการสนับสนุน FANUZU',
     company:'Fancake Inc. · ซีอีโอ Sylvia Hong · เลขทะเบียนธุรกิจ 2748603844',
     address:'117, Bundangnaegok-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, สาธารณรัฐเกาหลี',

@@ -10,7 +10,20 @@ export const runtime = 'nodejs';
 // during the build.
 export const dynamic = 'force-dynamic';
 
-const TOP_N = 3;
+// High enough to cover "TOP 100 + search your own fandom" entirely from one
+// response — the public ranking section does its own top-10 cut and
+// client-side search across whatever comes back, rather than needing a
+// second endpoint.
+const TOP_N = 100;
+
+export interface PublicRankingEvent {
+  name: string;
+  endAt: string | null;
+  rewardFirst: number;
+  rewardSecond: number;
+  rewardThird: number;
+  rewardFourthToTenth: number;
+}
 
 // Deliberately gated behind an env var (default off) rather than always
 // shown — see ArtistSelect.tsx's note on founder counts: an early, sparse
@@ -27,19 +40,28 @@ export async function GET() {
 
     // No admin-configured event yet — fall back to the plain always-on
     // verified/linked aggregate (unchanged from before the admin panel
-    // existed).
+    // existed). No event metadata to show in this case.
     if (!event) {
       const counts = await getVerifiedArtistCounts();
       const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
       return NextResponse.json({ enabled: true, ranking });
     }
 
+    const eventMeta: PublicRankingEvent = {
+      name: event.name,
+      endAt: event.endAt,
+      rewardFirst: event.rewardFirst,
+      rewardSecond: event.rewardSecond,
+      rewardThird: event.rewardThird,
+      rewardFourthToTenth: event.rewardFourthToTenth,
+    };
+
     // Finalized: serve the frozen snapshot forever, regardless of what
     // happens to the underlying registrations afterward.
     if (event.status === 'finalized') {
       const results = await getFinalizedResults(event.id);
       const ranking = results.slice(0, TOP_N).map((r) => ({ artist: r.artist, count: r.count }));
-      return NextResponse.json({ enabled: true, ranking, finalized: true });
+      return NextResponse.json({ enabled: true, ranking, finalized: true, event: eventMeta });
     }
 
     // Active: respect this event's own visibility setting before showing
@@ -55,7 +77,7 @@ export async function GET() {
 
     const counts = await getRankingStandingsForEvent(event);
     const ranking = counts.slice(0, TOP_N).map((c) => ({ artist: c.artist, count: c.count }));
-    return NextResponse.json({ enabled: true, ranking });
+    return NextResponse.json({ enabled: true, ranking, event: eventMeta });
   } catch (err) {
     console.error('artist ranking query failed:', err);
     return NextResponse.json({ enabled: false });

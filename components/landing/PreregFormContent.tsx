@@ -66,6 +66,10 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   // Starts false on both server and client so hydration always matches;
   // navigator.share only exists in the browser, so it's set for real after mount.
   const [canShareNatively, setCanShareNatively] = useState(false);
+  // Looked up only once the success screen is showing, so a fan who just
+  // registered sees where their fandom currently stands in the ranking event
+  // (null when no ranking event is configured, or their artist isn't on it).
+  const [myRank, setMyRank] = useState<number | null>(null);
 
   // Prefill from whatever AttributionTracker captured on landing (invite
   // link's ref code, and/or the artist it named) — a fan who clicked a
@@ -107,6 +111,23 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
   const isError = formStatus === 'error';
   const showForm = formStatus !== 'success';
   const showSuccess = formStatus === 'success';
+
+  useEffect(() => {
+    if (!showSuccess || !artistName) return;
+    let cancelled = false;
+    fetch('/api/prereg/ranking')
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled || !data.enabled || !Array.isArray(data.ranking)) return;
+        const idx = data.ranking.findIndex((r: { artist: string }) => r.artist.toLowerCase() === artistName.toLowerCase());
+        if (idx >= 0) setMyRank(idx + 1);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showSuccess, artistName]);
 
   function errorMessageFor(code: unknown): string {
     switch (code) {
@@ -248,6 +269,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         { k: tr.prereg.rBadgeLabel, v: tr.origin.badgeLabel },
         { k: tr.prereg.rReward, v: result.reward + ' POP' },
         { k: tr.prereg.rReferralCode, v: result.code },
+        ...(myRank ? [{ k: tr.rankingSection.myFandomRankLabel, v: `#${myRank}` }] : []),
       ]
     : [];
   const hasReferralCode = !!result;
@@ -516,6 +538,11 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                 </div>
               ))}
             </div>
+            {hasReferralCode && myRank && (
+              <p style={{ fontSize: 13, fontWeight: 600, color: '#FF7DDD', textAlign: 'center', margin: '0 0 14px' }}>
+                {tr.rankingSection.inviteToClimbLine}
+              </p>
+            )}
             {hasReferralCode && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
                 <button

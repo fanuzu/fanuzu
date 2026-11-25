@@ -13,11 +13,30 @@ export default function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
+  // Only shown once a ranking event is actually enabled+visible — RankingSection
+  // itself decides whether it renders at all, this just checks the same
+  // endpoint so the nav doesn't offer a shortcut to a section that isn't there.
+  const [rankingEnabled, setRankingEnabled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/prereg/ranking')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data.enabled && Array.isArray(data.ranking) && data.ranking.length > 0) {
+          setRankingEnabled(true);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -71,6 +90,28 @@ export default function Nav() {
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px,2vw,10px)' }}>
+          {rankingEnabled && (
+            <button
+              onClick={() => document.getElementById('ranking')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                border: '1px solid rgba(255,125,221,.35)',
+                background: 'rgba(255,125,221,.1)',
+                color: '#FF7DDD',
+                fontSize: 'clamp(10.5px,3vw,12px)',
+                fontWeight: 700,
+                padding: 'clamp(6px,1.8vw,8px) clamp(8px,2.6vw,12px)',
+                borderRadius: 999,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tr.rankingSection.navShortcut}
+            </button>
+          )}
           {carolReady && (
             <button
               onClick={toggleMute}

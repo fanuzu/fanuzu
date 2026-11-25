@@ -13,6 +13,7 @@ import ParticleLayer from './ParticleLayer';
 import SnowFall from './SnowFall';
 import Nav from './Nav';
 import Hero from './Hero';
+import RankingSection from './RankingSection';
 import Experience from './Experience';
 import Campaign from './Campaign';
 import Passport from './Passport';
@@ -56,6 +57,7 @@ export default function LandingPage() {
                 <SnowFall />
                 <Nav />
                 <Hero />
+                <RankingSection />
                 <Experience />
                 <Campaign />
                 <Passport />
