@@ -183,8 +183,16 @@ export default function RankingSection() {
         {event && (
           <div
             style={{
+              // Deliberately wider than this section's 720px text column —
+              // `left:50% + translateX(-50%)` centers on the column's own
+              // centerline (which already sits on the page's center since
+              // the column itself is margin-auto'd), so this "breaks out"
+              // symmetrically regardless of viewport width instead of being
+              // squeezed into the narrow column like the text above it.
               position: 'relative',
-              width: '100%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'min(960px, calc(100vw - 48px))',
               aspectRatio: '2/1',
               borderRadius: 18,
               overflow: 'hidden',
@@ -193,7 +201,7 @@ export default function RankingSection() {
               marginBottom: 20,
             }}
           >
-            <Image src="/images/genesis-ranking-visual.webp" alt="" fill sizes="720px" style={{ objectFit: 'cover' }} />
+            <Image src="/images/genesis-ranking-visual.webp" alt="" fill sizes="960px" style={{ objectFit: 'cover' }} />
             <div
               style={{
                 position: 'absolute',
