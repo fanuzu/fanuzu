@@ -66,7 +66,7 @@ export default function ZapButton() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 1,
-        color: '#05030B',
+        color: '#080914',
         fontFamily: 'inherit',
         animation: 'zapPulse 2.4s ease-in-out infinite',
       }}
@@ -88,7 +88,7 @@ export default function ZapButton() {
             width: 22,
             height: 22,
             borderRadius: '50%',
-            border: '2px solid rgba(5,3,11,.45)',
+            border: '2px solid rgba(8,9,20,.45)',
             animation: 'tapRippleGive 1.6s ease-out infinite',
           }}
         />
@@ -129,8 +129,8 @@ export default function ZapButton() {
           d="M14 42 C 9 12, 42 -4, 63 7 C 86 18, 94 30, 85 38 C 78 44, 54 45, 36 45 Z"
           fill="#E8373F"
         />
-        <circle cx="87" cy="21" r="10" fill="#FFFAFC" />
-        <rect x="6" y="39" width="82" height="16" rx="8" fill="#FFFAFC" />
+        <circle cx="87" cy="21" r="10" fill="#F5F3FF" />
+        <rect x="6" y="39" width="82" height="16" rx="8" fill="#F5F3FF" />
       </svg>
     </button>
   );

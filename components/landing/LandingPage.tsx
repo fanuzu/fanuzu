@@ -49,7 +49,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
         <PlanetThemeProvider>
           <PreregModalProvider>
             <CarolProvider>
-              <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#05030B', color: '#FFFAFC', overflowX: 'hidden' }}>
+              <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#080914', color: '#F5F3FF', overflowX: 'hidden' }}>
                 <AttributionTracker suppressAutoOpen={rankingFirst} />
                 <AdConversionTracker />
                 <MetaPageViewTracker />

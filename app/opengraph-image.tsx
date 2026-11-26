@@ -60,9 +60,9 @@ export default async function OpengraphImage() {
           height: '100%',
           display: 'flex',
           position: 'relative',
-          background: '#05030B',
+          background: '#080914',
           backgroundImage:
-            'radial-gradient(circle at 30% 15%, rgba(255,125,221,.3), transparent 55%), radial-gradient(circle at 75% 80%, rgba(155,124,255,.28), transparent 55%), radial-gradient(circle at 50% 0%, rgba(232,185,117,.14), transparent 45%)',
+            'radial-gradient(circle at 30% 15%, rgba(255,125,221,.3), transparent 55%), radial-gradient(circle at 75% 80%, rgba(150,117,245,.28), transparent 55%), radial-gradient(circle at 50% 0%, rgba(232,185,117,.14), transparent 45%)',
           fontFamily: 'Noto Sans KR',
         }}
       >
@@ -78,7 +78,7 @@ export default async function OpengraphImage() {
               width: f.size,
               height: f.size,
               borderRadius: '50%',
-              background: '#FFFAFC',
+              background: '#F5F3FF',
               opacity: f.opacity,
             }}
           />
@@ -148,7 +148,7 @@ export default async function OpengraphImage() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-            <div style={{ display: 'flex', alignItems: 'center', fontSize: 108, fontWeight: 800, color: '#FFFAFC' }}>
+            <div style={{ display: 'flex', alignItems: 'center', fontSize: 108, fontWeight: 800, color: '#F5F3FF' }}>
               <span>FAN</span>
               <span style={{ color: '#FF7DDD' }}>UZU</span>
             </div>
@@ -170,8 +170,8 @@ export default async function OpengraphImage() {
                   d="M14 42 C 9 12, 42 -4, 63 7 C 86 18, 94 30, 85 38 C 78 44, 54 45, 36 45 Z"
                   fill="#E8373F"
                 />
-                <circle cx="87" cy="21" r="10" fill="#FFFAFC" />
-                <rect x="6" y="39" width="82" height="16" rx="8" fill="#FFFAFC" />
+                <circle cx="87" cy="21" r="10" fill="#F5F3FF" />
+                <rect x="6" y="39" width="82" height="16" rx="8" fill="#F5F3FF" />
               </svg>
             </div>
           </div>

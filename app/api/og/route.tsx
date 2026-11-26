@@ -97,9 +97,9 @@ export async function GET(request: Request) {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          background: '#05030B',
+          background: '#080914',
           backgroundImage:
-            'radial-gradient(circle at 25% 20%, rgba(255,125,221,.32), transparent 55%), radial-gradient(circle at 78% 78%, rgba(155,124,255,.28), transparent 55%)',
+            'radial-gradient(circle at 25% 20%, rgba(255,125,221,.32), transparent 55%), radial-gradient(circle at 78% 78%, rgba(150,117,245,.28), transparent 55%)',
           fontFamily: 'Noto Sans KR',
         }}
       >
@@ -127,7 +127,7 @@ export async function GET(request: Request) {
             display: 'flex',
             fontSize: artist ? 86 : 64,
             fontWeight: 800,
-            color: '#FFFAFC',
+            color: '#F5F3FF',
             textAlign: 'center',
             maxWidth: 1000,
             lineHeight: 1.25,

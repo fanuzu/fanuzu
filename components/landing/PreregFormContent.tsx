@@ -21,7 +21,7 @@ const inputStyle: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,.14)',
   borderRadius: 12,
   padding: '14px 16px',
-  color: '#FFFAFC',
+  color: '#F5F3FF',
   fontSize: 15,
   fontFamily: 'inherit',
   outline: 'none',
@@ -311,7 +311,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
           {tr.prereg.statusBadge}
         </div>
-        <h2 id={headingId} className="headline-font" style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
+        <h2 id={headingId} className="headline-font" style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 18px', color: '#F5F3FF' }}>
           {tr.prereg.t1}
           <br />
           {tr.prereg.t2}
@@ -323,17 +323,17 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
         style={{
           maxWidth: 560,
           margin: '32px auto 0',
-          background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+          background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))',
           border: '1px solid rgba(255,125,221,.18)',
           borderRadius: 18,
           padding: '22px 26px',
         }}
       >
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>{tr.prereg.benefitsLabel}</div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#9675F5', marginBottom: 14 }}>{tr.prereg.benefitsLabel}</div>
         {tr.prereg.benefits.map((b, i) => (
           <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: i < tr.prereg.benefits.length - 1 ? 10 : 0 }}>
             <span style={{ color: '#FF7DDD', fontSize: 13, lineHeight: 1.6, flex: '0 0 auto' }}>✦</span>
-            <span style={{ fontSize: 13.5, lineHeight: 1.55, color: '#FFFAFC' }}>{b}</span>
+            <span style={{ fontSize: 13.5, lineHeight: 1.55, color: '#F5F3FF' }}>{b}</span>
           </div>
         ))}
       </div>
@@ -347,7 +347,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               flexDirection: 'column',
               gap: 16,
               textAlign: 'left',
-              background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+              background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))',
               border: '1px solid rgba(255,125,221,.18)',
               borderRadius: 20,
               padding: 32,
@@ -367,7 +367,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   padding: '13px 16px',
                 }}
               >
-                <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 700, color: '#FFFAFC' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 700, color: '#F5F3FF' }}>
                   {artistName}
                   {officialArtist && (
                     <span
@@ -375,8 +375,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: 4,
-                        background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                        color: '#05030B',
+                        background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                        color: '#080914',
                         fontSize: 10,
                         fontWeight: 800,
                         letterSpacing: '.05em',
@@ -394,7 +394,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#7CE8FF',
+                    color: '#9675F5',
                     fontSize: 12.5,
                     cursor: 'pointer',
                     fontFamily: 'inherit',
@@ -444,7 +444,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   gap: 10,
                   fontSize: 14,
                   fontWeight: 700,
-                  color: '#FFFAFC',
+                  color: '#F5F3FF',
                   cursor: 'pointer',
                   paddingBottom: 10,
                   marginBottom: 2,
@@ -469,7 +469,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   <input id={`${uid}-terms`} type="checkbox" required checked={termsConsent} onChange={(e) => setTermsConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
                   <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.termsConsent}</span>
                 </label>
-                <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#7CE8FF', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#9675F5', textDecoration: 'none', whiteSpace: 'nowrap' }}>
                   {tr.prereg.viewDoc}
                 </a>
               </div>
@@ -478,7 +478,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   <input id={`${uid}-privacy`} type="checkbox" required checked={privacyConsent} onChange={(e) => setPrivacyConsent(e.target.checked)} style={{ width: 16, height: 16, accentColor: '#FF7DDD', flex: '0 0 auto' }} />
                   <span><span style={{ color: '#FF7DDD' }}>{tr.prereg.requiredBadge}</span> {tr.prereg.privacyConsentLabel}</span>
                 </label>
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#7CE8FF', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: '#9675F5', textDecoration: 'none', whiteSpace: 'nowrap' }}>
                   {tr.prereg.viewDoc}
                 </a>
               </div>
@@ -492,8 +492,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               type="submit"
               disabled={isSubmitting}
               style={{
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
+                background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                color: '#080914',
                 fontWeight: 700,
                 fontSize: 15.5,
                 padding: 15,
@@ -519,7 +519,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
 
         {showSuccess && (
           <div style={{ background: 'rgba(255,125,221,.08)', border: '1px solid rgba(255,125,221,.32)', borderRadius: 20, padding: 32 }}>
-            <p style={{ fontSize: 18, fontWeight: 700, lineHeight: 1.4, margin: '0 0 10px', color: '#FFFAFC' }}>{resultTitle}</p>
+            <p style={{ fontSize: 18, fontWeight: 700, lineHeight: 1.4, margin: '0 0 10px', color: '#F5F3FF' }}>{resultTitle}</p>
             <p style={{ fontSize: 14, lineHeight: 1.6, color: '#B8AFC4', margin: '0 0 24px' }}>{resultBody}</p>
             <div
               style={{
@@ -535,7 +535,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
               {resultRows.map((rr, i) => (
                 <div key={i}>
                   <div style={{ fontSize: 11, color: '#6B6478', marginBottom: 3 }}>{rr.k}</div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: '#FFFAFC' }}>{rr.v}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#F5F3FF' }}>{rr.v}</div>
                 </div>
               ))}
             </div>
@@ -550,8 +550,8 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   onClick={copyCode}
                   style={{
                     flex: '1 1 130px',
-                    background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                    color: '#05030B',
+                    background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                    color: '#080914',
                     fontWeight: 700,
                     fontSize: 13,
                     padding: 12,
@@ -569,7 +569,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                     flex: '1 1 130px',
                     background: 'rgba(255,255,255,.06)',
                     border: '1px solid rgba(255,125,221,.35)',
-                    color: '#FFFAFC',
+                    color: '#F5F3FF',
                     fontWeight: 600,
                     fontSize: 13,
                     padding: 12,
@@ -586,7 +586,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                     flex: '1 1 130px',
                     background: 'rgba(255,255,255,.06)',
                     border: '1px solid rgba(255,255,255,.16)',
-                    color: '#FFFAFC',
+                    color: '#F5F3FF',
                     fontWeight: 600,
                     fontSize: 13,
                     padding: 12,
@@ -604,7 +604,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                       flex: '1 1 130px',
                       background: 'rgba(255,255,255,.06)',
                       border: '1px solid rgba(255,255,255,.16)',
-                      color: '#FFFAFC',
+                      color: '#F5F3FF',
                       fontWeight: 600,
                       fontSize: 13,
                       padding: 12,
@@ -628,7 +628,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
                   textAlign: 'center',
                   background: 'rgba(255,255,255,.06)',
                   border: '1px solid rgba(255,255,255,.16)',
-                  color: '#FFFAFC',
+                  color: '#F5F3FF',
                   fontWeight: 600,
                   fontSize: 13.5,
                   padding: 13,

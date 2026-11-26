@@ -154,7 +154,7 @@ export default function RankingSection() {
   const maxCount = ranking?.[0]?.count || 1;
 
   return (
-    <section id="ranking" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '72px 24px' }}>
+    <section id="ranking" style={{ position: 'relative', zIndex: 1, background: '#171827', padding: '72px 24px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div
@@ -177,7 +177,7 @@ export default function RankingSection() {
             {tr.rankingSection.eyebrow}
           </div>
           {event?.name && (
-            <h2 className="headline-font" style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFAFC' }}>{event.name}</h2>
+            <h2 className="headline-font" style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#F5F3FF' }}>{event.name}</h2>
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
           {staticLabel && <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{staticLabel}</div>}
@@ -200,7 +200,7 @@ export default function RankingSection() {
                       style={{
                         fontSize: 'clamp(20px,4.8vw,32px)',
                         fontWeight: 800,
-                        backgroundImage: 'linear-gradient(90deg,#FF7DDD,#7CE8FF)',
+                        backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                       }}
                     >
                       {String(val).padStart(2, '0')}
@@ -238,7 +238,7 @@ export default function RankingSection() {
               aspectRatio: '2/1',
               borderRadius: 18,
               overflow: 'hidden',
-              border: '1px solid rgba(124,232,255,.22)',
+              border: '1px solid rgba(150,117,245,.22)',
               boxShadow: '0 20px 50px rgba(0,0,0,.4)',
               marginBottom: 20,
             }}
@@ -248,7 +248,7 @@ export default function RankingSection() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(180deg,transparent 55%,rgba(10,6,19,.9) 100%)',
+                background: 'linear-gradient(180deg,transparent 55%,rgba(23,24,39,.9) 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -269,7 +269,7 @@ export default function RankingSection() {
               marginBottom: 20,
             }}
           >
-            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14, textAlign: 'center' }}>
+            <div style={{ fontSize: 11, letterSpacing: '.06em', color: '#9675F5', marginBottom: 14, textAlign: 'center' }}>
               {tr.rankingSection.rewardLegendLabel}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '18px 22px' }}>
@@ -281,7 +281,7 @@ export default function RankingSection() {
               ].map((r, i) => (
                 <div key={r.label} style={{ textAlign: 'center', minWidth: i === 0 ? 108 : 86 }}>
                   <div style={{ fontSize: i === 0 ? 13 : 11.5, fontWeight: 700, color: r.color, marginBottom: 4 }}>{r.label}</div>
-                  <div style={{ fontSize: i === 0 ? 'clamp(20px,4.5vw,27px)' : 16, fontWeight: 800, color: '#FFFAFC' }}>
+                  <div style={{ fontSize: i === 0 ? 'clamp(20px,4.5vw,27px)' : 16, fontWeight: 800, color: '#F5F3FF' }}>
                     {krw(r.amount)}
                   </div>
                 </div>
@@ -294,8 +294,8 @@ export default function RankingSection() {
           <button
             onClick={openModal}
             style={{
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-              color: '#05030B',
+              background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+              color: '#080914',
               fontWeight: 700,
               fontSize: 15,
               padding: '14px 32px',
@@ -321,7 +321,7 @@ export default function RankingSection() {
                 border: '1px solid rgba(255,255,255,.14)',
                 borderRadius: 12,
                 padding: '12px 16px',
-                color: '#FFFAFC',
+                color: '#F5F3FF',
                 fontSize: 14,
                 marginBottom: 16,
                 outline: 'none',
@@ -358,7 +358,7 @@ export default function RankingSection() {
                           style={{
                             width: `${Math.max(2, (row.count / maxCount) * 100)}%`,
                             height: '100%',
-                            background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+                            background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                           }}
                         />
                       </div>
@@ -399,7 +399,7 @@ export default function RankingSection() {
               style={{
                 cursor: 'pointer',
                 fontSize: 12.5,
-                color: '#7CE8FF',
+                color: '#9675F5',
                 fontWeight: 600,
                 listStyle: 'none',
               }}

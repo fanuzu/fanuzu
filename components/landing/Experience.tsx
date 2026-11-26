@@ -37,13 +37,13 @@ export default function Experience() {
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(180deg,transparent 40%,rgba(5,3,11,.85) 100%)',
+              background: 'linear-gradient(180deg,transparent 40%,rgba(8,9,20,.85) 100%)',
               pointerEvents: 'none',
             }}
           />
         </div>
         <div style={{ maxWidth: 640, margin: '0 auto 40px', textAlign: 'center' }}>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
+          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#F5F3FF' }}>
             {tr.exp.t1}
             <br />
             {tr.exp.t2}
@@ -64,7 +64,7 @@ export default function Experience() {
                 border: '1px solid rgba(255,255,255,.1)',
                 borderRadius: 14,
                 padding: '16px 20px',
-                color: '#FFFAFC',
+                color: '#F5F3FF',
                 fontSize: 15,
                 fontFamily: 'inherit',
                 cursor: 'pointer',
@@ -72,28 +72,28 @@ export default function Experience() {
               }}
             >
               <span>{btn.label}</span>
-              <span style={{ color: '#7CE8FF', fontWeight: 700, fontSize: 14 }}>+POP</span>
+              <span style={{ color: '#9675F5', fontWeight: 700, fontSize: 14 }}>+POP</span>
             </button>
           ))}
         </div>
-        <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 20 }}>
+        <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#B8AFC4', marginBottom: 10 }}>
             <span>{tr.exp.scoreLabel}</span>
-            <span style={{ color: '#FFFAFC', fontWeight: 700 }}>{score}</span>
+            <span style={{ color: '#F5F3FF', fontWeight: 700 }}>{score}</span>
           </div>
           <div style={{ height: 8, borderRadius: 999, background: 'rgba(255,255,255,.08)', overflow: 'hidden' }}>
             <div
               style={{
                 height: '100%',
                 width: `${progressPct}%`,
-                background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF,#7CE8FF)',
+                background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                 borderRadius: 999,
                 transition: 'width .6s ease',
               }}
             />
           </div>
         </div>
-        <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#7CE8FF', fontWeight: 600, marginTop: 14, marginBottom: 0, textAlign: 'center' }}>{tr.exp.highlight}</p>
+        <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#9675F5', fontWeight: 600, marginTop: 14, marginBottom: 0, textAlign: 'center' }}>{tr.exp.highlight}</p>
         <p
           style={{
             textAlign: 'center',

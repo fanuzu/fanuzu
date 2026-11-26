@@ -57,7 +57,7 @@ export default function MeteorShower() {
               width: m.length,
               height: 2,
               borderRadius: 999,
-              background: 'linear-gradient(90deg, transparent, rgba(255,250,252,.5) 55%, #FFFAFC 88%, #FF7DDD)',
+              background: 'linear-gradient(90deg, transparent, rgba(245,243,255,.5) 55%, #F5F3FF 88%, #FF7DDD)',
               boxShadow: '0 0 8px 1.5px rgba(255,255,255,.55)',
               animation: 'meteorStreak 2s linear infinite',
               animationDelay: `${m.delay}s`,

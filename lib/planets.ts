@@ -17,9 +17,9 @@ export const PLANETS: Planet[] = [
     tagline: 'The home planet',
     image: '/images/fanuzu-planet.png',
     a1: '#FF7DDD',
-    a2: '#9B7CFF',
+    a2: '#9675F5',
     g1: '255,125,221',
-    g2: '155,124,255',
+    g2: '150,117,245',
     ring: '124,232,255',
   },
   {

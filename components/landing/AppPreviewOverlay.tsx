@@ -52,7 +52,7 @@ export default function AppPreviewOverlay() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 'clamp(10px,2.4vw,16px)',
-        background: 'radial-gradient(circle at 50% 45%,rgba(155,124,255,.26),rgba(5,3,11,.78) 65%)',
+        background: 'radial-gradient(circle at 50% 45%,rgba(150,117,245,.26),rgba(8,9,20,.78) 65%)',
         backdropFilter: 'blur(6px)',
         WebkitBackdropFilter: 'blur(6px)',
         cursor: 'pointer',
@@ -93,7 +93,7 @@ export default function AppPreviewOverlay() {
           borderRadius: '50%',
           border: 'none',
           background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
-          color: '#05030B',
+          color: '#080914',
           fontSize: 18,
           fontWeight: 800,
           lineHeight: 1,
@@ -179,7 +179,7 @@ export default function AppPreviewOverlay() {
       <div
         className="gradient-text"
         style={{
-          backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+          backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
           maxWidth: 300,
           textAlign: 'center',
           fontSize: 16,

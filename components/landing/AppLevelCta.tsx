@@ -47,10 +47,10 @@ export default function AppLevelCta() {
   const content = (
     <>
       <span style={{ fontSize: 22, lineHeight: 1 }}>📲</span>
-      <span style={{ fontSize: 13, fontWeight: 700, color: '#FFFAFC' }}>
+      <span style={{ fontSize: 13, fontWeight: 700, color: '#F5F3FF' }}>
         {APP_STORE_URL ? 'Continue in the FANUZU app' : 'The next level is waiting in the FANUZU app'}
       </span>
-      <span style={{ fontSize: 11.5, color: '#7CE8FF', textDecoration: 'underline' }}>
+      <span style={{ fontSize: 11.5, color: '#9675F5', textDecoration: 'underline' }}>
         {APP_STORE_URL ? 'Open app store' : 'Pre-register to get notified'}
       </span>
     </>
@@ -68,10 +68,10 @@ export default function AppLevelCta() {
     maxWidth: 'min(90vw, 360px)',
     padding: '12px 18px',
     borderRadius: 999,
-    background: 'rgba(10,6,19,.92)',
+    background: 'rgba(23,24,39,.92)',
     backdropFilter: 'blur(10px)',
     WebkitBackdropFilter: 'blur(10px)',
-    border: '1px solid rgba(124,232,255,.4)',
+    border: '1px solid rgba(150,117,245,.4)',
     boxShadow: '0 12px 32px rgba(0,0,0,.45)',
     animation: 'toastIn .3s cubic-bezier(.22,.61,.36,1)',
     cursor: 'pointer',
@@ -84,7 +84,7 @@ export default function AppLevelCta() {
       {content}
     </a>
   ) : (
-    <button onClick={handleClick} style={{ ...sharedStyle, border: '1px solid rgba(124,232,255,.4)' }}>
+    <button onClick={handleClick} style={{ ...sharedStyle, border: '1px solid rgba(150,117,245,.4)' }}>
       {content}
     </button>
   );

@@ -10,7 +10,7 @@ export default function Passport() {
     <section id="passport" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '72px 24px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 52, alignItems: 'center' }}>
         <div style={{ flex: '1 1 420px', minWidth: 280 }}>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>
+          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#F5F3FF' }}>
             {tr.passport.t1}
             <br />
             {tr.passport.t2}
@@ -23,13 +23,13 @@ export default function Passport() {
             style={{
               width: '100%',
               maxWidth: 400,
-              background: 'linear-gradient(155deg,#241736,#0A0613 60%)',
+              background: 'linear-gradient(155deg,#241736,#171827 60%)',
               border: '1.5px solid rgba(255,125,221,.25)',
               borderRadius: 14,
               padding: 0,
               position: 'relative',
               overflow: 'hidden',
-              boxShadow: '0 16px 40px rgba(155,124,255,.12)',
+              boxShadow: '0 16px 40px rgba(150,117,245,.12)',
               animation: 'passportGlow 1s ease-in-out infinite',
             }}
           >
@@ -45,7 +45,7 @@ export default function Passport() {
             <div style={{ position: 'absolute', inset: 10, border: '1px dashed rgba(255,255,255,.18)', borderRadius: 8, pointerEvents: 'none' }} />
             <div style={{ padding: '26px 24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,.12)' }}>
               <div style={{ fontSize: 10, letterSpacing: '.25em', color: '#B8AFC4', marginBottom: 6 }}>{tr.passport.cardLabel}</div>
-              <div style={{ fontFamily: 'Georgia,serif', fontSize: 20, fontWeight: 700, color: '#FFFAFC', letterSpacing: '.04em' }}>FANUZU</div>
+              <div style={{ fontFamily: 'Georgia,serif', fontSize: 20, fontWeight: 700, color: '#F5F3FF', letterSpacing: '.04em' }}>FANUZU</div>
             </div>
             <div style={{ padding: '22px 24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
@@ -63,7 +63,7 @@ export default function Passport() {
                   <Image src="/images/fanuzu-planet.png" alt="planet" fill sizes="52px" style={{ objectFit: 'cover' }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: '#FFFAFC', fontFamily: 'Georgia,serif' }}>{tr.passport.nickname}</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: '#F5F3FF', fontFamily: 'Georgia,serif' }}>{tr.passport.nickname}</div>
                   <div style={{ fontSize: 11, color: '#B8AFC4', letterSpacing: '.05em' }}>{tr.passport.planet}</div>
                 </div>
                 <div
@@ -101,7 +101,7 @@ export default function Passport() {
                 {tr.passport.fields.map((pf, i) => (
                   <div key={i}>
                     <div style={{ fontSize: 9, color: '#6B6478' }}>{pf.k}</div>
-                    <div style={{ fontSize: 12.5, color: '#FFFAFC', fontWeight: 600 }}>{pf.v}</div>
+                    <div style={{ fontSize: 12.5, color: '#F5F3FF', fontWeight: 600 }}>{pf.v}</div>
                   </div>
                 ))}
               </div>

@@ -57,7 +57,7 @@ export default function FandomProgress({ artist }: { artist: string }) {
     if (!rank) return null;
     return (
       <div style={{ maxWidth: 360, margin: '0 auto 22px', textAlign: 'center' }}>
-        <span style={{ fontSize: 12, color: '#7CE8FF', fontWeight: 700, letterSpacing: '.04em' }}>
+        <span style={{ fontSize: 12, color: '#9675F5', fontWeight: 700, letterSpacing: '.04em' }}>
           {tr.rankingSection.currentRankLabel} #{rank}
         </span>
       </div>
@@ -69,7 +69,7 @@ export default function FandomProgress({ artist }: { artist: string }) {
   return (
     <div style={{ maxWidth: 360, margin: '0 auto 22px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-        <span style={{ color: '#7CE8FF', fontWeight: 700, letterSpacing: '.04em' }}>{row.fandom} PLANET GOAL</span>
+        <span style={{ color: '#9675F5', fontWeight: 700, letterSpacing: '.04em' }}>{row.fandom} PLANET GOAL</span>
         <span style={{ color: '#B8AFC4' }}>
           {row.count.toLocaleString()} / {row.goal.toLocaleString()}
         </span>
@@ -79,13 +79,13 @@ export default function FandomProgress({ artist }: { artist: string }) {
           style={{
             width: `${Math.max(2, pct)}%`,
             height: '100%',
-            background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+            background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
             borderRadius: 999,
           }}
         />
       </div>
       {rank && (
-        <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11.5, color: '#7CE8FF', fontWeight: 700 }}>
+        <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11.5, color: '#9675F5', fontWeight: 700 }}>
           {tr.rankingSection.currentRankLabel} #{rank}
         </div>
       )}

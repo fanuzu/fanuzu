@@ -11,11 +11,11 @@ export default function Campaign() {
   ];
 
   return (
-    <section id="campaign" style={{ position: 'relative', zIndex: 1, background: '#0A0613', padding: '72px 24px' }}>
+    <section id="campaign" style={{ position: 'relative', zIndex: 1, background: '#171827', padding: '72px 24px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 680, margin: '0 auto 20px', textAlign: 'center' }}>
-          <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>{tr.campaign.tagline}</div>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 16px', color: '#FFFAFC' }}>
+          <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#9675F5', marginBottom: 14 }}>{tr.campaign.tagline}</div>
+          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 16px', color: '#F5F3FF' }}>
             {tr.campaign.t1}
             <br />
             {tr.campaign.t2}
@@ -42,14 +42,14 @@ export default function Campaign() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
+                  background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))',
                   border: '1px solid rgba(255,125,221,.18)',
                   borderRadius: 18,
                   padding: 26,
                 }}
               >
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 10 }}>{st.label}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 10px', color: '#FFFAFC' }}>{st.title}</h3>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#9675F5', marginBottom: 10 }}>{st.label}</div>
+                <h3 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 10px', color: '#F5F3FF' }}>{st.title}</h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', margin: 0 }}>{st.desc}</p>
               </div>
               {st.hasArrow && <div className="campaign-step-arrow" style={{ color: '#FF7DDD', fontSize: 22, flex: '0 0 auto' }}>→</div>}
@@ -58,13 +58,13 @@ export default function Campaign() {
         </div>
 
         <div style={{ maxWidth: 820, margin: '0 auto 36px', textAlign: 'center' }}>
-          <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>
+          <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#9675F5', marginBottom: 14 }}>
             {tr.campaign.examplesLabel}
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px', justifyContent: 'center', marginBottom: 14 }}>
             {tr.campaign.examples.map((ex, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, color: '#B8AFC4' }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF' }} />
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#9675F5' }} />
                 {ex}
               </div>
             ))}

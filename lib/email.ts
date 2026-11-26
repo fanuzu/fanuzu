@@ -153,8 +153,8 @@ function renderHtml(copy: EmailCopy, params: PreregEmailParams): string {
 
   return `
     <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:480px;margin:0 auto;background:#ffffff;">
-      <div style="background:linear-gradient(135deg,#FF7DDD,#9B7CFF);padding:20px 24px;border-radius:16px 16px 0 0;">
-        <span style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#05030B;">FANUZU</span>
+      <div style="background:linear-gradient(135deg,#FF7DDD,#9675F5);padding:20px 24px;border-radius:16px 16px 0 0;">
+        <span style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#080914;">FANUZU</span>
       </div>
       <div style="border:1px solid #ECE7F5;border-top:none;border-radius:0 0 16px 16px;padding:28px 24px 24px;color:#1a1030;">
         <p style="font-size:12.5px;line-height:1.6;color:#8A7FA0;margin:0 0 18px;">${copy.eyebrow}</p>
@@ -167,7 +167,7 @@ function renderHtml(copy: EmailCopy, params: PreregEmailParams): string {
         <p style="font-size:16px;font-weight:700;letter-spacing:.02em;margin:0 0 12px;">${referralCode}</p>
         <p style="font-size:12.5px;line-height:1.6;color:#6b6478;margin:0 0 24px;">${copy.referralNote}</p>
         <div style="text-align:center;margin:0 0 20px;">
-          <a href="${escapeHtml(params.verifyUrl)}" style="display:inline-block;background:linear-gradient(135deg,#FF7DDD,#9B7CFF);color:#05030B;font-weight:700;font-size:13.5px;padding:12px 28px;border-radius:999px;text-decoration:none;">${copy.verifyLabel}</a>
+          <a href="${escapeHtml(params.verifyUrl)}" style="display:inline-block;background:linear-gradient(135deg,#FF7DDD,#9675F5);color:#080914;font-weight:700;font-size:13.5px;padding:12px 28px;border-radius:999px;text-decoration:none;">${copy.verifyLabel}</a>
           <p style="font-size:11.5px;line-height:1.5;color:#8A7FA0;margin:10px 0 0;">${copy.verifyNote}</p>
         </div>
         <p style="font-size:13.5px;line-height:1.6;color:#1a1030;margin:0;">${copy.closingLine}</p>

@@ -151,7 +151,7 @@ const fieldStyle: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,.14)',
   borderRadius: 8,
   padding: '7px 10px',
-  color: '#FFFAFC',
+  color: '#F5F3FF',
   fontSize: 12.5,
   outline: 'none',
   width: '100%',
@@ -216,7 +216,7 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontWeight: 700, fontSize: 14.5 }}>{artist.artistName}</span>
           {artist.officialStatus === 'official' && (
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.05em', color: '#05030B', background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)', padding: '2px 7px', borderRadius: 999 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.05em', color: '#080914', background: 'linear-gradient(135deg,#FF7DDD,#9675F5)', padding: '2px 7px', borderRadius: 999 }}>
               OFFICIAL
             </span>
           )}
@@ -280,8 +280,8 @@ function ArtistRow({ artist, password, onSaved }: { artist: Artist; password: st
           onClick={save}
           disabled={!dirty || saving}
           style={{
-            background: dirty ? 'linear-gradient(135deg,#FF7DDD,#9B7CFF)' : 'rgba(255,255,255,.08)',
-            color: dirty ? '#05030B' : '#6B6478',
+            background: dirty ? 'linear-gradient(135deg,#FF7DDD,#9675F5)' : 'rgba(255,255,255,.08)',
+            color: dirty ? '#080914' : '#6B6478',
             fontWeight: 700,
             fontSize: 12.5,
             padding: '8px 16px',
@@ -320,7 +320,7 @@ const STATUS_LABEL: Record<RankingEventStatus, string> = {
 };
 const STATUS_COLOR: Record<RankingEventStatus, string> = {
   draft: '#9089A0',
-  active: '#7CE8FF',
+  active: '#9675F5',
   finalized: '#FF7DDD',
 };
 
@@ -381,7 +381,7 @@ function RankingEventOverridePanel({ event, password, onUpdate }: { event: Ranki
             setAuditOpen((o) => !o);
             if (!auditOpen && auditEntries === null) loadAudit();
           }}
-          style={{ background: 'none', border: 'none', color: '#7CE8FF', fontSize: 11, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: '#9675F5', fontSize: 11, fontWeight: 600, cursor: 'pointer', padding: 0 }}
         >
           {auditOpen ? '변경 이력 닫기' : '변경 이력 보기'}
         </button>
@@ -430,7 +430,7 @@ function RankingEventOverridePanel({ event, password, onUpdate }: { event: Ranki
             disabled={!reason.trim()}
             style={{
               background: reason.trim() ? '#FF7DDD' : 'rgba(255,255,255,.1)',
-              color: reason.trim() ? '#05030B' : '#6B6478',
+              color: reason.trim() ? '#080914' : '#6B6478',
               fontWeight: 700,
               fontSize: 11.5,
               padding: '7px 14px',
@@ -445,12 +445,12 @@ function RankingEventOverridePanel({ event, password, onUpdate }: { event: Ranki
       )}
 
       {auditOpen && (
-        <div style={{ marginTop: 10, padding: 12, background: 'rgba(124,232,255,.05)', border: '1px solid rgba(124,232,255,.2)', borderRadius: 10, fontSize: 11, color: '#B8B0C8' }}>
+        <div style={{ marginTop: 10, padding: 12, background: 'rgba(150,117,245,.05)', border: '1px solid rgba(150,117,245,.2)', borderRadius: 10, fontSize: 11, color: '#B8B0C8' }}>
           {auditEntries === null && <p style={{ margin: 0 }}>불러오는 중···</p>}
           {auditEntries?.length === 0 && <p style={{ margin: 0 }}>변경 이력이 없습니다.</p>}
           {auditEntries?.map((e) => (
             <div key={e.id} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
-              <div style={{ color: '#7CE8FF', fontWeight: 600 }}>{new Date(e.createdAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST</div>
+              <div style={{ color: '#9675F5', fontWeight: 600 }}>{new Date(e.createdAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST</div>
               <div>사유: {e.reason}</div>
               <div style={{ color: '#6B6478' }}>{JSON.stringify(e.changedFields)}</div>
             </div>
@@ -484,7 +484,7 @@ function EventNameEditor({
       {changed && (
         <button
           onClick={() => onUpdate(event.id, { name: name.trim() })}
-          style={{ background: '#7CE8FF', color: '#05030B', fontWeight: 700, fontSize: 10.5, padding: '5px 10px', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
+          style={{ background: '#9675F5', color: '#080914', fontWeight: 700, fontSize: 10.5, padding: '5px 10px', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
         >
           이름 저장
         </button>
@@ -528,8 +528,8 @@ function RankingEventRow({
             <button
               onClick={() => onUpdate(event.id, { status: 'active' })}
               style={{
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
+                background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                color: '#080914',
                 fontWeight: 700,
                 fontSize: 11.5,
                 padding: '6px 12px',
@@ -545,9 +545,9 @@ function RankingEventRow({
             <button
               onClick={() => onUpdate(event.id, { isVisible: !event.isVisible })}
               style={{
-                background: event.isVisible ? 'rgba(124,232,255,.12)' : 'rgba(255,255,255,.06)',
-                border: `1px solid ${event.isVisible ? 'rgba(124,232,255,.4)' : 'rgba(255,255,255,.14)'}`,
-                color: event.isVisible ? '#7CE8FF' : '#6B6478',
+                background: event.isVisible ? 'rgba(150,117,245,.12)' : 'rgba(255,255,255,.06)',
+                border: `1px solid ${event.isVisible ? 'rgba(150,117,245,.4)' : 'rgba(255,255,255,.14)'}`,
+                color: event.isVisible ? '#9675F5' : '#6B6478',
                 fontSize: 11.5,
                 fontWeight: 600,
                 padding: '6px 12px',
@@ -582,8 +582,8 @@ function RankingEventRow({
               onClick={() => downloadCsv(`/api/admin/ranking-events/${event.id}/export`, password, `fanuzu-ranking-event-${event.id}-results.csv`)}
               style={{
                 background: 'transparent',
-                border: '1px solid rgba(124,232,255,.3)',
-                color: '#7CE8FF',
+                border: '1px solid rgba(150,117,245,.3)',
+                color: '#9675F5',
                 fontSize: 11.5,
                 fontWeight: 600,
                 padding: '6px 12px',
@@ -776,8 +776,8 @@ function RankingEventPanel({
           type="submit"
           disabled={saving || !newEventName.trim()}
           style={{
-            background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-            color: '#05030B',
+            background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+            color: '#080914',
             fontWeight: 700,
             fontSize: 12.5,
             padding: '8px 18px',
@@ -1204,8 +1204,8 @@ export default function AdminPage() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#05030B',
-        color: '#FFFAFC',
+        background: '#080914',
+        color: '#F5F3FF',
         fontFamily: 'system-ui, -apple-system, sans-serif',
         padding: '48px 24px',
       }}
@@ -1250,8 +1250,8 @@ export default function AdminPage() {
               type="submit"
               disabled={loading}
               style={{
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
+                background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                color: '#080914',
                 fontWeight: 700,
                 fontSize: 14,
                 padding: '12px 20px',
@@ -1304,7 +1304,7 @@ export default function AdminPage() {
                         style={{
                           width: `${Math.max(2, (c.count / maxCount) * 100)}%`,
                           height: '100%',
-                          background: 'linear-gradient(90deg,#FF7DDD,#9B7CFF)',
+                          background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                           borderRadius: 6,
                         }}
                       />
@@ -1509,8 +1509,8 @@ export default function AdminPage() {
                   type="submit"
                   disabled={referralProgramLoading}
                   style={{
-                    background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                    color: '#05030B',
+                    background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                    color: '#080914',
                     fontWeight: 700,
                     fontSize: 12.5,
                     padding: '0 18px',
@@ -1548,7 +1548,7 @@ export default function AdminPage() {
                         </td>
                         <td style={{ padding: '8px 12px 8px 0', textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap' }}>{r.rewardAmount} POP</td>
                         <td style={{ padding: '8px 12px 8px 0', textTransform: 'capitalize' }}>{r.rewardStatus}</td>
-                        <td style={{ padding: '8px 12px 8px 0', color: r.emailVerified ? '#7CE8FF' : '#6B6478' }}>
+                        <td style={{ padding: '8px 12px 8px 0', color: r.emailVerified ? '#9675F5' : '#6B6478' }}>
                           {r.emailVerified ? '인증됨' : '미인증'}
                         </td>
                         <td style={{ padding: '8px 12px 8px 0', color: '#9089A0' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
@@ -1643,8 +1643,8 @@ export default function AdminPage() {
                   type="submit"
                   disabled={basePartnerSaving || !newPartnerName.trim() || !newPartnerFandom.trim()}
                   style={{
-                    background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                    color: '#05030B',
+                    background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                    color: '#080914',
                     fontWeight: 700,
                     fontSize: 12.5,
                     padding: '0 18px',
@@ -1688,7 +1688,7 @@ export default function AdminPage() {
                               style={{
                                 background: 'none',
                                 border: 'none',
-                                color: '#7CE8FF',
+                                color: '#9675F5',
                                 fontWeight: 700,
                                 fontSize: 13,
                                 cursor: 'pointer',
@@ -1710,9 +1710,9 @@ export default function AdminPage() {
                             <button
                               onClick={() => handleToggleBasePartner(p.id, !p.isActive)}
                               style={{
-                                background: p.isActive ? 'rgba(124,232,255,.12)' : 'rgba(255,255,255,.06)',
-                                border: `1px solid ${p.isActive ? 'rgba(124,232,255,.4)' : 'rgba(255,255,255,.14)'}`,
-                                color: p.isActive ? '#7CE8FF' : '#6B6478',
+                                background: p.isActive ? 'rgba(150,117,245,.12)' : 'rgba(255,255,255,.06)',
+                                border: `1px solid ${p.isActive ? 'rgba(150,117,245,.4)' : 'rgba(255,255,255,.14)'}`,
+                                color: p.isActive ? '#9675F5' : '#6B6478',
                                 fontSize: 11.5,
                                 fontWeight: 600,
                                 padding: '5px 10px',
@@ -1743,7 +1743,7 @@ export default function AdminPage() {
                                           style={{
                                             width: `${Math.max(3, (pt.count / Math.max(...trendPoints.map((x) => x.count))) * 100)}%`,
                                             height: '100%',
-                                            background: 'linear-gradient(90deg,#7CE8FF,#9B7CFF)',
+                                            background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                                           }}
                                         />
                                       </div>

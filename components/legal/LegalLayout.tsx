@@ -15,13 +15,13 @@ export default function LegalLayout({
   children: ReactNode;
 }) {
   return (
-    <div style={{ minHeight: '100vh', background: '#05030B', color: '#FFFAFC', fontFamily: 'Pretendard,Inter,system-ui,-apple-system,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#080914', color: '#F5F3FF', fontFamily: 'Pretendard,Inter,system-ui,-apple-system,sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '56px 24px 100px' }}>
         <div style={{ marginBottom: 40 }}>
           <Logo size={26} />
         </div>
         <div style={{ fontSize: 12, letterSpacing: '.12em', color: '#FF7DDD', fontWeight: 700, marginBottom: 12 }}>{eyebrow}</div>
-        <h1 style={{ fontSize: 'clamp(26px,4vw,34px)', fontWeight: 700, lineHeight: 1.3, margin: '0 0 10px', color: '#FFFAFC' }}>{title}</h1>
+        <h1 style={{ fontSize: 'clamp(26px,4vw,34px)', fontWeight: 700, lineHeight: 1.3, margin: '0 0 10px', color: '#F5F3FF' }}>{title}</h1>
         <div style={{ fontSize: 13, color: '#6B6478', marginBottom: 40 }}>{effective}</div>
         <div style={{ fontSize: 15, lineHeight: 1.75, color: '#D8D2E0' }}>{children}</div>
       </div>
@@ -33,13 +33,13 @@ export function InfoBox({ label, children }: { label: string; children: ReactNod
   return (
     <div
       style={{
-        background: 'linear-gradient(135deg,rgba(255,125,221,.14),rgba(155,124,255,.1))',
+        background: 'linear-gradient(135deg,rgba(255,125,221,.14),rgba(150,117,245,.1))',
         border: '1px solid rgba(255,125,221,.22)',
         borderRadius: 16,
         padding: '18px 22px',
         fontSize: 14,
         lineHeight: 1.7,
-        color: '#FFFAFC',
+        color: '#F5F3FF',
       }}
     >
       <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.08em', color: '#FF7DDD', marginBottom: 8 }}>{label}</div>
@@ -51,8 +51,8 @@ export function InfoBox({ label, children }: { label: string; children: ReactNod
 export function Article({ n, title, children }: { n: string; title: string; children: ReactNode }) {
   return (
     <section style={{ marginBottom: 36 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 700, color: '#FFFAFC', margin: '0 0 14px', display: 'flex', gap: 8, alignItems: 'baseline' }}>
-        <span style={{ color: '#7CE8FF', fontSize: 13, fontWeight: 700 }}>{n}</span>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: '#F5F3FF', margin: '0 0 14px', display: 'flex', gap: 8, alignItems: 'baseline' }}>
+        <span style={{ color: '#9675F5', fontSize: 13, fontWeight: 700 }}>{n}</span>
         {title}
       </h2>
       <div className="legal-article">{children}</div>
@@ -70,7 +70,7 @@ export function Article({ n, title, children }: { n: string; title: string; chil
 export function DefTerm({ term, children }: { term: string; children: ReactNode }) {
   return (
     <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 14 }}>
-      <div style={{ flex: '0 0 150px', fontWeight: 600, color: '#FFFAFC' }}>{term}</div>
+      <div style={{ flex: '0 0 150px', fontWeight: 600, color: '#F5F3FF' }}>{term}</div>
       <div style={{ color: '#B8AFC4' }}>{children}</div>
     </div>
   );
@@ -164,7 +164,7 @@ export function LegalTable({ head, rows }: { head: string[]; rows: string[][] })
                   textAlign: 'left',
                   padding: '12px 14px',
                   background: 'rgba(255,255,255,.04)',
-                  color: '#FFFAFC',
+                  color: '#F5F3FF',
                   fontWeight: 600,
                   borderBottom: '1px solid rgba(255,255,255,.1)',
                   whiteSpace: 'nowrap',

@@ -61,7 +61,7 @@ export default function Nav() {
 
   const currentLangLabel = langList.find((lg) => lg.code === lang)?.label ?? lang;
 
-  const navBg = isScrolled ? 'rgba(10,6,19,.72)' : 'transparent';
+  const navBg = isScrolled ? 'rgba(23,24,39,.72)' : 'transparent';
   const navBlur = isScrolled ? 'blur(20px) saturate(160%)' : 'none';
   const navBorder = isScrolled ? '1px solid rgba(255,255,255,.08)' : '1px solid transparent';
 
@@ -136,7 +136,7 @@ export default function Nav() {
                 flex: '0 0 auto',
                 border: '1px solid rgba(255,255,255,.1)',
                 background: 'rgba(255,255,255,.06)',
-                color: '#FFFAFC',
+                color: '#F5F3FF',
                 fontSize: 'clamp(12px,3vw,14px)',
                 borderRadius: '50%',
                 cursor: 'pointer',
@@ -158,7 +158,7 @@ export default function Nav() {
                 gap: 6,
                 border: '1px solid rgba(255,255,255,.1)',
                 background: 'rgba(255,255,255,.06)',
-                color: '#FFFAFC',
+                color: '#F5F3FF',
                 fontSize: 'clamp(10.5px,3vw,12px)',
                 fontWeight: 600,
                 padding: 'clamp(6px,1.8vw,8px) clamp(8px,2.6vw,12px)',
@@ -177,7 +177,7 @@ export default function Nav() {
                   position: 'absolute',
                   top: 'calc(100% + 8px)',
                   right: 0,
-                  background: 'rgba(10,6,19,.95)',
+                  background: 'rgba(23,24,39,.95)',
                   backdropFilter: 'blur(20px) saturate(160%)',
                   WebkitBackdropFilter: 'blur(20px) saturate(160%)',
                   border: '1px solid rgba(255,255,255,.12)',
@@ -199,8 +199,8 @@ export default function Nav() {
                     }}
                     style={{
                       border: 'none',
-                      background: lg.code === lang ? 'linear-gradient(135deg,#FF7DDD,#9B7CFF)' : 'transparent',
-                      color: lg.code === lang ? '#05030B' : '#B8AFC4',
+                      background: lg.code === lang ? 'linear-gradient(135deg,#FF7DDD,#9675F5)' : 'transparent',
+                      color: lg.code === lang ? '#080914' : '#B8AFC4',
                       fontSize: 12.5,
                       fontWeight: 600,
                       padding: '8px 12px',
@@ -222,8 +222,8 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
+                background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                color: '#080914',
                 fontWeight: 700,
                 fontSize: 'clamp(11px,3.1vw,14px)',
                 padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',
@@ -238,8 +238,8 @@ export default function Nav() {
             <button
               onClick={openModal}
               style={{
-                background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-                color: '#05030B',
+                background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                color: '#080914',
                 fontWeight: 700,
                 fontSize: 'clamp(11px,3.1vw,14px)',
                 padding: 'clamp(7px,1.8vw,10px) clamp(10px,3.4vw,18px)',

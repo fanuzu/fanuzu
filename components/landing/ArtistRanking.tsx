@@ -32,7 +32,7 @@ export default function ArtistRanking() {
 
   return (
     <div style={{ margin: '0 0 24px' }}>
-      <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 10 }}>{tr.prereg.rankingTitle}</div>
+      <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#9675F5', marginBottom: 10 }}>{tr.prereg.rankingTitle}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
         {ranking.map((row, i) => (
           <div
@@ -41,14 +41,14 @@ export default function ArtistRanking() {
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              background: 'linear-gradient(160deg,rgba(255,125,221,.1),rgba(155,124,255,.04))',
+              background: 'linear-gradient(160deg,rgba(255,125,221,.1),rgba(150,117,245,.04))',
               border: '1px solid rgba(255,125,221,.22)',
               borderRadius: 999,
               padding: '9px 16px',
             }}
           >
-            <span style={{ fontSize: 13, fontWeight: 800, color: RANK_ACCENTS[i] ?? '#FFFAFC' }}>#{i + 1}</span>
-            <span style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{row.artist}</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: RANK_ACCENTS[i] ?? '#F5F3FF' }}>#{i + 1}</span>
+            <span style={{ fontSize: 13.5, fontWeight: 700, color: '#F5F3FF' }}>{row.artist}</span>
             <span style={{ fontSize: 12, color: '#B8AFC4' }}>{row.count.toLocaleString()}</span>
           </div>
         ))}

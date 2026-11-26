@@ -10,7 +10,7 @@ const pillStyle: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,.12)',
   borderRadius: 14,
   padding: '17px 10px',
-  color: '#FFFAFC',
+  color: '#F5F3FF',
   fontSize: 'clamp(12px,3.6vw,14.5px)',
   fontWeight: 700,
   fontFamily: 'inherit',
@@ -61,7 +61,7 @@ export default function ArtistSelect({
           lineHeight: 1.3,
           fontWeight: 800,
           margin: '0 0 12px',
-          backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 60%,var(--planet-a2))',
+          backgroundImage: 'linear-gradient(90deg,#F5F3FF,var(--planet-a1) 60%,var(--planet-a2))',
         }}
       >
         ✨ {tr.prereg.selectTitle}
@@ -122,7 +122,7 @@ export default function ArtistSelect({
               border: '1px solid rgba(255,255,255,.14)',
               borderRadius: 12,
               padding: '13px 16px',
-              color: '#FFFAFC',
+              color: '#F5F3FF',
               fontSize: 14.5,
               fontFamily: 'inherit',
               outline: 'none',
@@ -132,8 +132,8 @@ export default function ArtistSelect({
             type="submit"
             disabled={!customText.trim()}
             style={{
-              background: 'linear-gradient(135deg,#FF7DDD,#9B7CFF)',
-              color: '#05030B',
+              background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+              color: '#080914',
               fontWeight: 700,
               fontSize: 14,
               padding: '13px 22px',

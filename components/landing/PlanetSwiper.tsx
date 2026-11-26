@@ -335,7 +335,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             borderRadius: '50%',
             border: '1px solid rgba(255,255,255,.16)',
             background: 'rgba(10,7,20,.75)',
-            color: '#FFFAFC',
+            color: '#F5F3FF',
             cursor: 'pointer',
             fontSize: 18,
             zIndex: 3,
@@ -356,7 +356,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
             borderRadius: '50%',
             border: '1px solid rgba(255,255,255,.16)',
             background: 'rgba(10,7,20,.75)',
-            color: '#FFFAFC',
+            color: '#F5F3FF',
             cursor: 'pointer',
             fontSize: 18,
             zIndex: 3,
@@ -420,7 +420,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(5,3,11,.5)',
+              background: 'rgba(8,9,20,.5)',
             }}
           >
             <span style={{ fontSize: 'clamp(36px,10vw,56px)' }}>🔒</span>
@@ -460,9 +460,9 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
               gap: 7,
               padding: '7px 14px',
               borderRadius: 999,
-              background: 'rgba(124,232,255,.1)',
-              border: '1px solid rgba(124,232,255,.3)',
-              color: '#FFFAFC',
+              background: 'rgba(150,117,245,.1)',
+              border: '1px solid rgba(150,117,245,.3)',
+              color: '#F5F3FF',
               fontSize: 12.5,
               fontWeight: 700,
             }}
@@ -472,7 +472,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
           </div>
         ) : revealed ? (
           <>
-            <div style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFAFC' }}>{planet.label}</div>
+            <div style={{ fontSize: 13.5, fontWeight: 700, color: '#F5F3FF' }}>{planet.label}</div>
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 2 }}>{planet.tagline}</div>
           </>
         ) : (
@@ -485,7 +485,7 @@ export default function PlanetSwiper({ children }: { children?: ReactNode }) {
               borderRadius: 999,
               background: 'rgba(255,125,221,.1)',
               border: '1px solid rgba(255,125,221,.3)',
-              color: '#FFFAFC',
+              color: '#F5F3FF',
               fontSize: 12.5,
               fontWeight: 700,
             }}

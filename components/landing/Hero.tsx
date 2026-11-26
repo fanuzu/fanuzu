@@ -71,12 +71,12 @@ export default function Hero() {
             margin: '0 0 26px',
           }}
         >
-          <span style={{ color: '#FFFAFC' }}>{tr.hero.t1}</span>
+          <span style={{ color: '#F5F3FF' }}>{tr.hero.t1}</span>
           <br />
           <span
             className="gradient-text"
             style={{
-              backgroundImage: 'linear-gradient(90deg,#FFFAFC,var(--planet-a1) 55%,var(--planet-a2))',
+              backgroundImage: 'linear-gradient(90deg,#F5F3FF,var(--planet-a1) 55%,var(--planet-a2))',
               transition: 'background-image 1.1s cubic-bezier(.22,.61,.36,1)',
             }}
           >
@@ -98,7 +98,7 @@ export default function Hero() {
             onClick={openModal}
             style={{
               background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
-              color: '#05030B',
+              color: '#080914',
               fontWeight: 700,
               fontSize: 17,
               padding: '16px 32px',
@@ -117,9 +117,9 @@ export default function Hero() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {tr.hero.sub.map((s, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7CE8FF', marginTop: 8, flex: '0 0 auto' }} />
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#9675F5', marginTop: 8, flex: '0 0 auto' }} />
               <div>
-                <div style={{ fontSize: 14.5, fontWeight: 700, color: '#FFFAFC' }}>{s.title}</div>
+                <div style={{ fontSize: 14.5, fontWeight: 700, color: '#F5F3FF' }}>{s.title}</div>
                 <div style={{ fontSize: 13, color: '#B8AFC4', marginTop: 2 }}>{s.desc}</div>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function Hero() {
             border: 'none',
             padding: 0,
             marginTop: 20,
-            color: '#7CE8FF',
+            color: '#9675F5',
             fontSize: 13.5,
             fontWeight: 700,
             cursor: 'pointer',
@@ -155,7 +155,7 @@ export default function Hero() {
               position: 'absolute',
               left: '-8%',
               bottom: '2%',
-              background: 'rgba(10,6,19,.7)',
+              background: 'rgba(23,24,39,.7)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               border: '1px solid rgba(255,255,255,.12)',
@@ -164,7 +164,7 @@ export default function Hero() {
               minWidth: 150,
             }}
           >
-            <div style={{ fontSize: 24, fontWeight: 700, color: '#FFFAFC' }}>{displayedPop.toLocaleString()} POP</div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: '#F5F3FF' }}>{displayedPop.toLocaleString()} POP</div>
             <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{tr.hero.statLabel}</div>
             <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{tr.hero.statSub}</div>
           </div>

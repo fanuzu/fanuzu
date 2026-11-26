@@ -48,7 +48,7 @@ export default function StarField() {
             top: `${star.y}%`,
             width: star.size,
             height: star.size,
-            background: '#FFFAFC',
+            background: '#F5F3FF',
             borderRadius: '50%',
             opacity: 0.5,
             animation: `twinkle ${star.dur}s ease-in-out infinite`,
