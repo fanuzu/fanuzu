@@ -34,7 +34,7 @@ const EMAIL_COPY: Record<Lang, EmailCopy> = {
     referralNote: '추천 코드를 공유하면 코드를 사용한 친구와 나 모두 100 POP을 받을 수 있어요.',
     closingLine: 'FANUZU가 시작되는 순간 가장 먼저 알려드리겠습니다.',
     verifyLabel:'이메일 인증하기',
-    verifyNote:'팬덤 랭킹전 등 일부 이벤트는 이메일 인증을 완료해야 반영돼요.',
+    verifyNote:'일부 이벤트는 이메일 인증을 완료해야 반영돼요.',
   },
   en: {
     subject: '[FANUZU] Your pre-registration is complete',

@@ -10,7 +10,7 @@ const HEIGHT = 630;
 
 // Matches the root app/opengraph-image.tsx's fallback name exactly, same
 // reasoning: it's proven safe against the bundled local subset font below.
-const FALLBACK_EVENT_NAME = '사전등록 랭킹전';
+const FALLBACK_EVENT_NAME = '사전등록 이벤트';
 
 const fontCache = new Map<string, ArrayBuffer | null>();
 

@@ -20,7 +20,7 @@ export async function generateMetadata({
   const artist = typeof searchParams.artist === 'string' ? searchParams.artist.trim().slice(0, 40) : '';
   if (!artist) return {};
 
-  const title = `FANUZU | ${artist}와 함께 사전등록 랭킹전 참여하기`;
+  const title = `FANUZU | ${artist}와 함께 사전등록 이벤트 참여하기`;
   const description = `우리 팬덤의 힘으로 ${artist}에게 광고를 선물하세요. 지금 무료로 사전등록하세요.`;
   const ogImage = `/api/og?artist=${encodeURIComponent(artist)}`;
 

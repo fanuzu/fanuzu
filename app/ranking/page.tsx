@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import LandingPage from '@/components/landing/LandingPage';
 
-const DEFAULT_TITLE = 'FANUZU 사전등록 랭킹전 | 최애를 위한 우주';
-const DEFAULT_DESCRIPTION = '우리 팬덤의 힘으로 최애에게 광고를 선물하세요. 지금 무료로 사전등록하고 랭킹전에 참여해보세요.';
+const DEFAULT_TITLE = 'FANUZU 사전등록 이벤트 | 최애를 위한 우주';
+const DEFAULT_DESCRIPTION = '우리 팬덤의 힘으로 최애에게 광고를 선물하세요. 지금 무료로 사전등록하고 이벤트에 참여해보세요.';
 
 // Dedicated ad-landing URL (ranking-event review item 2): same site, same
 // providers/tracking, just with the ranking event's intro/rewards/CTA as
@@ -22,7 +22,7 @@ export async function generateMetadata({
   searchParams: { artist?: string };
 }): Promise<Metadata> {
   const artist = typeof searchParams.artist === 'string' ? searchParams.artist.trim().slice(0, 40) : '';
-  const title = artist ? `FANUZU | ${artist}와 함께 사전등록 랭킹전 참여하기` : DEFAULT_TITLE;
+  const title = artist ? `FANUZU | ${artist}와 함께 사전등록 이벤트 참여하기` : DEFAULT_TITLE;
   const description = artist
     ? `우리 팬덤의 힘으로 ${artist}에게 광고를 선물하세요. 지금 무료로 사전등록하세요.`
     : DEFAULT_DESCRIPTION;
