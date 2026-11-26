@@ -461,6 +461,38 @@ function RankingEventOverridePanel({ event, password, onUpdate }: { event: Ranki
   );
 }
 
+// Unlike rewards/dates/includeExistingRegistrants, the event name isn't in
+// LOCKED_AFTER_DRAFT — the server accepts a rename at any status with no
+// override reason — so this stays a plain always-editable field instead of
+// living behind the "핵심 조건 긴급 수정" panel below.
+function EventNameEditor({
+  event,
+  onUpdate,
+}: {
+  event: RankingEvent;
+  onUpdate: (id: number, patch: Record<string, unknown>) => void;
+}) {
+  const [name, setName] = useState(event.name);
+  const changed = name.trim().length > 0 && name.trim() !== event.name;
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={{ ...fieldStyle, fontWeight: 700, fontSize: 13.5, padding: '4px 8px', width: 200 }}
+      />
+      {changed && (
+        <button
+          onClick={() => onUpdate(event.id, { name: name.trim() })}
+          style={{ background: '#7CE8FF', color: '#05030B', fontWeight: 700, fontSize: 10.5, padding: '5px 10px', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
+        >
+          이름 저장
+        </button>
+      )}
+    </div>
+  );
+}
+
 function RankingEventRow({
   event,
   password,
@@ -476,7 +508,7 @@ function RankingEventRow({
     <div style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontWeight: 700, fontSize: 14.5 }}>{event.name}</span>
+          <EventNameEditor event={event} onUpdate={onUpdate} />
           <span
             style={{
               fontSize: 10,
