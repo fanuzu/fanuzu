@@ -99,7 +99,7 @@ ko: {
     ctaPrimary:'내 최애 행성에 참여하기',ctaPrereg:'나의 최애 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     detailsCta:'자세히 보기',
     subLead:'이 모든 활동이 모여 팬덤 행성을 키워요.',
-    sub:[{title:'스밍, 투표, 커뮤니티',desc:'최애를 응원하는 다양한 활동'},{title:'팬덤활동 지원',desc:'미션, 이벤트, 리워드까지'},{title:'민주적인 팬덤 운영 시스템',desc:'팬들이 함께 만들어가는 팬덤'}],
+    sub:[{title:'스밍, 투표, 커뮤니티',desc:'최애를 응원하는 다양한 활동'},{title:'팬덤활동 지원',desc:'미션, 이벤트, 리워드까지'},{title:'우주민주적인 팬덤 운영 시스템',desc:'팬들이 함께 만들어가는 팬덤'}],
     statLabel:'오늘 모인 팬 기여',statNumber:'12,480 POP',statSub:'POP은 팬의 시간과 행동을 기록하는 기여 포인트예요.',liveViewersLabel:'지금 {n}명이 보고 있어요',previewCaption:'팬우주(FANUZU)는 아티스트와 우리의 모든 순간을 기록하는 행성이에요.',previewCaptionInside:'K-pop, K-culture, Beauty, Trip, 무엇이든지 물어볼 수 있어요.',previewCaptionGrowth:'우리의 행동으로 팬덤 행성을 성장시키고 팬덤의 힘을 키울 수 있어요.'},
   exp:{t1:'총공이',t2:'팬덤 행성을 성장시켜요.',
     d1:'POP은 별을 빛나게하고 행성을 성장시켜요.',d2:'',
