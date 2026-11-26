@@ -173,6 +173,16 @@ body {
   box-sizing: border-box;
 }
 
+/* Warmer, rounded display face for section/page titles — fandom-community
+   feel instead of a plain Pretendard heading. Verified (fontTools, full
+   11,172-syllable modern Hangul block) to have complete coverage with
+   valid contours before using it here — Black Han Sans, tried earlier,
+   only covered ~23% of Hangul and had a few glyphs with broken contour
+   winding that rendered as solid boxes in production. */
+.headline-font {
+  font-family: 'Gowun Dodum', Pretendard, Inter, system-ui, sans-serif;
+}
+
 ::selection {
   background: #FF7DDD;
   color: #05030B;

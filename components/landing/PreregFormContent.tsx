@@ -311,7 +311,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF7DDD', flex: '0 0 auto' }} />
           {tr.prereg.statusBadge}
         </div>
-        <h2 id={headingId} style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
+        <h2 id={headingId} className="headline-font" style={{ fontSize: 'clamp(28px,4vw,38px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
           {tr.prereg.t1}
           <br />
           {tr.prereg.t2}
