@@ -173,6 +173,15 @@ body {
   box-sizing: border-box;
 }
 
+/* Bold, rounded display face for section/page titles — gives the site a
+   fandom-community/entertainment-banner personality that a plain Pretendard
+   heading doesn't carry. Only covers Hangul + basic Latin, so ja/zh/th
+   headline text falls back to Pretendard automatically per character —
+   that's intentional, not a gap to fill with more @font-face entries. */
+.headline-font {
+  font-family: 'Black Han Sans', Pretendard, Inter, system-ui, sans-serif;
+}
+
 ::selection {
   background: #FF7DDD;
   color: #05030B;

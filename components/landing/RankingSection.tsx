@@ -179,7 +179,7 @@ export default function RankingSection() {
             {tr.rankingSection.eyebrow}
           </div>
           {event?.name && (
-            <h2 style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFAFC' }}>{event.name}</h2>
+            <h2 className="headline-font" style={{ fontSize: 'clamp(26px,4vw,36px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFAFC' }}>{event.name}</h2>
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
           {staticLabel && <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{staticLabel}</div>}
