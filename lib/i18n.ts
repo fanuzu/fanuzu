@@ -1,7 +1,7 @@
 export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant' | 'id' | 'fil' | 'th';
 
 export interface TranslationSet {
-  nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string; appDownloadCta: string };
+  nav: { why: string; exp: string; system: string; passport: string; prereg: string; cta: string; close: string; appDownloadCta: string };
   hero: {
     badge: string; t1: string; t2: string; t3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; detailsCta: string; subLead: string; sub: { title: string; desc: string }[];
@@ -21,10 +21,6 @@ export interface TranslationSet {
   passport: {
     t1: string; t2: string; d1: string; d2: string; cardLabel: string; nickname: string; planet: string;
     originTag: string; fields: { k: string; v: string }[]; footer: string;
-  };
-  origin: {
-    t1: string; t2: string; d1: string; d2: string; quote: string; badgeLabel: string; badgeDesc: string;
-    benefits: { title: string; items: string[] }[]; note: string; ctaLabel: string; ctaSub: string;
   };
   prereg: {
     t1: string; t2: string; d1: string;
@@ -90,7 +86,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 
 export const T: Record<Lang, TranslationSet> = {
 ko: {
-  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기',appDownloadCta:'앱 다운로드'},
+  nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기',appDownloadCta:'앱 다운로드'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 최애를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
     ctaPrimary:'내 최애 행성에 참여하기',ctaPrereg:'나의 최애 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     detailsCta:'자세히 보기',
@@ -126,18 +122,6 @@ ko: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'입장일',v:'2026.11.07'},{k:'함께한 시간',v:'328 DAYS'},{k:'보유 POP',v:'1,250 POP'},{k:'누적 기여',v:'18,420 POP'},{k:'이번 주 기여',v:'480 POP'},{k:'참여 캠페인',v:'12'},{k:'함께한 성장 단계',v:'STAGE 1 → 5'},{k:'팬덤 기록',v:'46'},{k:'초대한 팬',v:'5'}],
     footer:'이 별이 밝아지는 순간, 나도 함께 있었어요.'},
-  origin:{t1:'사전등록하면',t2:'특별한 증표가 남아요.',
-    d1:'단 한 번만 주어지는 PRE-REG BADGE.',
-    d2:'행성이 커져도 이 순간은 기록으로 남아요.',
-    quote:'지금 함께한 네가, 이 별의 시작.',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'사전등록을 완료한 모든 팬에게.',
-    benefits:[
-      {title:'시작의 기록',items:['PASSPORT에 뱃지 기록','참여 순번 표시','고유 번호 부여']},
-      {title:'시각적 차별화',items:['전용 패스포트 테두리','별빛 홀로그램','닉네임 옆 특별 배지']},
-      {title:'명예 참여권',items:['초기 테마 투표','첫 캠페인 제안권','행성 역사관 첫 메시지','투명하고 공정한 투표권']}
-    ],
-    note:'뱃지는 결제·추천 수와 상관없어요. 사전등록만 하면 돼요.',
-    ctaLabel:'PRE-REG BADGE 받기',ctaSub:'사전등록만 하면 패스포트에 그대로 기록돼요.'},
   prereg:{t1:'아직 아무도 밝히지 않은',t2:'너의 별.',
     d1:'내 최애 행성에 가장 먼저 도착하기.',
     statusBadge:'사전신청',
@@ -193,7 +177,7 @@ ko: {
   errors:{invalidEmail:'올바른 이메일 주소를 입력해주세요.',emailAlreadyRegistered:'이미 사전등록된 이메일입니다.',invalidReferral:'INVITE CODE를 찾을 수 없습니다.',selfReferralNotAllowed:'본인의 INVITE CODE는 사용할 수 없습니다.',requiredConsent:'필수 동의 항목을 확인해주세요.',rateLimit:'잠시 후 다시 시도해주세요.',serverError:'일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',networkError:'네트워크 연결을 확인해주세요.'}
 },
 en: {
-  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close',appDownloadCta:'Download the app'},
+  nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',prereg:'Pre-register',cta:'Light my star',close:'Close',appDownloadCta:'Download the app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
     ctaPrimary:'Join my artist’s planet',ctaPrereg:'Pre-register my fandom planet',ctaSecondary:'Why FANUZU',
     detailsCta:'See how it works',
@@ -229,18 +213,6 @@ en: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'Joined',v:'2026.11.07'},{k:'Time together',v:'328 DAYS'},{k:'POP balance',v:'1,250 POP'},{k:'Total contribution',v:'18,420 POP'},{k:'This week',v:'480 POP'},{k:'Campaigns joined',v:'12'},{k:'Growth stages together',v:'STAGE 1 → 5'},{k:'Fandom records',v:'46'},{k:'Fans invited',v:'5'}],
     footer:'I was there when this star began to shine brighter.'},
-  origin:{t1:'Pre-register,',t2:'leave your mark.',
-    d1:'The PRE-REG BADGE — given once, never again.',
-    d2:'No matter how big the planet grows, this moment stays on record.',
-    quote:'You, right now — the beginning of this star.',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'For every fan who pre-registers.',
-    benefits:[
-      {title:'Founding record',items:['Badge recorded in PASSPORT','Your join order shown','A unique number, just yours']},
-      {title:'Visual recognition',items:['A dedicated passport border','A moving starlight hologram','A badge next to your nickname']},
-      {title:'Early access',items:['Vote on the planet’s theme','Propose the first campaign','Leave the first message in planet history','Fair, transparent governance voting']}
-    ],
-    note:'No spending, no referral count — just pre-register.',
-    ctaLabel:'Get the PRE-REG BADGE',ctaSub:'Just pre-register. It’s yours, recorded in PASSPORT.'},
   prereg:{t1:'A star no one’s lit yet —',t2:'yours, waiting.',
     d1:'Be first on your artist’s planet.',
     statusBadge:'PRE-REGISTRATION',
@@ -296,7 +268,7 @@ en: {
   errors:{invalidEmail:'Enter a valid email address.',emailAlreadyRegistered:'This email is already pre-registered.',invalidReferral:'We couldn’t find that invite code.',selfReferralNotAllowed:'You can’t use your own invite code.',requiredConsent:'Please accept the required terms.',rateLimit:'Too many attempts. Please try again shortly.',serverError:'Something went wrong. Please try again shortly.',networkError:'Check your internet connection.'}
 },
 ja: {
-  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる',appDownloadCta:'アプリをダウンロード'},
+  nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる',appDownloadCta:'アプリをダウンロード'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
     ctaPrimary:'推しの惑星に参加する',ctaPrereg:'ファンダム惑星を事前登録',ctaSecondary:'FANUZUが選ばれる理由',
     detailsCta:'詳しく見る',
@@ -332,18 +304,6 @@ ja: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'参加日',v:'2026.11.07'},{k:'共にした時間',v:'328 DAYS'},{k:'保有POP',v:'1,250 POP'},{k:'累積貢献',v:'18,420 POP'},{k:'今週の貢献',v:'480 POP'},{k:'参加キャンペーン',v:'12'},{k:'共にした成長段階',v:'STAGE 1 → 5'},{k:'ファンダム記録',v:'46'},{k:'招待したファン',v:'5'}],
     footer:'この星がもっと輝き始めた瞬間、私はここにいた。'},
-  origin:{t1:'事前登録すれば、',t2:'特別な証が残る。',
-    d1:'一度きりのPRE-REG BADGE。',
-    d2:'惑星がどれだけ育っても、この瞬間は記録に残る。',
-    quote:'今、一緒にいるあなたが、この星のはじまり。',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'事前登録したすべてのファンへ。',
-    benefits:[
-      {title:'はじまりの記録',items:['PASSPORTにバッジを記録','参加順番を表示','あなただけの番号']},
-      {title:'特別なビジュアル',items:['専用パスポートの縁取り','星光のホログラム','ニックネーム横の特別バッジ']},
-      {title:'初期参加特典',items:['初期テーマ投票','最初のキャンペーン提案権','惑星史料館への最初のメッセージ','公正で透明なガバナンス投票権']}
-    ],
-    note:'課金でも紹介人数でもない。事前登録するだけでいい。',
-    ctaLabel:'PRE-REG BADGEを受け取る',ctaSub:'事前登録するだけ。そのままPASSPORTに残る。'},
   prereg:{t1:'まだ誰も照らしていない、',t2:'あなたの星。',
     d1:'推しの惑星に、いちばんに到着。',
     statusBadge:'事前登録',
@@ -399,7 +359,7 @@ ja: {
   errors:{invalidEmail:'正しいメールアドレスを入力してください。',emailAlreadyRegistered:'このメールアドレスはすでに事前登録されています。',invalidReferral:'INVITE CODEが見つかりません。',selfReferralNotAllowed:'自分のINVITE CODEは使用できません。',requiredConsent:'必須項目への同意を確認してください。',rateLimit:'アクセスが集中しています。少し時間をおいてもう一度お試しください。',serverError:'エラーが発生しました。少し時間をおいてもう一度お試しください。',networkError:'インターネット接続を確認してください。'}
 },
 es: {
-  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar',appDownloadCta:'Descargar la app'},
+  nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar',appDownloadCta:'Descargar la app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
     ctaPrimary:'Unirme al planeta de mi artista',ctaPrereg:'Preinscribir mi planeta fandom',ctaSecondary:'Por qué FANUZU',
     detailsCta:'Ver cómo funciona',
@@ -435,18 +395,6 @@ es: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'Fecha de ingreso',v:'2026.11.07'},{k:'Tiempo juntos',v:'328 DAYS'},{k:'Saldo de POP',v:'1,250 POP'},{k:'Contribución total',v:'18,420 POP'},{k:'Esta semana',v:'480 POP'},{k:'Campañas',v:'12'},{k:'Etapas de crecimiento',v:'STAGE 1 → 5'},{k:'Registros del fandom',v:'46'},{k:'Fans invitados',v:'5'}],
     footer:'Estuve aquí cuando esta estrella empezó a brillar aún más.'},
-  origin:{t1:'Preinscríbete,',t2:'deja tu huella.',
-    d1:'La PRE-REG BADGE — se entrega una sola vez.',
-    d2:'Por más que crezca el planeta, este momento queda registrado.',
-    quote:'Tú, ahora mismo — el comienzo de esta estrella.',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'Para todo fan que se preinscribe.',
-    benefits:[
-      {title:'Registro fundador',items:['Insignia registrada en PASSPORT','Tu orden de ingreso visible','Un número único para ti']},
-      {title:'Distinción visual',items:['Un borde de pasaporte exclusivo','Un holograma de luz estelar','Una insignia junto a tu apodo']},
-      {title:'Acceso anticipado',items:['Vota el tema del planeta','Propón la primera campaña','Deja el primer mensaje en la historia del planeta','Voto en una gobernanza justa y transparente']}
-    ],
-    note:'No depende del gasto ni de referidos — solo preinscríbete.',
-    ctaLabel:'Consigue la PRE-REG BADGE',ctaSub:'Solo preinscríbete. Queda registrada en tu PASSPORT.'},
   prereg:{t1:'Una estrella que nadie ha iluminado aún —',t2:'la tuya, esperando.',
     d1:'Sé el primero en el planeta de tu artista.',
     statusBadge:'PREINSCRIPCIÓN',
@@ -502,7 +450,7 @@ es: {
   errors:{invalidEmail:'Introduce un correo electrónico válido.',emailAlreadyRegistered:'Este correo ya está preinscrito.',invalidReferral:'No encontramos ese invite code.',selfReferralNotAllowed:'No puedes usar tu propio invite code.',requiredConsent:'Acepta los términos obligatorios.',rateLimit:'Demasiados intentos. Vuelve a intentarlo en unos minutos.',serverError:'Algo salió mal. Vuelve a intentarlo en unos minutos.',networkError:'Comprueba tu conexión a internet.'}
 },
 zhHans: {
-  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭',appDownloadCta:'下载App'},
+  nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',prereg:'预注册',cta:'点亮我的星',close:'关闭',appDownloadCta:'下载App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
     ctaPrimary:'加入我喜欢的艺人星球',ctaPrereg:'预注册粉丝星球',ctaSecondary:'FANUZU 有什么不同',
     detailsCta:'查看详情',
@@ -538,18 +486,6 @@ zhHans: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'加入日期',v:'2026.11.07'},{k:'共度时光',v:'328 DAYS'},{k:'持有POP',v:'1,250 POP'},{k:'累计贡献',v:'18,420 POP'},{k:'本周贡献',v:'480 POP'},{k:'参与活动',v:'12'},{k:'共同成长阶段',v:'STAGE 1 → 5'},{k:'粉丝记录',v:'46'},{k:'邀请的粉丝',v:'5'}],
     footer:'这颗星开始变得更耀眼的那一刻，我也在这里。'},
-  origin:{t1:'预注册，',t2:'留下专属印记。',
-    d1:'PRE-REG BADGE，仅此一次。',
-    d2:'无论星球多大，这一刻都会被记录。',
-    quote:'此刻与你同在，正是这颗星的起点。',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'献给每一位预注册的粉丝。',
-    benefits:[
-      {title:'初始记录',items:['徽章记录在PASSPORT','显示参与顺序','专属编号']},
-      {title:'专属视觉',items:['专属护照边框','星光全息效果','昵称旁的专属徽章']},
-      {title:'早期特权',items:['参与主题投票','首个活动提案权','星球历史馆首条留言','公正透明的治理投票权']}
-    ],
-    note:'不看消费、不看邀请数——预注册就有。',
-    ctaLabel:'领取PRE-REG BADGE',ctaSub:'只要预注册，直接记录进PASSPORT。'},
   prereg:{t1:'还没人点亮的星，',t2:'是你的。',
     d1:'第一个抵达你的艺人星球。',
     statusBadge:'预注册',
@@ -605,7 +541,7 @@ zhHans: {
   errors:{invalidEmail:'请输入有效的电子邮箱地址。',emailAlreadyRegistered:'该邮箱已完成预注册。',invalidReferral:'未找到该 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'请确认必填同意项。',rateLimit:'操作过于频繁，请稍后再试。',serverError:'发生错误，请稍后再试。',networkError:'请检查网络连接。'}
 },
 zhHant: {
-  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉',appDownloadCta:'下載App'},
+  nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',prereg:'預先登記',cta:'點亮我的星',close:'關閉',appDownloadCta:'下載App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
     ctaPrimary:'加入我喜歡的藝人星球',ctaPrereg:'預先登記粉絲星球',ctaSecondary:'FANUZU 有什麼不同',
     detailsCta:'查看詳情',
@@ -641,18 +577,6 @@ zhHant: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'加入日期',v:'2026.11.07'},{k:'共度時光',v:'328 DAYS'},{k:'持有POP',v:'1,250 POP'},{k:'累積貢獻',v:'18,420 POP'},{k:'本週貢獻',v:'480 POP'},{k:'參與活動',v:'12'},{k:'共同成長階段',v:'STAGE 1 → 5'},{k:'粉絲記錄',v:'46'},{k:'邀請的粉絲',v:'5'}],
     footer:'這顆星開始變得更耀眼的那一刻，我也在這裡。'},
-  origin:{t1:'預先登記，',t2:'留下專屬印記。',
-    d1:'PRE-REG BADGE，僅此一次。',
-    d2:'無論星球多大，這一刻都會被記錄。',
-    quote:'此刻與你同在，正是這顆星的起點。',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'獻給每一位預先登記的粉絲。',
-    benefits:[
-      {title:'初始記錄',items:['徽章記錄在PASSPORT','顯示參與順序','專屬編號']},
-      {title:'專屬視覺',items:['專屬護照邊框','星光全息效果','暱稱旁的專屬徽章']},
-      {title:'早期特權',items:['參與主題投票','首個活動提案權','星球歷史館首則留言','公正透明的治理投票權']}
-    ],
-    note:'不看消費、不看邀請數——預先登記就有。',
-    ctaLabel:'領取PRE-REG BADGE',ctaSub:'只要預先登記，直接記錄進PASSPORT。'},
   prereg:{t1:'還沒人點亮的星，',t2:'是你的。',
     d1:'第一個抵達你的藝人星球。',
     statusBadge:'預先登記',
@@ -708,7 +632,7 @@ zhHant: {
   errors:{invalidEmail:'請輸入有效的電子郵件地址。',emailAlreadyRegistered:'此電子郵件已完成預先登記。',invalidReferral:'找不到這組 INVITE CODE。',selfReferralNotAllowed:'不能使用自己的 INVITE CODE。',requiredConsent:'請勾選必選同意項目。',rateLimit:'操作過於頻繁，請稍後再試。',serverError:'發生錯誤，請稍後再試。',networkError:'請檢查網路連線。'}
 },
 id: {
-  nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup',appDownloadCta:'Unduh aplikasi'},
+  nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup',appDownloadCta:'Unduh aplikasi'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat bintang kita',t2:'bersinar paling terang',t3:'di alam semesta fandom.',
     ctaPrimary:'Gabung ke planet artisku',ctaPrereg:'Pra-daftar planet fandomku',ctaSecondary:'Kenapa FANUZU',
     detailsCta:'Lihat selengkapnya',
@@ -744,18 +668,6 @@ id: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'Bergabung',v:'2026.11.07'},{k:'Waktu bersama',v:'328 HARI'},{k:'Saldo POP',v:'1,250 POP'},{k:'Total kontribusi',v:'18,420 POP'},{k:'Minggu ini',v:'480 POP'},{k:'Campaign diikuti',v:'12'},{k:'Tahap pertumbuhan bersama',v:'STAGE 1 → 5'},{k:'Catatan fandom',v:'46'},{k:'Fan diundang',v:'5'}],
     footer:'Aku ada di sana saat bintang ini mulai bersinar lebih terang.'},
-  origin:{t1:'Pra-daftar,',t2:'tinggalkan jejakmu.',
-    d1:'PRE-REG BADGE — diberikan sekali, tak akan lagi.',
-    d2:'Sebesar apa pun planet tumbuh, momen ini tetap tercatat.',
-    quote:'Kamu, sekarang ini — awal dari bintang ini.',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'Untuk setiap fan yang pra-daftar.',
-    benefits:[
-      {title:'Catatan pendiri',items:['Badge tercatat di PASSPORT','Urutan bergabungmu ditampilkan','Nomor unik, khusus untukmu']},
-      {title:'Pengenalan visual',items:['Bingkai passport khusus','Hologram cahaya bintang bergerak','Badge di samping nickname-mu']},
-      {title:'Akses awal',items:['Vote untuk tema planet','Usulkan campaign pertama','Tinggalkan pesan pertama di sejarah planet','Voting tata kelola yang adil dan transparan']}
-    ],
-    note:'Tidak perlu belanja, tidak perlu jumlah referral — cukup pra-daftar.',
-    ctaLabel:'Dapatkan PRE-REG BADGE',ctaSub:'Cukup pra-daftar. Langsung tercatat di PASSPORT-mu.'},
   prereg:{t1:'Bintang yang belum ada yang menyalakannya —',t2:'milikmu, menunggu.',
     d1:'Jadilah yang pertama di planet artismu.',
     statusBadge:'PRA-PENDAFTARAN',
@@ -811,7 +723,7 @@ id: {
   errors:{invalidEmail:'Masukkan alamat email yang valid.',emailAlreadyRegistered:'Email ini sudah pra-terdaftar.',invalidReferral:'Kami tidak menemukan kode undangan itu.',selfReferralNotAllowed:'Kamu tidak bisa memakai kode undanganmu sendiri.',requiredConsent:'Mohon setujui syarat yang wajib.',rateLimit:'Terlalu banyak percobaan. Silakan coba lagi sebentar.',serverError:'Terjadi kesalahan. Silakan coba lagi sebentar.',networkError:'Periksa koneksi internetmu.'}
 },
 fil: {
-  nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara',appDownloadCta:'I-download ang app'},
+  nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara',appDownloadCta:'I-download ang app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang bituin natin',t3:'sa fandom universe.',
     ctaPrimary:'Sumali sa planeta ng artist ko',ctaPrereg:'I-pre-register ang planeta ng fandom ko',ctaSecondary:'Bakit FANUZU',
     detailsCta:'Tingnan ang detalye',
@@ -847,18 +759,6 @@ fil: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'Sumali noong',v:'2026.11.07'},{k:'Oras na magkasama',v:'328 ARAW'},{k:'POP balance',v:'1,250 POP'},{k:'Kabuuang kontribusyon',v:'18,420 POP'},{k:'Ngayong linggo',v:'480 POP'},{k:'Sinalihang campaign',v:'12'},{k:'Magkasamang growth stage',v:'STAGE 1 → 5'},{k:'Fandom records',v:'46'},{k:'Na-invite na fan',v:'5'}],
     footer:'Narito ako nang simulang magningning nang mas maliwanag ang bituing ito.'},
-  origin:{t1:'Mag-pre-register,',t2:'iwan ang bakas mo.',
-    d1:'Ang PRE-REG BADGE — ibinibigay isang beses lang, hindi na uulitin.',
-    d2:'Gaano man kalaki ang planeta, mananatiling nakatala ang sandaling ito.',
-    quote:'Ikaw, ngayong sandaling ito — ang simula ng bituing ito.',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'Para sa bawat fan na mag-pre-register.',
-    benefits:[
-      {title:'Talaan ng founding',items:['Nakatala ang badge sa PASSPORT','Ipinapakita ang pagkasunod-sunod ng pagsali mo','Natatanging numero, para lang sa’yo']},
-      {title:'Visual recognition',items:['Natatanging border ng passport','Gumagalaw na starlight hologram','Badge sa tabi ng nickname mo']},
-      {title:'Maagang access',items:['Bumoto para sa tema ng planeta','Mag-propose ng unang campaign','Iwan ang unang mensahe sa kasaysayan ng planeta','Patas at transparent na governance voting']}
-    ],
-    note:'Walang kailangang gastusin, walang bilang ng referral — mag-pre-register lang.',
-    ctaLabel:'Kunin ang PRE-REG BADGE',ctaSub:'Mag-pre-register lang. Agad itong maitatala sa PASSPORT mo.'},
   prereg:{t1:'Isang bituin na wala pang nagpapaningas —',t2:'sa’yo, naghihintay.',
     d1:'Maging una sa planeta ng artist mo.',
     statusBadge:'PRE-REGISTRATION',
@@ -914,7 +814,7 @@ fil: {
   errors:{invalidEmail:'Maglagay ng valid na email address.',emailAlreadyRegistered:'Pre-registered na ang email na ito.',invalidReferral:'Hindi namin nahanap ang invite code na iyon.',selfReferralNotAllowed:'Hindi mo magagamit ang sarili mong invite code.',requiredConsent:'Pakitanggap ang mga kinakailangang terms.',rateLimit:'Sobrang dami ng pagsubok. Pakisubukang muli sandali.',serverError:'May nagkamali. Pakisubukang muli sandali.',networkError:'Siguraduhing may internet connection ka.'}
 },
 th: {
-  nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด',appDownloadCta:'ดาวน์โหลดแอป'},
+  nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด',appDownloadCta:'ดาวน์โหลดแอป'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ทำให้ดาวของเรา',t2:'สว่างที่สุด',t3:'ในจักรวาลแฟนด้อม',
     ctaPrimary:'เข้าร่วมดาวเคราะห์ของศิลปินฉัน',ctaPrereg:'ลงทะเบียนล่วงหน้าดาวเคราะห์แฟนด้อมของฉัน',ctaSecondary:'ทำไมต้อง FANUZU',
     detailsCta:'ดูรายละเอียด',
@@ -950,18 +850,6 @@ th: {
     cardLabel:'FANUZU PASSPORT',nickname:'Sylvia',planet:'PURPLE PLANET',originTag:'PRE-REG BADGE · NO.027',
     fields:[{k:'เข้าร่วมเมื่อ',v:'2026.11.07'},{k:'เวลาที่อยู่ด้วยกัน',v:'328 วัน'},{k:'ยอด POP คงเหลือ',v:'1,250 POP'},{k:'การสนับสนุนทั้งหมด',v:'18,420 POP'},{k:'สัปดาห์นี้',v:'480 POP'},{k:'แคมเปญที่เข้าร่วม',v:'12'},{k:'ขั้นการเติบโตที่ร่วมกัน',v:'STAGE 1 → 5'},{k:'บันทึกแฟนด้อม',v:'46'},{k:'แฟนที่เชิญ',v:'5'}],
     footer:'ฉันอยู่ตรงนั้นตอนที่ดาวดวงนี้เริ่มส่องแสงสว่างขึ้น'},
-  origin:{t1:'ลงทะเบียนล่วงหน้า',t2:'ทิ้งรอยของคุณไว้',
-    d1:'PRE-REG BADGE — มอบให้ครั้งเดียว ไม่มีอีกแล้ว',
-    d2:'ไม่ว่าดาวเคราะห์จะโตแค่ไหน ช่วงเวลานี้ยังคงถูกบันทึกไว้',
-    quote:'คุณ ณ ตอนนี้ คือจุดเริ่มต้นของดาวดวงนี้',
-    badgeLabel:'PRE-REG BADGE',badgeDesc:'สำหรับแฟนทุกคนที่ลงทะเบียนล่วงหน้า',
-    benefits:[
-      {title:'บันทึกผู้ก่อตั้ง',items:['บันทึกแบดจ์ใน PASSPORT','แสดงลำดับการเข้าร่วมของคุณ','หมายเลขเฉพาะ สำหรับคุณคนเดียว']},
-      {title:'การแสดงผลพิเศษ',items:['กรอบพาสปอร์ตเฉพาะ','ฮอโลแกรมแสงดาวที่เคลื่อนไหว','แบดจ์ข้างชื่อเล่นของคุณ']},
-      {title:'สิทธิ์เข้าถึงก่อนใคร',items:['โหวตธีมของดาวเคราะห์','เสนอแคมเปญแรก','ฝากข้อความแรกในประวัติศาสตร์ดาวเคราะห์','สิทธิ์โหวตที่เป็นธรรมและโปร่งใส']}
-    ],
-    note:'ไม่ต้องจ่ายเงิน ไม่ต้องนับจำนวนการแนะนำ แค่ลงทะเบียนล่วงหน้า',
-    ctaLabel:'รับ PRE-REG BADGE',ctaSub:'แค่ลงทะเบียนล่วงหน้า แล้วมันจะถูกบันทึกใน PASSPORT ของคุณทันที'},
   prereg:{t1:'ดาวที่ยังไม่มีใครจุดประกาย —',t2:'ของคุณ กำลังรออยู่',
     d1:'เป็นคนแรกบนดาวเคราะห์ของศิลปินคุณ',
     statusBadge:'ลงทะเบียนล่วงหน้า',

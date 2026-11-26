@@ -267,7 +267,7 @@ export default function PreregFormContent({ headingId, onRequestClose }: { headi
     ? [
         { k: tr.prereg.rArtist, v: artistName },
         { k: tr.prereg.rStatus, v: tr.prereg.rStatusVal },
-        { k: tr.prereg.rBadgeLabel, v: tr.origin.badgeLabel },
+        { k: tr.prereg.rBadgeLabel, v: 'PRE-REG BADGE' },
         { k: tr.prereg.rReward, v: result.reward + ' POP' },
         { k: tr.prereg.rReferralCode, v: result.code },
         ...(myRank ? [{ k: tr.rankingSection.myFandomRankLabel, v: `#${myRank}` }] : []),
