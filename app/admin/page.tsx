@@ -889,7 +889,17 @@ export default function AdminPage() {
       const artistsData = await artistsRes.json();
       const analyticsData = await analyticsRes.json();
       if (!statsRes.ok || !artistsRes.ok || !analyticsRes.ok) {
-        setError('관리자 데이터를 불러오는 중 문제가 발생했습니다.');
+        // This was previously one generic message with no way to tell which
+        // of the 3 parallel requests failed or why — intermittent server
+        // errors (DB connection limits, slow queries) need the actual
+        // status/error visible on screen, since there's no other way for
+        // someone without server-log access to report back what broke.
+        const failures = [
+          !statsRes.ok && `stats:${statsRes.status}${statsData?.error ? ` ${statsData.error}` : ''}`,
+          !artistsRes.ok && `artists:${artistsRes.status}${artistsData?.error ? ` ${artistsData.error}` : ''}`,
+          !analyticsRes.ok && `analytics:${analyticsRes.status}${analyticsData?.error ? ` ${analyticsData.error}` : ''}`,
+        ].filter(Boolean);
+        setError(`관리자 데이터를 불러오는 중 문제가 발생했습니다. (${failures.join(', ')})`);
         return;
       }
       setCounts(statsData.counts);
@@ -904,8 +914,12 @@ export default function AdminPage() {
       loadReferralProgram(pw, {});
       loadBasePartners(pw);
       loadRankingEvents(pw);
-    } catch {
-      setError('네트워크 오류입니다. 다시 시도해주세요.');
+    } catch (err) {
+      // Reaches here when a response wasn't valid JSON at all (e.g. a
+      // gateway timeout/error page instead of our API's JSON) rather than
+      // a clean non-200 JSON response, which is handled above instead.
+      const detail = err instanceof Error ? err.message : String(err);
+      setError(`네트워크 오류입니다. 다시 시도해주세요. (${detail})`);
     } finally {
       setLoading(false);
     }
