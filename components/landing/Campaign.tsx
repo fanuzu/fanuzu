@@ -26,12 +26,22 @@ export default function Campaign() {
 
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: 16, justifyContent: 'center', margin: '56px 0 36px' }}>
           {steps.map((st, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            // Plain-row layout (card beside arrow) only reads as a connected
+            // flow when all 3 pairs fit on one wide line — on narrow screens
+            // each pair wraps to its own row, leaving the arrow floating to
+            // the side of that one card instead of pointing down to the
+            // next one. The CSS below (.campaign-step-row/-arrow) switches
+            // to a stacked card-then-down-arrow layout under that width.
+            <div key={i} className="campaign-step-row" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <div
                 style={{
                   flex: '1 1 260px',
                   minWidth: 220,
                   maxWidth: 280,
+                  minHeight: 164,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(155,124,255,.03))',
                   border: '1px solid rgba(255,125,221,.18)',
                   borderRadius: 18,
@@ -42,7 +52,7 @@ export default function Campaign() {
                 <h3 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 10px', color: '#FFFAFC' }}>{st.title}</h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', margin: 0 }}>{st.desc}</p>
               </div>
-              {st.hasArrow && <div style={{ color: '#FF7DDD', fontSize: 22, flex: '0 0 auto' }}>→</div>}
+              {st.hasArrow && <div className="campaign-step-arrow" style={{ color: '#FF7DDD', fontSize: 22, flex: '0 0 auto' }}>→</div>}
             </div>
           ))}
         </div>

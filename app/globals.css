@@ -173,6 +173,21 @@ body {
   box-sizing: border-box;
 }
 
+/* Campaign's 3-step cards: each card+arrow pair sits in its own row so 3
+   pairs can share one wide line on desktop (reading as "card → card →
+   card"). Under that width they wrap one-per-line instead, which leaves
+   the arrow floating beside its own card — pointing at nothing — rather
+   than down toward the next card. Stack the pair and rotate the arrow to
+   point down so it still reads as a connected flow once stacked. */
+@media (max-width: 760px) {
+  .campaign-step-row {
+    flex-direction: column;
+  }
+  .campaign-step-arrow {
+    transform: rotate(90deg);
+  }
+}
+
 /* Bold geometric display face for section/page titles — fandom-community
    feel instead of a plain Pretendard heading. Verified (fontTools, full
    11,172-syllable modern Hangul block) to have complete coverage with
