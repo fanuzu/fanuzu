@@ -4,10 +4,15 @@ import { useLang } from '@/components/providers/LangProvider';
 
 export default function Campaign() {
   const { tr } = useLang();
+  // Plain emoji rather than a custom icon font/SVG set — after this
+  // session's two font-coverage incidents (Black Han Sans' missing
+  // glyphs, then a stale color fallback), emoji glyphs are rendered by
+  // the OS/browser's own emoji font, so there's no subset-coverage risk
+  // to re-verify here.
   const steps = [
-    { label: tr.campaign.s1l, title: tr.campaign.s1t, desc: tr.campaign.s1d, hasArrow: true },
-    { label: tr.campaign.s2l, title: tr.campaign.s2t, desc: tr.campaign.s2d, hasArrow: true },
-    { label: tr.campaign.s3l, title: tr.campaign.s3t, desc: tr.campaign.s3d, hasArrow: false },
+    { label: tr.campaign.s1l, title: tr.campaign.s1t, desc: tr.campaign.s1d, icon: '✨' },
+    { label: tr.campaign.s2l, title: tr.campaign.s2t, desc: tr.campaign.s2d, icon: '🪐' },
+    { label: tr.campaign.s3l, title: tr.campaign.s3t, desc: tr.campaign.s3d, icon: '📣' },
   ];
 
   return (
@@ -24,35 +29,54 @@ export default function Campaign() {
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.campaign.d2}</p>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: 16, justifyContent: 'center', margin: '56px 0 36px' }}>
+        {/* A numbered stepper (big filled circle + connecting line) instead
+            of equal-weight boxes with a thin arrow — the old layout gave the
+            step number the same visual weight as everything else, so the
+            "this is a 3-step process" structure didn't register at a
+            glance. The circle+line reads as a sequence regardless of
+            viewport width, with no responsive layout switch needed. */}
+        <div style={{ maxWidth: 480, margin: '56px auto 36px' }}>
           {steps.map((st, i) => (
-            // Plain-row layout (card beside arrow) only reads as a connected
-            // flow when all 3 pairs fit on one wide line — on narrow screens
-            // each pair wraps to its own row, leaving the arrow floating to
-            // the side of that one card instead of pointing down to the
-            // next one. The CSS below (.campaign-step-row/-arrow) switches
-            // to a stacked card-then-down-arrow layout under that width.
-            <div key={i} className="campaign-step-row" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div
-                style={{
-                  flex: '1 1 260px',
-                  minWidth: 220,
-                  maxWidth: 280,
-                  minHeight: 164,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))',
-                  border: '1px solid rgba(255,125,221,.18)',
-                  borderRadius: 18,
-                  padding: 26,
-                }}
-              >
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#9675F5', marginBottom: 10 }}>{st.label}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 10px', color: '#F5F3FF' }}>{st.title}</h3>
+            <div key={i} style={{ display: 'flex', gap: 20 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: '0 0 auto' }}>
+                <div
+                  style={{
+                    width: 52,
+                    height: 52,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg,#FF7DDD,#9675F5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 20,
+                    fontWeight: 800,
+                    color: '#080914',
+                    flex: '0 0 auto',
+                    boxShadow: '0 8px 24px rgba(255,125,221,.3)',
+                  }}
+                >
+                  {i + 1}
+                </div>
+                {i < steps.length - 1 && (
+                  <div
+                    style={{
+                      width: 2,
+                      flex: 1,
+                      minHeight: 40,
+                      margin: '8px 0',
+                      background: 'linear-gradient(180deg,rgba(255,125,221,.5),rgba(150,117,245,.15))',
+                    }}
+                  />
+                )}
+              </div>
+              <div style={{ paddingBottom: i < steps.length - 1 ? 40 : 0 }}>
+                <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.06em', color: '#9675F5', marginBottom: 6 }}>{st.label}</div>
+                <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px', color: '#F5F3FF', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 19 }}>{st.icon}</span>
+                  {st.title}
+                </h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#B8AFC4', margin: 0 }}>{st.desc}</p>
               </div>
-              {st.hasArrow && <div className="campaign-step-arrow" style={{ color: '#FF7DDD', fontSize: 22, flex: '0 0 auto' }}>→</div>}
             </div>
           ))}
         </div>
