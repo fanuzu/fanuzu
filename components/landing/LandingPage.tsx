@@ -18,7 +18,6 @@ import Experience from './Experience';
 import Campaign from './Campaign';
 import Passport from './Passport';
 import Origin from './Origin';
-import Compare from './Compare';
 import Prereg from './Prereg';
 import Footer from './Footer';
 import PreregModal from './PreregModal';
@@ -72,7 +71,6 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
                 <Campaign />
                 <Passport />
                 <Origin />
-                <Compare />
                 <Prereg />
                 <Footer />
                 <ZapButton />

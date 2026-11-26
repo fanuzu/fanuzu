@@ -3,7 +3,7 @@ export type Lang = 'ko' | 'en' | 'ja' | 'es' | 'zhHans' | 'zhHant' | 'id' | 'fil
 export interface TranslationSet {
   nav: { why: string; exp: string; system: string; passport: string; origin: string; prereg: string; cta: string; close: string; appDownloadCta: string };
   hero: {
-    badge: string; t1: string; t2: string; t3: string; d1: string; d2: string; d3: string;
+    badge: string; t1: string; t2: string; t3: string;
     ctaPrimary: string; ctaPrereg: string; ctaSecondary: string; detailsCta: string; subLead: string; sub: { title: string; desc: string }[];
     statLabel: string; statNumber: string; statSub: string; liveViewersLabel: string; previewCaption: string; previewCaptionInside: string; previewCaptionGrowth: string;
   };
@@ -26,7 +26,6 @@ export interface TranslationSet {
     t1: string; t2: string; d1: string; d2: string; quote: string; badgeLabel: string; badgeDesc: string;
     benefits: { title: string; items: string[] }[]; note: string; ctaLabel: string; ctaSub: string;
   };
-  compare: { t1: string; t2: string; oldT: string; oldItems: string[]; newT: string; newItems: string[] };
   prereg: {
     t1: string; t2: string; d1: string;
     statusBadge: string; benefitsLabel: string; benefits: string[];
@@ -93,9 +92,6 @@ export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기',appDownloadCta:'앱 다운로드'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 최애를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
-    d1:'걷고, 듣고, 보고, 함께한 팬의 시간이 아티스트를 위한 기여가 됩니다. 팬의 행동이 POP이 되고, POP이 모여 우리 팬덤의 행성을 키웁니다.',
-    d2:'FANUZU는 팬의 시간을 기록하고 팬덤의 힘으로 연결하는 K-POP 팬덤 플랫폼입니다.',
-    d3:'팬들의 기여가 모이면 팬덤 행성이 성장하고, 성장한 행성은 아티스트를 위한 더 큰 캠페인과 행동을 가능하게 합니다.',
     ctaPrimary:'내 최애 행성에 참여하기',ctaPrereg:'나의 최애 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     detailsCta:'자세히 보기',
     subLead:'이 모든 활동이 모여 팬덤 행성을 키워요.',
@@ -142,9 +138,6 @@ ko: {
     ],
     note:'뱃지는 결제·추천 수와 상관없어요. 사전등록만 하면 돼요.',
     ctaLabel:'PRE-REG BADGE 받기',ctaSub:'사전등록만 하면 패스포트에 그대로 기록돼요.'},
-  compare:{t1:'팬의 마음을',t2:'숫자 하나로 설명 못 하니까.',
-    oldT:'기존 팬덤 서비스',oldItems:['한 번의 투표','순간의 참여','개인의 경쟁','사라지는 활동'],
-    newT:'FANUZU',newItems:['매일의 기여','쌓이는 기록','팬덤의 성장','PASSPORT에 남는 역사']},
   prereg:{t1:'아직 아무도 밝히지 않은',t2:'너의 별.',
     d1:'내 최애 행성에 가장 먼저 도착하기.',
     statusBadge:'사전신청',
@@ -202,9 +195,6 @@ ko: {
 en: {
   nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pre-register',cta:'Light my star',close:'Close',appDownloadCta:'Download the app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
-    d1:'Walk, stream, view, take part. Every fan action becomes POP, which helps our fandom planet grow.',
-    d2:'FANUZU is a K-POP fandom platform that turns scattered fan actions into collective power.',
-    d3:'As fan contributions gather, the fandom planet grows — enabling even bigger CAMPAIGNS and actions for our artists.',
     ctaPrimary:'Join my artist’s planet',ctaPrereg:'Pre-register my fandom planet',ctaSecondary:'Why FANUZU',
     detailsCta:'See how it works',
     subLead:'All of it adds up to grow our fandom planet.',
@@ -251,9 +241,6 @@ en: {
     ],
     note:'No spending, no referral count — just pre-register.',
     ctaLabel:'Get the PRE-REG BADGE',ctaSub:'Just pre-register. It’s yours, recorded in PASSPORT.'},
-  compare:{t1:'A fan’s heart',t2:'can’t be one number.',
-    oldT:'Typical fandom platforms',oldItems:['One-off votes','Short-lived participation','Individual competition','Activity that disappears'],
-    newT:'FANUZU',newItems:['Everyday contribution','A record that grows','Fandom growth','History kept in PASSPORT']},
   prereg:{t1:'A star no one’s lit yet —',t2:'yours, waiting.',
     d1:'Be first on your artist’s planet.',
     statusBadge:'PRE-REGISTRATION',
@@ -311,9 +298,6 @@ en: {
 ja: {
   nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる',appDownloadCta:'アプリをダウンロード'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
-    d1:'ストリーミング、投票、応援、参加。ファンのアクションはPOPとして記録され、私たちのファンダム惑星を育てます。',
-    d2:'ひとりひとりのファン活動を、ファンダムの大きな力につなげるK-POPファンダムプラットフォーム。',
-    d3:'ファンダムが成長すると、QUESTとCAMPAIGNを通じて、その力をアーティストのためのアクションへつなげられます。',
     ctaPrimary:'推しの惑星に参加する',ctaPrereg:'ファンダム惑星を事前登録',ctaSecondary:'FANUZUが選ばれる理由',
     detailsCta:'詳しく見る',
     subLead:'そのすべてがファンダム惑星を育てます。',
@@ -360,9 +344,6 @@ ja: {
     ],
     note:'課金でも紹介人数でもない。事前登録するだけでいい。',
     ctaLabel:'PRE-REG BADGEを受け取る',ctaSub:'事前登録するだけ。そのままPASSPORTに残る。'},
-  compare:{t1:'ファンの気持ちは',t2:'数字ひとつじゃ語れない。',
-    oldT:'一般的なファンダムサービス',oldItems:['一度きりの投票','その場だけの参加','個人同士の競争','消えていく活動'],
-    newT:'FANUZU',newItems:['毎日の貢献','積み重なる記録','ファンダムの成長','PASSPORTに残る歴史']},
   prereg:{t1:'まだ誰も照らしていない、',t2:'あなたの星。',
     d1:'推しの惑星に、いちばんに到着。',
     statusBadge:'事前登録',
@@ -420,9 +401,6 @@ ja: {
 es: {
   nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar',appDownloadCta:'Descargar la app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
-    d1:'Streaming, votaciones, apoyo y participación. Cada acción se convierte en POP y hace crecer el planeta de nuestro fandom.',
-    d2:'Una plataforma de fandom K-POP que convierte acciones dispersas en fuerza colectiva.',
-    d3:'A medida que el fandom crece, QUEST y CAMPAIGN convierten esa fuerza en acciones reales para el artista.',
     ctaPrimary:'Unirme al planeta de mi artista',ctaPrereg:'Preinscribir mi planeta fandom',ctaSecondary:'Por qué FANUZU',
     detailsCta:'Ver cómo funciona',
     subLead:'Todo eso hace crecer nuestro planeta del fandom.',
@@ -469,9 +447,6 @@ es: {
     ],
     note:'No depende del gasto ni de referidos — solo preinscríbete.',
     ctaLabel:'Consigue la PRE-REG BADGE',ctaSub:'Solo preinscríbete. Queda registrada en tu PASSPORT.'},
-  compare:{t1:'El corazón de un fan',t2:'no cabe en un número.',
-    oldT:'Plataformas de fandom tradicionales',oldItems:['Votaciones puntuales','Participación momentánea','Competencia individual','Actividad que desaparece'],
-    newT:'FANUZU',newItems:['Contribución diaria','Una historia que se acumula','Crecimiento del fandom','Historia guardada en PASSPORT']},
   prereg:{t1:'Una estrella que nadie ha iluminado aún —',t2:'la tuya, esperando.',
     d1:'Sé el primero en el planeta de tu artista.',
     statusBadge:'PREINSCRIPCIÓN',
@@ -529,9 +504,6 @@ es: {
 zhHans: {
   nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'预注册',cta:'点亮我的星',close:'关闭',appDownloadCta:'下载App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
-    d1:'打榜、投票、应援、参与。每一次粉丝行动都会记录为 POP，并推动我们的粉丝星球成长。',
-    d2:'把分散的粉丝行动汇聚成共同力量的 K-POP 粉丝平台。',
-    d3:'当粉丝星球不断成长，我们就能通过 QUEST 和 CAMPAIGN 一起行动，把力量传递给艺人。',
     ctaPrimary:'加入我喜欢的艺人星球',ctaPrereg:'预注册粉丝星球',ctaSecondary:'FANUZU 有什么不同',
     detailsCta:'查看详情',
     subLead:'这些行动汇聚起来，让粉丝星球不断成长。',
@@ -578,9 +550,6 @@ zhHans: {
     ],
     note:'不看消费、不看邀请数——预注册就有。',
     ctaLabel:'领取PRE-REG BADGE',ctaSub:'只要预注册，直接记录进PASSPORT。'},
-  compare:{t1:'粉丝的心意，',t2:'不是一个数字能说清的。',
-    oldT:'常见粉丝平台',oldItems:['一次性的投票','短暂的参与','个人之间的竞争','很快消失的行动'],
-    newT:'FANUZU',newItems:['每日贡献','持续累积的记录','粉丝群体共同成长','留在 PASSPORT 中的历史']},
   prereg:{t1:'还没人点亮的星，',t2:'是你的。',
     d1:'第一个抵达你的艺人星球。',
     statusBadge:'预注册',
@@ -638,9 +607,6 @@ zhHans: {
 zhHant: {
   nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'預先登記',cta:'點亮我的星',close:'關閉',appDownloadCta:'下載App'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
-    d1:'串流、投票、應援、參與。每一次粉絲行動都會記錄為 POP，讓我們的粉絲星球持續成長。',
-    d2:'把分散的粉絲行動匯聚成共同力量的 K-POP 粉絲平台。',
-    d3:'當粉絲星球持續成長，我們就能透過 QUEST 和 CAMPAIGN 一起行動，把力量傳遞給藝人。',
     ctaPrimary:'加入我喜歡的藝人星球',ctaPrereg:'預先登記粉絲星球',ctaSecondary:'FANUZU 有什麼不同',
     detailsCta:'查看詳情',
     subLead:'這些行動匯聚起來，讓粉絲星球不斷成長。',
@@ -687,9 +653,6 @@ zhHant: {
     ],
     note:'不看消費、不看邀請數——預先登記就有。',
     ctaLabel:'領取PRE-REG BADGE',ctaSub:'只要預先登記，直接記錄進PASSPORT。'},
-  compare:{t1:'粉絲的心意，',t2:'不是一個數字能說清的。',
-    oldT:'常見粉絲平台',oldItems:['一次性的投票','短暫的參與','個人之間的競爭','很快消失的行動'],
-    newT:'FANUZU',newItems:['每日貢獻','持續累積的記錄','粉絲群體共同成長','留在 PASSPORT 中的歷史']},
   prereg:{t1:'還沒人點亮的星，',t2:'是你的。',
     d1:'第一個抵達你的藝人星球。',
     statusBadge:'預先登記',
@@ -747,9 +710,6 @@ zhHant: {
 id: {
   nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup',appDownloadCta:'Unduh aplikasi'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat bintang kita',t2:'bersinar paling terang',t3:'di alam semesta fandom.',
-    d1:'Jalan, streaming, tonton, ikut serta. Setiap aksi fan jadi POP, yang membantu planet fandom kita tumbuh.',
-    d2:'FANUZU adalah platform fandom K-POP yang mengubah aksi fan yang terpisah menjadi kekuatan kolektif.',
-    d3:'Saat kontribusi fan terkumpul, planet fandom tumbuh — memungkinkan CAMPAIGN dan aksi yang lebih besar untuk artis kita.',
     ctaPrimary:'Gabung ke planet artisku',ctaPrereg:'Pra-daftar planet fandomku',ctaSecondary:'Kenapa FANUZU',
     detailsCta:'Lihat selengkapnya',
     subLead:'Semua itu bersama-sama menumbuhkan planet fandom kita.',
@@ -796,9 +756,6 @@ id: {
     ],
     note:'Tidak perlu belanja, tidak perlu jumlah referral — cukup pra-daftar.',
     ctaLabel:'Dapatkan PRE-REG BADGE',ctaSub:'Cukup pra-daftar. Langsung tercatat di PASSPORT-mu.'},
-  compare:{t1:'Hati seorang fan',t2:'tak bisa diringkas jadi satu angka.',
-    oldT:'Platform fandom biasa',oldItems:['Vote sekali jalan','Partisipasi sesaat','Kompetisi individu','Aktivitas yang menghilang'],
-    newT:'FANUZU',newItems:['Kontribusi setiap hari','Catatan yang terus tumbuh','Pertumbuhan fandom','Sejarah tersimpan di PASSPORT']},
   prereg:{t1:'Bintang yang belum ada yang menyalakannya —',t2:'milikmu, menunggu.',
     d1:'Jadilah yang pertama di planet artismu.',
     statusBadge:'PRA-PENDAFTARAN',
@@ -856,9 +813,6 @@ id: {
 fil: {
   nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara',appDownloadCta:'I-download ang app'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang bituin natin',t3:'sa fandom universe.',
-    d1:'Maglakad, mag-stream, manood, lumahok. Bawat kilos ng fan ay nagiging POP, na tumutulong sa paglaki ng planeta ng ating fandom.',
-    d2:'Ang FANUZU ay isang K-POP fandom platform na ginagawang collective power ang magkakahiwalay na kilos ng mga fan.',
-    d3:'Habang dumarami ang kontribusyon ng mga fan, lumalaki ang planeta ng fandom — na nagbibigay-daan sa mas malalaking CAMPAIGN at kilos para sa ating mga artist.',
     ctaPrimary:'Sumali sa planeta ng artist ko',ctaPrereg:'I-pre-register ang planeta ng fandom ko',ctaSecondary:'Bakit FANUZU',
     detailsCta:'Tingnan ang detalye',
     subLead:'Lahat ng iyon ay magkakasamang nagpapalaki sa planeta ng ating fandom.',
@@ -905,9 +859,6 @@ fil: {
     ],
     note:'Walang kailangang gastusin, walang bilang ng referral — mag-pre-register lang.',
     ctaLabel:'Kunin ang PRE-REG BADGE',ctaSub:'Mag-pre-register lang. Agad itong maitatala sa PASSPORT mo.'},
-  compare:{t1:'Ang puso ng isang fan',t2:'ay hindi kayang ilarawan ng isang numero lang.',
-    oldT:'Karaniwang fandom platform',oldItems:['Isang beses na pagboto','Panandaliang paglahok','Kompetisyon ng indibidwal','Aktibidad na nawawala'],
-    newT:'FANUZU',newItems:['Araw-araw na kontribusyon','Talaan na patuloy na lumalaki','Paglago ng fandom','Kasaysayang nakatago sa PASSPORT']},
   prereg:{t1:'Isang bituin na wala pang nagpapaningas —',t2:'sa’yo, naghihintay.',
     d1:'Maging una sa planeta ng artist mo.',
     statusBadge:'PRE-REGISTRATION',
@@ -965,9 +916,6 @@ fil: {
 th: {
   nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',origin:'PRE-REG BADGE',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด',appDownloadCta:'ดาวน์โหลดแอป'},
   hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ทำให้ดาวของเรา',t2:'สว่างที่สุด',t3:'ในจักรวาลแฟนด้อม',
-    d1:'เดิน ฟัง ดู มีส่วนร่วม ทุกการกระทำของแฟนกลายเป็น POP ที่ช่วยให้ดาวเคราะห์แฟนด้อมของเราเติบโต',
-    d2:'FANUZU คือแพลตฟอร์มแฟนด้อม K-POP ที่เปลี่ยนการกระทำของแฟนที่กระจัดกระจายให้กลายเป็นพลังรวมหมู่',
-    d3:'เมื่อการสนับสนุนของแฟนรวมกัน ดาวเคราะห์แฟนด้อมก็เติบโต — ทำให้เกิด CAMPAIGN และการกระทำที่ยิ่งใหญ่ขึ้นเพื่อศิลปินของเรา',
     ctaPrimary:'เข้าร่วมดาวเคราะห์ของศิลปินฉัน',ctaPrereg:'ลงทะเบียนล่วงหน้าดาวเคราะห์แฟนด้อมของฉัน',ctaSecondary:'ทำไมต้อง FANUZU',
     detailsCta:'ดูรายละเอียด',
     subLead:'ทั้งหมดนี้รวมกันทำให้ดาวเคราะห์แฟนด้อมของเราเติบโต',
@@ -1014,9 +962,6 @@ th: {
     ],
     note:'ไม่ต้องจ่ายเงิน ไม่ต้องนับจำนวนการแนะนำ แค่ลงทะเบียนล่วงหน้า',
     ctaLabel:'รับ PRE-REG BADGE',ctaSub:'แค่ลงทะเบียนล่วงหน้า แล้วมันจะถูกบันทึกใน PASSPORT ของคุณทันที'},
-  compare:{t1:'หัวใจของแฟน',t2:'ไม่สามารถอธิบายด้วยตัวเลขเพียงตัวเดียว',
-    oldT:'แพลตฟอร์มแฟนด้อมทั่วไป',oldItems:['โหวตครั้งเดียว','การมีส่วนร่วมชั่วคราว','การแข่งขันระหว่างบุคคล','กิจกรรมที่หายไป'],
-    newT:'FANUZU',newItems:['การสนับสนุนทุกวัน','บันทึกที่เติบโตขึ้นเรื่อยๆ','การเติบโตของแฟนด้อม','ประวัติศาสตร์ที่เก็บไว้ใน PASSPORT']},
   prereg:{t1:'ดาวที่ยังไม่มีใครจุดประกาย —',t2:'ของคุณ กำลังรออยู่',
     d1:'เป็นคนแรกบนดาวเคราะห์ของศิลปินคุณ',
     statusBadge:'ลงทะเบียนล่วงหน้า',
