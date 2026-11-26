@@ -130,13 +130,11 @@ export default function RankingSection() {
     staticLabel = tr.rankingSection.eventEndedLabel;
   } else if (eventState === 'ended_pending') {
     staticLabel = tr.rankingSection.verifyingLabel;
-  } else if (eventState === 'upcoming' && event?.startAt) {
-    const diffMs = new Date(event.startAt).getTime() - now;
-    if (diffMs > 0) {
-      countdownLeadLabel = tr.rankingSection.countdownStartsLabel;
-      countdown = msToParts(diffMs);
-    }
-  } else if (eventState === 'active' && event?.endAt) {
+  } else if (event?.endAt) {
+    // Always the countdown to the event's own close, whether it's
+    // 'upcoming' or 'active' — showing "until it starts" then switching to
+    // "until it ends" read as two different, conflicting dates sitting
+    // right next to the site's own official-launch-date line below.
     const diffMs = new Date(event.endAt).getTime() - now;
     if (diffMs <= 0) {
       staticLabel = tr.rankingSection.verifyingLabel;
