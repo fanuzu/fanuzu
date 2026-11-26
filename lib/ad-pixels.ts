@@ -14,57 +14,75 @@
 // `trackMetaPageView` is the exception: it's meant to fire on every page
 // load (MetaPageViewTracker.tsx), matching Meta's own standard base-pixel
 // behavior — without it, Events Manager never sees anything but the rare
-// conversion event and flags the pixel as inactive. Verify these against
-// each platform's own event-debugging tools once real IDs are in place;
-// the snippets below follow each vendor's standard, documented loading
-// pattern but haven't been exercised against a live ad account here.
+// conversion event and flags the pixel as inactive.
+//
+// IMPORTANT: each vendor's pixel script (fbevents.js, TikTok's events.js,
+// X's uwt.js) is written assuming its own documented bootstrap snippet ran
+// FIRST — that snippet pre-defines the global (`fbq`/`ttq`/`twq`) as a stub
+// with a call queue, which the real script then takes over once it loads.
+// Loading the vendor script directly (as a previous version of this file
+// did, with a generic "wait for onload, then call the global") skips that
+// stub entirely; live production testing confirmed this actually breaks
+// Meta's script with "Uncaught ReferenceError: fbq is not defined" thrown
+// from inside fbevents.js itself, so `window.fbq` was never usable and no
+// event — PageView or CompleteRegistration — ever reached Meta. Each
+// platform below now reproduces that vendor's own bootstrap snippet
+// verbatim instead of inventing a load pattern.
 
 declare global {
   interface Window {
-    fbq?: (...args: unknown[]) => void;
+    fbq?: ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue?: unknown[] };
+    _fbq?: unknown;
     ttq?: {
       page: () => void;
       track: (event: string) => void;
+      load: (pixelId: string) => void;
     };
-    twq?: (...args: unknown[]) => void;
+    twq?: ((...args: unknown[]) => void) & { exe?: (...args: unknown[]) => void; queue?: unknown[] };
   }
 }
 
-function loadScriptOnce(src: string, markerAttr: string): Promise<void> {
-  return new Promise((resolve) => {
-    if (document.querySelector(`script[${markerAttr}]`)) {
-      resolve();
-      return;
-    }
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = src;
-    s.setAttribute(markerAttr, 'true');
-    // Fail open: a blocked/failed pixel script (ad blockers are common on
-    // exactly this kind of script) should never break the page it's on.
-    s.onload = () => resolve();
-    s.onerror = () => resolve();
-    document.head.appendChild(s);
-  });
+// --- Meta --------------------------------------------------------------
+
+function installFbqStub(): void {
+  if (window.fbq) return;
+  const stub = function (...args: unknown[]) {
+    if (stub.callMethod) stub.callMethod.apply(stub, args);
+    else stub.queue!.push(args);
+  } as NonNullable<Window['fbq']>;
+  if (!window._fbq) window._fbq = stub;
+  stub.queue = [];
+  window.fbq = stub;
+}
+
+function injectScriptOnce(src: string, markerAttr: string): void {
+  if (document.querySelector(`script[${markerAttr}]`)) return;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = src;
+  s.setAttribute(markerAttr, 'true');
+  document.head.appendChild(s);
 }
 
 // `fbq('init', ...)` only needs to run once per page even though both
 // PageView (every visit) and CompleteRegistration (one-time, on conversion)
-// call into this — a module-level promise makes a second caller reuse the
-// same in-flight/completed script load + init instead of re-running it.
-let metaInitPromise: Promise<boolean> | null = null;
+// call into this — a module-level flag makes a second caller skip straight
+// to using the already-installed fbq instead of re-running setup.
+let metaReady: Promise<boolean> | null = null;
 
 function ensureMetaPixelInit(): Promise<boolean> {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   if (!pixelId) return Promise.resolve(false);
-  if (!metaInitPromise) {
-    metaInitPromise = loadScriptOnce('https://connect.facebook.net/en_US/fbevents.js', 'data-fanuzu-meta-pixel').then(() => {
-      if (typeof window.fbq !== 'function') return false;
-      window.fbq('init', pixelId);
-      return true;
-    });
+  if (!metaReady) {
+    installFbqStub();
+    window.fbq!('init', pixelId);
+    injectScriptOnce('https://connect.facebook.net/en_US/fbevents.js', 'data-fanuzu-meta-pixel');
+    // The stub queues calls immediately (synchronously, above) regardless
+    // of whether the real script has finished loading yet — callers don't
+    // need to wait for the network fetch, only for the stub to exist.
+    metaReady = Promise.resolve(true);
   }
-  return metaInitPromise;
+  return metaReady;
 }
 
 // Standard Meta Pixel base behavior: fires on every page load, not gated by
@@ -72,33 +90,103 @@ function ensureMetaPixelInit(): Promise<boolean> {
 // pre-registration form has no consent decision recorded yet to gate on.
 export async function trackMetaPageView(): Promise<void> {
   if (typeof window === 'undefined') return;
-  if (await ensureMetaPixelInit()) window.fbq?.('track', 'PageView');
+  if (await ensureMetaPixelInit()) window.fbq!('track', 'PageView');
 }
 
 async function trackMeta(): Promise<void> {
-  if (await ensureMetaPixelInit()) window.fbq?.('track', 'CompleteRegistration');
+  if (await ensureMetaPixelInit()) window.fbq!('track', 'CompleteRegistration');
+}
+
+// --- TikTok --------------------------------------------------------------
+
+// Reproduces TikTok's own documented bootstrap snippet: it defines ttq's
+// queueing methods and `ttq.load`, which itself creates and inserts the
+// events.js script tag (with the pixel id baked into the query string) —
+// there's deliberately no separate injectScriptOnce call for TikTok, since
+// ttq.load already does that internally the way TikTok's script expects.
+function installTtqStub(): NonNullable<Window['ttq']> {
+  if (window.ttq) return window.ttq;
+  const w = window as unknown as { ttq: Record<string, unknown> };
+  const ttq = (w.ttq = (w.ttq || []) as unknown as Record<string, unknown> & unknown[]);
+  const methods = [
+    'page','track','identify','instances','debug','on','off','once','ready',
+    'alias','group','enableCookie','disableCookie','holdConsent','revokeConsent','grantConsent',
+  ];
+  const setAndDefer = (target: Record<string, unknown>, method: string) => {
+    target[method] = (...args: unknown[]) => {
+      (target as unknown as unknown[]).push([method, ...args]);
+    };
+  };
+  methods.forEach((m) => setAndDefer(ttq, m));
+  ttq.load = (pixelId: string) => {
+    const src = 'https://analytics.tiktok.com/i18n/pixel/events.js';
+    const i = ttq as unknown as { _i?: Record<string, unknown>; _t?: Record<string, number>; _o?: Record<string, unknown> };
+    i._i = i._i || {};
+    i._i[pixelId] = [];
+    i._t = i._t || {};
+    i._t[pixelId] = Date.now();
+    i._o = i._o || {};
+    i._o[pixelId] = {};
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `${src}?sdkid=${encodeURIComponent(pixelId)}&lib=ttq`;
+    const first = document.getElementsByTagName('script')[0];
+    first.parentNode?.insertBefore(script, first);
+  };
+  return ttq as unknown as NonNullable<Window['ttq']>;
+}
+
+let tiktokReady: boolean | null = null;
+
+function ensureTikTokPixelInit(): boolean {
+  const pixelId = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID;
+  if (!pixelId) return false;
+  if (tiktokReady === null) {
+    const ttq = installTtqStub();
+    ttq.load(pixelId);
+    ttq.page();
+    tiktokReady = true;
+  }
+  return tiktokReady;
 }
 
 async function trackTikTok(): Promise<void> {
-  const pixelId = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID;
-  if (!pixelId) return;
-  await loadScriptOnce(
-    `https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=${encodeURIComponent(pixelId)}&lib=ttq`,
-    'data-fanuzu-tiktok-pixel'
-  );
-  if (!window.ttq) return;
-  window.ttq.page();
-  window.ttq.track('CompleteRegistration');
+  if (ensureTikTokPixelInit()) window.ttq!.track('CompleteRegistration');
+}
+
+// --- X / Twitter -----------------------------------------------------------
+
+// Reproduces X's own documented universal website tag bootstrap: defines
+// twq as a stub with a call queue (`queue`/`exe`) before loading uwt.js,
+// the same stub-then-script-takeover shape as Meta's.
+function installTwqStub(): void {
+  if (window.twq) return;
+  const stub = function (...args: unknown[]) {
+    if (stub.exe) stub.exe.apply(stub, args);
+    else stub.queue!.push(args);
+  } as NonNullable<Window['twq']>;
+  stub.queue = [];
+  window.twq = stub;
+  injectScriptOnce('https://static.ads-twitter.com/uwt.js', 'data-fanuzu-x-pixel');
+}
+
+let xReady: boolean | null = null;
+
+function ensureXPixelInit(): boolean {
+  const pixelId = process.env.NEXT_PUBLIC_X_PIXEL_ID;
+  if (!pixelId) return false;
+  if (xReady === null) {
+    installTwqStub();
+    window.twq!('config', pixelId);
+    xReady = true;
+  }
+  return xReady;
 }
 
 async function trackX(): Promise<void> {
-  const pixelId = process.env.NEXT_PUBLIC_X_PIXEL_ID;
   const eventId = process.env.NEXT_PUBLIC_X_CONVERSION_EVENT_ID;
-  if (!pixelId || !eventId) return;
-  await loadScriptOnce('https://static.ads-twitter.com/uwt.js', 'data-fanuzu-x-pixel');
-  if (typeof window.twq !== 'function') return;
-  window.twq('config', pixelId);
-  window.twq('event', eventId, {});
+  if (!eventId) return;
+  if (ensureXPixelInit()) window.twq!('event', eventId, {});
 }
 
 // Fires whichever platforms are configured, in parallel; silently does
