@@ -347,6 +347,17 @@ export async function submitPreregistration(
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
+    // The plain SELECT check above (line ~198) only catches a duplicate
+    // submitted sequentially, after an earlier one has already committed —
+    // two requests for the same email landing close enough together (a
+    // double-click, a retried request) can both pass that check before
+    // either commits, then collide here on idx_prereg_email's unique index
+    // instead. That used to bubble up as an uncaught 500; this treats it
+    // exactly like the sequential case the SELECT already handles cleanly.
+    const pgErr = err as { code?: string; constraint?: string };
+    if (pgErr.code === '23505' && pgErr.constraint === 'idx_prereg_email') {
+      return fail('email_already_registered', 'This email has already pre-registered.');
+    }
     throw err;
   } finally {
     client.release();
