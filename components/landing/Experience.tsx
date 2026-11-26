@@ -43,7 +43,7 @@ export default function Experience() {
           />
         </div>
         <div style={{ maxWidth: 640, margin: '0 auto 40px', textAlign: 'center' }}>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 18px', color: '#FFFAFC' }}>
             {tr.exp.t1}
             <br />
             {tr.exp.t2}

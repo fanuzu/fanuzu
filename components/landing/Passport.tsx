@@ -10,7 +10,7 @@ export default function Passport() {
     <section id="passport" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '72px 24px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 52, alignItems: 'center' }}>
         <div style={{ flex: '1 1 420px', minWidth: 280 }}>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#FFFAFC' }}>
             {tr.passport.t1}
             <br />
             {tr.passport.t2}

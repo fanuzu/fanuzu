@@ -55,7 +55,7 @@ export default function ArtistSelect({
       </div>
       <h2
         id={headingId}
-        className="gradient-text headline-font"
+        className="gradient-text"
         style={{
           fontSize: 'clamp(28px,4.6vw,38px)',
           lineHeight: 1.3,

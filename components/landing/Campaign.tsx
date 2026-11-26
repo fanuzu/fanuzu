@@ -15,7 +15,7 @@ export default function Campaign() {
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ maxWidth: 680, margin: '0 auto 20px', textAlign: 'center' }}>
           <div style={{ fontSize: 12, letterSpacing: '.06em', color: '#7CE8FF', marginBottom: 14 }}>{tr.campaign.tagline}</div>
-          <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 16px', color: '#FFFAFC' }}>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.3, fontWeight: 700, margin: '0 0 16px', color: '#FFFAFC' }}>
             {tr.campaign.t1}
             <br />
             {tr.campaign.t2}

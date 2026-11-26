@@ -62,7 +62,6 @@ export default function Hero() {
           {tr.hero.badge}
         </div>
         <h1
-          className="headline-font"
           style={{
             fontSize: 'clamp(40px,6.4vw,72px)',
             lineHeight: 1.08,
