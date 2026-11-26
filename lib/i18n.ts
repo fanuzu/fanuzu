@@ -174,7 +174,7 @@ ko: {
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
   rankingSection:{
-    eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤의 힘으로 최애에게 광고를 선물하세요.',ctaLabel:'무료로 사전등록하기',
+    eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤 최애를 위해 팬우주 사전등록 쌉가능?',ctaLabel:'무료로 사전등록하기',
     searchPlaceholder:'내 팬덤 검색',searchNoResults:'검색 결과가 없어요',
     rewardLegendLabel:'순위별 응원광고 지원',
     rankFirst:'1위',rankSecond:'2위',rankThird:'3위',rankFourthToTenth:'4~10위',
