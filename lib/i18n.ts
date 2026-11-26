@@ -176,7 +176,7 @@ ko: {
   rankingSection:{
     eyebrow:'사전등록 랭킹전',subtitle:'우리 팬덤 최애를 위해 팬우주 사전등록 쌉가능?',ctaLabel:'무료로 사전등록하기',
     searchPlaceholder:'내 팬덤 검색',searchNoResults:'검색 결과가 없어요',
-    rewardLegendLabel:'팬덤 순위별 응원광고 지원',
+    rewardLegendLabel:'사전등록 팬덤 등록수 순위별 응원광고 지원',
     rankFirst:'1위 팬덤',rankSecond:'2위 팬덤',rankThird:'3위 팬덤',rankFourthToTenth:'4~10위 팬덤',
     currentRankLabel:'현재 순위',
     daysLeft:(n) => `종료까지 ${n}일 남음`,hoursLeft:(n) => `종료까지 ${n}시간 남음`,eventEndedLabel:'종료된 이벤트',
