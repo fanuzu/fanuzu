@@ -6,8 +6,10 @@ import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLiveActivity } from './useLiveActivity';
 import PlanetSwiper from './PlanetSwiper';
 
+const DEMO_COPY = {"ko":["체험용 POP","웹 체험용 수치이며 실제 적립되거나 지급되지 않습니다."],"en":["Demo POP","Simulated web experience only; no actual POP is earned or awarded."],"ja":["体験用POP","ウェブ体験用の数値で、実際には付与されません。"],"es":["POP de demostración","Simulación web: no se acumulan ni se otorgan POP reales."],"zhHans":["体验用 POP","仅用于网页体验，不会实际获得或发放 POP。"],"zhHant":["體驗用 POP","僅供網頁體驗，不會實際獲得或發放 POP。"],"id":["POP demo","Hanya simulasi web; tidak ada POP nyata yang diperoleh atau diberikan."],"fil":["Demo POP","Simulasyon lamang sa web; walang aktuwal na POP na makukuha."],"th":["POP สำหรับทดลอง","เป็นการจำลองบนเว็บเท่านั้น ไม่ได้รับ POP จริง"]};
+
 export default function Hero() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const { openModal } = usePreregModal();
   const { popCount } = useLiveActivity();
   // The ambient counter climbs on its own (other fans' activity); the
@@ -165,8 +167,8 @@ export default function Hero() {
             }}
           >
             <div style={{ fontSize: 24, fontWeight: 700, color: '#F5F3FF' }}>{displayedPop.toLocaleString()} POP</div>
-            <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{tr.hero.statLabel}</div>
-            <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{tr.hero.statSub}</div>
+            <div style={{ fontSize: 12, color: '#B8AFC4', marginTop: 2 }}>{DEMO_COPY[lang][0]}</div>
+            <div style={{ fontSize: 10.5, color: '#6B6478', marginTop: 6, maxWidth: 170, lineHeight: 1.4 }}>{DEMO_COPY[lang][1]}</div>
           </div>
         </PlanetSwiper>
       </div>
