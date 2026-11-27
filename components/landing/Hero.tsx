@@ -33,7 +33,7 @@ export default function Hero() {
         gap: 56,
       }}
     >
-      <div style={{ flex: '1 1 460px', minWidth: 300 }}>
+      <div style={{ flex: '1 1 460px', minWidth: 0 }}>
         <div
           style={{
             display: 'inline-flex',
@@ -103,7 +103,7 @@ export default function Hero() {
               color: '#080914',
               fontWeight: 700,
               fontSize: 17,
-              padding: '16px 32px',
+              padding: '16px clamp(16px,5vw,32px)',
               borderRadius: 999,
               border: 'none',
               cursor: 'pointer',
@@ -150,12 +150,12 @@ export default function Hero() {
         </button>
       </div>
 
-      <div style={{ flex: '1 1 380px', minWidth: 280, display: 'flex', justifyContent: 'center', position: 'relative' }}>
+      <div style={{ flex: '1 1 380px', minWidth: 0, display: 'flex', justifyContent: 'center', position: 'relative' }}>
         <PlanetSwiper>
           <div
             style={{
               position: 'absolute',
-              left: '-8%',
+              left: 0,
               bottom: '2%',
               background: 'rgba(23,24,39,.7)',
               backdropFilter: 'blur(16px)',
