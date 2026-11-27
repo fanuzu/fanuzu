@@ -4,8 +4,10 @@ import Image from 'next/image';
 import { useLang } from '@/components/providers/LangProvider';
 import { STAGE1, STAGE2, useContribution, usePlanetReactionPulse } from '@/components/providers/ContributionProvider';
 
+const DEMO_COPY = {"ko":["체험용 POP","웹 체험용 수치이며 실제 적립되거나 지급되지 않습니다."],"en":["Demo POP","Simulated web experience only; no actual POP is earned or awarded."],"ja":["体験用POP","ウェブ体験用の数値で、実際には付与されません。"],"es":["POP de demostración","Simulación web: no se acumulan ni se otorgan POP reales."],"zhHans":["体验用 POP","仅用于网页体验，不会实际获得或发放 POP。"],"zhHant":["體驗用 POP","僅供網頁體驗，不會實際獲得或發放 POP。"],"id":["POP demo","Hanya simulasi web; tidak ada POP nyata yang diperoleh atau diberikan."],"fil":["Demo POP","Simulasyon lamang sa web; walang aktuwal na POP na makukuha."],"th":["POP สำหรับทดลอง","เป็นการจำลองบนเว็บเท่านั้น ไม่ได้รับ POP จริง"]};
+
 export default function Experience() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const { score, progressPct, addAction } = useContribution();
   // Bumping this keeps the shared planet-pulse timer in sync even though
   // this section no longer renders its own planet image — Hero's planet
@@ -78,7 +80,7 @@ export default function Experience() {
         </div>
         <div style={{ background: 'linear-gradient(160deg,rgba(255,125,221,.08),rgba(150,117,245,.03))', border: '1px solid rgba(255,125,221,.18)', borderRadius: 16, padding: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#B8AFC4', marginBottom: 10 }}>
-            <span>{tr.exp.scoreLabel}</span>
+            <span>{DEMO_COPY[lang][0]}</span>
             <span style={{ color: '#F5F3FF', fontWeight: 700 }}>{score}</span>
           </div>
           <div style={{ height: 8, borderRadius: 999, background: 'rgba(255,255,255,.08)', overflow: 'hidden' }}>
@@ -93,6 +95,7 @@ export default function Experience() {
             />
           </div>
         </div>
+        <p style={{ fontSize: 13, lineHeight: 1.5, color: '#B8AFC4', textAlign: 'center' }}>{DEMO_COPY[lang][1]}</p>
         <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#9675F5', fontWeight: 600, marginTop: 14, marginBottom: 0, textAlign: 'center' }}>{tr.exp.highlight}</p>
         <p
           style={{
