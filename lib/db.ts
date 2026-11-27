@@ -364,9 +364,43 @@ export function getPool(): Pool {
   return global.__fanuzuPool;
 }
 
+async function runSchemaMigration(): Promise<void> {
+  const pool = getPool();
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // `global.__fanuzuMigration` only dedupes calls within one warm
+    // container — a burst of cold starts (e.g. the admin panel's 3 parallel
+    // requests to 3 separate route files, each with its own `global`) can
+    // still run this whole multi-statement CREATE/ALTER script from several
+    // connections at once. Concurrent DDL like that is exactly what
+    // produced the "deadlock detected" error seen in production. The
+    // advisory lock here serializes those racing migrations onto one
+    // connection at a time instead of letting Postgres deadlock them;
+    // transaction-scoped (not a plain session lock) so it still works
+    // correctly under Supabase's PgBouncer pooler in transaction mode —
+    // same reasoning as the per-artist lock in lib/prereg.ts.
+    await client.query("SELECT pg_advisory_xact_lock(hashtext('fanuzu_schema_migration'))");
+    await client.query(SCHEMA_SQL);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 export function ensureSchema(): Promise<void> {
   if (!global.__fanuzuMigration) {
-    global.__fanuzuMigration = getPool().query(SCHEMA_SQL).then(() => undefined);
+    global.__fanuzuMigration = runSchemaMigration().catch((err) => {
+      // Don't cache a failed migration forever for this container's
+      // lifetime — a transient error (e.g. losing the deadlock race once)
+      // should let the next call try again instead of every request
+      // failing until the next cold start.
+      global.__fanuzuMigration = undefined;
+      throw err;
+    });
   }
   return global.__fanuzuMigration;
 }
