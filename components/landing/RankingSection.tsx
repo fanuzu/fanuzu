@@ -30,7 +30,17 @@ interface RankingApiResponse {
   rankingVisible?: boolean;
   ranking?: RankingRow[];
   finalized?: boolean;
+  // 0-100, sent only while rankingVisible is false. Deliberately not the
+  // raw participant count or the configured threshold — neither is ever
+  // sent to the client — so this can be shown honestly without revealing
+  // how small the real numbers are this early.
+  unlockProgressPct?: number;
 }
+
+// Generic fake rows for the blurred locked-list preview — same row shape
+// as the real list (rank/name-bar/count-bar) so a visitor immediately
+// recognizes "that's a leaderboard" even though nothing real is shown.
+const PLACEHOLDER_ROWS = [0, 1, 2, 3, 4];
 
 // Matches the "5-10 minute refresh" cadence from the ranking-event review —
 // frequent enough that the board feels alive, far enough apart that it's
@@ -380,12 +390,68 @@ export default function RankingSection() {
             </div>
           </>
         ) : (
-          // Kept small/quiet on purpose — it's a secondary caveat about what
-          // counts, not something that should compete with the countdown,
-          // rewards, and CTA above it for the visitor's attention.
-          <p style={{ color: '#6B6478', fontSize: 12, textAlign: 'center', margin: '0 0 24px', lineHeight: 1.6 }}>
-            {eventState === 'upcoming' ? tr.rankingSection.upcomingNotice : tr.rankingSection.rankingHiddenMessage}
-          </p>
+          // A plain text notice here used to be the entire "locked" state —
+          // a first-time visitor had nothing to look at and no sense of what
+          // a "ranking" even was. This keeps the lock (still good FOMO/hype
+          // value per 2nd-round feedback) but shows a blurred mock-up of the
+          // real list shape underneath it, plus a progress bar — without
+          // ever revealing the real participant count or the threshold
+          // itself (only a derived 0-100 percentage is sent to the client),
+          // so the event doesn't look smaller than intended this early on.
+          <div style={{ position: 'relative', marginBottom: 24 }}>
+            <div
+              aria-hidden
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                filter: 'blur(7px)',
+                opacity: 0.55,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
+            >
+              {PLACEHOLDER_ROWS.map((i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ width: 32, flex: '0 0 auto', fontSize: 14, fontWeight: 800, color: RANK_ACCENTS[i] ?? '#B8AFC4' }}>#{i + 1}</div>
+                  <div style={{ width: 120, flex: '0 0 auto', height: 14, borderRadius: 6, background: 'rgba(255,255,255,.14)' }} />
+                  <div style={{ flex: 1, height: 20, borderRadius: 6, background: 'rgba(255,255,255,.08)' }} />
+                  <div style={{ width: 56, flex: '0 0 auto', height: 14, borderRadius: 6, background: 'rgba(255,255,255,.14)' }} />
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 10,
+                textAlign: 'center',
+                padding: '0 24px',
+              }}
+            >
+              <div style={{ fontSize: 26 }}>🔒</div>
+              <p style={{ fontSize: 13.5, color: '#F5F3FF', fontWeight: 700, margin: 0, maxWidth: 320, lineHeight: 1.5 }}>
+                {eventState === 'upcoming' ? tr.rankingSection.upcomingNotice : tr.rankingSection.rankingHiddenMessage}
+              </p>
+              {typeof data.unlockProgressPct === 'number' && (
+                <div style={{ width: '100%', maxWidth: 200, height: 6, borderRadius: 999, background: 'rgba(255,255,255,.12)', overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${data.unlockProgressPct}%`,
+                      background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
+                      borderRadius: 999,
+                      transition: 'width .6s ease',
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Plain-language rules (2nd-round review item 9): what counts,

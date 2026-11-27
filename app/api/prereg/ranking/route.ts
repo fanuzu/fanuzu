@@ -155,14 +155,20 @@ export async function GET() {
     }
 
     const counts = await getRankingStandingsForEvent(event);
-    const rankingVisible = totalCount(counts) >= MIN_PARTICIPANTS_FOR_RANKING;
+    const totalSoFar = totalCount(counts);
+    const rankingVisible = totalSoFar >= MIN_PARTICIPANTS_FOR_RANKING;
 
     // Event intro/rewards/period/CTA are always returned once the event is
     // visible — only the actual ranked list is withheld (not even sent to
     // the client) until participation clears the bar, so a sparse count is
-    // never leaked even indirectly.
+    // never leaked even indirectly. `unlockProgressPct` alone doesn't leak
+    // it either — without the threshold itself (never sent to the client),
+    // "40%" could mean 40 of 100 or 4 of 10, so the real scale stays hidden
+    // while still giving the locked state something to visualize.
     if (!rankingVisible) {
-      return NextResponse.json({ enabled: true, event: eventMeta, eventState, rankingVisible: false });
+      const unlockProgressPct =
+        MIN_PARTICIPANTS_FOR_RANKING > 0 ? Math.min(100, Math.round((totalSoFar / MIN_PARTICIPANTS_FOR_RANKING) * 100)) : 100;
+      return NextResponse.json({ enabled: true, event: eventMeta, eventState, rankingVisible: false, unlockProgressPct });
     }
 
     const ranking = counts.map((c) => ({ artist: c.artist, count: c.count }));
