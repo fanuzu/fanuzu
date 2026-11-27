@@ -87,7 +87,7 @@ export const LANG_LABELS: Record<Lang, string> = { ko:'KO', en:'EN', ja:'日本�
 export const T: Record<Lang, TranslationSet> = {
 ko: {
   nav:{why:'왜 FANUZU인가',exp:'기여 체험',system:'기여 시스템',passport:'PASSPORT',prereg:'사전등록',cta:'내 별 밝히기',close:'닫기',appDownloadCta:'앱 다운로드'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 최애를',t2:'팬덤우주에서',t3:'가장 밝게 빛나게.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'나의 최애를',t2:'이 우주에서',t3:'가장 빛나게.',
     ctaPrimary:'내 최애 행성에 참여하기',ctaPrereg:'나의 최애 행성 사전 등록',ctaSecondary:'FANUZU가 다른 이유',
     detailsCta:'자세히 보기',
     subLead:'이 모든 활동이 모여 팬덤 행성을 키워요.',
@@ -178,7 +178,7 @@ ko: {
 },
 en: {
   nav:{why:'Why FANUZU',exp:'Try POP',system:'Planet System',passport:'PASSPORT',prereg:'Pre-register',cta:'Light my star',close:'Close',appDownloadCta:'Download the app'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make our star',t2:'the brightest',t3:'in the fandom universe.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Make my favorite artist',t2:'shine the brightest',t3:'in this universe.',
     ctaPrimary:'Join my artist’s planet',ctaPrereg:'Pre-register my fandom planet',ctaSecondary:'Why FANUZU',
     detailsCta:'See how it works',
     subLead:'All of it adds up to grow our fandom planet.',
@@ -269,7 +269,7 @@ en: {
 },
 ja: {
   nav:{why:'FANUZUとは',exp:'POPを体験',system:'惑星システム',passport:'PASSPORT',prereg:'事前登録',cta:'推しの星を照らす',close:'閉じる',appDownloadCta:'アプリをダウンロード'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私たちの星を',t2:'このファンダム宇宙で',t3:'いちばん輝く星に。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'私の推しを',t2:'この宇宙で',t3:'いちばん輝かせよう。',
     ctaPrimary:'推しの惑星に参加する',ctaPrereg:'ファンダム惑星を事前登録',ctaSecondary:'FANUZUが選ばれる理由',
     detailsCta:'詳しく見る',
     subLead:'そのすべてがファンダム惑星を育てます。',
@@ -360,7 +360,7 @@ ja: {
 },
 es: {
   nav:{why:'Por qué FANUZU',exp:'Prueba POP',system:'Sistema planetario',passport:'PASSPORT',prereg:'Preinscripción',cta:'Iluminar mi estrella',close:'Cerrar',appDownloadCta:'Descargar la app'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Hagamos que nuestra estrella',t2:'sea la que más brille',t3:'en todo el universo del fandom.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Que mi artista favorito',t2:'brille más que nadie',t3:'en este universo.',
     ctaPrimary:'Unirme al planeta de mi artista',ctaPrereg:'Preinscribir mi planeta fandom',ctaSecondary:'Por qué FANUZU',
     detailsCta:'Ver cómo funciona',
     subLead:'Todo eso hace crecer nuestro planeta del fandom.',
@@ -451,7 +451,7 @@ es: {
 },
 zhHans: {
   nav:{why:'为什么选择 FANUZU',exp:'体验 POP',system:'星球系统',passport:'PASSPORT',prereg:'预注册',cta:'点亮我的星',close:'关闭',appDownloadCta:'下载App'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我们的星球',t2:'在这片粉丝宇宙中',t3:'闪耀得最亮。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'让我的偶像',t2:'在这个宇宙中',t3:'闪耀得最亮。',
     ctaPrimary:'加入我喜欢的艺人星球',ctaPrereg:'预注册粉丝星球',ctaSecondary:'FANUZU 有什么不同',
     detailsCta:'查看详情',
     subLead:'这些行动汇聚起来，让粉丝星球不断成长。',
@@ -542,7 +542,7 @@ zhHans: {
 },
 zhHant: {
   nav:{why:'為什麼選擇 FANUZU',exp:'體驗 POP',system:'星球系統',passport:'PASSPORT',prereg:'預先登記',cta:'點亮我的星',close:'關閉',appDownloadCta:'下載App'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我們的星球',t2:'在這片粉絲宇宙中',t3:'閃耀得最亮。',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'讓我的偶像',t2:'在這個宇宙中',t3:'閃耀得最亮。',
     ctaPrimary:'加入我喜歡的藝人星球',ctaPrereg:'預先登記粉絲星球',ctaSecondary:'FANUZU 有什麼不同',
     detailsCta:'查看詳情',
     subLead:'這些行動匯聚起來，讓粉絲星球不斷成長。',
@@ -633,7 +633,7 @@ zhHant: {
 },
 id: {
   nav:{why:'Mengapa FANUZU',exp:'Coba POP',system:'Sistem Planet',passport:'PASSPORT',prereg:'Pra-daftar',cta:'Nyalakan bintangku',close:'Tutup',appDownloadCta:'Unduh aplikasi'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat bintang kita',t2:'bersinar paling terang',t3:'di alam semesta fandom.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Buat artis favoritku',t2:'bersinar paling terang',t3:'di alam semesta ini.',
     ctaPrimary:'Gabung ke planet artisku',ctaPrereg:'Pra-daftar planet fandomku',ctaSecondary:'Kenapa FANUZU',
     detailsCta:'Lihat selengkapnya',
     subLead:'Semua itu bersama-sama menumbuhkan planet fandom kita.',
@@ -724,7 +724,7 @@ id: {
 },
 fil: {
   nav:{why:'Bakit FANUZU',exp:'Subukan ang POP',system:'Sistema ng Planeta',passport:'PASSPORT',prereg:'Mag-pre-register',cta:'Paningasin ang bituin ko',close:'Isara',appDownloadCta:'I-download ang app'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang bituin natin',t3:'sa fandom universe.',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'Gawing pinakamaliwanag',t2:'ang paborito kong artist',t3:'sa unibersong ito.',
     ctaPrimary:'Sumali sa planeta ng artist ko',ctaPrereg:'I-pre-register ang planeta ng fandom ko',ctaSecondary:'Bakit FANUZU',
     detailsCta:'Tingnan ang detalye',
     subLead:'Lahat ng iyon ay magkakasamang nagpapalaki sa planeta ng ating fandom.',
@@ -815,7 +815,7 @@ fil: {
 },
 th: {
   nav:{why:'ทำไมต้อง FANUZU',exp:'ลองใช้ POP',system:'ระบบดาวเคราะห์',passport:'PASSPORT',prereg:'ลงทะเบียนล่วงหน้า',cta:'จุดประกายดาวของฉัน',close:'ปิด',appDownloadCta:'ดาวน์โหลดแอป'},
-  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ทำให้ดาวของเรา',t2:'สว่างที่สุด',t3:'ในจักรวาลแฟนด้อม',
+  hero:{badge:'THE ACTION FANDOM FOR K-POP ARTISTS',t1:'ให้ศิลปินคนโปรดของฉัน',t2:'เปล่งประกายที่สุด',t3:'ในจักรวาลนี้',
     ctaPrimary:'เข้าร่วมดาวเคราะห์ของศิลปินฉัน',ctaPrereg:'ลงทะเบียนล่วงหน้าดาวเคราะห์แฟนด้อมของฉัน',ctaSecondary:'ทำไมต้อง FANUZU',
     detailsCta:'ดูรายละเอียด',
     subLead:'ทั้งหมดนี้รวมกันทำให้ดาวเคราะห์แฟนด้อมของเราเติบโต',

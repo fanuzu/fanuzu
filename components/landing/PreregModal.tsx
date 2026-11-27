@@ -16,16 +16,30 @@ export default function PreregModal() {
     if (!isOpen) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     panelRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeModal();
+      if (e.key !== 'Tab' || !panelRef.current) return;
+      const items = Array.from(panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button, input, select, textarea, [tabindex]'
+      )).filter(el => el.tabIndex >= 0 && !el.matches(':disabled') && el.getClientRects().length > 0);
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (!first || !last) { e.preventDefault(); return; }
+      const active = document.activeElement;
+      if (!panelRef.current.contains(active) || active === panelRef.current || (e.shiftKey && active === first) || (!e.shiftKey && active === last)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
       document.body.style.overflow = prevOverflow;
       document.removeEventListener('keydown', onKeyDown);
+      previousFocus?.focus();
     };
   }, [isOpen, closeModal]);
 

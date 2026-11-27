@@ -31,6 +31,8 @@ import AppLevelCta from './AppLevelCta';
 import SantaSleigh from './SantaSleigh';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
+const SEASONAL_EFFECTS = process.env.NEXT_PUBLIC_SEASONAL_EFFECTS !== 'off';
+
 export default function LandingPage({ rankingFirst = false }: { rankingFirst?: boolean }) {
   // Browsers restore the prior scroll position on reload by default
   // (history.scrollRestoration === 'auto'), which drops a visitor back
@@ -58,7 +60,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
                 <StarField />
                 <MeteorShower />
                 <ParticleLayer />
-                <SnowFall />
+                {SEASONAL_EFFECTS && <SnowFall />}
                 <Nav />
                 {/* Ad traffic landing on /ranking (see app/ranking/page.tsx) sees
                     the event's benefits/CTA as the very first screen, ahead of
@@ -75,7 +77,7 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
                 <ContributionToast />
                 <PlanetUpgradeBadge />
                 <AppLevelCta />
-                <SantaSleigh />
+                {SEASONAL_EFFECTS && <SantaSleigh />}
                 <AppPreviewOverlay />
                 <PreregModal />
               </div>
