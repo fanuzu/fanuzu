@@ -9,7 +9,7 @@ export default function Passport() {
   return (
     <section id="passport" style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '72px 24px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 52, alignItems: 'center' }}>
-        <div style={{ flex: '1 1 420px', minWidth: 280 }}>
+        <div style={{ flex: '1 1 420px', minWidth: 0 }}>
           <h2 className="headline-font" style={{ fontSize: 'clamp(28px,4vw,40px)', lineHeight: 1.25, fontWeight: 700, margin: '0 0 20px', color: '#F5F3FF' }}>
             {tr.passport.t1}
             <br />
@@ -18,7 +18,7 @@ export default function Passport() {
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: '0 0 6px' }}>{tr.passport.d1}</p>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#B8AFC4', margin: 0 }}>{tr.passport.d2}</p>
         </div>
-        <div style={{ flex: '1 1 380px', minWidth: 300, display: 'flex', justifyContent: 'center' }}>
+        <div style={{ flex: '1 1 380px', minWidth: 0, display: 'flex', justifyContent: 'center' }}>
           <div
             style={{
               width: '100%',
@@ -44,7 +44,7 @@ export default function Passport() {
             />
             <div style={{ position: 'absolute', inset: 10, border: '1px dashed rgba(255,255,255,.18)', borderRadius: 8, pointerEvents: 'none' }} />
             <div style={{ padding: '26px 24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,.12)' }}>
-              <div style={{ fontSize: 10, letterSpacing: '.25em', color: '#B8AFC4', marginBottom: 6 }}>{tr.passport.cardLabel}</div>
+              <div style={{ fontSize: 10, letterSpacing: '.25em', color: '#B8AFC4', marginBottom: 6 }}>{tr.passport.cardLabel} · SAMPLE</div>
               <div style={{ fontFamily: 'Georgia,serif', fontSize: 20, fontWeight: 700, color: '#F5F3FF', letterSpacing: '.04em' }}>FANUZU</div>
             </div>
             <div style={{ padding: '22px 24px' }}>
@@ -92,7 +92,7 @@ export default function Passport() {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
+                  gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
                   gap: '10px 16px',
                   marginBottom: 18,
                   fontFamily: "'Courier New',monospace",
