@@ -4,6 +4,10 @@ import { useEffect, useRef } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 
+import { useLang } from '@/components/providers/LangProvider';
+
+const CTA_COPY = {"ko":["FANUZU 앱에서 계속하기","다음 단계는 FANUZU 앱에서 만나요","앱 스토어 열기","사전등록하고 출시 알림 받기"],"en":["Continue in the FANUZU app","The next level is waiting in the FANUZU app","Open app store","Pre-register to get notified"],"ja":["FANUZUアプリで続ける","次のステージはFANUZUアプリで","ストアを開く","事前登録して通知を受け取る"],"es":["Continúa en la app FANUZU","El siguiente nivel te espera en FANUZU","Abrir tienda de apps","Prerregístrate para recibir avisos"],"zhHans":["在 FANUZU 应用中继续","下一阶段在 FANUZU 应用等你","打开应用商店","预约并接收上线通知"],"zhHant":["在 FANUZU App 中繼續","下一階段在 FANUZU App 等你","開啟應用程式商店","預約並接收上線通知"],"id":["Lanjutkan di aplikasi FANUZU","Level berikutnya menantimu di FANUZU","Buka toko aplikasi","Praregistrasi untuk mendapat notifikasi"],"fil":["Magpatuloy sa FANUZU app","Naghihintay ang susunod na level sa FANUZU","Buksan ang app store","Mag-preregister para maabisuhan"],"th":["เล่นต่อในแอป FANUZU","ด่านต่อไปรอคุณอยู่ในแอป FANUZU","เปิดร้านค้าแอป","ลงทะเบียนล่วงหน้าเพื่อรับแจ้งเตือน"]};
+
 const VISIBLE_MS = 4200;
 // Doubles as the launch flag: unset/empty means the app isn't out yet, so
 // there's nowhere real to send a tap — set it (a NEXT_PUBLIC_ var, since
@@ -18,11 +22,12 @@ const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL;
 // lock indicator) rather than doing nothing silently. This fires exactly
 // once, right at that lock moment, pointing the energy toward the app:
 // before launch, a nudge back to pre-registration (the thing this whole
-// site exists to convert); after, straight to the store. Fixed English,
-// same convention as the other new mechanic copy (GIVE, PLANET UPGRADE).
+// site exists to convert); after, straight to the store. Copy follows the selected locale.
 export default function AppLevelCta() {
   const { planetLockedNonce, activeOverlay, claimOverlay, releaseOverlay } = useContribution();
   const { openModal } = usePreregModal();
+  const { lang } = useLang();
+  const copy = CTA_COPY[lang];
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -48,10 +53,10 @@ export default function AppLevelCta() {
     <>
       <span style={{ fontSize: 22, lineHeight: 1 }}>📲</span>
       <span style={{ fontSize: 13, fontWeight: 700, color: '#F5F3FF' }}>
-        {APP_STORE_URL ? 'Continue in the FANUZU app' : 'The next level is waiting in the FANUZU app'}
+        {APP_STORE_URL ? copy[0] : copy[1]}
       </span>
       <span style={{ fontSize: 11.5, color: '#9675F5', textDecoration: 'underline' }}>
-        {APP_STORE_URL ? 'Open app store' : 'Pre-register to get notified'}
+        {APP_STORE_URL ? copy[2] : copy[3]}
       </span>
     </>
   );
