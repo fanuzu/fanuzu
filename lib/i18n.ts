@@ -151,7 +151,7 @@ ko: {
     btnPassport:'FANUZU PASSPORT 미리보기',copiedLabel:'복사됨',
     shareMessage:'Bring your fandom to FANUZU. 내 INVITE CODE {code}로 함께해요 → {url}'},
   rankingSection:{
-    eyebrow:'사전등록 이벤트',subtitle:'우리 팬덤 최애를 위해 팬우주 사전등록!',ctaLabel:'무료로 사전등록하기',
+    eyebrow:'사전등록 이벤트',subtitle:'나의 최애를 이 우주에서 가장 빛나게',ctaLabel:'무료로 사전등록하기',
     searchPlaceholder:'내 팬덤 검색',searchNoResults:'검색 결과가 없어요',
     rewardLegendLabel:'사전등록 팬덤 등록수 순위별 응원광고 지원',
     rankFirst:'1위 팬덤',rankSecond:'2위 팬덤',rankThird:'3위 팬덤',rankFourthToTenth:'4~10위 팬덤',
@@ -242,7 +242,7 @@ en: {
     btnPassport:'Preview my FANUZU PASSPORT',copiedLabel:'Copied',
     shareMessage:'Bring your fandom to FANUZU. Use my invite code {code} → {url}'},
   rankingSection:{
-    eyebrow:'Pre-registration ranking event',subtitle:'Use your fandom\'s power to gift your artist real advertising.',ctaLabel:'Pre-register for free',
+    eyebrow:'Pre-registration ranking event',subtitle:'Make your bias shine the brightest in this universe.',ctaLabel:'Pre-register for free',
     searchPlaceholder:'Search your fandom',searchNoResults:'No matching fandom found',
     rewardLegendLabel:'Ad support by rank',
     rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
@@ -424,7 +424,7 @@ es: {
     btnPassport:'Vista previa de mi FANUZU PASSPORT',copiedLabel:'Copiado',
     shareMessage:'Bring your fandom to FANUZU. Usa mi invite code {code} → {url}'},
   rankingSection:{
-    eyebrow:'Evento de ranking de preinscripción',subtitle:'Usa el poder de tu fandom para regalarle publicidad real a tu artista.',ctaLabel:'Preinscríbete gratis',
+    eyebrow:'Evento de ranking de preinscripción',subtitle:'Haz que tu artista brille más que nadie en este universo.',ctaLabel:'Preinscríbete gratis',
     searchPlaceholder:'Busca tu fandom',searchNoResults:'No se encontró ningún fandom',
     rewardLegendLabel:'Apoyo publicitario por posición',
     rankFirst:'1er lugar',rankSecond:'2do lugar',rankThird:'3er lugar',rankFourthToTenth:'4.º–10.º lugar',
@@ -515,7 +515,7 @@ zhHans: {
     btnPassport:'预览我的 FANUZU PASSPORT',copiedLabel:'已复制',
     shareMessage:'Bring your fandom to FANUZU. 使用我的 INVITE CODE {code} 一起加入 → {url}'},
   rankingSection:{
-    eyebrow:'预注册排名赛',subtitle:'用粉丝团的力量，为爱豆送上真实的广告应援。',ctaLabel:'免费预注册',
+    eyebrow:'预注册排名赛',subtitle:'让你的爱豆成为这个宇宙中最闪耀的星！',ctaLabel:'免费预注册',
     searchPlaceholder:'搜索我的粉丝团',searchNoResults:'未找到匹配的粉丝团',
     rewardLegendLabel:'名次应援广告',
     rankFirst:'第1名',rankSecond:'第2名',rankThird:'第3名',rankFourthToTenth:'第4~10名',
@@ -697,7 +697,7 @@ id: {
     btnPassport:'Pratinjau FANUZU PASSPORT-ku',copiedLabel:'Tersalin',
     shareMessage:'Bawa fandom-mu ke FANUZU. Pakai kode undanganku {code} → {url}'},
   rankingSection:{
-    eyebrow:'Event ranking pra-pendaftaran',subtitle:'Gunakan kekuatan fandom untuk memberi iklan sungguhan ke artismu.',ctaLabel:'Pra-daftar gratis',
+    eyebrow:'Event ranking pra-pendaftaran',subtitle:'Buat biasmu bersinar paling terang di alam semesta ini.',ctaLabel:'Pra-daftar gratis',
     searchPlaceholder:'Cari fandommu',searchNoResults:'Fandom tidak ditemukan',
     rewardLegendLabel:'Dukungan iklan per peringkat',
     rankFirst:'Peringkat 1',rankSecond:'Peringkat 2',rankThird:'Peringkat 3',rankFourthToTenth:'Peringkat 4–10',
@@ -788,7 +788,7 @@ fil: {
     btnPassport:'I-preview ang FANUZU PASSPORT ko',copiedLabel:'Nakopya',
     shareMessage:'Dalhin ang fandom mo sa FANUZU. Gamitin ang invite code ko {code} → {url}'},
   rankingSection:{
-    eyebrow:'Ranking event ng pre-registration',subtitle:'Gamitin ang lakas ng fandom mo para bigyan ang artist mo ng tunay na ad support.',ctaLabel:'Mag-pre-register nang libre',
+    eyebrow:'Ranking event ng pre-registration',subtitle:'Gawing pinakamaliwanag ang bias mo sa buong sansinukob na ito.',ctaLabel:'Mag-pre-register nang libre',
     searchPlaceholder:'Hanapin ang fandom mo',searchNoResults:'Walang nahanap na fandom',
     rewardLegendLabel:'Ad support kada ranggo',
     rankFirst:'1st place',rankSecond:'2nd place',rankThird:'3rd place',rankFourthToTenth:'4th–10th place',
@@ -879,7 +879,7 @@ th: {
     btnPassport:'ดูตัวอย่าง FANUZU PASSPORT ของฉัน',copiedLabel:'คัดลอกแล้ว',
     shareMessage:'พาแฟนด้อมของคุณมาที่ FANUZU ใช้รหัสเชิญของฉัน {code} → {url}'},
   rankingSection:{
-    eyebrow:'กิจกรรมจัดอันดับการลงทะเบียนล่วงหน้า',subtitle:'ใช้พลังของแฟนด้อมมอบโฆษณาจริงให้ศิลปินของคุณ',ctaLabel:'ลงทะเบียนล่วงหน้าฟรี',
+    eyebrow:'กิจกรรมจัดอันดับการลงทะเบียนล่วงหน้า',subtitle:'ทำให้ไบอัสของคุณเปล่งประกายที่สุดในจักรวาลนี้',ctaLabel:'ลงทะเบียนล่วงหน้าฟรี',
     searchPlaceholder:'ค้นหาแฟนด้อมของคุณ',searchNoResults:'ไม่พบแฟนด้อมที่ตรงกัน',
     rewardLegendLabel:'การสนับสนุนโฆษณาตามอันดับ',
     rankFirst:'อันดับ 1',rankSecond:'อันดับ 2',rankThird:'อันดับ 3',rankFourthToTenth:'อันดับ 4-10',
