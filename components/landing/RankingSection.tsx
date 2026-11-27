@@ -101,6 +101,7 @@ export default function RankingSection() {
     async function load() {
       try {
         const res = await fetch('/api/prereg/ranking');
+        if (!res.ok) return;
         const body: RankingApiResponse = await res.json();
         if (!cancelled) setData(body);
       } catch {
@@ -146,7 +147,7 @@ export default function RankingSection() {
     // "until it ends" read as two different, conflicting dates sitting
     // right next to the site's own official-launch-date line below.
     const diffMs = new Date(event.endAt).getTime() - now;
-    if (diffMs <= 0) {
+    if (!Number.isFinite(diffMs) || diffMs <= 0) {
       staticLabel = tr.rankingSection.verifyingLabel;
     } else {
       countdownLeadLabel = tr.rankingSection.countdownEndsLabel;
@@ -467,7 +468,7 @@ export default function RankingSection() {
                   <div
                     style={{
                       height: '100%',
-                      width: `${data.unlockProgressPct}%`,
+                      width: `${Math.max(0, Math.min(100, data.unlockProgressPct))}%`,
                       background: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
                       borderRadius: 999,
                       transition: 'width .6s ease',
