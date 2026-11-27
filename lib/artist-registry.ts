@@ -225,3 +225,43 @@ export async function updateArtist(id: number, input: ArtistUpdateInput): Promis
   );
   return rows[0] ? mapRow(rows[0]) : null;
 }
+
+export interface ArtistLandingData {
+  artist: ArtistRecord;
+  badge: ArtistBadge;
+  // Only populated when SHOW_FANDOM_PROGRESS is on AND an admin set this
+  // artist's preregGoal — same public gate getFandomProgress already
+  // uses elsewhere (app/api/prereg/fandom-progress), reused here rather
+  // than inventing a second rule for when raw numbers are safe to show.
+  progress: { count: number; goal: number } | null;
+  // Artist landing pages exist only for registry rows, never fabricated
+  // from arbitrary free-text input — but a brand-new row with nothing
+  // attached yet (no official status, no fandom name, no registrations)
+  // still shouldn't be indexed as if it were a real content page.
+  hasRealContent: boolean;
+}
+
+// Single data loader for the public artist landing page
+// (app/(home)/artists/[slug], app/(intl)/[locale]/artists/[slug]) —
+// returns null when the slug doesn't match a registry row, which the
+// caller turns into a 404 rather than ever synthesizing a page for an
+// artist nobody on the team has added.
+export async function getArtistLandingData(urlSlugOrName: string): Promise<ArtistLandingData | null> {
+  const artist = await getArtistBySlug(urlSlugOrName);
+  if (!artist) return null;
+
+  const badge = getArtistBadge(artist);
+
+  let progress: ArtistLandingData['progress'] = null;
+  if (process.env.SHOW_FANDOM_PROGRESS === 'true' && artist.preregGoal !== null) {
+    const fandoms = await getFandomProgress();
+    const match = fandoms.find((f) => f.fandom === artist.artistName);
+    if (match) progress = { count: match.count, goal: match.goal };
+  }
+
+  const counts = await getVerifiedArtistCounts();
+  const countEntry = counts.find((c) => c.artist === artist.artistName);
+  const hasRealContent = artist.officialStatus !== 'unofficial' || !!artist.fandomName || (countEntry?.count ?? 0) > 0;
+
+  return { artist, badge, progress, hasRealContent };
+}

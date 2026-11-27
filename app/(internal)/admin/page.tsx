@@ -132,6 +132,19 @@ const STORAGE_KEY = 'fanuzu_admin_password';
 // GET with a custom auth header can't be a plain <a href> download, so fetch
 // + Blob it instead — keeps the same header-based auth as every other admin
 // call rather than leaking the password into a URL/browser history.
+async function submitIndexNow(password: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/admin/indexnow', {
+      method: 'POST',
+      headers: { 'x-admin-password': password, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function downloadCsv(url: string, password: string, filename: string) {
   const res = await fetch(url, { headers: { 'x-admin-password': password } });
   if (!res.ok) return;
@@ -813,6 +826,7 @@ export default function AdminPage() {
   const [countries, setCountries] = useState<CountryRow[] | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [indexNowMsg, setIndexNowMsg] = useState('');
 
   const [referralSummary, setReferralSummary] = useState<ReferralProgramSummary | null>(null);
   const [referrerLeaderboard, setReferrerLeaderboard] = useState<ReferrerRow[] | null>(null);
@@ -1217,22 +1231,47 @@ export default function AdminPage() {
             <p style={{ fontSize: 14, color: '#9089A0', margin: 0 }}>아티스트 등록 현황 및 사전등록 통계</p>
           </div>
           {authed && (
-            <button
-              onClick={() => downloadCsv('/api/admin/export', password, 'fanuzu-all.csv')}
-              style={{
-                background: 'transparent',
-                color: '#9089A0',
-                fontWeight: 600,
-                fontSize: 12.5,
-                padding: '8px 16px',
-                border: '1px solid rgba(255,255,255,.14)',
-                borderRadius: 8,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              전체 CSV 내보내기
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button
+                  onClick={() => downloadCsv('/api/admin/export', password, 'fanuzu-all.csv')}
+                  style={{
+                    background: 'transparent',
+                    color: '#9089A0',
+                    fontWeight: 600,
+                    fontSize: 12.5,
+                    padding: '8px 16px',
+                    border: '1px solid rgba(255,255,255,.14)',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  전체 CSV 내보내기
+                </button>
+                <button
+                  onClick={async () => {
+                    setIndexNowMsg('전송 중...');
+                    const ok = await submitIndexNow(password);
+                    setIndexNowMsg(ok ? 'IndexNow 제출 완료' : 'IndexNow 제출 실패');
+                  }}
+                  style={{
+                    background: 'transparent',
+                    color: '#9089A0',
+                    fontWeight: 600,
+                    fontSize: 12.5,
+                    padding: '8px 16px',
+                    border: '1px solid rgba(255,255,255,.14)',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  검색엔진에 알리기 (IndexNow)
+                </button>
+              </div>
+              {indexNowMsg && <span style={{ fontSize: 11.5, color: '#9089A0' }}>{indexNowMsg}</span>}
+            </div>
           )}
         </div>
 

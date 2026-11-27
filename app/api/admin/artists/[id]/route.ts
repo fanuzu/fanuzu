@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { updateArtist, type ArtistUpdateInput, type OfficialStatus } from '@/lib/artist-registry';
 import { checkAdminAuth } from '@/lib/admin-auth';
+import { submitArtistUrls } from '@/lib/indexnow';
+import { toUrlSlug } from '@/lib/artists';
 
 export const runtime = 'nodejs';
 
@@ -71,6 +73,10 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     if (!artist) {
       return NextResponse.json({ error: 'not_found' }, { status: 404 });
     }
+    // IndexNow (doc section: "IndexNow 활성화") — this artist's landing
+    // page content just changed (badge/fandom name/goal). Fire-and-forget,
+    // same reasoning as finalizeRankingEvent's identical call.
+    submitArtistUrls(toUrlSlug(artist.artistName));
     return NextResponse.json({ artist });
   } catch (err) {
     console.error('admin artist update failed:', err);

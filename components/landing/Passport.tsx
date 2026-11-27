@@ -60,7 +60,10 @@ export default function Passport() {
                     position: 'relative',
                   }}
                 >
-                  <Image src="/images/fanuzu-planet.png" alt="planet" fill sizes="52px" style={{ objectFit: 'cover' }} />
+                  {/* Decorative — the planet name right next to it (tr.passport.planet)
+                      already carries the meaning; a non-empty alt here would just
+                      have a screen reader repeat it. */}
+                  <Image src="/images/fanuzu-planet.png" alt="" fill sizes="52px" style={{ objectFit: 'cover' }} />
                 </div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#F5F3FF', fontFamily: 'Georgia,serif' }}>{tr.passport.nickname}</div>

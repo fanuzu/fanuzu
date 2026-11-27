@@ -13,15 +13,23 @@ interface LangContextValue {
 
 const LangContext = createContext<LangContextValue | null>(null);
 
-export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('en');
+export function LangProvider({ children, initialLang }: { children: ReactNode; initialLang?: Lang }) {
+  const [lang, setLangState] = useState<Lang>(initialLang ?? 'en');
   // Flips true the moment anything sets the language explicitly (a saved
   // preference, a browser-language match, or the visitor picking one by
   // hand) — guards the async country lookup below from clobbering a
   // choice that landed while that request was still in flight.
-  const resolvedRef = useRef(false);
+  const resolvedRef = useRef(!!initialLang);
 
   useEffect(() => {
+    // Routed pages (home + /[locale]) already rendered this exact
+    // language server-side, matching the URL — detecting again here would
+    // flip the content away from what the URL says and what the server
+    // sent, undoing the whole point of giving each language its own URL.
+    // Only the legacy single-URL pages (terms/privacy, which pass no
+    // initialLang) still self-detect.
+    if (initialLang) return;
+
     const fromBrowserOrSaved = detectLangFromBrowserOrSaved();
     if (fromBrowserOrSaved) {
       resolvedRef.current = true;
@@ -39,7 +47,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
         if (guessed) setLangState(guessed);
       })
       .catch(() => {});
-  }, []);
+  }, [initialLang]);
 
   // Doc section 3: <html lang> must track the active locale (screen readers
   // and translation tools key off this, not just the visible text).

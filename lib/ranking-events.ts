@@ -2,6 +2,7 @@
 // ranking_events / ranking_event_results tables). Never import from a client
 // component.
 import { ensureSchema, getPool } from './db';
+import { submitEventUrls } from './indexnow';
 
 export type RankingEventStatus = 'draft' | 'active' | 'finalized';
 export type VisibilityMode = 'manual' | 'auto';
@@ -422,6 +423,11 @@ export async function finalizeRankingEvent(id: number): Promise<RankingEvent | n
       [id]
     );
     await client.query('COMMIT');
+    // IndexNow (doc section: "IndexNow 활성화") — a finalized event's
+    // permalink just became real, permanent content (doc: "결과 보존").
+    // Fire-and-forget: a flaky/unreachable IndexNow endpoint must never
+    // fail the finalize action itself.
+    submitEventUrls(id);
     return mapRow(updatedRows[0]);
   } catch (err) {
     await client.query('ROLLBACK');
@@ -440,4 +446,87 @@ export async function getFinalizedResults(eventId: number): Promise<RankingResul
     [eventId]
   );
   return rows.map((r) => ({ artist: r.artist_name, rank: r.rank, count: r.count }));
+}
+
+// Four states the public UI distinguishes: 'upcoming' is "admin has
+// announced it but start_at hasn't arrived yet" — a start countdown
+// instead of an end countdown, and the ranking is never computed at all
+// (nothing has started); 'active' is a normal in-progress countdown;
+// 'ended_pending' is "end_at has passed but an admin hasn't finalized
+// yet" — standings are still live/last-known, not yet the official
+// frozen result; 'finalized' is the permanent snapshot. Mirrors (but
+// doesn't replace — see that file's own comment) the inline version in
+// app/api/prereg/ranking/route.ts; kept the existing route's tested logic
+// untouched and added this as the canonical version for new callers
+// (the public event-permalink page below) instead of a third copy.
+export type RankingEventState = 'upcoming' | 'active' | 'ended_pending' | 'finalized';
+
+export function isRankingEventVisible(event: RankingEvent): boolean {
+  if (event.status === 'finalized') return true;
+  return event.visibilityMode === 'manual' ? event.isVisible : !event.startAt || new Date() >= new Date(event.startAt);
+}
+
+export function getRankingEventState(event: RankingEvent): RankingEventState {
+  if (event.status === 'finalized') return 'finalized';
+  const now = new Date();
+  if (event.startAt && now < new Date(event.startAt)) return 'upcoming';
+  if (event.endAt && now >= new Date(event.endAt)) return 'ended_pending';
+  return 'active';
+}
+
+const MIN_PARTICIPANTS_FOR_RANKING = envNumber('RANKING_MIN_PARTICIPANTS', 100);
+
+export interface PublicRankingEventPage {
+  event: RankingEvent;
+  state: RankingEventState;
+  // Same non-exposure rule as app/api/prereg/ranking/route.ts: the ranked
+  // list itself stays hidden until participation clears the bar, UNLESS
+  // the event is finalized (publishing a frozen result is already an
+  // explicit admin decision, never gated by the minimum).
+  rankingVisible: boolean;
+  ranking: { artist: string; count: number }[];
+  unlockProgressPct?: number;
+}
+
+// Backs the public, permalinked event page (/[locale]/events/[id]) —
+// doc: "랭킹 이벤트 페이지는 사전등록 이벤트 홍보 및 결과 보존 목적". Unlike
+// the embedded RankingSection (always "whichever event is current"),
+// this resolves one SPECIFIC event by id so a finalized event keeps a
+// permanent, stable URL after a newer event replaces it as "current".
+// Returns null for a draft/invisible event (admin hasn't published it)
+// or a nonexistent id — the page 404s either way, same as a bad slug.
+export async function getPublicRankingEventPage(id: number): Promise<PublicRankingEventPage | null> {
+  const event = await getRankingEventById(id);
+  if (!event || !isRankingEventVisible(event)) return null;
+
+  const state = getRankingEventState(event);
+
+  if (state === 'finalized') {
+    const results = await getFinalizedResults(event.id);
+    return { event, state, rankingVisible: true, ranking: results.map((r) => ({ artist: r.artist, count: r.count })) };
+  }
+
+  if (state === 'upcoming') {
+    return { event, state, rankingVisible: false, ranking: [] };
+  }
+
+  const counts = await getRankingStandingsForEvent(event);
+  const total = counts.reduce((sum, c) => sum + c.count, 0);
+  const rankingVisible = total >= MIN_PARTICIPANTS_FOR_RANKING;
+  if (!rankingVisible) {
+    const unlockProgressPct =
+      MIN_PARTICIPANTS_FOR_RANKING > 0 ? Math.min(100, Math.round((total / MIN_PARTICIPANTS_FOR_RANKING) * 100)) : 100;
+    return { event, state, rankingVisible: false, ranking: [], unlockProgressPct };
+  }
+
+  return { event, state, rankingVisible: true, ranking: counts };
+}
+
+// Backs the /[locale]/events index page and app/sitemap.ts — every event
+// a visitor (or a crawler) is actually allowed to see, most recent first.
+// Drafts/invisible events are filtered out here rather than relying on
+// callers to remember isRankingEventVisible themselves.
+export async function listPublicRankingEvents(): Promise<RankingEvent[]> {
+  const all = await listRankingEvents();
+  return all.filter(isRankingEventVisible);
 }

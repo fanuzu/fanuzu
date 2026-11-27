@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { fireAdConversions } from '@/lib/ad-pixels';
+import { trackGa4Conversion } from '@/lib/ga4';
 
 // Renders nothing — mounted once in LandingPage. Reads the one-shot
 // ?adConv=1 the verify route (app/api/prereg/verify/route.ts) adds to its
@@ -17,6 +18,7 @@ export default function AdConversionTracker() {
     url.searchParams.delete('adConv');
     window.history.replaceState({}, '', url.pathname + url.search + url.hash);
     fireAdConversions().catch(() => {});
+    trackGa4Conversion();
   }, []);
 
   return null;

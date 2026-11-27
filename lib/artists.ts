@@ -34,3 +34,16 @@ export const POPULAR_ARTISTS: string[] = [
 export function normalizeArtistSlug(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, ' ');
 }
+
+// URL-path form of the same normalization (artists.slug keeps spaces,
+// which can't go in a URL path segment) — used by the artist landing
+// pages (/[locale]/artists/[slug]). Reversible back to the DB slug by
+// swapping hyphens for spaces, which is exact as long as no artist name
+// itself contains a literal hyphen (true of the current registry).
+export function toUrlSlug(name: string): string {
+  return normalizeArtistSlug(name).replace(/\s+/g, '-');
+}
+
+export function fromUrlSlug(segment: string): string {
+  return segment.replace(/-/g, ' ');
+}

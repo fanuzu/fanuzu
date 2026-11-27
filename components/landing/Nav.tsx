@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { useLang } from '@/components/providers/LangProvider';
 import { usePreregModal } from '@/components/providers/PreregModalProvider';
 import { useCarol } from '@/components/providers/CarolProvider';
+import { localePath, persistLangChoice, SEGMENT_TO_LANG } from '@/lib/locale';
 import Logo from './Logo';
 
 // GENESIS review section 5.4/5.5: once the app has actually launched, the
@@ -15,7 +17,9 @@ import Logo from './Logo';
 const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL;
 
 export default function Nav() {
-  const { tr, lang, setLang, langList } = useLang();
+  const { tr, lang, langList } = useLang();
+  const router = useRouter();
+  const pathname = usePathname();
   const { openModal } = usePreregModal();
   const { muted, ready: carolReady, toggleMute } = useCarol();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -194,8 +198,19 @@ export default function Nav() {
                   <button
                     key={lg.code}
                     onClick={() => {
-                      setLang(lg.code);
+                      // Language is now part of the URL (doc section 20),
+                      // so switching has to navigate, not just re-render
+                      // the same URL in different text — otherwise the
+                      // address bar and the content shown would disagree.
+                      // usePathname (not a prop) is the source of truth for
+                      // "home or /ranking", so this keeps working correctly
+                      // regardless of which page mounted Nav.
+                      const segments = pathname.split('/').filter(Boolean);
+                      const rest = segments[0] && SEGMENT_TO_LANG[segments[0]] ? segments.slice(1) : segments;
+                      const subpath = rest[0] === 'ranking' ? '/ranking' : '';
+                      persistLangChoice(lg.code);
                       setLangOpen(false);
+                      router.push(localePath(lg.code, subpath) + window.location.search);
                     }}
                     style={{
                       border: 'none',

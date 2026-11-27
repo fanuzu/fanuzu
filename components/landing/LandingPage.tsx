@@ -2,6 +2,8 @@
 
 import { useLayoutEffect } from 'react';
 import { LangProvider } from '@/components/providers/LangProvider';
+import type { Lang } from '@/lib/i18n';
+import LangSuggestion from './LangSuggestion';
 import { ContributionProvider } from '@/components/providers/ContributionProvider';
 import { PlanetThemeProvider } from '@/components/providers/PlanetThemeProvider';
 import { PreregModalProvider } from '@/components/providers/PreregModalProvider';
@@ -23,6 +25,7 @@ import PreregModal from './PreregModal';
 import AttributionTracker from './AttributionTracker';
 import AdConversionTracker from './AdConversionTracker';
 import MetaPageViewTracker from './MetaPageViewTracker';
+import Ga4Tracker from './Ga4Tracker';
 import EmailVerifiedNotice from './EmailVerifiedNotice';
 import ZapButton from './ZapButton';
 import ContributionToast from './ContributionToast';
@@ -31,7 +34,7 @@ import AppLevelCta from './AppLevelCta';
 import SantaSleigh from './SantaSleigh';
 import AppPreviewOverlay from './AppPreviewOverlay';
 
-export default function LandingPage({ rankingFirst = false }: { rankingFirst?: boolean }) {
+export default function LandingPage({ rankingFirst = false, lang }: { rankingFirst?: boolean; lang?: Lang }) {
   // Browsers restore the prior scroll position on reload by default
   // (history.scrollRestoration === 'auto'), which drops a visitor back
   // wherever they'd scrolled to instead of the top. Opting into 'manual'
@@ -44,15 +47,20 @@ export default function LandingPage({ rankingFirst = false }: { rankingFirst?: b
   }, []);
 
   return (
-    <LangProvider>
+    <LangProvider initialLang={lang}>
       <ContributionProvider>
         <PlanetThemeProvider>
           <PreregModalProvider>
             <CarolProvider>
               <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#080914', color: '#F5F3FF', overflowX: 'hidden' }}>
+                {/* Only the unprefixed ko root is ambiguous enough to ask —
+                    a visitor who followed a /ja link, say, already got the
+                    language they meant to. */}
+                {lang === 'ko' && <LangSuggestion subpath={rankingFirst ? '/ranking' : ''} />}
                 <AttributionTracker suppressAutoOpen={rankingFirst} />
                 <AdConversionTracker />
                 <MetaPageViewTracker />
+                <Ga4Tracker />
                 <EmailVerifiedNotice />
                 <PlanetAtmosphere />
                 <StarField />

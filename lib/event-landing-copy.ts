@@ -1,0 +1,178 @@
+import type { Lang } from './i18n';
+
+// New UI strings specific to the permanent event-permalink page — reward
+// labels (1위/2위 팬덤 등) and most other copy are reused directly from
+// T[lang].rankingSection (lib/i18n.ts) rather than retranslated here.
+export interface EventLandingCopy {
+  eyebrow: string;
+  stateUpcoming: string;
+  stateActive: string;
+  stateEnded: string;
+  stateFinalized: string;
+  resultsTitle: string;
+  noResultsYet: string;
+  ctaPreLaunch: string;
+  ctaPostLaunch: string;
+  backToEvents: string;
+  metaTitle: (eventName: string) => string;
+  metaDescriptionActive: (eventName: string) => string;
+  metaDescriptionFinalized: (eventName: string) => string;
+  indexTitle: string;
+  indexEmpty: string;
+}
+
+export const EVENT_LANDING_COPY: Record<Lang, EventLandingCopy> = {
+  ko: {
+    eyebrow: 'FANUZU 랭킹전',
+    stateUpcoming: '곧 시작해요',
+    stateActive: '진행 중',
+    stateEnded: '집계 중',
+    stateFinalized: '종료 · 최종 결과',
+    resultsTitle: '랭킹 결과',
+    noResultsYet: '아직 랭킹이 공개되지 않았어요. 더 많은 친구를 초대해서 순위를 올려보세요!',
+    ctaPreLaunch: '사전등록하고 참여하기',
+    ctaPostLaunch: '앱에서 참여하기',
+    backToEvents: '다른 랭킹전 보기',
+    metaTitle: (n) => `${n} | FANUZU 랭킹전`,
+    metaDescriptionActive: (n) => `${n}에 지금 참여하고 우리 팬덤을 응원광고 1위로 만들어요.`,
+    metaDescriptionFinalized: (n) => `${n}의 최종 랭킹 결과를 확인하세요.`,
+    indexTitle: 'FANUZU 랭킹전',
+    indexEmpty: '아직 공개된 랭킹전이 없어요.',
+  },
+  en: {
+    eyebrow: 'FANUZU Ranking Event',
+    stateUpcoming: 'Starting soon',
+    stateActive: 'In progress',
+    stateEnded: 'Counting votes',
+    stateFinalized: 'Ended · Final results',
+    resultsTitle: 'Ranking results',
+    noResultsYet: "The ranking isn't public yet. Invite more friends to help your fandom climb!",
+    ctaPreLaunch: 'Pre-register to join',
+    ctaPostLaunch: 'Join in the app',
+    backToEvents: 'See other ranking events',
+    metaTitle: (n) => `${n} | FANUZU Ranking Event`,
+    metaDescriptionActive: (n) => `Join ${n} now and help your fandom reach #1.`,
+    metaDescriptionFinalized: (n) => `See the final ranking results for ${n}.`,
+    indexTitle: 'FANUZU Ranking Events',
+    indexEmpty: 'No ranking events are public yet.',
+  },
+  ja: {
+    eyebrow: 'FANUZU ランキング戦',
+    stateUpcoming: 'まもなく開始',
+    stateActive: '開催中',
+    stateEnded: '集計中',
+    stateFinalized: '終了・最終結果',
+    resultsTitle: 'ランキング結果',
+    noResultsYet: 'まだランキングは公開されていません。友達を誘って順位を上げよう！',
+    ctaPreLaunch: '事前登録して参加する',
+    ctaPostLaunch: 'アプリで参加する',
+    backToEvents: '他のランキング戦を見る',
+    metaTitle: (n) => `${n} | FANUZUランキング戦`,
+    metaDescriptionActive: (n) => `今すぐ${n}に参加して、ファンダムを1位にしよう。`,
+    metaDescriptionFinalized: (n) => `${n}の最終ランキング結果を確認しよう。`,
+    indexTitle: 'FANUZU ランキング戦',
+    indexEmpty: 'まだ公開中のランキング戦がありません。',
+  },
+  es: {
+    eyebrow: 'Evento de Ranking FANUZU',
+    stateUpcoming: 'Empieza pronto',
+    stateActive: 'En curso',
+    stateEnded: 'Contando votos',
+    stateFinalized: 'Finalizado · Resultados finales',
+    resultsTitle: 'Resultados del ranking',
+    noResultsYet: 'El ranking aún no es público. ¡Invita a más amigos para que tu fandom suba!',
+    ctaPreLaunch: 'Preregístrate para participar',
+    ctaPostLaunch: 'Participar en la app',
+    backToEvents: 'Ver otros eventos de ranking',
+    metaTitle: (n) => `${n} | Evento de Ranking FANUZU`,
+    metaDescriptionActive: (n) => `Únete a ${n} ahora y ayuda a tu fandom a llegar al #1.`,
+    metaDescriptionFinalized: (n) => `Mira los resultados finales del ranking de ${n}.`,
+    indexTitle: 'Eventos de Ranking FANUZU',
+    indexEmpty: 'Todavía no hay eventos de ranking públicos.',
+  },
+  zhHans: {
+    eyebrow: 'FANUZU 排名赛',
+    stateUpcoming: '即将开始',
+    stateActive: '进行中',
+    stateEnded: '统计中',
+    stateFinalized: '已结束 · 最终结果',
+    resultsTitle: '排名结果',
+    noResultsYet: '排名尚未公开。邀请更多朋友一起冲榜吧！',
+    ctaPreLaunch: '预注册参加',
+    ctaPostLaunch: '在App中参加',
+    backToEvents: '查看其他排名赛',
+    metaTitle: (n) => `${n} | FANUZU排名赛`,
+    metaDescriptionActive: (n) => `现在就参加${n}，帮助你的饭圈登顶第一。`,
+    metaDescriptionFinalized: (n) => `查看${n}的最终排名结果。`,
+    indexTitle: 'FANUZU 排名赛',
+    indexEmpty: '目前还没有公开的排名赛。',
+  },
+  zhHant: {
+    eyebrow: 'FANUZU 排名賽',
+    stateUpcoming: '即將開始',
+    stateActive: '進行中',
+    stateEnded: '統計中',
+    stateFinalized: '已結束 · 最終結果',
+    resultsTitle: '排名結果',
+    noResultsYet: '排名尚未公開。邀請更多朋友一起衝榜吧！',
+    ctaPreLaunch: '預先註冊參加',
+    ctaPostLaunch: '在App中參加',
+    backToEvents: '查看其他排名賽',
+    metaTitle: (n) => `${n} | FANUZU排名賽`,
+    metaDescriptionActive: (n) => `現在就參加${n}，幫助你的飯圈登頂第一。`,
+    metaDescriptionFinalized: (n) => `查看${n}的最終排名結果。`,
+    indexTitle: 'FANUZU 排名賽',
+    indexEmpty: '目前還沒有公開的排名賽。',
+  },
+  id: {
+    eyebrow: 'Event Ranking FANUZU',
+    stateUpcoming: 'Segera dimulai',
+    stateActive: 'Sedang berlangsung',
+    stateEnded: 'Sedang dihitung',
+    stateFinalized: 'Berakhir · Hasil akhir',
+    resultsTitle: 'Hasil ranking',
+    noResultsYet: 'Ranking belum dipublikasikan. Ajak lebih banyak teman untuk naik peringkat!',
+    ctaPreLaunch: 'Pre-registrasi untuk ikut',
+    ctaPostLaunch: 'Ikut di aplikasi',
+    backToEvents: 'Lihat event ranking lainnya',
+    metaTitle: (n) => `${n} | Event Ranking FANUZU`,
+    metaDescriptionActive: (n) => `Ikut ${n} sekarang dan bantu fandommu jadi nomor 1.`,
+    metaDescriptionFinalized: (n) => `Lihat hasil akhir ranking untuk ${n}.`,
+    indexTitle: 'Event Ranking FANUZU',
+    indexEmpty: 'Belum ada event ranking yang publik.',
+  },
+  fil: {
+    eyebrow: 'FANUZU Ranking Event',
+    stateUpcoming: 'Magsisimula na',
+    stateActive: 'Kasalukuyang tumatakbo',
+    stateEnded: 'Binibilang',
+    stateFinalized: 'Tapos na · Final na resulta',
+    resultsTitle: 'Resulta ng ranking',
+    noResultsYet: 'Hindi pa pampubliko ang ranking. Mag-imbita ng mas maraming kaibigan para umakyat!',
+    ctaPreLaunch: 'Mag-pre-register para sumali',
+    ctaPostLaunch: 'Sumali sa app',
+    backToEvents: 'Tingnan ang iba pang ranking event',
+    metaTitle: (n) => `${n} | FANUZU Ranking Event`,
+    metaDescriptionActive: (n) => `Sumali sa ${n} ngayon at tulungang maging #1 ang fandom mo.`,
+    metaDescriptionFinalized: (n) => `Tingnan ang final na resulta ng ranking para sa ${n}.`,
+    indexTitle: 'FANUZU Ranking Events',
+    indexEmpty: 'Wala pang pampublikong ranking event.',
+  },
+  th: {
+    eyebrow: 'อีเวนต์จัดอันดับ FANUZU',
+    stateUpcoming: 'เริ่มเร็วๆ นี้',
+    stateActive: 'กำลังดำเนินการ',
+    stateEnded: 'กำลังรวมคะแนน',
+    stateFinalized: 'สิ้นสุดแล้ว · ผลสรุป',
+    resultsTitle: 'ผลการจัดอันดับ',
+    noResultsYet: 'ยังไม่เปิดเผยอันดับ ชวนเพื่อนมาเพิ่มเพื่อไต่อันดับกัน!',
+    ctaPreLaunch: 'ลงทะเบียนล่วงหน้าเพื่อเข้าร่วม',
+    ctaPostLaunch: 'เข้าร่วมในแอป',
+    backToEvents: 'ดูอีเวนต์จัดอันดับอื่น ๆ',
+    metaTitle: (n) => `${n} | อีเวนต์จัดอันดับ FANUZU`,
+    metaDescriptionActive: (n) => `เข้าร่วม ${n} ตอนนี้ และช่วยให้แฟนด้อมของคุณขึ้นอันดับ 1`,
+    metaDescriptionFinalized: (n) => `ดูผลการจัดอันดับสุดท้ายของ ${n}`,
+    indexTitle: 'อีเวนต์จัดอันดับ FANUZU',
+    indexEmpty: 'ยังไม่มีอีเวนต์จัดอันดับที่เปิดเผยต่อสาธารณะ',
+  },
+};
