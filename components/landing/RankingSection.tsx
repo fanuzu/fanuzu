@@ -191,35 +191,6 @@ export default function RankingSection() {
           )}
           <p style={{ fontSize: 14.5, color: '#B8AFC4', margin: '0 0 8px' }}>{tr.rankingSection.subtitle}</p>
           {staticLabel && <div style={{ fontSize: 13, fontWeight: 700, color: '#9089A0' }}>{staticLabel}</div>}
-          {countdown && (
-            <div style={{ marginTop: 2 }}>
-              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.04em', color: '#9089A0', marginBottom: 6 }}>
-                {countdownLeadLabel}
-              </div>
-              {/* Ticks every second (see the `now` interval above) — digits
-                  only, no per-unit D/H/M/S captions, matching a plain digital
-                  timer rather than another row of labeled stat boxes. */}
-              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6, fontVariantNumeric: 'tabular-nums' }}>
-                {[countdown.d, countdown.h, countdown.m, countdown.s].map((val, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                    {i > 0 && (
-                      <span style={{ color: '#6B6478', fontSize: 'clamp(16px,3.6vw,24px)', fontWeight: 700 }}>:</span>
-                    )}
-                    <span
-                      className="gradient-text"
-                      style={{
-                        fontSize: 'clamp(20px,4.8vw,32px)',
-                        fontWeight: 800,
-                        backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
-                      }}
-                    >
-                      {String(val).padStart(2, '0')}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
           {APP_LAUNCH_DATE && (
             <div style={{ fontSize: 11.5, color: '#6B6478', marginTop: 6 }}>
               {tr.rankingSection.launchLabel}{' '}
@@ -253,15 +224,69 @@ export default function RankingSection() {
               marginBottom: 20,
             }}
           >
-            <Image src="/images/genesis-ranking-visual.webp" alt="" fill sizes="960px" style={{ objectFit: 'cover' }} />
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(180deg,transparent 55%,rgba(23,24,39,.9) 100%)',
-                pointerEvents: 'none',
-              }}
+            {/* Heavily blurred + darkened podium artwork as a backdrop
+                texture, not something meant to be looked at directly — the
+                countdown itself is now the focal point of this banner
+                (moved here, enlarged, from its old small spot up in the
+                intro) rather than a separate key-visual image. scale(1.15)
+                keeps the blur's soft edge falloff from showing at the
+                banner's own edges. */}
+            <Image
+              src="/images/genesis-podium.webp"
+              alt=""
+              fill
+              sizes="960px"
+              style={{ objectFit: 'cover', filter: 'blur(22px) brightness(.5) saturate(1.3)', transform: 'scale(1.15)' }}
             />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(23,24,39,.35)' }} />
+            {(countdown || staticLabel) && (
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 10,
+                  padding: '0 20px',
+                  textAlign: 'center',
+                }}
+              >
+                {countdown ? (
+                  <>
+                    <div style={{ fontSize: 'clamp(12.5px,2vw,15px)', fontWeight: 700, letterSpacing: '.05em', color: '#F5F3FF' }}>
+                      {countdownLeadLabel}
+                    </div>
+                    {/* Ticks every second (see the `now` interval above) —
+                        digits only, no per-unit D/H/M/S captions, matching a
+                        plain digital timer rather than another row of
+                        labeled stat boxes. */}
+                    <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 'clamp(8px,2vw,14px)', fontVariantNumeric: 'tabular-nums' }}>
+                      {[countdown.d, countdown.h, countdown.m, countdown.s].map((val, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(8px,2vw,14px)' }}>
+                          {i > 0 && (
+                            <span style={{ color: 'rgba(245,243,255,.5)', fontSize: 'clamp(26px,6vw,46px)', fontWeight: 700 }}>:</span>
+                          )}
+                          <span
+                            className="gradient-text"
+                            style={{
+                              fontSize: 'clamp(34px,8.5vw,60px)',
+                              fontWeight: 800,
+                              backgroundImage: 'linear-gradient(90deg,#FF7DDD,#9675F5)',
+                            }}
+                          >
+                            {String(val).padStart(2, '0')}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ fontSize: 'clamp(16px,3vw,22px)', fontWeight: 700, color: '#F5F3FF' }}>{staticLabel}</div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
