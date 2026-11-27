@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useContribution } from '@/components/providers/ContributionProvider';
 import { useLang } from '@/components/providers/LangProvider';
 
@@ -25,6 +25,21 @@ export default function AppPreviewOverlay() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!previewVisible || previewFading) return;
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') dismissPreview();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      previous?.focus();
+    };
+  }, [previewVisible, previewFading, dismissPreview]);
+
   if (!previewVisible) return null;
 
   const handleScroll = () => {
@@ -42,7 +57,8 @@ export default function AppPreviewOverlay() {
 
   return (
     <div
-      onClick={dismissPreview}
+      role="dialog"
+      aria-label="FANUZU app preview"
       style={{
         position: 'fixed',
         inset: 0,
@@ -55,7 +71,7 @@ export default function AppPreviewOverlay() {
         background: 'radial-gradient(circle at 50% 45%,rgba(150,117,245,.26),rgba(8,9,20,.78) 65%)',
         backdropFilter: 'blur(6px)',
         WebkitBackdropFilter: 'blur(6px)',
-        cursor: 'pointer',
+        cursor: 'default',
         opacity: fading ? 0 : 1,
         transition: 'opacity .3s ease',
         animation: fading ? undefined : 'previewBackdropIn .12s ease-out',
@@ -79,6 +95,7 @@ export default function AppPreviewOverlay() {
       ))}
 
       <button
+        ref={closeRef}
         onClick={(e) => {
           e.stopPropagation();
           dismissPreview();
@@ -88,8 +105,8 @@ export default function AppPreviewOverlay() {
           position: 'absolute',
           top: 'max(18px, env(safe-area-inset-top))',
           right: 18,
-          width: 38,
-          height: 38,
+          width: 44,
+          height: 44,
           borderRadius: '50%',
           border: 'none',
           background: 'linear-gradient(135deg,var(--planet-a1),var(--planet-a2))',
@@ -126,7 +143,7 @@ export default function AppPreviewOverlay() {
           transition: fading ? 'transform .4s ease' : undefined,
         }}
       >
-        {PREVIEW_IMAGES.map((p) => (
+        {PREVIEW_IMAGES.map((p, i) => (
           <div
             key={p.src}
             style={{
@@ -143,7 +160,7 @@ export default function AppPreviewOverlay() {
               boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 28px 4px rgba(255,125,221,.18)',
             }}
           >
-            <Image src={p.src} alt="FANUZU app preview" fill sizes="240px" style={{ objectFit: 'cover' }} />
+            <Image src={p.src} alt={[tr.hero.previewCaption, tr.hero.previewCaptionInside, tr.hero.previewCaptionGrowth, tr.hero.previewCaptionGrowth][i]} fill sizes="240px" style={{ objectFit: 'cover' }} />
           </div>
         ))}
       </div>
