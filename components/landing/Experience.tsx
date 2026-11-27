@@ -32,7 +32,7 @@ export default function Experience() {
             marginBottom: 40,
           }}
         >
-          <Image src="/images/experience-awards.jpg" alt="" fill sizes="640px" style={{ objectFit: 'cover' }} />
+          <Image src="/images/experience-totalpush.webp" alt="" fill sizes="640px" style={{ objectFit: 'cover' }} />
           <div
             style={{
               position: 'absolute',
